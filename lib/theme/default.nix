@@ -28,5 +28,5 @@
     };
   };
 
-  wallpaper = ./wall3.png;
+  wallpaper = ./blue-and-pink.jpg;
 }
