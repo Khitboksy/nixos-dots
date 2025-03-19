@@ -387,17 +387,17 @@ in {
           margin: 0.4rem 0.25rem;
           border-radius: 6px;
           /* background-color: #181825; */
-          background-color: #5BCEFA;
-          color: #F5A9B8;
+          background-color: #1e1e2e;
+          color: #5BCEFA;
         }
 
         #workspaces button:hover {
-          color: #F5A9B8;
+          color: #181825;
           background-color: #5BCEFA;
         }
 
         #workspaces button.active {
-          background-color: #5BCEFA;
+          background-color: #F5A9B8;
           color: #181825;
         }
 
@@ -442,31 +442,31 @@ in {
         }
 
         #cpu {
-          color: #a3e661;
+          color: #5BCEFA;
         }
 
         #memory {
-          color: #5757c7;
+          color: #5BCEFA;
         }
 
         #clock {
-          color: #5bcefa;
+          color: #5BCEFA;
         }
 
         #clock.simpleclock {
-          color: #89b4fa;
+          color: #5BCEFA;
         }
 
         #window {
-          color: #cdd6f4;
+          color: #5BCEFA;
         }
 
         #pulseaudio {
-          color: #b4befe;
+          color: #5BCEFA;
         }
 
         #pulseaudio.muted {
-          color: #a6adc8;
+          color: #F5A9B8;
         }
 
         #custom-logo {
@@ -487,7 +487,7 @@ in {
         mainBar = {
           layer = "bottom";
           position = "top";
-          height = 20;
+          height = 28;
           spacing = 2;
           exclusive = true;
           "gtk-layer-shell" = true;

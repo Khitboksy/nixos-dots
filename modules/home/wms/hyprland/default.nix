@@ -194,6 +194,9 @@ in {
       workspace = [
         "1,monitor:DP-1"
         "2,monitor:DP-2"
+        "3,monitor:DP-2"
+        "9,monitor:DP-1"
+        "10,monitor:DP-2"
       ];
       windowrulev2 = [
         # only allow shadows for floating windows
@@ -215,9 +218,11 @@ in {
         "workspace special silent, title:^(Firefox — Sharing Indicator)$"
         "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
 
-        "workspace 1, class:^(zen)"
+        # specify what applications start on (at boot and normal startup of the app)
         "workspace 2, class:^(vesktop)$"
         "workspace 3, class:^(spotify)$"
+        "workspace 4, class:^(zen)"
+
         "opacity 0.0 override,class:^(xwaylandvideobridge)$"
         "noanim,class:^(xwaylandvideobridge)$"
         "noinitialfocus,class:^(xwaylandvideobridge)$"
