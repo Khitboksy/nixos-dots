@@ -1,9 +1,6 @@
 {
-  options,
   config,
   lib,
-  inputs,
-  pkgs,
   ...
 }:
 with lib;
@@ -381,7 +378,7 @@ in {
           transition-duration: 0.5s;
           /* background-color: #1e1e2e; */
           /* background-color: #181825; */
-          background-color: #11111b;
+          background-color: #F5A9B8;
           /* background-color: rgba(24, 24, 37, 0.6); */
         }
 
@@ -390,18 +387,18 @@ in {
           margin: 0.4rem 0.25rem;
           border-radius: 6px;
           /* background-color: #181825; */
-          background-color: #1e1e2e;
-          color: #cdd6f4;
+          background-color: #5BCEFA;
+          color: #F5A9B8;
         }
 
         #workspaces button:hover {
-          color: #1e1e2e;
-          background-color: #cdd6f4;
+          color: #F5A9B8;
+          background-color: #5BCEFA;
         }
 
         #workspaces button.active {
-          background-color: #1e1e2e;
-          color: #89b4fa;
+          background-color: #5BCEFA;
+          color: #181825;
         }
 
         #workspaces button.urgent {
@@ -428,11 +425,11 @@ in {
         }
 
         #mpris.playing {
-          color: #a6e3a1;
+          color: #5BCEFA;
         }
 
         #mpris.paused {
-          color: #9399b2;
+          color: #F5A9B8;
         }
 
         #custom-sep {
@@ -445,15 +442,15 @@ in {
         }
 
         #cpu {
-          color: #94e2d5;
+          color: #a3e661;
         }
 
         #memory {
-          color: #cba6f7;
+          color: #5757c7;
         }
 
         #clock {
-          color: #74c7ec;
+          color: #5bcefa;
         }
 
         #clock.simpleclock {
@@ -490,7 +487,7 @@ in {
         mainBar = {
           layer = "bottom";
           position = "top";
-          height = 40;
+          height = 20;
           spacing = 2;
           exclusive = true;
           "gtk-layer-shell" = true;

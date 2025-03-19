@@ -30,6 +30,17 @@
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
 
+  # wireless ap
+  # services.create_ap = {
+  #  enable = true;
+  #  settings = {
+  #   INTERNET_IFACE = "wlp45s0f3u2u3u3";
+  #   WIFI_IFACE = "wlp2s0f0u6";
+  #   SSID = "Helios.Nix";
+  #   PASSPHRASE = "Taylor071922Hendrix";
+  #};
+  #};
+
   networking.hostName = "helios"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
