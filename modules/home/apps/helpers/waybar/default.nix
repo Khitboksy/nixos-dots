@@ -378,7 +378,7 @@ in {
           transition-duration: 0.5s;
           /* background-color: #1e1e2e; */
           /* background-color: #181825; */
-          background-color: #F5A9B8;
+          background-color: #f38ba8;
           /* background-color: rgba(24, 24, 37, 0.6); */
         }
 
@@ -387,23 +387,23 @@ in {
           margin: 0.4rem 0.25rem;
           border-radius: 6px;
           /* background-color: #181825; */
-          background-color: #1e1e2e;
+          background-color: #313244;
           color: #5BCEFA;
         }
 
         #workspaces button:hover {
           color: #181825;
-          background-color: #5BCEFA;
+          background-color: #74c7ec;
         }
 
         #workspaces button.active {
-          background-color: #F5A9B8;
+          background-color: #f38ba8;
           color: #181825;
         }
 
         #workspaces button.urgent {
           background-color: #1e1e2e;
-          color: #f38ba8;
+          color: #cba6f7;
         }
 
         #clock,
@@ -421,15 +421,15 @@ in {
           margin: 0.4rem 0.25rem;
           border-radius: 6px;
           /* background-color: #181825; */
-          background-color: #1e1e2e;
+          background-color: #313244;
         }
 
         #mpris.playing {
-          color: #5BCEFA;
+          color: #89dceb;
         }
 
         #mpris.paused {
-          color: #F5A9B8;
+          color: #eba0ac;
         }
 
         #custom-sep {
@@ -442,32 +442,32 @@ in {
         }
 
         #cpu {
-          color: #5BCEFA;
+          color: #a6e3a1;
         }
 
         #memory {
-          color: #5BCEFA;
+          color: #94e2d5;
         }
 
         #clock {
-          color: #5BCEFA;
+          color: #89dceb;
         }
 
         #clock.simpleclock {
-          color: #5BCEFA;
+          color: #74c7ec;
         }
 
         #window {
-          color: #5BCEFA;
+          color: #b4befe;
         }
 
-        #pulseaudio {
+        /* #pulseaudio {
           color: #5BCEFA;
         }
 
         #pulseaudio.muted {
           color: #F5A9B8;
-        }
+        } */
 
         #custom-logo {
           color: #89b4fa;
@@ -493,12 +493,19 @@ in {
           "gtk-layer-shell" = true;
           passthrough = false;
           "fixed-center" = true;
-          "modules-left" = ["hyprland/workspaces" "hyprland/window"];
-          "modules-center" = ["mpris"];
+          "modules-left" = [
+            "hyprland/workspaces"
+            "hyprland/window"
+          ];
+          "modules-center" = [
+            "mpris"
+          ];
           "modules-right" = [
             "cpu"
             "memory"
+            /*
             "pulseaudio"
+            */
             "clock"
             "clock#simpleclock"
             "tray"
@@ -577,7 +584,8 @@ in {
             format = " {used:0.1f}Gi";
           };
 
-          pulseaudio = {
+          /*
+            pulseaudio = {
             format = "{icon} {volume}%";
             "format-muted" = "  muted";
             "format-icons" = {
@@ -586,6 +594,7 @@ in {
             };
             "on-click" = "pavucontrol";
           };
+          */
 
           "custom/sep" = {
             format = "|";
