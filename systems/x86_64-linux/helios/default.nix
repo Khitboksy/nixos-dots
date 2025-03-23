@@ -216,6 +216,22 @@
     };
     wantedBy = ["multi-user.target"];
   };
+
+  # Define a systemd service for your wifi script
+  systemd.services.wifi-startup = {
+    description = "WiFi startup script";
+
+    # Make this service start after the network is up
+    after = ["network.target"];
+    wantedBy = ["multi-user.target"];
+
+    # Service-specific configuration
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ./wirelessap.sh; # relative path to ur script
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
