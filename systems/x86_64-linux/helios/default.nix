@@ -220,15 +220,22 @@
   # Define a systemd service for your wifi script
   systemd.services.wifi-startup = {
     description = "WiFi startup script";
-
-    # Make this service start after the network is up
     after = ["network.target"];
     wantedBy = ["multi-user.target"];
-
-    # Service-specific configuration
+    path = with pkgs; [
+      linux-wifi-hotspot
+      iw
+      dnsmasq
+      hostapd
+    ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = ./wirelessap.sh; # relative path to ur script
+      ExecStart = "${pkgs.writeShellScript "wifi.sh" ''
+        #! /usr/bin/env bash
+        create_ap wlp2s0f0u6 wlp45s0f3u2u3u3 Helios.Nix LegalizeNuclearBombs --no-virt
+      ''}";
+      RemainAfterExit = true;
+      # Service-specific configuration
     };
   };
 
