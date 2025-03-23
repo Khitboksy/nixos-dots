@@ -57,11 +57,15 @@ in {
       exec-once = [
         # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         # "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "zen"
-        "vesktop"
-        "spotify"
+        "[workspace 1 silent] zen"
+        "[workspace 2 silent] vesktop"
+        "[workspace 3 silent] spotify"
         "networkmanagerapplet"
         "waybar"
+        "[workspace 9 silent] kitty"
+        "[workspace 9 silent] kitty"
+        "[workspace 9 silent] kitty"
+        "[workspace 10 silent] kitty"
       ];
 
       env = [
@@ -132,7 +136,7 @@ in {
 
       decoration = {
         # fancy corners
-        rounding = 4;
+        rounding = 6;
         # blur
         blur = {
           enabled = true;
@@ -222,12 +226,6 @@ in {
         "workspace 2, class:^(vesktop)$"
         "workspace 3, class:^(spotify)$"
         "workspace 4, class:^(zen)"
-
-        "opacity 0.0 override,class:^(xwaylandvideobridge)$"
-        "noanim,class:^(xwaylandvideobridge)$"
-        "noinitialfocus,class:^(xwaylandvideobridge)$"
-        "maxsize 1 1,class:^(xwaylandvideobridge)$"
-        "noblur,class:^(xwaylandvideobridge)$"
       ];
     };
 

@@ -82,7 +82,6 @@ in {
       config.common.default = "*";
       extraPortals = [
         pkgs.xdg-desktop-portal-gtk
-        pkgs.xwaylandvideobridge
       ];
     };
   };
