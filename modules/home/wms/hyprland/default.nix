@@ -198,7 +198,7 @@ in {
         "9,monitor:DP-1"
         "10,monitor:DP-2"
       ];
-      windowrulev2 = [
+      windowrule = [
         # only allow shadows for floating windows
         "noshadow, floating:0"
         "tile, title:Spotify"

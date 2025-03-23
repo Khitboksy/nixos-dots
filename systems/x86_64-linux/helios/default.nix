@@ -197,6 +197,10 @@
     # OBS Studio
     pkgs.obs-studio
 
+    # ROR2 ModManager
+    pkgs.r2modman
+
+    pkgs.linux-wifi-hotspot
     #  wget
   ];
   # Enable services and permissions for Piper
