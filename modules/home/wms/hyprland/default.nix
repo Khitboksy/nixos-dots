@@ -57,9 +57,9 @@ in {
       exec-once = [
         # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         # "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "[workspace 1 silent] zen"
-        "[workspace 2 silent] vesktop"
-        "[workspace 3 silent] spotify"
+        "zen"
+        "vesktop"
+        "spotify"
         "networkmanagerapplet"
         "waybar"
         "[workspace 9 silent] kitty"
@@ -202,7 +202,7 @@ in {
         "9,monitor:DP-1"
         "10,monitor:DP-2"
       ];
-      windowrule = [
+      windowrulev2 = [
         # only allow shadows for floating windows
         "noshadow, floating:0"
         "tile, title:Spotify"
