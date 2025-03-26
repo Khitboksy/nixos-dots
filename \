@@ -394,7 +394,7 @@ in {
 
         #workspaces button:hover {
           color: #181825;
-          background-color: rgba(255, 255, 255, 0.65);
+          background-color: rgba(255, 255, 255, 0.8);
         }
 
         #workspaces button.active {
