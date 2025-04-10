@@ -177,30 +177,24 @@
     pkgs.btop # better htop
     pkgs.vlc
     pkgs.clonehero
-
     pkgs.protonup-qt
     (inputs.umu.packages.${system}.umu.override {
       version = inputs.umu.shortRev;
       truststore = true;
       cbor2 = true;
     })
-
     pkgs.qbittorrent
-
     # Mouse
     pkgs.piper
     pkgs.libratbag
-
     # Fastfetch
     pkgs.fastfetch
-
     # OBS Studio
     pkgs.obs-studio
-
     # ROR2 ModManager
     pkgs.r2modman
-
     pkgs.linux-wifi-hotspot
+    pkgs.lmms
     #  wget
   ];
   # Enable services and permissions for Piper
@@ -232,7 +226,7 @@
       Type = "oneshot";
       ExecStart = "${pkgs.writeShellScript "wifi.sh" ''
         #! /usr/bin/env bash
-        # create_ap wlp2s0f0u6 wlp45s0f3u2u3u3 Helios.Nix LegalizeNuclearBombs --no-virt
+         create_ap wlp2s0f0u6 wlp45s0f3u2u3u3 Helios.Nix LegalizeNuclearBombs --no-virt
       ''}";
       RemainAfterExit = true;
       # Service-specific configuration

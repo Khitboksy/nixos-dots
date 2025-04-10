@@ -376,7 +376,7 @@ in {
         window#waybar {
           transition-property: background-color;
           transition-duration: 0.5s;
-          background-color: rgba(239, 241, 245, 0); /* catppuccin base ( */
+          background-color: rgba(234, 118, 203, 0); /* catppuccin base ( */
           /* background-color: #1e1e2e; */
           /* background-color: #181825; */
           /* background-color: #f38ba8; */
@@ -388,7 +388,7 @@ in {
           margin: 0.4rem 0.25rem;
           border-radius: 6px;
           /* background-color: #181825; */
-          background-color: rgba(49, 50, 68, 0.6);
+          background-color: rgba(49, 50, 68, 0.8);
           color: #dce0e8;
         }
 
@@ -398,7 +398,7 @@ in {
         }
 
         #workspaces button.active {
-          background-color: #f38ba8;
+          background-color: #ea76cb;
           color: #181825;
         }
 
@@ -423,15 +423,15 @@ in {
           border-radius: 6px;
           /* background-color: #181825; */
           /* background-color: #313244; */
-          background-color: rgba(49, 50, 68, 0.6);
+          background-color: rgba(49, 50, 68, 0.8);
         }
 
         #mpris.playing {
-          color: #89dceb;
+          color: #ea76cb;
         }
 
         #mpris.paused {
-          color: #eba0ac;
+          color: #eaa6d8;
         }
 
         #custom-sep {
@@ -444,23 +444,23 @@ in {
         }
 
         #cpu {
-          color: #a6e3a1;
+          color: #dce0e8;
         }
 
         #memory {
-          color: #94e2d5;
+          color: #dce0e8;
         }
 
         #clock {
-          color: #89dceb;
+          color: #dce0e8;
         }
 
         #clock.simpleclock {
-          color: #74c7ec;
+          color: #dce0e8;
         }
 
         #window {
-          color: #b4befe;
+          color: #dce0e8;
         }
 
         /* #pulseaudio {

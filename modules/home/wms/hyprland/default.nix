@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
@@ -77,8 +78,9 @@ in {
       bind =
         [
           ''${mod},R,exec,${lib.getExe pkgs.kitty}''
+          ''${mod},Z,exec,${lib.getExe inputs.zen-browser.packages.${pkgs.system}.beta}''
 
-          "${mod},D,exec,rofi -show drun"
+          "${mod},D,exec,fuzzel"
           "${mod},Q,killactive"
           "${mod},M,exit"
           "${mod},P,pseudo"

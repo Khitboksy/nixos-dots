@@ -10,7 +10,7 @@
     "text" = "e0def4";
     "love" = "eb6f92";
     "gold" = "f6c177";
-    "rose" = "ebbcba";
+    "rose" = "ea76cb";
     "pine" = "31748f";
     "foam" = "9ccfd8";
     "iris" = "c4a7e7";

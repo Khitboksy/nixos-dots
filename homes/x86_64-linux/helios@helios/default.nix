@@ -79,5 +79,9 @@
     '';
   };
 
+  # Fuzzel dmenu
+  catppuccin.fuzzel.enable = true;
+  programs.fuzzel.enable = true;
+
   home.stateVersion = "24.11";
 }
