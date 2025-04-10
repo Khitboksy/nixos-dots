@@ -18,7 +18,7 @@ in {
         * {
           all: unset;
           font-size: 14px;
-          font-family: "Cantarell";
+          font-family: "Adwaita Sans", "JetBrains Mono Nerd Font";
           transition: 200ms;
         }
 
@@ -366,10 +366,10 @@ in {
       systemd.target = "graphical-session.target";
       style = ''
         * {
-          min-height: 0;
+          min-height: 14;
           min-width: 0;
-          font-family: Cantarell;
-          font-size: 16px;
+          font-family: Iosevka Nerd Font;
+          font-size: 14px;
           font-weight: 600;
         }
 
