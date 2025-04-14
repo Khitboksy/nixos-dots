@@ -366,8 +366,8 @@ in {
       systemd.target = "graphical-session.target";
       style = ''
         * {
-          min-height: 14;
-          min-width: 0;
+          min-height: 14px;
+          min-width: 0px;
           font-family: Iosevka Nerd Font;
           font-size: 14px;
           font-weight: 600;
