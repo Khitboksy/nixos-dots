@@ -14,7 +14,7 @@ in {
   config = mkIf cfg.enable {
     services.swaync = {
       enable = true;
-      style = ''
+      style = lib.mkForce ''
         * {
           all: unset;
           font-size: 14px;
@@ -119,7 +119,7 @@ in {
           margin: 18px;
           background-color: #24273a;
           color: #cad3f5;
-          padding: 14px;
+          padding: 0px;
         }
 
         .control-center .widget-title > label {
@@ -132,7 +132,7 @@ in {
           color: #cad3f5;
           background-color: #363a4f;
           box-shadow: inset 0 0 0 1px #494d64;
-          padding: 8px;
+          padding: 0px;
         }
 
         .control-center .widget-title button:hover {
@@ -156,7 +156,7 @@ in {
         }
 
         .control-center .notification-row .notification-background .notification {
-          padding: 7px;
+          padding: 0px;
           border-radius: 7px;
         }
 
@@ -206,7 +206,7 @@ in {
 
         .control-center .notification-row .notification-background .close-button {
           margin: 7px;
-          padding: 2px;
+          padding: 0px;
           border-radius: 6.3px;
           color: #24273a;
           background-color: #ee99a0;
@@ -289,7 +289,7 @@ in {
 
         .widget-mpris .widget-mpris-player {
           background: #363a4f;
-          padding: 7px;
+          padding: 0px;
         }
 
         .widget-mpris .widget-mpris-title {
@@ -365,131 +365,49 @@ in {
       systemd.enable = true;
       systemd.target = "graphical-session.target";
       style = ''
-        * {
-          min-height: 14px;
-          min-width: 0px;
-          font-family: Iosevka Nerd Font;
-          font-size: 14px;
-          font-weight: 600;
-        }
+        /* Custom colors from lib/theme/default.nix */
+        @define-color mocha_rosewater ${x colors.mocha_rosewater};
+        @define-color mocha_flamingo ${x colors.mocha_flamingo};
+        @define-color mocha_pink ${x colors.mocha_pink};
+        @define-color mocha_mauve ${x colors.mocha_mauve};
+        @define-color mocha_red ${x colors.mocha_red};
+        @define-color mocha_maroon ${x colors.mocha_maroon};
+        @define-color mocha_peach ${x colors.mocha_peach};
+        @define-color mocha_yellow ${x colors.mocha_yellow};
+        @define-color mocha_green ${x colors.mocha_green};
+        @define-color mocha_teal ${x colors.mocha_teal};
+        @define-color mocha_sky ${x colors.mocha_sky};
+        @define-color mocha_sapphire ${x colors.mocha_sapphire};
+        @define-color mocha_blue ${x colors.mocha_blue};
+        @define-color mocha_lavender ${x colors.mocha_lavender};
+        @define-color mocha_text ${x colors.mocha_text};
+        @define-color mocha_overlay2 ${x colors.mocha_overlay2};
+        @define-color mocha_overlay1 ${x colors.mocha_overlay1};
+        @define-color mocha_overlay ${x colors.mocha_overlay};
+        @define-color mocha_surface2 ${x colors.mocha_surface2};
+        @define-color mocha_surface1 ${x colors.mocha_surface1};
+        @define-color mocha_surface ${x colors.mocha_surface};
+        @define-color mocha_base ${x colors.mocha_base};
+        @define-color muted ${x colors.muted};
+        @define-color subtle ${x colors.subtle};
+        @define-color love ${x colors.love};
+        @define-color gold ${x colors.gold};
+        @define-color rose ${x colors.rose};
+        @define-color pine ${x colors.pine};
+        @define-color foam ${x colors.foam};
+        @define-color iris ${x colors.iris};
+        @define-color highlighthigh ${x colors.highlighthigh};
+        @define-color highlightmed ${x colors.highlightmed};
+        @define-color highlightlow ${x colors.highlightlow};
 
-        window#waybar {
-          transition-property: background-color;
-          transition-duration: 0.5s;
-          background-color: rgba(234, 118, 203, 0); /* catppuccin base ( */
-          /* background-color: #1e1e2e; */
-          /* background-color: #181825; */
-          /* background-color: #f38ba8; */
-          /* background-color: rgba(245, 169, 184, 0.65); */
-        }
-
-        #workspaces button {
-          padding: 0.3rem 0.6rem;
-          margin: 0.4rem 0.25rem;
-          border-radius: 6px;
-          /* background-color: #181825; */
-          background-color: rgba(49, 50, 68, 0.8);
-          color: #dce0e8;
-        }
-
-        #workspaces button:hover {
-          color: #181825;
-          background-color: rgba(255, 255, 255, 0.65);
-        }
-
-        #workspaces button.active {
-          background-color: #ea76cb;
-          color: #181825;
-        }
-
-        #workspaces button.urgent {
-          background-color: #1e1e2e;
-          color: #cba6f7;
-        }
-
-        #clock,
-        #pulseaudio,
-        #custom-logo,
-        #custom-power,
-        #custom-spotify,
-        #custom-notification,
-        #cpu,
-        #tray,
-        #memory,
-        #window,
-        #mpris {
-          padding: 0.3rem 0.6rem;
-          margin: 0.4rem 0.25rem;
-          border-radius: 6px;
-          /* background-color: #181825; */
-          /* background-color: #313244; */
-          background-color: rgba(49, 50, 68, 0.8);
-        }
-
-        #mpris.playing {
-          color: #ea76cb;
-        }
-
-        #mpris.paused {
-          color: #eaa6d8;
-        }
-
-        #custom-sep {
-          padding: 0px;
-          color: #585b70;
-        }
-
-        window#waybar.empty #window {
-          background-color: transparent;
-        }
-
-        #cpu {
-          color: #dce0e8;
-        }
-
-        #memory {
-          color: #dce0e8;
-        }
-
-        #clock {
-          color: #dce0e8;
-        }
-
-        #clock.simpleclock {
-          color: #dce0e8;
-        }
-
-        #window {
-          color: #dce0e8;
-        }
-
-        /* #pulseaudio {
-          color: #5BCEFA;
-        }
-
-        #pulseaudio.muted {
-          color: #F5A9B8;
-        } */
-
-        #custom-logo {
-          color: #89b4fa;
-        }
-
-        #custom-power {
-          color: #f38ba8;
-        }
-
-        tooltip {
-          background-color: #181825;
-          border: 2px solid #89b4fa;
-        }
+        ${builtins.readFile ./style.css}
       '';
 
       settings = {
         mainBar = {
           layer = "bottom";
           position = "top";
-          height = 28;
+          height = 25;
           spacing = 2;
           exclusive = true;
           "gtk-layer-shell" = true;
@@ -498,6 +416,7 @@ in {
           "modules-left" = [
             "hyprland/workspaces"
             "hyprland/window"
+            "network#speed"
           ];
           "modules-center" = [
             "mpris"
@@ -505,9 +424,10 @@ in {
           "modules-right" = [
             "cpu"
             "memory"
-            /*
-            "pulseaudio"
-            */
+            "temperature"
+            "custom/gpu-usage"
+            "custom/gpu-mem"
+            "custom/gpu-temp"
             "clock"
             "clock#simpleclock"
             "tray"
@@ -516,7 +436,7 @@ in {
           ];
 
           "custom/spotify" = {
-            format = "  {}";
+            format = "{}";
             "return-type" = "json";
             "on-click" = "playerctl -p spotify play-pause";
             "on-click-right" = "spotifatius toggle-liked";
@@ -527,14 +447,15 @@ in {
           mpris = {
             player = "spotify";
             "dynamic-order" = ["artist" "title"];
-            format = "{player_icon} {dynamic}";
-            "format-paused" = "{status_icon} <i>{dynamic}</i>";
+            format = "{player_icon}{dynamic}";
+            "format-paused" = "{status_icon}<i>{dynamic}</i>";
             "status-icons" = {
               paused = "";
             };
             "player-icons" = {
               default = "";
             };
+            max-length = 60;
           };
 
           "hyprland/workspaces" = {
@@ -547,6 +468,60 @@ in {
 
           "hyprland/window" = {
             format = "{title}";
+            max-length = 30;
+          };
+
+          "network#speed" = {
+            interval = 1;
+            format = "{ifname}%%";
+            format-wifi = " {bandwidthDownBytes}  {bandwidthUpBytes}";
+            format-ethernet = " {bandwidthDownBytes}  {bandwidthUpBytes}";
+            format-disconnected = "󰌙";
+            tooltip-format = "{ipaddr}";
+            format-linked = "󰈁 {ifname} (No IP)";
+            tooltip-format-wifi = "{essid} {icon} {signalStrength}%";
+            tooltip-format-ethernet = "{ifname} 󰌘";
+            tooltip-format-disconnected = "󰌙 Disconnected";
+            max-length = 22;
+            min-length = 20;
+            format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
+          };
+
+          # GPU Modules
+          "custom/gpu-temp" = {
+            interval = 10;
+            exec = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits";
+            format = "{}°C";
+            tooltip = false;
+          };
+
+          "custom/gpu-mem" = {
+            interval = 10;
+            exec = "nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | awk '{printf \"%.1f\", $1/1024}'";
+            format = "{}Gi";
+            tooltip = false;
+          };
+
+          "custom/gpu-usage" = {
+            interval = 2;
+            exec = "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits";
+            format = "{}%";
+            tooltip = false;
+          };
+
+          # CPU Modules
+          cpu = {
+            format = "{usage}%";
+            tooltip = true;
+            interval = 1;
+          };
+
+          memory = {
+            format = "{used:0.1f}Gi";
+          };
+
+          temperature = {
+            format = "{temperatureC}°C";
           };
 
           tray = {
@@ -556,11 +531,11 @@ in {
 
           "clock#simpleclock" = {
             tooltip = false;
-            format = " {:%H:%M}";
+            format = "{:%H:%M}";
           };
 
           clock = {
-            format = " {:L%a %d %b}";
+            format = "{:L%a %d %b}";
             calendar = {
               format = {
                 days = "<span weight='normal'>{}</span>";
@@ -574,16 +549,6 @@ in {
               "on-scroll" = 1;
             };
             "tooltip-format" = "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>";
-          };
-
-          cpu = {
-            format = " {usage}%";
-            tooltip = true;
-            interval = 1;
-          };
-
-          memory = {
-            format = " {used:0.1f}Gi";
           };
 
           /*
