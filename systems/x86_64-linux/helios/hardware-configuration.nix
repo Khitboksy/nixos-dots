@@ -12,12 +12,7 @@
   ];
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = ["8821au"];
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    rtl8821au
-  ];
-
-  boot.kernelModules = ["8821au"];
+  
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/fb75032f-14f7-41c9-b79a-27372fdd1bd4";
     fsType = "ext4";
@@ -32,11 +27,6 @@
   fileSystems."/home/helios/dsk1" = {
     device = "/dev/disk/by-partuuid/8df1298a-36ee-4473-9e2e-562516cd5e4c";
     fsType = "ext4";
-    options = ["auto"];
-  };
-  fileSystems."/mnt/sin" = {
-    device = "/dev/disk/by-partuuid/564f27fe-33a6-4608-a6a8-c14966c96ea0";
-    fsType = "ntfs";
     options = ["auto"];
   };
 

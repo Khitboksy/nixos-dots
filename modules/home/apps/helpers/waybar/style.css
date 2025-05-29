@@ -36,7 +36,7 @@ window#waybar {
 
 #workspaces button.urgent {
   background-color: @mocha_base;
-  color: @mocha_mauve;
+  color: @rose;
 }
 
 #clock,
@@ -45,10 +45,9 @@ window#waybar {
 #custom-power,
 #custom-spotify,
 #custom-notification,
-#cpu,
 #tray,
-#memory,
 #window,
+#network,
 #mpris {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
@@ -59,10 +58,12 @@ window#waybar {
 
 #mpris.playing {
   color: @rose;
+  background-color: @mocha_base
 }
 
 #mpris.paused {
   color: @mocha_pink;
+  background-color: @mocha_base;
 }
 
 #custom-sep {
@@ -75,23 +76,40 @@ window#waybar.empty #window {
 }
 
 #cpu {
-  color: @mocha_text;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-right: 1px;
+  border-radius: 6px;
+  color: @mocha_green;
+  background-color: @mocha_base;
 }
 
 #memory {
-  color: @mocha_text;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: 6px;
+  color: @mocha_green;
+  background-color: @mocha_base;
 }
 
 #clock {
-  color: @mocha_text;
+  color: @mocha_sapphire;
+  background-color: @mocha_base;
+  margin-right: 0px;
 }
 
 #clock.simpleclock {
-  color: @mocha_text;
+  color: @mocha_sapphire;
+  background-color: @mocha_base;
+  margin-left: 1px;
+  margin-right: 0.25rem;
 }
 
 #window {
   color: @mocha_text;
+  background-color: @mocha_base
 }
 
 /* #pulseaudio {
@@ -108,6 +126,7 @@ window#waybar.empty #window {
 
 #custom-power {
   color: @mocha_red;
+  background-color: @mocha_base;
 }
 
 tooltip {
@@ -125,26 +144,42 @@ tooltip {
 #network.speed {
   background: @mocha_base;
 }
+
 #custom-gpu-temp {
-  padding: 0px 12px;
+  padding: 0.3rem 0.6rem;
+  margin: 0.3rem 1px;
   margin-right: 2px;
+  border-radius: 6px;
   color: @mocha_blue;
-  background: @mocha_base;
-  border-radius: 0 6px 6px 0;
+  background-color: @mocha_base;
 }
 
 #custom-gpu-mem {
-  padding: 0px 12px;
-  margin: 0;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: 6px;
   color: @mocha_blue;
-  background: @mocha_base;
-  border-radius: 0;
+  background-color: @mocha_base;
 }
 
 #custom-gpu-usage {
-  padding: 0px 12px;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
   margin-left: 1px;
+  margin-right: 1px;
+  border-radius: 6px;
   color: @mocha_blue;
-  background: @mocha_base;
-  border-radius: 6px 0 0 6px;
+  background-color: @mocha_base;
+  }
+
+#custom-temperature {
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-right: 0.25rem;
+  margin-left: 1px;
+  border-radius: 6px;
+  color: @mocha_green;
+  background-color: @mocha_base;
 }

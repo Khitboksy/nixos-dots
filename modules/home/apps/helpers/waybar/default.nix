@@ -424,7 +424,7 @@ in {
           "modules-right" = [
             "cpu"
             "memory"
-            "temperature"
+            "custom/temperature"
             "custom/gpu-usage"
             "custom/gpu-mem"
             "custom/gpu-temp"
@@ -432,7 +432,6 @@ in {
             "clock#simpleclock"
             "tray"
             "custom/notification"
-            "custom/power"
           ];
 
           "custom/spotify" = {
@@ -455,7 +454,8 @@ in {
             "player-icons" = {
               default = "";
             };
-            max-length = 60;
+            max-length = 45;
+            min-length = 15;
           };
 
           "hyprland/workspaces" = {
@@ -468,7 +468,8 @@ in {
 
           "hyprland/window" = {
             format = "{title}";
-            max-length = 30;
+            max-length = 20;
+            min-length = 5;
           };
 
           "network#speed" = {
@@ -520,8 +521,16 @@ in {
             format = "{used:0.1f}Gi";
           };
 
-          temperature = {
+          "temperature" = {
+            hwmon-path-abs = "/sys/class/hwmon/hwmon2/temp1_input";
+            /*
+               input_filename = "temp1_input";
+            critical-threshold = 85;
+            */
             format = "{temperatureC}°C";
+            /*
+            format-critical = "{temperatureC}°C";
+            */
           };
 
           tray = {
@@ -551,17 +560,17 @@ in {
             "tooltip-format" = "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>";
           };
 
-          /*
-            pulseaudio = {
-            format = "{icon} {volume}%";
-            "format-muted" = "  muted";
+          pulseaudio = {
+            format = "{volume}%";
+            "format-muted" = "muted";
             "format-icons" = {
               headphone = "";
               default = [" " " " " "];
             };
             "on-click" = "pavucontrol";
+            max-length = 4;
+            min-length = 2;
           };
-          */
 
           "custom/sep" = {
             format = "|";
@@ -586,6 +595,12 @@ in {
             "on-click" = "sleep 0.1 && swaync-client -t -sw";
             "return-type" = "json";
             tooltip = false;
+          };
+
+          "custom/temperature" = {
+            interval = 5;
+            exec = "cat /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input | awk '{printf \"%d°C\", $1/1000}'";
+            format = "{}";
           };
         };
       };

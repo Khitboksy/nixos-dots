@@ -52,7 +52,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Chicago";
+  time.timeZone = "America/New_York";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -105,7 +105,7 @@
   users.users.helios = {
     isNormalUser = true;
     description = "Taylor";
-    extraGroups = ["networkmanager" "wheel" "libvirtd"];
+    extraGroups = ["networkmanager" "wheel" "libvirtd" "plugdev"];
     initialPassword = "";
     packages = with pkgs; [
       kdePackages.kate
@@ -178,11 +178,6 @@
     pkgs.vlc
     pkgs.clonehero
     pkgs.protonup-qt
-    (inputs.umu.packages.${system}.umu.override {
-      version = inputs.umu.shortRev;
-      truststore = true;
-      cbor2 = true;
-    })
     pkgs.qbittorrent
     # Mouse
     pkgs.piper
@@ -195,10 +190,17 @@
     pkgs.r2modman
     pkgs.linux-wifi-hotspot
     pkgs.lmms
+    pkgs.cmake
+    pkgs.meson
+    pkgs.cpio
+    pkgs.pavucontrol
+    pkgs.mangohud
     #  wget
   ];
   # Enable services and permissions for Piper
   services.udev.packages = [pkgs.libratbag];
+
+  services.gvfs.enable = true;
 
   # Ensure the Ratbagd service runs
   systemd.services.ratbagd = {
@@ -209,28 +211,6 @@
       Restart = "on-failure";
     };
     wantedBy = ["multi-user.target"];
-  };
-
-  # Define a systemd service for your wifi script
-  systemd.services.wifi-startup = {
-    description = "WiFi startup script";
-    after = ["network.target"];
-    wantedBy = ["multi-user.target"];
-    path = with pkgs; [
-      linux-wifi-hotspot
-      iw
-      dnsmasq
-      hostapd
-    ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScript "wifi.sh" ''
-        #! /usr/bin/env bash
-         create_ap wlp2s0f0u6 wlp45s0f3u2u3u3 Helios.Nix LegalizeNuclearBombs --no-virt
-      ''}";
-      RemainAfterExit = true;
-      # Service-specific configuration
-    };
   };
 
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;

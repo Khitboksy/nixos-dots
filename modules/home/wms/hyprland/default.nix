@@ -62,7 +62,6 @@ in {
         "vesktop"
         "spotify"
         "networkmanagerapplet"
-        "waybar"
         "[workspace 9 silent] kitty"
         "[workspace 9 silent] kitty"
         "[workspace 9 silent] kitty"
