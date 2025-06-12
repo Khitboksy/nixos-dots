@@ -12,6 +12,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./disk-configuration.nix
   ];
 
   programs.direnv.enable = true;
@@ -78,6 +79,9 @@
     layout = "us";
     variant = "";
   };
+
+  # OpenRGB
+  services.hardware.openrgb.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -172,7 +176,6 @@
 
     pkgs.git
     pkgs.neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    pkgs.openrgb-with-all-plugins # RGB LED controller
     pkgs.ckan # Comprehensive Kerbal Archive Network. KSP mod manager
     pkgs.btop # better htop
     pkgs.vlc
@@ -195,6 +198,7 @@
     pkgs.cpio
     pkgs.pavucontrol
     pkgs.mangohud
+    pkgs.openrgb-with-all-plugins
     #  wget
   ];
   # Enable services and permissions for Piper

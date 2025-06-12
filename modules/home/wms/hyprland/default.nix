@@ -102,6 +102,10 @@ in {
           "${mod},Period,exec, tofi-emoji"
 
           "${modshift},L,exec,swaylock --grace 0" # lock screen
+
+          # QOL Binds
+          # Waybar
+          "${mod},W,exec,pkill -9 waybar || waybar"
         ]
         ++ workspaces;
 

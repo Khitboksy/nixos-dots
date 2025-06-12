@@ -12,29 +12,24 @@
   ];
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fb75032f-14f7-41c9-b79a-27372fdd1bd4";
-    fsType = "ext4";
-  };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/DB94-0D2C";
-    fsType = "vfat";
-    options = ["fmask=0077" "dmask=0077"];
-  };
-
-  fileSystems."/home/helios/dsk1" = {
+  fileSystems."/mnt/nix-data" = {
     device = "/dev/disk/by-partuuid/8df1298a-36ee-4473-9e2e-562516cd5e4c";
     fsType = "ext4";
     options = ["auto"];
   };
 
-  fileSystems."/mnt/hdd" = {
+  fileSystems."/mnt/win-data" = {
     device = "/dev/disk/by-partuuid/aa538aec-09e2-41d2-9d21-58c1c0ebddf6";
     fsType = "ntfs";
     options = ["auto"];
   };
+  fileSystems."/mnt/oldnix" = {
+    device = "/dev/disk/by-partuuid/601f6df0-44d9-47f3-bc6e-f5d18386c8ca";
+    fsType = "ext4";
+    options = ["auto"];
+  };
+
   swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
