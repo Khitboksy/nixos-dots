@@ -185,7 +185,7 @@
     pkgs.cpio
     pkgs.pavucontrol
     pkgs.mangohud
-    pkgs.cider
+    pkgs.cider-2
     #  wget
   ];
   # Enable services and permissions for Piper

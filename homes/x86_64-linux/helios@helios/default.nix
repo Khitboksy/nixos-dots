@@ -11,7 +11,6 @@
     rofi.enable = true;
     waybar.enable = true;
   };
-  apps.music.spotify.enable = true;
   xdg.mimeApps = {
     enable = true;
 

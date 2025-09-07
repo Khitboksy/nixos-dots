@@ -60,7 +60,7 @@ in {
         # "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "zen"
         "vesktop"
-        "spotify"
+        "cider-2"
         "networkmanagerapplet"
         "[workspace 9 silent] kitty"
         "[workspace 9 silent] kitty"
@@ -206,7 +206,7 @@ in {
       windowrulev2 = [
         # only allow shadows for floating windows
         "noshadow, floating:0"
-        "tile, title:Spotify"
+        "tile, title:Cider"
 
         "idleinhibit focus, class:^(mpv)$"
 
@@ -225,7 +225,7 @@ in {
 
         # specify what applications start on (at boot and normal startup of the app)
         "workspace 2, class:^(vesktop)$"
-        "workspace 3, class:^(spotify)$"
+        "workspace 3, class:^(cider)$"
         "workspace 4, class:^(zen)"
       ];
     };

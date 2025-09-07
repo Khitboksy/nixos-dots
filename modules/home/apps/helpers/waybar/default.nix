@@ -1,6 +1,8 @@
 {
   config,
   lib,
+  inputs,
+  pkgs,
   ...
 }:
 with lib;
@@ -440,10 +442,10 @@ in {
           "custom/spotify" = {
             format = "{}";
             "return-type" = "json";
-            "on-click" = "playerctl -p spotify play-pause";
-            "on-click-right" = "spotifatius toggle-liked";
-            "on-click-middle" = "playerctl -p spotify next";
-            exec = "spotifatius monitor";
+            "on-click" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} play-pause";
+            "on-click-right" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} like";
+            "on-click-middle" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} skip";
+            exec = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} monitor";
           };
 
           mpris = {

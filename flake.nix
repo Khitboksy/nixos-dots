@@ -12,13 +12,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
-    spicetify-nix = {
-      url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
 
     zen-browser.url = "github:zackartz/zen-browser-flake";
+    ciderd = {
+      url = "git+https://code.zoeys.cloud/zoey/ciderd";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -34,7 +35,7 @@
       channels-config = {
         allowUnfree = true;
       };
-      homes.modules = with inputs; [catppuccin.homeModules.catppuccin spicetify-nix.homeManagerModules.default];
+      homes.modules = with inputs; [catppuccin.homeModules.catppuccin];
       systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin];
     };
 }
