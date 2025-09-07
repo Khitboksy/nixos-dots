@@ -14,6 +14,14 @@ in {
   };
 
   config = mkIf cfg.enable {
+    xdg.configFile = {
+      "waybar/scripts/workspaces" = {
+        enable = true;
+        source = ./scripts/workspaces;
+        recursive = true;
+      };
+    };
+
     services.swaync = {
       enable = true;
       style = lib.mkForce ''
@@ -416,30 +424,49 @@ in {
           passthrough = false;
           "fixed-center" = true;
           "modules-left" = [
-            "hyprland/workspaces"
-            "hyprland/window"
-            "network#speed"
-          ];
-          "modules-center" = [
-            "mpris"
-          ];
-          "modules-right" = [
+            #  "hyprland/workspaces"
+            #  "hyprland/window"
+            #  "network#speed"
             "cpu"
             "memory"
             "custom/temperature"
             "custom/gpu-usage"
             "custom/gpu-mem"
             "custom/gpu-temp"
-            "pulseaudio"
+          ];
+          "modules-center" = [
+            # "custom/cider"
+            "custom/workspace-1"
+            "custom/workspace-2"
+            "custom/workspace-3"
+            "custom/workspace-4"
+            "custom/workspace-5"
             "clock"
             "clock#simpleclock"
+            "custom/workspace-6"
+            "custom/workspace-7"
+            "custom/workspace-8"
+            "custom/workspace-9"
+            "custom/workspace-10"
+          ];
+          "modules-right" = [
+            # "custom/cider"
+            "hyprland/window"
+            "network#speed"
+            #  "cpu"
+            #  "memory"
+            #  "custom/temperature"
+            #  "custom/gpu-usage"
+            #  "custom/gpu-mem"
+            #  "custom/gpu-temp"
+            "pulseaudio"
+            #  "clock"
+            #  "clock#simpleclock"
             "tray"
-            /*
-            "custom/notification"
-            */
+            #  "custom/notification"
           ];
 
-          "custom/spotify" = {
+          "custom/cider" = {
             format = "{}";
             "return-type" = "json";
             "on-click" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} play-pause";
@@ -463,14 +490,77 @@ in {
             min-length = 15;
           };
 
-          "hyprland/workspaces" = {
-            "on-click" = "activate";
+          /*
+            "hyprland/workspaces" = {
+            "on-click" = "activate",<F5>
             format = "{id}";
             "all-outputs" = true;
             "disable-scroll" = false;
             "active-only" = false;
           };
+          */
 
+          # // ── Workspaces (custom scripts) -- Stolen from Pewdiepie-Archdaemon's waybar config
+          "custom/workspace-10" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-0.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 10";
+            tooltip = "Switch to workspace 10";
+          };
+          "custom/workspace-1" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-1.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 1";
+            tooltip = "Switch to workspace 1";
+          };
+          "custom/workspace-2" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-2.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 2";
+            tooltip = "Switch to workspace 2";
+          };
+          "custom/workspace-3" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-3.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 3";
+            tooltip = "Switch to workspace 3";
+          };
+          "custom/workspace-4" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-4.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 4";
+            tooltip = "Switch to workspace 4";
+          };
+          "custom/workspace-5" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-5.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 5";
+            tooltip = "Switch to workspace 5";
+          };
+          "custom/workspace-6" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-6.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 6";
+            tooltip = "Switch to workspace 6";
+          };
+          "custom/workspace-7" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-7.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 7";
+            tooltip = "Switch to workspace 7";
+          };
+          "custom/workspace-8" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-8.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 8";
+            tooltip = "Switch to workspace 8";
+          };
+          "custom/workspace-9" = {
+            exec = "~/.config/waybar/scripts/workspaces/workspace-9.sh";
+            interval = 1;
+            on-click = "hyprctl dispatch workspace 9";
+            tooltip = "Switch to workspace 9";
+          };
           "hyprland/window" = {
             format = "{title}";
             max-length = 30;

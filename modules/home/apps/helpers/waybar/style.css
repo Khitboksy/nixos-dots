@@ -10,6 +10,7 @@ window#waybar {
   transition-property: background-color;
   transition-duration: 0.5s;
   background-color: rgba(234, 118, 203, 0); /* catppuccin base ( */
+
   /* background-color: #1e1e2e; */
   /* background-color: #181825; */
   /* background-color: #f38ba8; */
@@ -39,8 +40,16 @@ window#waybar {
   color: @rose;
 }
 
+#pulseaudio {
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-color: @mocha_base;
+  color: @mocha_mauve;
+  border-radius: 6px;
+}
 #clock,
-#pulseaudio,
 #custom-logo,
 #custom-power,
 #custom-spotify,
@@ -58,7 +67,7 @@ window#waybar {
 
 #mpris.playing {
   color: @rose;
-  background-color: @mocha_base
+  background-color: @mocha_base;
 }
 
 #mpris.paused {
@@ -72,7 +81,7 @@ window#waybar {
 }
 
 window#waybar.empty #window {
-  background-color: transparent;
+  background-color: @mocha_base;
 }
 
 #cpu {
@@ -108,8 +117,9 @@ window#waybar.empty #window {
 }
 
 #window {
-  color: @mocha_text;
-  background-color: @mocha_base
+  color: @mocha_rosewater;
+  background-color: @mocha_base;
+  margin-right: 1px;
 }
 
 /* #pulseaudio {
@@ -137,12 +147,55 @@ tooltip {
 #network {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
+  margin-left: 1px;
   border-radius: 6px;
-  color: @mocha_text;
+  color: @mocha_pink;
 }
 
 #network.speed {
   background: @mocha_base;
+}
+/*
+#custom-work-left,
+#custom-work-right {
+  padding: 6px 6px;
+  margin: 6px 3px;
+}
+*/
+
+/* base button */
+#custom-workspace-1,
+#custom-workspace-2,
+#custom-workspace-3,
+#custom-workspace-4,
+#custom-workspace-5,
+#custom-workspace-6,
+#custom-workspace-7,
+#custom-workspace-8,
+#custom-workspace-9,
+#custom-workspace-10 {
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  border-radius: 6px;
+  background-color: @mocha_base;
+  color: @mocha_lavender;
+}
+
+/* hovered button */
+#custom-workspace-1:hover,
+#custom-workspace-2:hover,
+#custom-workspace-3:hover,
+#custom-workspace-4:hover,
+#custom-workspace-5:hover,
+#custom-workspace-6:hover,
+#custom-workspace-7:hover,
+#custom-workspace-8:hover,
+#custom-workspace-9:hover,
+#custom-workspace-10:hover {
+  color: @mocha_base;
+  background-color: @mocha_lavender;
 }
 
 #custom-gpu-temp {
