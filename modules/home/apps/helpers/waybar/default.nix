@@ -428,10 +428,13 @@ in {
             "custom/gpu-usage"
             "custom/gpu-mem"
             "custom/gpu-temp"
+            "pulseaudio"
             "clock"
             "clock#simpleclock"
             "tray"
+            /*
             "custom/notification"
+            */
           ];
 
           "custom/spotify" = {
@@ -468,7 +471,7 @@ in {
 
           "hyprland/window" = {
             format = "{title}";
-            max-length = 20;
+            max-length = 30;
             min-length = 5;
           };
 
@@ -483,8 +486,6 @@ in {
             tooltip-format-wifi = "{essid} {icon} {signalStrength}%";
             tooltip-format-ethernet = "{ifname} 󰌘";
             tooltip-format-disconnected = "󰌙 Disconnected";
-            max-length = 22;
-            min-length = 20;
             format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
           };
 
@@ -568,8 +569,12 @@ in {
               default = [" " " " " "];
             };
             "on-click" = "pavucontrol";
+            /*
             max-length = 4;
+            */
+            /*
             min-length = 2;
+            */
           };
 
           "custom/sep" = {

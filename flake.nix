@@ -2,9 +2,9 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     snowfall-lib = {
@@ -16,9 +16,9 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
 
     zen-browser.url = "github:zackartz/zen-browser-flake";
-    disko.url = "github:nix-community/disko";
   };
 
   outputs = inputs:
@@ -34,7 +34,7 @@
       channels-config = {
         allowUnfree = true;
       };
-      homes.modules = with inputs; [catppuccin.homeManagerModules.catppuccin spicetify-nix.homeManagerModules.default];
-      systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin disko.nixosModules.disko];
+      homes.modules = with inputs; [catppuccin.homeModules.catppuccin spicetify-nix.homeManagerModules.default];
+      systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin];
     };
 }

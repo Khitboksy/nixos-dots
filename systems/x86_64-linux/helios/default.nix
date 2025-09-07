@@ -12,7 +12,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./disk-configuration.nix
   ];
 
   programs.direnv.enable = true;
@@ -31,16 +30,7 @@
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
 
-  # wireless ap
-  # services.create_ap = {
-  #  enable = true;
-  #  settings = {
-  #   INTERNET_IFACE = "wlp45s0f3u2u3u3";
-  #   WIFI_IFACE = "wlp2s0f0u6";
-  #   SSID = "Helios.Nix";
-  #   PASSPHRASE = "Taylor071922Hendrix";
-  #};
-  #};
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   networking.hostName = "helios"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -79,9 +69,6 @@
     layout = "us";
     variant = "";
   };
-
-  # OpenRGB
-  services.hardware.openrgb.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -127,7 +114,7 @@
       enable = true;
     };
   };
-  environment.variables = {FLAKE = "/home/helios/builds";};
+  environment.variables = {NH_FLAKE = "/home/helios/builds";};
 
   # Mullvad
   services.mullvad-vpn.enable = true;
@@ -176,6 +163,7 @@
 
     pkgs.git
     pkgs.neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    pkgs.openrgb-with-all-plugins # RGB LED controller
     pkgs.ckan # Comprehensive Kerbal Archive Network. KSP mod manager
     pkgs.btop # better htop
     pkgs.vlc
@@ -192,13 +180,12 @@
     # ROR2 ModManager
     pkgs.r2modman
     pkgs.linux-wifi-hotspot
-    pkgs.lmms
     pkgs.cmake
     pkgs.meson
     pkgs.cpio
     pkgs.pavucontrol
     pkgs.mangohud
-    pkgs.openrgb-with-all-plugins
+    pkgs.cider
     #  wget
   ];
   # Enable services and permissions for Piper

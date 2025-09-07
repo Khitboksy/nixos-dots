@@ -102,10 +102,6 @@ in {
           "${mod},Period,exec, tofi-emoji"
 
           "${modshift},L,exec,swaylock --grace 0" # lock screen
-
-          # QOL Binds
-          # Waybar
-          "${mod},W,exec,pkill -9 waybar || waybar"
         ]
         ++ workspaces;
 
@@ -184,7 +180,7 @@ in {
         no_hardware_cursors = true;
       };
 
-      monitor = ["DP-1,1920x1080@165,0x0,1" "DP-2,1366x768@60,1920x600,1"];
+      monitor = ["DP-1,1920x1080@165,0x0,1"];
 
       layerrule = [
         "blur, ^(gtk-layer-shell)$"
@@ -202,10 +198,10 @@ in {
       ];
       workspace = [
         "1,monitor:DP-1"
-        "2,monitor:DP-2"
-        "3,monitor:DP-2"
+        "2,monitor:DP-1"
+        "3,monitor:DP-1"
         "9,monitor:DP-1"
-        "10,monitor:DP-2"
+        "10,monitor:DP-1"
       ];
       windowrulev2 = [
         # only allow shadows for floating windows

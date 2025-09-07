@@ -13,23 +13,31 @@
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
 
-  fileSystems."/mnt/nix-data" = {
-    device = "/dev/disk/by-partuuid/8df1298a-36ee-4473-9e2e-562516cd5e4c";
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/d8549c68-ef86-425f-8b9b-5125e8973b77";
     fsType = "ext4";
-    options = ["auto"];
   };
 
-  fileSystems."/mnt/win-data" = {
-    device = "/dev/disk/by-partuuid/aa538aec-09e2-41d2-9d21-58c1c0ebddf6";
-    fsType = "ntfs";
-    options = ["auto"];
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/9861-91BE";
+    fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
   };
+
   fileSystems."/mnt/oldnix" = {
-    device = "/dev/disk/by-partuuid/601f6df0-44d9-47f3-bc6e-f5d18386c8ca";
+    device = "/dev/disk/by-uuid/fb75032f-14f7-41c9-b79a-27372fdd1bd4";
     fsType = "ext4";
-    options = ["auto"];
   };
 
+  fileSystems."/mnt/nix-data" = {
+    device = "/dev/disk/by-uuid/69f8977c-153f-40b5-9eea-3066e071bf1c";
+    fsType = "ext4";
+  };
+
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/3e0c8f46-7ef6-4e81-a286-b709e2011c25";
+    fsType = "ext4";
+  };
   swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
