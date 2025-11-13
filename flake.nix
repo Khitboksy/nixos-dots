@@ -15,6 +15,10 @@
     umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
 
     zen-browser.url = "github:zackartz/zen-browser-flake";
+    yeetmouse = {
+      url = "github:AndyFilter/YeetMouse?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #ciderd = {
     #  url = "git+https://code.zoeys.cloud/zoey/ciderd";
     #
@@ -36,6 +40,6 @@
         allowUnfree = true;
       };
       homes.modules = with inputs; [catppuccin.homeModules.catppuccin];
-      systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin];
+      systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin yeetmouse.nixosModules.default];
     };
 }

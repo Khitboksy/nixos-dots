@@ -90,4 +90,15 @@
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  hardware.yeetmouse = {
+    enable = true;
+    sensitivity = 1.0;
+    mode.jump = {
+      acceleration = 1.3;
+      midpoint = 5.0;
+      smoothness = 0.3;
+      useSmoothing = true;
+    };
+  };
 }

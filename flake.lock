@@ -162,6 +162,7 @@
         "nixpkgs": "nixpkgs_2",
         "snowfall-lib": "snowfall-lib",
         "umu": "umu",
+        "yeetmouse": "yeetmouse",
         "zen-browser": "zen-browser"
       }
     },
@@ -219,6 +220,28 @@
         "dir": "packaging/nix",
         "owner": "Open-Wine-Components",
         "repo": "umu-launcher",
+        "type": "github"
+      }
+    },
+    "yeetmouse": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "nix",
+        "lastModified": 1761993598,
+        "narHash": "sha256-2KCNlCz+W76Fdl+N7rEPdrwNwO011dDDYgZZmYlV3+o=",
+        "owner": "AndyFilter",
+        "repo": "YeetMouse",
+        "rev": "99844bbd786d612657d892cac2f663d940fd3d62",
+        "type": "github"
+      },
+      "original": {
+        "dir": "nix",
+        "owner": "AndyFilter",
+        "repo": "YeetMouse",
         "type": "github"
       }
     },
