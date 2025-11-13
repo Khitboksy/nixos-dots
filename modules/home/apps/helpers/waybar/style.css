@@ -46,7 +46,7 @@ window#waybar {
   margin-left: 1px;
   margin-right: 1px;
   background-color: @mocha_base;
-  color: @mocha_mauve;
+  color: @mocha_sapphire;
   border-radius: 6px;
 }
 #clock,
@@ -81,7 +81,7 @@ window#waybar {
 }
 
 window#waybar.empty #window {
-  background-color: @mocha_base;
+  background-color: transparent;
 }
 
 #cpu {
@@ -104,20 +104,20 @@ window#waybar.empty #window {
 }
 
 #clock {
-  color: @mocha_sapphire;
+  color: @rose;
   background-color: @mocha_base;
   margin-right: 0px;
 }
 
 #clock.simpleclock {
-  color: @mocha_sapphire;
+  color: @rose;
   background-color: @mocha_base;
   margin-left: 1px;
   margin-right: 0.25rem;
 }
 
 #window {
-  color: @mocha_rosewater;
+  color: @mocha_sky;
   background-color: @mocha_base;
   margin-right: 1px;
 }
@@ -149,7 +149,7 @@ tooltip {
   margin: 0.4rem 0.25rem;
   margin-left: 1px;
   border-radius: 6px;
-  color: @mocha_pink;
+  color: @mocha_sapphire;
 }
 
 #network.speed {
@@ -180,7 +180,7 @@ tooltip {
   margin-right: 0rem;
   border-radius: 6px;
   background-color: @mocha_base;
-  color: @mocha_lavender;
+  color: @mocha_pink;
 }
 
 /* hovered button */

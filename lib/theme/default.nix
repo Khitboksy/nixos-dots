@@ -52,5 +52,5 @@
     };
   };
 
-  wallpaper = ./wallpaper.jpg;
+  wallpaper = ./wall-gat.jpg;
 }

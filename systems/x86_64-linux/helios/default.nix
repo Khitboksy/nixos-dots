@@ -32,6 +32,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
+  services.logrotate.checkConfig = false;
   networking.hostName = "helios"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -160,7 +161,7 @@
 
     # Only 'x86_64-linux' and 'aarch64-linux' are supported
     inputs.zen-browser.packages."${system}".default # beta
-
+    pkgs.prismlauncher
     pkgs.git
     pkgs.neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     pkgs.openrgb-with-all-plugins # RGB LED controller
@@ -183,9 +184,10 @@
     pkgs.cmake
     pkgs.meson
     pkgs.cpio
-    pkgs.pavucontrol
+    pkgs.pwvucontrol
     pkgs.mangohud
     pkgs.cider-2
+    pkgs.element-desktop
     #  wget
   ];
   # Enable services and permissions for Piper

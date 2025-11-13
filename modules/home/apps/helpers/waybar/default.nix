@@ -466,14 +466,14 @@ in {
             #  "custom/notification"
           ];
 
-          "custom/cider" = {
-            format = "{}";
-            "return-type" = "json";
-            "on-click" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} play-pause";
-            "on-click-right" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} like";
-            "on-click-middle" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} skip";
-            exec = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} monitor";
-          };
+          #"custom/cider" = {
+          #  format = "{}";
+          #  "return-type" = "json";
+          #  "on-click" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} play-pause";
+          #  "on-click-right" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} like";
+          #  "on-click-middle" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} skip";
+          #  exec = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} monitor";
+          #};
 
           mpris = {
             player = "spotify";
@@ -660,7 +660,7 @@ in {
               headphone = "";
               default = [" " " " " "];
             };
-            "on-click" = "pavucontrol";
+            "on-click" = "pwvucontrol";
             /*
             max-length = 4;
             */

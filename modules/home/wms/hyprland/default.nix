@@ -141,7 +141,7 @@ in {
         # blur
         blur = {
           enabled = true;
-          size = 4;
+          size = 8;
           passes = 2;
           new_optimizations = 1;
           contrast = 1;

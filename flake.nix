@@ -15,11 +15,11 @@
     umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
 
     zen-browser.url = "github:zackartz/zen-browser-flake";
-    ciderd = {
-      url = "git+https://code.zoeys.cloud/zoey/ciderd";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #ciderd = {
+    #  url = "git+https://code.zoeys.cloud/zoey/ciderd";
+    #
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
   };
 
   outputs = inputs:

@@ -30,6 +30,12 @@ in {
           "default.allowed-rates" = [44100];
         };
       };
+      extraConfig.pipewire.disable-auto-adjustments = {
+        "options" = {
+          "capture.default-volume" = 1.0;
+          "capture.auto_gain_control" = false;
+        };
+      };
 
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
