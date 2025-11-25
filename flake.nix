@@ -19,6 +19,10 @@
       url = "github:AndyFilter/YeetMouse?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #ciderd = {
     #  url = "git+https://code.zoeys.cloud/zoey/ciderd";
     #

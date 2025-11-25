@@ -3,14 +3,23 @@
   lib,
   ...
 }: {
-  apps.tools.neovim.enable = true;
-  apps.term.kitty.enable = true;
+  apps = {
+    tools = {
+      neovim.enable = true;
+      tmux.enable = true;
+    };
+    term = {
+      kitty.enable = true;
+      ghostty.enable = true;
+    };
+    helpers = {
+      rofi.enable = true;
+      waybar.enable = true;
+    };
+  };
+  shells.fish.enable = true;
   wms.hyprland.enable = true;
   rice.gtk.enable = true;
-  apps.helpers = {
-    rofi.enable = true;
-    waybar.enable = true;
-  };
   xdg.mimeApps = {
     enable = true;
 

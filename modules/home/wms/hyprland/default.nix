@@ -16,21 +16,6 @@ with lib.custom; let
   };
 
   mod = "SUPER";
-  modshift = "${mod}SHIFT";
-
-  # binds $mod + [shift +] {1..10} to [move to] workspace {1..10} (stolen from fufie)
-  workspaces = builtins.concatLists (builtins.genList (
-      x: let
-        ws = let
-          c = (x + 1) / 10;
-        in
-          builtins.toString (x + 1 - (c * 10));
-      in [
-        "${mod}, ${ws}, workspace, ${toString (x + 1)}"
-        "${mod} SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-      ]
-    )
-    10);
 in {
   options.wms.hyprland = with types; {
     enable = mkBoolOpt false "Enable Hyprland";
@@ -55,59 +40,12 @@ in {
     };
 
     wayland.windowManager.hyprland.settings = with colors; {
-      exec-once = [
-        # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        # "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "zen"
-        "vesktop"
-        "cider-2"
-        "networkmanagerapplet"
-        "[workspace 9 silent] kitty"
-        "[workspace 9 silent] kitty"
-        "[workspace 9 silent] kitty"
-        "[workspace 10 silent] kitty"
-      ];
+      exec-once = import ./conf/execonce.nix;
 
       env = [
         "XDG_SESSION_TYPE,wayland"
         "XDG_SESSION_DESKTOP,Hyprland"
         "XDG_CURRENT_DESKTOP,Hyprland"
-      ];
-
-      bind =
-        [
-          ''${mod},R,exec,${lib.getExe pkgs.kitty}''
-          ''${mod},Z,exec,${lib.getExe inputs.zen-browser.packages.${pkgs.system}.beta}''
-
-          "${mod},D,exec,fuzzel"
-          "${mod},Q,killactive"
-          "${mod},M,exit"
-          "${mod},P,pseudo"
-
-          "${mod},J,togglesplit,"
-
-          "${mod},T,togglegroup," # group focused window
-          "${modshift},G,changegroupactive," # switch within the active group
-          "${mod},V,togglefloating," # toggle floating for the focused window
-          "${mod},F,fullscreen," # fullscreen focused window
-
-          # workspace controls
-          "${modshift},right,movetoworkspace,+1" # move focused window to the next ws
-          "${modshift},left,movetoworkspace,-1" # move focused window to the previous ws
-          "${mod},mouse_down,workspace,e+1" # move to the next ws
-          "${mod},mouse_up,workspace,e-1" # move to the previous ws
-          "${modshift},O,exec,wl-ocr"
-          "${mod},S,exec,${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${pkgs.wl-clipboard}/bin/wl-copy -t image/png"
-
-          "${mod},Period,exec, tofi-emoji"
-
-          "${modshift},L,exec,swaylock --grace 0" # lock screen
-        ]
-        ++ workspaces;
-
-      bindm = [
-        "${mod},mouse:272,movewindow"
-        "${mod},mouse:273,resizewindow"
       ];
 
       general = {
@@ -131,31 +69,15 @@ in {
         force_no_accel = false;
       };
 
-      dwindle = {
-        force_split = 2;
-      };
+      bind = import ./conf/bind.nix {inherit lib pkgs inputs mod;};
 
-      decoration = {
-        # fancy corners
-        rounding = 6;
-        # blur
-        blur = {
-          enabled = true;
-          size = 8;
-          passes = 2;
-          new_optimizations = 1;
-          contrast = 1;
-          brightness = 1;
-        };
+      bindm = import ./conf/bindm.nix {inherit mod;};
 
-        shadow = {
-          # shadow config
-          enabled = false;
-          # range = 60;
-          # render_power = 5;
-          # color = "rgba(07061f29)";
-        };
-      };
+      dwindle = import ./conf/dwindle.nix;
+
+      master = import ./conf/master.nix;
+
+      decoration = import ./conf/decoration.nix;
 
       misc = {
         # disable redundant renders
@@ -182,20 +104,7 @@ in {
 
       monitor = ["DP-1,1920x1080@165,0x0,1"];
 
-      layerrule = [
-        "blur, ^(gtk-layer-shell)$"
-        "blur, ^(launcher)$"
-        "ignorezero, ^(gtk-layer-shell)$"
-        "ignorezero, ^(launcher)$"
-        "blur, notifications"
-        "ignorezero, notificatios"
-        "blur, bar"
-        "ignorezero, bar"
-        "ignorezero, ^(gtk-layer-shell|anyrun)$"
-        "blur, ^(gtk-layer-shell|anyrun)$"
-        "noanim, launcher"
-        "noanim, bar"
-      ];
+      layerrule = import ./conf/layerrules.nix;
       workspace = [
         "1,monitor:DP-1"
         "2,monitor:DP-1"

@@ -98,6 +98,7 @@
     isNormalUser = true;
     description = "Taylor";
     extraGroups = ["networkmanager" "wheel" "libvirtd" "plugdev"];
+    shell = pkgs.fish;
     initialPassword = "";
     packages = with pkgs; [
       kdePackages.kate
@@ -107,6 +108,7 @@
       #  thunderbird
     ];
   };
+  programs.fish.enable = true;
   snowfallorg.users.helios = {
     create = true;
     admin = true;
