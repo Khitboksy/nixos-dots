@@ -17,9 +17,11 @@ in {
       enable = true;
 
       settings = {
+        theme = "Catppuccin Frappe";
+
         font-family = "Berkeley Mono";
 
-        font-size = 24;
+        font-size = 14;
 
         font-style = "SemiBold ExtraCondensed";
         font-style-bold = "Bold ExtraCondensed";

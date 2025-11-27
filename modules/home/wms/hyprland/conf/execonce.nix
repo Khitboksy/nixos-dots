@@ -5,8 +5,8 @@
   "vesktop"
   "cider-2"
   "networkmanagerapplet"
-  "[workspace 9 silent] kitty"
-  "[workspace 9 silent] kitty"
-  "[workspace 9 silent] kitty"
-  "[workspace 10 silent] kitty"
+  "[workspace 9 silent] ghostty"
+  "[workspace 9 silent] ghostty"
+  "[workspace 9 silent] ghostty"
+  "[workspace 10 silent] ghostty && btop"
 ]

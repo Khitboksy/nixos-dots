@@ -13,9 +13,60 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+  programs = {
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+    };
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
+    fish.enable = true;
 
-  programs.direnv.enable = true;
-  programs.direnv.enableBashIntegration = true;
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+      localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+      gamescopeSession.enable = true;
+    };
+    gamemode.enable = true;
+  };
+
+  services = {
+    printing.enable = true;
+    logrotate.checkConfig = false;
+    xserver.xkb = {
+      layout = "us";
+      variant = "";
+    };
+    xserver.enable = true;
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      #jack.enable = true;
+
+      # use the example session manager (no others are packaged yet so this is enabled by default,
+      # no need to redefine it in your config for now)
+      #media-session.enable = true;
+    };
+
+    # Mullvad
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
+    # Enable services and permissions for Piper
+    udev.packages = [pkgs.libratbag];
+
+    gvfs.enable = true;
+  };
+
   home-manager.backupFileExtension = "bk";
 
   # Bootloader.
@@ -25,14 +76,11 @@
   # NTFS compatibility
   boot.supportedFilesystems = ["ntfs"];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  services.logrotate.checkConfig = false;
   networking.hostName = "helios"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -61,37 +109,9 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.helios = {
@@ -108,7 +128,6 @@
       #  thunderbird
     ];
   };
-  programs.fish.enable = true;
   snowfallorg.users.helios = {
     create = true;
     admin = true;
@@ -119,21 +138,10 @@
   };
   environment.variables = {NH_FLAKE = "/home/helios/builds";};
 
-  # Mullvad
-  services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-    gamescopeSession.enable = true;
-  };
 
   # Virt-Manager
   programs.virt-manager.enable = true;
@@ -141,15 +149,21 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
-  programs.gamemode.enable = true;
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-older-than 1d";
+    };
+    optimise = {
+      automatic = true;
+      dates = ["03:45"];
+    };
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
 
   hardware.audio.enable = true;
 
-  # Install neovim
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = [
@@ -173,14 +187,10 @@
     pkgs.clonehero
     pkgs.protonup-qt
     pkgs.qbittorrent
-    # Mouse
     pkgs.piper
     pkgs.libratbag
-    # Fastfetch
     pkgs.fastfetch
-    # OBS Studio
     pkgs.obs-studio
-    # ROR2 ModManager
     pkgs.r2modman
     pkgs.linux-wifi-hotspot
     pkgs.cmake
@@ -192,23 +202,20 @@
     pkgs.element-desktop
     #  wget
   ];
-  # Enable services and permissions for Piper
-  services.udev.packages = [pkgs.libratbag];
 
-  services.gvfs.enable = true;
-
-  # Ensure the Ratbagd service runs
-  systemd.services.ratbagd = {
-    enable = true;
-    description = "Daemon for configuring gaming mice (used by Piper)";
-    serviceConfig = {
-      ExecStart = "${pkgs.libratbag}/bin/ratbagd";
-      Restart = "on-failure";
+  systemd.services = {
+    ratbagd = {
+      # Ensure the Ratbagd service runs
+      enable = true;
+      description = "Daemon for configuring gaming mice (used by Piper)";
+      serviceConfig = {
+        ExecStart = "${pkgs.libratbag}/bin/ratbagd";
+        Restart = "on-failure";
+      };
+      wantedBy = ["multi-user.target"];
     };
-    wantedBy = ["multi-user.target"];
+    NetworkManager-wait-online.enable = lib.mkForce false;
   };
-
-  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

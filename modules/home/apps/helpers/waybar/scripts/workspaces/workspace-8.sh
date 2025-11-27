@@ -4,7 +4,7 @@
 active=$(hyprctl activeworkspace -j | jq '.id')
 
 if [ "$active" -eq 8 ]; then
-  echo "[<span foreground='#fab387'>●</span>]"
+  echo "[<span foreground='#94e2d5'>●</span>]"
 else
   echo "[VIII]"
 fi

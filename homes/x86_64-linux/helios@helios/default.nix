@@ -8,10 +8,12 @@
       neovim.enable = true;
       tmux.enable = true;
     };
+
     term = {
       kitty.enable = true;
       ghostty.enable = true;
     };
+
     helpers = {
       rofi.enable = true;
       waybar.enable = true;
@@ -20,6 +22,18 @@
   shells.fish.enable = true;
   wms.hyprland.enable = true;
   rice.gtk.enable = true;
+  programs = {
+    gpg.enable = true;
+
+    btop = {
+      enable = true;
+      catppuccin.enable = true;
+      extraConfig = ''
+        update_ms = 100
+        vim_keys = true
+      '';
+    };
+  };
   xdg.mimeApps = {
     enable = true;
 
@@ -68,7 +82,6 @@
     wl-clipboard
     custom.enc
   ];
-  programs.gpg.enable = true;
   services = {
     gpg-agent = {
       enable = true;
@@ -78,16 +91,8 @@
     };
   };
 
-  programs.btop = {
-    enable = true;
-    catppuccin.enable = true;
-    extraConfig = ''
-      update_ms = 100
-      vim_keys = true
-    '';
-  };
-
   # Fuzzel dmenu
+  #
   catppuccin.fuzzel.enable = true;
   programs.fuzzel.enable = true;
 
