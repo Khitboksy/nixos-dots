@@ -22,16 +22,25 @@
   shells.fish.enable = true;
   wms.hyprland.enable = true;
   rice.gtk.enable = true;
+  catppuccin = {
+    btop.enable = true;
+    fuzzel.enable = true;
+    kitty.enable = true;
+  };
   programs = {
     gpg.enable = true;
 
+    fuzzel.enable = true;
     btop = {
       enable = true;
-      catppuccin.enable = true;
+      #catppuccin.enable = true;
       extraConfig = ''
         update_ms = 100
         vim_keys = true
       '';
+      settings = {
+        theme_background = false;
+      };
     };
   };
   xdg.mimeApps = {
@@ -90,11 +99,6 @@
       enableBashIntegration = true;
     };
   };
-
-  # Fuzzel dmenu
-  #
-  catppuccin.fuzzel.enable = true;
-  programs.fuzzel.enable = true;
 
   home.stateVersion = "24.11";
 }

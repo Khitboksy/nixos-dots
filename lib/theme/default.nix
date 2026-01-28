@@ -52,5 +52,5 @@
     };
   };
 
-  wallpaper = ./wall-gat.jpg;
+  wallpaper = ./blue-and-pink.jpg;
 }

@@ -90,7 +90,7 @@ in {
         fzf
 
         # dns client
-        dogdns
+        doggo
 
         # neofetch but for git repos
         onefetch

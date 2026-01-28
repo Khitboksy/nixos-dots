@@ -65,6 +65,11 @@
     udev.packages = [pkgs.libratbag];
 
     gvfs.enable = true;
+
+    usbmuxd.enable = true;
+    hardware = {
+      openrgb.enable = true;
+    };
   };
 
   home-manager.backupFileExtension = "bk";
@@ -153,7 +158,7 @@
     gc = {
       automatic = true;
       dates = "daily";
-      options = "--delete-older-than 1d";
+      options = "--delete-older-than 21d";
     };
     optimise = {
       automatic = true;
@@ -192,7 +197,6 @@
     pkgs.fastfetch
     pkgs.obs-studio
     pkgs.r2modman
-    pkgs.linux-wifi-hotspot
     pkgs.cmake
     pkgs.meson
     pkgs.cpio
@@ -200,7 +204,11 @@
     pkgs.mangohud
     pkgs.cider-2
     pkgs.element-desktop
+    pkgs.swaybg
+    pkgs.deadlock-mod-manager
     #  wget
+    pkgs.libimobiledevice
+    pkgs.ifuse
   ];
 
   systemd.services = {

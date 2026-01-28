@@ -104,7 +104,7 @@ in {
 
       monitor = ["DP-1,1920x1080@165,0x0,1"];
 
-      layerrule = import ./conf/layerrules.nix;
+      #layerrule = import ./conf/layerrules.nix;
       workspace = [
         "1,monitor:DP-1"
         "2,monitor:DP-1"
@@ -134,7 +134,7 @@ in {
 
         # specify what applications start on (at boot and normal startup of the app)
         "workspace 2, class:^(vesktop)$"
-        "workspace 3, class:^(cider)$"
+        "workspace 3, class:^(Cider)$"
         "workspace 4, class:^(zen)"
       ];
     };

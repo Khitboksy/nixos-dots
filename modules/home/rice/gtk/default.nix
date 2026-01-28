@@ -14,7 +14,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    catppuccin.pointerCursor.enable = true;
+    catppuccin.cursors.enable = true;
 
     home.pointerCursor = {
       gtk.enable = true;

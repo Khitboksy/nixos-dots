@@ -36,8 +36,6 @@ in {
         bold_italic_font ${cfg.fonts.bold_italic}
       '';
 
-      catppuccin.enable = true;
-
       settings = {
         window_padding_width = 4;
         background_opacity = "0.6";
