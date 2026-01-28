@@ -42,6 +42,8 @@
         theme_background = false;
       };
     };
+
+    #niri.enableKeybinds = true;
   };
   xdg.mimeApps = {
     enable = true;

@@ -34,8 +34,8 @@ with lib.custom; {
             ;
         };
       };
-
-      spawnSlackOnWeekday = pkgs.writeShellScriptBin "spawn-slack-on-weekday" ''
+      /*
+        spawnSlackOnWeekday = pkgs.writeShellScriptBin "spawn-slack-on-weekday" ''
         # Get the day of the week (1=Monday, ..., 7=Sunday)
         DAY_OF_WEEK=$(${pkgs.coreutils}/bin/date +%u)
 
@@ -48,6 +48,7 @@ with lib.custom; {
         # Exit successfully if not a weekday or after exec replaces the process
         exit 0
       '';
+      */
     in {
       package = inputs.niri-src.packages.${pkgs.system}.niri;
 
@@ -109,9 +110,9 @@ with lib.custom; {
         outputs."DP-1" = {
           enable = true; # Not explicitly 'off'
           mode = {
-            width = 2560;
-            height = 1440;
-            refresh = 239.972;
+            width = 1920;
+            height = 1080;
+            refresh = 164.998;
           };
           variable-refresh-rate = "on-demand";
           scale = 1;
@@ -121,12 +122,13 @@ with lib.custom; {
             flipped = false;
           };
           position = {
-            x = 2560;
+            x = 1920;
             y = 0;
           };
         };
 
-        outputs."DP-3" = {
+        /*
+          outputs."DP-3" = {
           enable = true; # Not explicitly 'off'
           mode = {
             width = 3840;
@@ -146,7 +148,7 @@ with lib.custom; {
             y = 0;
           };
         };
-
+        */
         # Environment variables
         environment = {
           DISPLAY = ":0"; # for applications using xwayland-satillite
@@ -215,22 +217,24 @@ with lib.custom; {
         spawn-at-startup = [
           {command = ["xwayland-satellite"];}
           {
-            command = [
+            /*
+              command = [
               "${pkgs.writeShellScriptBin "thunderbird-delayed" ''sleep 5; thunderbird''}/bin/thunderbird-delayed"
             ];
+            */
           }
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
           {command = ["vesktop"];}
-          {command = ["tidal-hifi"];}
+          {command = ["cider-2"];}
 
-          {command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
+          #{command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
         ];
 
         # Prefer server-side decorations
         prefer-no-csd = true;
 
         # Screenshot path
-        screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+        screenshot-path = "/mnt/nix-data/media/screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
         # screenshot-path = null; # Alternative from KDL comments
 
         # Animation settings
@@ -253,7 +257,8 @@ with lib.custom; {
         # Window rules
         window-rules = [
           # Password manager rule (example from KDL comments)
-          {
+          /*
+            {
             matches = [
               {app-id = "^org\\.keepassxc\\.KeePassXC$";}
               {app-id = "^org\\.gnome\\.World\\.Secrets$";}
@@ -265,6 +270,7 @@ with lib.custom; {
             ];
             block-out-from = "screen-capture";
           }
+          */
           # Rounded corners rule (example from KDL comments)
           {
             # No matches means apply to all windows
@@ -311,7 +317,8 @@ with lib.custom; {
               y = 16;
             };
           }
-          {
+          /*
+            {
             matches = [
               {
                 app-id = "^cyberpunk2077.exe$";
@@ -323,6 +330,7 @@ with lib.custom; {
 
             variable-refresh-rate = true;
           }
+          */
           {
             matches = [
               {
@@ -339,17 +347,14 @@ with lib.custom; {
             matches = [
               {
                 at-startup = true;
-                app-id = "^spotify$";
-              }
-              {
-                at-startup = true;
                 app-id = "^vesktop$";
               }
             ];
 
             open-on-workspace = "chat";
           }
-          {
+          /*
+            {
             matches = [
               {
                 at-startup = true;
@@ -363,19 +368,23 @@ with lib.custom; {
 
             open-on-workspace = "work";
           }
+          */
         ];
 
-        workspaces."01-browser" = {
-          name = "browser";
+        workspaces."I" = {
+          name = "home";
         };
-        workspaces."02-code" = {
-          name = "code";
-        };
-        workspaces."03-chat" = {
+        workspaces."II" = {
           name = "chat";
         };
-        workspaces."04-work" = {
-          name = "work";
+        workspaces."III" = {
+          name = "music";
+        };
+        workspaces."IV" = {
+          name = "browser";
+        };
+        workspaces."V" = {
+          name = "games";
         };
 
         # Keybindings
@@ -386,7 +395,7 @@ with lib.custom; {
             };
 
             "Mod+Return" = {
-              action = actions.spawn "kitty";
+              action = actions.spawn "ghostty";
             };
             "Mod+D" = {
               action = actions.spawn "fuzzel";

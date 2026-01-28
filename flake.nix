@@ -28,8 +28,9 @@
     #ciderd = {
     #  url = "git+https://code.zoeys.cloud/zoey/ciderd";
     #
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    #  inputs.nixpkgs.follows = "nixpkgs";};
+
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs = inputs:
@@ -46,6 +47,11 @@
         allowUnfree = true;
       };
       homes.modules = with inputs; [catppuccin.homeModules.catppuccin];
-      systems.modules.nixos = with inputs; [home-manager.nixosModules.home-manager catppuccin.nixosModules.catppuccin yeetmouse.nixosModules.default];
+      systems.modules.nixos = with inputs; [
+        home-manager.nixosModules.home-manager
+        catppuccin.nixosModules.catppuccin
+        yeetmouse.nixosModules.default
+        niri.nixosModules.niri
+      ];
     };
 }
