@@ -42,7 +42,8 @@ in {
       enable = true;
     };
 
-    programs.niri.enable = false;
+    programs.niri.enable = true;
+    programs.niri.package = inputs.niri-src.packages.${pkgs.system}.niri;
 
     environment = {
       variables = {

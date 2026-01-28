@@ -20,7 +20,10 @@
     };
   };
   shells.fish.enable = true;
-  wms.hyprland.enable = true;
+  wms = {
+    hyprland.enable = true;
+    niri.enable = false;
+  };
   rice.gtk.enable = true;
   catppuccin = {
     btop.enable = true;
@@ -42,7 +45,6 @@
         theme_background = false;
       };
     };
-
     #niri.enableKeybinds = true;
   };
   xdg.mimeApps = {

@@ -148,14 +148,6 @@ in {
     #   };
     # };
 
-    systemd.user.services = {
-      swaybg = mkService {
-        Unit.Description = "Wallpaper chooser";
-        Service = {
-          ExecStart = "${getExe pkgs.swaybg} -i ${wallpaper}";
-          Restart = "always";
-        };
-      };
-    };
+    services.wallpaper.enable = true;
   };
 }

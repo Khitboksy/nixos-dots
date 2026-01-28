@@ -30,6 +30,9 @@
     #
     #  inputs.nixpkgs.follows = "nixpkgs";};
 
+    niri-src.url = "github:YaLTeR/niri";
+    niri-src.inputs.nixpkgs.follows = "nixpkgs";
+
     niri.url = "github:sodiboo/niri-flake";
   };
 
@@ -42,11 +45,35 @@
       # in the next section for information on how you can move your
       # Nix files to a separate directory.
       src = ./.;
+      /*
+        overlays = with inputs; [
+        # rust-overlay.overlays.default
+        (final: prev: {
+          ghostty = ghostty.packages."x86_64-linux".default;
+        })
+        # (final: prev: {
+        #   shadps4 = prev.shadps4.overrideAttrs {
+        #     src = prev.fetchFromGitHub {
+        #       owner = "shadps4-emu";
+        #       repo = "shadPS4";
+        #       rev = "41b39428335025e65f9e707ed8d5a9a1b09ba942";
+        #       hash = "sha256-5oe2By8TjJJIVubkp5lzqx2slBR7hxIHV4wZLgRYKl8=";
+        #       fetchSubmodules = true;
+        #     };
+        #     patches = [];
+        #   };
+        # })
+        #niri.overlays.niri
+      ];
+      */
+
       snowfall = {namespace = "custom";};
       channels-config = {
         allowUnfree = true;
       };
-      homes.modules = with inputs; [catppuccin.homeModules.catppuccin];
+      homes.modules = with inputs; [
+        catppuccin.homeModules.catppuccin
+      ];
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager
         catppuccin.nixosModules.catppuccin

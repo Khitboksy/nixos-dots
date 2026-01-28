@@ -18,4 +18,6 @@ with lib; rec {
   enabled = {enable = true;};
 
   disabled = {enable = false;};
+
+  isDarwin = pkgs: pkgs.stdenv.isDarwin;
 }

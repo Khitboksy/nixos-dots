@@ -13,7 +13,7 @@ with lib.custom; {
   };
 
   # For Darwin, just provide empty configuration
-  config = mkIf (config.wms.niri.enable && !pkgs.stdenv.isDarwin) {
+  config = mkIf config.wms.niri.enable {
     programs.niri = let
       actions = config.lib.niri.actions;
       niri = "${config.programs.niri.package}/bin/niri";

@@ -426,7 +426,8 @@ in {
           "modules-left" = [
             #  "hyprland/workspaces"
             #  "hyprland/window"
-            #  "network#speed"
+            #"niri/workspaces"
+            #"niri/window"
             "cpu"
             "memory"
             "custom/temperature"
@@ -434,8 +435,12 @@ in {
             "custom/gpu-mem"
             "custom/gpu-temp"
           ];
+
           "modules-center" = [
-            # "custom/cider"
+            #"cpu"
+            #"memory"
+            #"custom/temperature"
+
             "custom/workspace-1"
             "custom/workspace-2"
             "custom/workspace-3"
@@ -448,22 +453,18 @@ in {
             "custom/workspace-8"
             "custom/workspace-9"
             "custom/workspace-10"
+
+            #"custom/gpu-usage"
+            #"custom/gpu-mem"
+            #"custom/gpu-temp"
+
+            /**/
           ];
           "modules-right" = [
-            # "custom/cider"
             "hyprland/window"
             "network#speed"
-            #  "cpu"
-            #  "memory"
-            #  "custom/temperature"
-            #  "custom/gpu-usage"
-            #  "custom/gpu-mem"
-            #  "custom/gpu-temp"
             "pulseaudio"
-            #  "clock"
-            #  "clock#simpleclock"
             "tray"
-            #  "custom/notification"
           ];
 
           #"custom/cider" = {
