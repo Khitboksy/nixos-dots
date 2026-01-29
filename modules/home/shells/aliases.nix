@@ -6,9 +6,6 @@
 }:
 with lib;
 with pkgs; {
-  #ytmp3 = ''
-  #  ${getExe yt-dlp} -x --continue --add-metadata --embed-thumbnail --audio-format mp3 --audio-quality 0 --metadata-from-title="%(artist)s - %(title)s" --prefer-ffmpeg -o "%(title)s.%(ext)s"'';
-  #cat = "${getExe bat} --style=plain";
   vpn = "mullvad";
   uuid = "cat /proc/sys/kernel/random/uuid";
   #grep = getExe ripgrep;
@@ -29,7 +26,7 @@ with pkgs; {
   #ls = "${getExe eza} -h --git --icons --color=auto --group-directories-first -s extension";
   #tree = "${getExe eza} --tree --icons --tree";
   kys = "shutdown now";
-  # w = ''| nvim -c "setlocal buftype=nofile bufhidden=wipe" -c "nnoremap <buffer> q :q!<CR>" -'';
+  #w = ''| nvim -c "setlocal buftype=nofile bufhidden=wipe" -c "nnoremap <buffer> q :q!<CR>" -'';
   lv = "nvim -c \"normal '\''0\"";
   #pf = ''
   #  fzf --bind ctrl-y:preview-up,ctrl-e:preview-down \
@@ -38,20 +35,23 @@ with pkgs; {
   #  --bind ctrl-k:up,ctrl-j:down \
   #  --preview='bat --style=numbers --color=always --line-range :100 {}'
   #'';
-  gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
-  agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
-  tsm = "transmission-remote";
+  #gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
+  #agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
+  #tsm = "transmission-remote";
   g = "git";
-  n = "nix";
-  r = "rebuild";
+  gaa = "git add -A";
+  gcm = "git commit -m ";
+
+  ns = "nh os switch -- --cores 8 --max-jobs 1";
+  nsu = "nh os switch --update -- --cores 8 --max-jobs 1";
+  nb = "nh os boot -- --core 8 --max-jobs 1";
+  nbu = "nh os boot --update --cores 8 --max-jobs 1";
+
   #vm = "nixos-rebuild build-vm --flake ~/nixos#earth";
   #mnt = "udisksctl mount -b";
   #umnt = "udisksctl unmount -b";
   burn = "pkill -9";
   diff = "diff --color=auto";
-  #ws = "sudo systemctl status openvpn-work.service";
-  #wu = "vpn disconnect -w && sudo systemctl start openvpn-work.service";
-  #wd = "sudo systemctl stop openvpn-work.service && vpn connect -w";
   "v" = "nvim";
   ".." = "cd ..";
   "..." = "cd ../../";
