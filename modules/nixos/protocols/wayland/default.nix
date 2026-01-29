@@ -57,8 +57,8 @@ in {
         ANKI_WAYLAND = "1";
         QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         QT_QPA_PLATFORM = "wayland";
-        ELECTRON_OZONE_PLATFORM_HINT "auto"
-        QT_QPA_PLATFORMTHEME "gtk3"
+        ELECTRON_OZONE_PLATFORM_HINT = "auto";
+        QT_QPA_PLATFORMTHEME = "gtk3";
         DISABLE_QT_COMPAT = "0";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         MOZ_ENABLE_WAYLAND = "1";
