@@ -75,7 +75,11 @@ in {
     };
   };
 
-  colors = {
+  colors = rec {
+    bg = crust;
+    fg = text;
+    primary = pink;
+
     rosewater = {
       hex = "#f5e0dc";
       rgb = "rgb(245, 224, 220)";

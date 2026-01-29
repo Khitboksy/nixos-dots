@@ -17,7 +17,7 @@ in {
       enable = true;
 
       settings = {
-        theme = "Catppuccin Frappe";
+        theme = "Catppuccin Mocha";
 
         font-family = "Berkeley Mono";
 
@@ -36,6 +36,8 @@ in {
         window-padding-x = 20;
         window-padding-y = 20;
         window-padding-balance = true;
+
+        background-opacity = 0.8;
       };
     };
   };
