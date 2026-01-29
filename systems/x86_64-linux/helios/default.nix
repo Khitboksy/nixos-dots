@@ -209,6 +209,7 @@
     #  wget
     pkgs.libimobiledevice
     pkgs.ifuse
+    pkgs.xwayland-satellite
   ];
 
   systemd.services = {

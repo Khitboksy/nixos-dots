@@ -38,7 +38,6 @@ in {
         enableXdgAutostart = true;
       };
     };
-
     wayland.windowManager.hyprland.settings = with colors; {
       exec-once = import ./conf/execonce.nix;
 

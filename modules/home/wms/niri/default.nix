@@ -216,13 +216,6 @@ with lib.custom; {
         # Spawn processes at startup
         spawn-at-startup = [
           {command = ["xwayland-satellite"];}
-          {
-            /*
-              command = [
-              "${pkgs.writeShellScriptBin "thunderbird-delayed" ''sleep 5; thunderbird''}/bin/thunderbird-delayed"
-            ];
-            */
-          }
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
           {command = ["vesktop"];}
           {command = ["cider-2"];}
@@ -700,6 +693,6 @@ with lib.custom; {
       };
     };
 
-    # services.wallpaper.enable = true;
+    services.wallpaper.enable = true;
   };
 }

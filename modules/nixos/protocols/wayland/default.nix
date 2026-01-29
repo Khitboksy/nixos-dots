@@ -25,7 +25,7 @@ in {
         settings = rec {
           initial_session = {
             # command = "sway --unsupported-gpu";
-            command = "Hyprland";
+            command = "niri-session";
             user = "helios";
           };
           default_session = initial_session;
@@ -39,7 +39,7 @@ in {
 
     programs.hyprland = {
       withUWSM = true;
-      enable = true;
+      enable = false;
     };
 
     programs.niri.enable = true;
@@ -57,13 +57,15 @@ in {
         ANKI_WAYLAND = "1";
         QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         QT_QPA_PLATFORM = "wayland";
+        ELECTRON_OZONE_PLATFORM_HINT "auto"
+        QT_QPA_PLATFORMTHEME "gtk3"
         DISABLE_QT_COMPAT = "0";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         MOZ_ENABLE_WAYLAND = "1";
         WLR_BACKEND = "wayland";
         WLR_RENDERER = "wayland";
         XDG_SESSION_TYPE = "wayland";
-        SDL_VIDEODRIVER = "wayland";
+        SDL_VIDEODRIVER = "wayland,x11";
         XDG_CACHE_HOME = "/home/helios/.cache";
         CLUTTER_BACKEND = "wayland";
         DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";

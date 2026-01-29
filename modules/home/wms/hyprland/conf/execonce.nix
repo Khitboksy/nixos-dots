@@ -1,6 +1,6 @@
 [
-  "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-  "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+  #"dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+  #"systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
   "[workspace 4 silent] zen"
   "[workspace 2] vesktop"
   "[workspace 3 silent] cider-2"

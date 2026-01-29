@@ -16,23 +16,25 @@
 
     helpers = {
       rofi.enable = true;
-      waybar.enable = true;
+      waybar.enable = false;
     };
   };
   shells.fish.enable = true;
   wms = {
-    hyprland.enable = true;
-    niri.enable = false;
+    hyprland.enable = false;
+    niri.enable = true;
   };
   rice.gtk.enable = true;
   catppuccin = {
     btop.enable = true;
     fuzzel.enable = true;
     kitty.enable = true;
+    cava.enable = true;
   };
   programs = {
     gpg.enable = true;
 
+    cava.enable = true;
     fuzzel.enable = true;
     btop = {
       enable = true;
@@ -45,7 +47,18 @@
         theme_background = false;
       };
     };
-    #niri.enableKeybinds = true;
+    dankMaterialShell = {
+      enable = true;
+
+      niri.enableKeybinds = true;
+      systemd.enable = true;
+
+      enableVPN = true;
+      enableCalendarEvents = true;
+      enableDynamicTheming = true;
+      enableSystemMonitoring = true;
+      enableAudioWavelength = true;
+    };
   };
   xdg.mimeApps = {
     enable = true;

@@ -34,6 +34,9 @@
     niri-src.inputs.nixpkgs.follows = "nixpkgs";
 
     niri.url = "github:sodiboo/niri-flake";
+
+    dms.url = "github:AvengeMedia/DankMaterialShell";
+    dms.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs:
@@ -73,6 +76,8 @@
       };
       homes.modules = with inputs; [
         catppuccin.homeModules.catppuccin
+        dms.homeModules.dankMaterialShell.default
+        dms.homeModules.dankMaterialShell.niri
       ];
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager

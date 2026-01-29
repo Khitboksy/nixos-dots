@@ -17,26 +17,37 @@ window#waybar {
   /* background-color: rgba(245, 169, 184, 0.65); */
 }
 
+#custom-cava-system, #custom-cava-tt {
+  color: @mauve;
+  border-left: 0px;
+  border-right: 0px;
+  padding: 6px;
+  font-family: 'bargraph';
+  background: @base;
+  margin: 0px 2px;
+}
+
+
 #workspaces button {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
   border-radius: 6px;
-  background-color: @mocha_base;
-  color: @mocha_rosewater;
+  background-color: @base;
+  color: @rosewater;
 }
 
 #workspaces button:hover {
-  color: @mocha_base;
-  background-color: @mocha_pink;
+  color: @base;
+  background-color: @pink;
 }
 
 #workspaces button.active {
   background-color: @rose;
-  color: @mocha_base;
+  color: @base;
 }
 
 #workspaces button.urgent {
-  background-color: @mocha_base;
+  background-color: @base;
   color: @rose;
 }
 
@@ -45,8 +56,8 @@ window#waybar {
   margin: 0.4rem 0.25rem;
   margin-left: 1px;
   margin-right: 1px;
-  background-color: @mocha_base;
-  color: @mocha_sapphire;
+  background-color: @base;
+  color: @sapphire;
   border-radius: 6px;
 }
 #clock,
@@ -61,18 +72,18 @@ window#waybar {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
   border-radius: 6px;
-  background-color: @mocha_base;
+  background-color: @base;
 
 }
 
 #mpris.playing {
   color: @rose;
-  background-color: @mocha_base;
+  background-color: @base;
 }
 
 #mpris.paused {
-  color: @mocha_pink;
-  background-color: @mocha_base;
+  color: @pink;
+  background-color: @base;
 }
 
 #custom-sep {
@@ -89,8 +100,8 @@ window#waybar.empty #window {
   margin: 0.4rem 0.25rem;
   margin-right: 1px;
   border-radius: 6px;
-  color: @mocha_green;
-  background-color: @mocha_base;
+  color: @green;
+  background-color: @base;
 }
 
 #memory {
@@ -99,26 +110,26 @@ window#waybar.empty #window {
   margin-left: 0px;
   margin-right: 0px;
   border-radius: 6px;
-  color: @mocha_green;
-  background-color: @mocha_base;
+  color: @green;
+  background-color: @base;
 }
 
 #clock {
   color: @rose;
-  background-color: @mocha_base;
+  background-color: @base;
   margin-right: 0px;
 }
 
 #clock.simpleclock {
   color: @rose;
-  background-color: @mocha_base;
+  background-color: @base;
   margin-left: 1px;
   margin-right: 0.25rem;
 }
 
 #window {
-  color: @mocha_sky;
-  background-color: @mocha_base;
+  color: @sky;
+  background-color: @base;
   margin-right: 1px;
 }
 
@@ -131,16 +142,16 @@ window#waybar.empty #window {
 } */
 
 #custom-logo {
-  color: @mocha_blue;
+  color: @blue;
 }
 
 #custom-power {
-  color: @mocha_red;
-  background-color: @mocha_base;
+  color: @red;
+  background-color: @base;
 }
 
 tooltip {
-  background-color: @mocha_base;
+  background-color: @base;
   border: 2px solid @rose;
 }
 
@@ -149,11 +160,11 @@ tooltip {
   margin: 0.4rem 0.25rem;
   margin-left: 1px;
   border-radius: 6px;
-  color: @mocha_sapphire;
+  color: @sapphire;
 }
 
 #network.speed {
-  background: @mocha_base;
+  background: @base;
 }
 /*
 #custom-work-left,
@@ -179,8 +190,8 @@ tooltip {
   margin-left: 0rem;
   margin-right: 0rem;
   border-radius: 6px;
-  background-color: @mocha_base;
-  color: @mocha_pink;
+  background-color: @base;
+  color: @pink;
 }
 
 /* hovered button */
@@ -194,8 +205,8 @@ tooltip {
 #custom-workspace-8:hover,
 #custom-workspace-9:hover,
 #custom-workspace-10:hover {
-  color: @mocha_base;
-  background-color: @mocha_lavender;
+  color: @base;
+  background-color: @lavender;
 }
 
 #custom-gpu-temp {
@@ -203,8 +214,8 @@ tooltip {
   margin: 0.3rem 1px;
   margin-right: 2px;
   border-radius: 6px;
-  color: @mocha_blue;
-  background-color: @mocha_base;
+  color: @blue;
+  background-color: @base;
 }
 
 #custom-gpu-mem {
@@ -213,8 +224,8 @@ tooltip {
   margin-left: 0px;
   margin-right: 0px;
   border-radius: 6px;
-  color: @mocha_blue;
-  background-color: @mocha_base;
+  color: @blue;
+  background-color: @base;
 }
 
 #custom-gpu-usage {
@@ -223,8 +234,8 @@ tooltip {
   margin-left: 1px;
   margin-right: 1px;
   border-radius: 6px;
-  color: @mocha_blue;
-  background-color: @mocha_base;
+  color: @blue;
+  background-color: @base;
   }
 
 #custom-temperature {
@@ -233,6 +244,6 @@ tooltip {
   margin-right: 0.25rem;
   margin-left: 1px;
   border-radius: 6px;
-  color: @mocha_green;
-  background-color: @mocha_base;
+  color: @green;
+  background-color: @base;
 }

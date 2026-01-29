@@ -376,44 +376,39 @@ in {
       systemd.target = "graphical-session.target";
       style = ''
         /* Custom colors from lib/theme/default.nix */
-        @define-color mocha_rosewater ${x colors.mocha_rosewater};
-        @define-color mocha_flamingo ${x colors.mocha_flamingo};
-        @define-color mocha_pink ${x colors.mocha_pink};
-        @define-color mocha_mauve ${x colors.mocha_mauve};
-        @define-color mocha_red ${x colors.mocha_red};
-        @define-color mocha_maroon ${x colors.mocha_maroon};
-        @define-color mocha_peach ${x colors.mocha_peach};
-        @define-color mocha_yellow ${x colors.mocha_yellow};
-        @define-color mocha_green ${x colors.mocha_green};
-        @define-color mocha_teal ${x colors.mocha_teal};
-        @define-color mocha_sky ${x colors.mocha_sky};
-        @define-color mocha_sapphire ${x colors.mocha_sapphire};
-        @define-color mocha_blue ${x colors.mocha_blue};
-        @define-color mocha_lavender ${x colors.mocha_lavender};
-        @define-color mocha_text ${x colors.mocha_text};
-        @define-color mocha_overlay2 ${x colors.mocha_overlay2};
-        @define-color mocha_overlay1 ${x colors.mocha_overlay1};
-        @define-color mocha_overlay ${x colors.mocha_overlay};
-        @define-color mocha_surface2 ${x colors.mocha_surface2};
-        @define-color mocha_surface1 ${x colors.mocha_surface1};
-        @define-color mocha_surface ${x colors.mocha_surface};
-        @define-color mocha_base ${x colors.mocha_base};
-        @define-color muted ${x colors.muted};
-        @define-color subtle ${x colors.subtle};
-        @define-color love ${x colors.love};
-        @define-color gold ${x colors.gold};
-        @define-color rose ${x colors.rose};
-        @define-color pine ${x colors.pine};
-        @define-color foam ${x colors.foam};
-        @define-color iris ${x colors.iris};
-        @define-color highlighthigh ${x colors.highlighthigh};
-        @define-color highlightmed ${x colors.highlightmed};
-        @define-color highlightlow ${x colors.highlightlow};
+        @define-color rosewater ${colors.rosewater.hex};
+        @define-color flamingo ${colors.flamingo.hex};
+        @define-color pink ${colors.pink.hex};
+        @define-color mauve ${colors.mauve.hex};
+        @define-color red ${colors.red.hex};
+        @define-color maroon ${colors.maroon.hex};
+        @define-color peach ${colors.peach.hex};
+        @define-color yellow ${colors.yellow.hex};
+        @define-color green ${colors.green.hex};
+        @define-color teal ${colors.teal.hex};
+        @define-color sky ${colors.sky.hex};
+        @define-color sapphire ${colors.sapphire.hex};
+        @define-color blue ${colors.blue.hex};
+        @define-color lavender ${colors.lavender.hex};
+        @define-color text ${colors.text.hex};
+        @define-color subtext1 ${colors.subtext1.hex};
+        @define-color subtext0 ${colors.subtext0.hex};
+        @define-color overlay2 ${colors.overlay2.hex};
+        @define-color overlay1 ${colors.overlay1.hex};
+        @define-color overlay0 ${colors.overlay0.hex};
+        @define-color surface2 ${colors.surface2.hex};
+        @define-color surface1 ${colors.surface1.hex};
+        @define-color surface0 ${colors.surface0.hex};
+        @define-color base ${colors.base.hex};
+        @define-color mantle ${colors.mantle.hex};
+        @define-color crust ${colors.crust.hex}
 
         ${builtins.readFile ./style.css}
       '';
 
-      settings = {
+      settings = let
+        cava = pkgs.writeShellScriptBin "cava" "${builtins.readFile ./bar.sh}";
+      in {
         mainBar = {
           layer = "bottom";
           position = "top";
@@ -426,42 +421,43 @@ in {
           "modules-left" = [
             #  "hyprland/workspaces"
             #  "hyprland/window"
-            #"niri/workspaces"
-            #"niri/window"
-            "cpu"
-            "memory"
-            "custom/temperature"
-            "custom/gpu-usage"
-            "custom/gpu-mem"
-            "custom/gpu-temp"
-          ];
-
-          "modules-center" = [
+            "niri/workspaces"
+            "niri/window"
             #"cpu"
             #"memory"
             #"custom/temperature"
+            #"custom/gpu-usage"
+            #"custom/gpu-mem"
+            #"custom/gpu-temp"
+          ];
 
+          "modules-center" = [
+            "cpu"
+            "memory"
+            "custom/temperature"
+            /*
             "custom/workspace-1"
             "custom/workspace-2"
             "custom/workspace-3"
             "custom/workspace-4"
             "custom/workspace-5"
+            */
             "clock"
             "clock#simpleclock"
+            /*
             "custom/workspace-6"
             "custom/workspace-7"
             "custom/workspace-8"
             "custom/workspace-9"
             "custom/workspace-10"
-
-            #"custom/gpu-usage"
-            #"custom/gpu-mem"
-            #"custom/gpu-temp"
-
-            /**/
+            */
+            "custom/gpu-usage"
+            "custom/gpu-mem"
+            "custom/gpu-temp"
           ];
           "modules-right" = [
-            "hyprland/window"
+            #"hyprland/window"
+            "custom/cava-system"
             "network#speed"
             "pulseaudio"
             "tray"
@@ -475,6 +471,11 @@ in {
           #  "on-click-middle" = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} skip";
           #  exec = "${lib.getExe inputs.ciderd.packages.${pkgs.system}.default} monitor";
           #};
+
+          "custom/cava-system" = {
+            format = "{}";
+            exec = "${cava}/bin/cava alsa_output.usb-MOTU_M4_M4MA03F7DV-00.HiFi__Line1__sink.monitor";
+          };
 
           mpris = {
             player = "spotify";
