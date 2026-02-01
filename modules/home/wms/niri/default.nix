@@ -162,7 +162,7 @@ with lib.custom; {
         layout = {
           gaps = 16;
           center-focused-column = "never";
-
+          background-color = "transparent";
           preset-column-widths = [
             {proportion = 0.33333;}
             {proportion = 0.5;}
@@ -186,7 +186,7 @@ with lib.custom; {
 
           focus-ring = {
             enable = true; # Not explicitly 'off'
-            width = 4;
+            width = 2;
             active = mkGradient colors.blue.hex colors.sky.hex {angle = 45;};
             # active = mkColor "#7fc8ff"; # Alternative solid color from KDL
             inactive = mkGradient colors.surface1.hex colors.surface2.hex {
@@ -198,7 +198,7 @@ with lib.custom; {
 
           border = {
             enable = true; # Explicitly 'off' in KDL
-            width = 0;
+            width = 2;
             active = mkColor colors.blue.hex;
             inactive = mkColor colors.base.hex;
             # active-gradient = ... # Commented out in KDL
@@ -244,6 +244,12 @@ with lib.custom; {
             ];
 
             block-out-from = "screen-capture";
+          }
+          {
+            matches = [
+              {namespace = "^wallpaper$";}
+            ];
+            place-within-backdrop = true;
           }
         ];
 
@@ -345,6 +351,16 @@ with lib.custom; {
             ];
 
             open-on-workspace = "chat";
+          }
+          {
+            matches = [
+              {
+                at-startup = true;
+                app-id = "^cider-2";
+              }
+            ];
+
+            open-on-workspace = "music";
           }
           /*
             {
@@ -673,8 +689,11 @@ with lib.custom; {
               action = actions.quit {};
             };
 
-            "Mod+Shift+P" = {
+            "Mod+Shift+End" = {
               action = actions.power-off-monitors;
+            };
+            "Mod+Shift+Home" = {
+              action = actions.power-on-monitors;
             };
           }
           // lib.attrsets.listToAttrs (

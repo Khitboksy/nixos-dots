@@ -7,6 +7,7 @@
     tools = {
       neovim.enable = true;
       tmux.enable = true;
+      lf.enable = true;
     };
 
     term = {
@@ -101,12 +102,35 @@
     };
   };
 
-  home.packages = with pkgs; [
-    nautilus
-    loupe
-    networkmanagerapplet
-    wl-clipboard
-    custom.enc
+  home.packages = [
+    pkgs.nautilus
+    pkgs.loupe
+    pkgs.networkmanagerapplet
+    pkgs.wl-clipboard
+    pkgs.custom.enc
+
+    pkgs.deadlock-mod-manager
+
+    pkgs.element-desktop
+
+    pkgs.obs-studio
+    pkgs.r2modman
+
+    pkgs.nix-tree
+    pkgs.tokei
+
+    pkgs.clonehero
+
+    pkgs.prismlauncher
+
+    pkgs.ckan # Comprehensive Kerbal Archive Network. KSP mod manager
+
+    pkgs.qbittorrent
+
+    pkgs.libimobiledevice
+    pkgs.ifuse
+
+    pkgs.lf
   ];
   services = {
     gpg-agent = {

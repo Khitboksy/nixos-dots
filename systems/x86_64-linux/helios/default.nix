@@ -182,33 +182,31 @@
 
     # Only 'x86_64-linux' and 'aarch64-linux' are supported
     inputs.zen-browser.packages."${system}".default # beta
-    pkgs.prismlauncher
+
     pkgs.git
     pkgs.neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     pkgs.openrgb-with-all-plugins # RGB LED controller
-    pkgs.ckan # Comprehensive Kerbal Archive Network. KSP mod manager
+
     pkgs.btop # better htop
     pkgs.vlc
-    pkgs.clonehero
+    pkgs.cider-2
+
     pkgs.protonup-qt
-    pkgs.qbittorrent
+
     pkgs.piper
     pkgs.libratbag
     pkgs.fastfetch
-    pkgs.obs-studio
-    pkgs.r2modman
+
     pkgs.cmake
     pkgs.meson
     pkgs.cpio
     pkgs.pwvucontrol
     pkgs.mangohud
-    pkgs.cider-2
-    pkgs.element-desktop
+
     pkgs.swaybg
-    pkgs.deadlock-mod-manager
+
     #  wget
-    pkgs.libimobiledevice
-    pkgs.ifuse
+
     pkgs.xwayland-satellite
   ];
 
