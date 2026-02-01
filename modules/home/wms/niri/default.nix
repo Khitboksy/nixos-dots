@@ -316,20 +316,23 @@ with lib.custom; {
               y = 16;
             };
           }
-          /*
-            {
+
+          {
             matches = [
+              #{
+              #  app-id = "^cyberpunk2077.exe$";
+              #}
+              #{
+              #  app-id = "^Overwatch2.exe$";
+              #}
               {
-                app-id = "^cyberpunk2077.exe$";
-              }
-              {
-                app-id = "^Overwatch2.exe$";
+                app-id = "^deadlock.exe$";
               }
             ];
 
             variable-refresh-rate = true;
           }
-          */
+
           {
             matches = [
               {

@@ -44,8 +44,15 @@ with pkgs; {
 
   ns = "nh os switch -- --cores 8 --max-jobs 1";
   nsu = "nh os switch --update -- --cores 8 --max-jobs 1";
-  nb = "nh os boot -- --core 8 --max-jobs 1";
+  nb = "nh os boot -- --cores 8 --max-jobs 1";
   nbu = "nh os boot --update --cores 8 --max-jobs 1";
+  nfc = "nix flake check --cores 4 --max-jobs 1";
+  nfu = "nix flake update --cores 4 --max-jobs 1";
+
+  flake = "nvim ~/builds/";
+
+  openhl = "nohup openrgb";
+  dmm = "nohup deadlock-mod-manager";
 
   #vm = "nixos-rebuild build-vm --flake ~/nixos#earth";
   #mnt = "udisksctl mount -b";
