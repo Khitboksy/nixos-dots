@@ -127,7 +127,7 @@
     initialPassword = "";
     packages = with pkgs; [
       kdePackages.kate
-      vesktop
+      #vesktop
       bitwarden-desktop
       nh
       #  thunderbird

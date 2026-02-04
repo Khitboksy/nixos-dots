@@ -131,6 +131,8 @@
     pkgs.ifuse
 
     pkgs.lf
+    pkgs.signal-desktop
+    pkgs.equibop
   ];
   services = {
     gpg-agent = {

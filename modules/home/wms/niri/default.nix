@@ -217,7 +217,7 @@ with lib.custom; {
         spawn-at-startup = [
           {command = ["xwayland-satellite"];}
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
-          {command = ["vesktop"];}
+          {command = ["equibop"];}
           {command = ["cider-2"];}
 
           #{command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
@@ -256,20 +256,20 @@ with lib.custom; {
         # Window rules
         window-rules = [
           # Password manager rule (example from KDL comments)
-          /*
-            {
+
+          {
             matches = [
-              {app-id = "^org\\.keepassxc\\.KeePassXC$";}
-              {app-id = "^org\\.gnome\\.World\\.Secrets$";}
-              {app-id = "^1Password$";}
-              {app-id = "^thunderbird$";}
+              #{app-id = "^org\\.keepassxc\\.KeePassXC$";}
+              #{app-id = "^org\\.gnome\\.World\\.Secrets$";}
+              {app-id = "^Bitwarden$";}
+              #{app-id = "^thunderbird$";}
               {app-id = "^signal$";}
-              {app-id = "^vesktop$";}
-              {app-id = "^slack$";}
+              {app-id = "^equibop$";}
+              #{app-id = "^slack$";}
             ];
             block-out-from = "screen-capture";
           }
-          */
+
           # Rounded corners rule (example from KDL comments)
           {
             # No matches means apply to all windows
@@ -349,7 +349,7 @@ with lib.custom; {
             matches = [
               {
                 at-startup = true;
-                app-id = "^vesktop$";
+                app-id = "^equibop$";
               }
             ];
 
@@ -359,7 +359,7 @@ with lib.custom; {
             matches = [
               {
                 at-startup = true;
-                app-id = "^cider-2";
+                app-id = "^Cider";
               }
             ];
 
@@ -384,7 +384,7 @@ with lib.custom; {
         ];
 
         workspaces."I" = {
-          name = "home";
+          name = "games";
         };
         workspaces."II" = {
           name = "chat";
@@ -396,7 +396,7 @@ with lib.custom; {
           name = "browser";
         };
         workspaces."V" = {
-          name = "games";
+          name = "misc";
         };
 
         # Keybindings

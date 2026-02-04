@@ -81,10 +81,11 @@ in {
 
     xdg.portal = {
       enable = true;
-      wlr.enable = false;
+      wlr.enable = true;
       config.common.default = "*";
       extraPortals = [
         pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-gnome
       ];
     };
   };

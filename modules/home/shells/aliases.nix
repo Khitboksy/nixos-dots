@@ -49,7 +49,7 @@ with pkgs; {
   nfc = "nix flake check --cores 4 --max-jobs 1";
   nfu = "nix flake update --cores 4 --max-jobs 1";
 
-  flake = "nvim ~/builds/";
+  flake = "cd builds && nvim";
 
   openhl = "nohup openrgb";
   dmm = "nohup deadlock-mod-manager";
