@@ -9,6 +9,7 @@
 with lib;
 with lib.custom; let
   cfg = config.protocols.wayland;
+  system = pkgs.stdenv.hostPlatform.system;
 in {
   options.protocols.wayland = with types; {
     enable = mkBoolOpt false "Enable Wayland Protocol";
@@ -33,7 +34,7 @@ in {
       };
     };
 
-    services.xserver.displayManager.gdm.enable = true;
+    services.displayManager.gdm.enable = true;
 
     programs.uwsm.enable = true;
 
@@ -43,7 +44,7 @@ in {
     };
 
     programs.niri.enable = true;
-    programs.niri.package = inputs.niri-src.packages.${pkgs.system}.niri;
+    programs.niri.package = inputs.niri-src.packages.${system}.niri;
 
     environment = {
       variables = {
@@ -77,15 +78,15 @@ in {
       '';
     };
 
-    hardware.pulseaudio.support32Bit = true;
+    services.pulseaudio.support32Bit = true;
 
     xdg.portal = {
       enable = true;
-      wlr.enable = true;
-      config.common.default = "*";
+      #wlr.enable = false;
+      #config.common.default = "*";
       extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal-gnome
+        #pkgs.xdg-desktop-portal-gtk
+        #pkgs.xdg-desktop-portal-gnome
       ];
     };
   };

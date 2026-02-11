@@ -35,7 +35,7 @@ return {
   },
   "f-person/git-blame.nvim",
   { "nvim-lualine/lualine.nvim", enabled = false },
-  { "echasnovski/mini.statusline", opts = {} },
+  { "nvim-mini/mini.statusline", opts = {} },
   {
     "stevearc/conform.nvim",
     opts = {

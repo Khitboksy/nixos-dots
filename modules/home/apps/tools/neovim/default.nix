@@ -7,6 +7,7 @@
 with lib;
 with lib.custom; let
   cfg = config.apps.tools.neovim;
+  system = pkgs.stdenv.hostPlatform.system;
 
   lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "lazy-nix-helper.nvim";
@@ -70,7 +71,7 @@ in {
         lazy-nix-helper-nvim
         lazy-nvim
       ];
-      extraLuaConfig = ''
+      initLua = ''
         local plugins = {
         	${pluginList config.programs.neovim.plugins}
         }

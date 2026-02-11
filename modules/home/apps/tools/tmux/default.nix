@@ -30,6 +30,7 @@ in {
         tmuxPlugins.vim-tmux-navigator
         tmuxPlugins.yank
         tmuxPlugins.cpu
+        tmuxPlugins.resurrect
       ];
       extraConfig = ''
         set-option -sa terminal-overrides ",xterm*:Tc"
@@ -52,6 +53,10 @@ in {
         set -agF status-right "#{E:@catppuccin_status_cpu}"
         set -ag status-right "#{E:@catppuccin_status_session}"
         set -ag status-right "#{E:@catppuccin_status_uptime}"
+
+        set -g @resurrect-save 'S'
+        set -g @resurrect-restore 'R'
+        set -g @resurrect-strategy-nvim 'session'
 
         bind-key -T copy-mode-vi v send-keys -X begin-selection
         bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle

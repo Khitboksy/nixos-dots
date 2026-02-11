@@ -5,7 +5,6 @@
   config,
   pkgs,
   inputs,
-  system,
   lib,
   ...
 }: {
@@ -115,7 +114,7 @@
   };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -181,21 +180,11 @@
     })
 
     # Only 'x86_64-linux' and 'aarch64-linux' are supported
-    inputs.zen-browser.packages."${system}".default # beta
-
-    pkgs.git
-    pkgs.neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    pkgs.openrgb-with-all-plugins # RGB LED controller
-
-    pkgs.btop # better htop
-    pkgs.vlc
-    pkgs.cider-2
 
     pkgs.protonup-qt
 
     pkgs.piper
     pkgs.libratbag
-    pkgs.fastfetch
 
     pkgs.cmake
     pkgs.meson

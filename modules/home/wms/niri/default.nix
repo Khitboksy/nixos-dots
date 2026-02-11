@@ -7,7 +7,9 @@
   ...
 }:
 with lib;
-with lib.custom; {
+with lib.custom; let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   options.wms.niri = with types; {
     enable = mkBoolOpt false "Enable niri";
   };
@@ -50,7 +52,7 @@ with lib.custom; {
       '';
       */
     in {
-      package = inputs.niri-src.packages.${pkgs.system}.niri;
+      package = inputs.niri-src.packages.${system}.niri;
 
       settings = {
         # Input device configuration
@@ -217,7 +219,7 @@ with lib.custom; {
         spawn-at-startup = [
           {command = ["xwayland-satellite"];}
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
-          {command = ["equibop"];}
+          {command = ["vesktop"];}
           {command = ["cider-2"];}
 
           #{command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
@@ -264,7 +266,7 @@ with lib.custom; {
               {app-id = "^Bitwarden$";}
               #{app-id = "^thunderbird$";}
               {app-id = "^signal$";}
-              {app-id = "^equibop$";}
+              {app-id = "^vesktop$";}
               #{app-id = "^slack$";}
             ];
             block-out-from = "screen-capture";
@@ -348,11 +350,17 @@ with lib.custom; {
           {
             matches = [
               {
-                at-startup = true;
-                app-id = "^equibop$";
+                app-id = "^vesktop$";
+              }
+              {
+                app-id = "^equibop";
+              }
+              {
+                app-id = "^signal$";
               }
             ];
 
+            open-maximized = true;
             open-on-workspace = "chat";
           }
           {
@@ -363,6 +371,7 @@ with lib.custom; {
               }
             ];
 
+            open-maximized = true;
             open-on-workspace = "music";
           }
           /*

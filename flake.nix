@@ -78,8 +78,8 @@
       };
       homes.modules = with inputs; [
         catppuccin.homeModules.catppuccin
-        dms.homeModules.dankMaterialShell.default
-        dms.homeModules.dankMaterialShell.niri
+        dms.homeModules.dank-material-shell
+        dms.homeModules.niri
       ];
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager

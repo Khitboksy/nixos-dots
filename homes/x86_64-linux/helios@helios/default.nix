@@ -1,8 +1,11 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   apps = {
     tools = {
       neovim.enable = true;
@@ -20,23 +23,34 @@
       waybar.enable = false;
     };
   };
+
   shells.fish.enable = true;
+
   wms = {
     hyprland.enable = false;
     niri.enable = true;
   };
+
   rice.gtk.enable = true;
+
   catppuccin = {
+    flavor = "mocha";
+    accent = "sapphire";
+
     btop.enable = true;
     fuzzel.enable = true;
     kitty.enable = true;
     cava.enable = true;
+    fzf.enable = true;
   };
   programs = {
     gpg.enable = true;
 
     cava.enable = true;
     fuzzel.enable = true;
+
+    fzf.enable = true;
+
     btop = {
       enable = true;
       #catppuccin.enable = true;
@@ -48,7 +62,8 @@
         theme_background = false;
       };
     };
-    dankMaterialShell = {
+
+    dank-material-shell = {
       enable = true;
 
       niri.enableKeybinds = true;
@@ -60,7 +75,15 @@
       enableSystemMonitoring = true;
       enableAudioWavelength = true;
     };
+
+    obs-studio = {
+      enable = true;
+      package = pkgs.obs-studio.override {
+        cudaSupport = true;
+      };
+    };
   };
+
   xdg.mimeApps = {
     enable = true;
 
@@ -102,42 +125,41 @@
     };
   };
 
-  home.packages = [
-    pkgs.nautilus
-    pkgs.loupe
-    pkgs.networkmanagerapplet
-    pkgs.wl-clipboard
-    pkgs.custom.enc
-
-    pkgs.deadlock-mod-manager
-
-    pkgs.element-desktop
-
-    pkgs.obs-studio
-    pkgs.r2modman
-
-    pkgs.nix-tree
-    pkgs.tokei
-
-    pkgs.clonehero
-
-    pkgs.prismlauncher
-
-    pkgs.ckan # Comprehensive Kerbal Archive Network. KSP mod manager
-
-    pkgs.qbittorrent
-
-    pkgs.libimobiledevice
-    pkgs.ifuse
-
-    pkgs.lf
-    pkgs.signal-desktop
-    pkgs.equibop
+  home.packages = with pkgs; [
+    nautilus
+    loupe
+    networkmanagerapplet
+    wl-clipboard
+    custom.enc
+    deadlock-mod-manager
+    element-desktop
+    r2modman
+    nix-tree
+    tokei
+    clonehero
+    prismlauncher
+    ckan # Comprehensive Kerbal Archive Network. KSP mod manager
+    qbittorrent
+    libimobiledevice
+    ifuse
+    lf
+    signal-desktop
+    vesktop
+    tmux-sessionizer
+    inputs.zen-browser.packages."${system}".default # beta
+    git
+    openrgb-with-all-plugins # RGB LED controller
+    vlc
+    cider-2
+    fastfetch
+    btop # better htop
   ];
   services = {
     gpg-agent = {
       enable = true;
-      pinentryPackage = lib.mkForce pkgs.pinentry-gnome3;
+      pinentry = {
+        package = lib.mkForce pkgs.pinentry-gnome3;
+      };
       enableSshSupport = true;
       enableBashIntegration = true;
     };
