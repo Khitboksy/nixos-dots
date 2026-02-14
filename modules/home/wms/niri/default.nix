@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   inputs,
@@ -18,7 +17,7 @@ in {
   config = mkIf config.wms.niri.enable {
     programs.niri = let
       actions = config.lib.niri.actions;
-      niri = "${config.programs.niri.package}/bin/niri";
+      #niri = "${config.programs.niri.package}/bin/niri";
 
       mkColor = color: {inherit color;};
       mkGradient = from: to: {

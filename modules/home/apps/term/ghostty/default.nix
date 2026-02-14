@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   ...
@@ -19,22 +18,22 @@ in {
       settings = {
         theme = "Catppuccin Mocha";
 
-        font-family = "Berkeley Mono";
+        font-family = "Iosevka Term";
 
         font-size = 14;
 
-        font-style = "SemiBold ExtraCondensed";
-        font-style-bold = "Bold ExtraCondensed";
-        font-style-italic = "SemiBold ExtraCondensed Oblique";
-        font-style-bold-italic = "Bold ExtraCondensed Oblique";
+        font-style = "SemiBold";
+        font-style-bold = "Bold";
+        font-style-italic = "SemiBold Oblique";
+        font-style-bold-italic = "Bold Oblique";
 
         gtk-single-instance = true;
         gtk-titlebar = false;
 
         alpha-blending = "linear-corrected";
 
-        window-padding-x = 20;
-        window-padding-y = 20;
+        window-padding-x = 14;
+        window-padding-y = 14;
         window-padding-balance = true;
 
         background-opacity = 0.8;

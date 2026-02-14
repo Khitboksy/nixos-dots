@@ -217,7 +217,7 @@ in {
     "transbase" = "rgba(49, 50, 68, 0.8)";
   };
 
-  wallpaper = ./blue-and-pink.jpg;
+  wallpaper = ./wall4.jpg;
 
   lerpColor = lerpColorFunc;
 }

@@ -1,15 +1,14 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }:
 with lib;
 with pkgs; {
   vpn = "mullvad";
   uuid = "cat /proc/sys/kernel/random/uuid";
-  #grep = getExe ripgrep;
-  #fzf = getExe skim;
+  grep = getExe ripgrep;
+  fzf = getExe skim;
   untar = "tar -xvf";
   untargz = "tar -xzf";
   MANPAGER = "sh -c 'col -bx | bat -l man -p'";
@@ -51,8 +50,7 @@ with pkgs; {
 
   flake = "cd builds && nvim";
 
-  openhl = "nohup openrgb";
-  dmm = "nohup deadlock-mod-manager";
+  deadlock = "cd /mnt/nix-data/Games/steam/steamLibrary/steamapps/common/Deadlock/game/citadel/ && nvim";
 
   #vm = "nixos-rebuild build-vm --flake ~/nixos#earth";
   #mnt = "udisksctl mount -b";
