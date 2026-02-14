@@ -18,14 +18,14 @@ in {
       settings = {
         theme = "Catppuccin Mocha";
 
-        font-family = "Iosevka Term";
+        font-family = "Iosevka Slab Term";
 
         font-size = 14;
 
         font-style = "SemiBold";
         font-style-bold = "Bold";
-        font-style-italic = "SemiBold Oblique";
-        font-style-bold-italic = "Bold Oblique";
+        font-style-italic = "Medium Oblique";
+        font-style-bold-italic = "SemiBold Oblique";
 
         gtk-single-instance = true;
         gtk-titlebar = false;

@@ -22,6 +22,8 @@ in {
       rofi.enable = true;
       waybar.enable = false;
     };
+
+    music.cava.enable = true;
   };
 
   shells.fish.enable = true;
@@ -40,13 +42,11 @@ in {
     btop.enable = true;
     fuzzel.enable = true;
     kitty.enable = true;
-    cava.enable = true;
     fzf.enable = true;
   };
   programs = {
     gpg.enable = true;
 
-    cava.enable = true;
     fuzzel.enable = true;
 
     fzf.enable = true;
