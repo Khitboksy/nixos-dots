@@ -68,10 +68,10 @@ in {
   x = c: "#${c}";
   fonts = {
     mono = {
-      normal = "Iosevka Bold";
-      bold = "Iosevka ExtraBold";
-      italic = "Iosevka Bold Italic";
-      bold_italic = "Iosevka ExtraBold Italic";
+      normal = "Iosevka Slab Bold";
+      bold = "Iosevka Slab ExtraBold";
+      italic = "Iosevka Slab Bold Italic";
+      bold_italic = "Iosevka Slab ExtraBold Italic";
     };
   };
 
