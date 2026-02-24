@@ -54,23 +54,7 @@ in {
         }
       ];
 
-      functions = {
-        pf = ''
-          fzf --bind ctrl-y:preview-up,ctrl-e:preview-down \
-              --bind ctrl-b:preview-page-up,ctrl-f:preview-page-down \
-              --bind ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down \
-              --bind ctrl-k:up,ctrl-j:down \
-              --preview='bat --style=numbers --color=always --line-range :100 {}'
-        '';
-
-        ff = ''
-          for file in (pf)
-              set cmd "v $file"
-              echo $cmd
-              eval $cmd
-          end
-        '';
-      };
+      functions = import ../funct.nix {inherit pkgs lib config;};
 
       shellAliases = import ../aliases.nix {inherit pkgs lib config;};
     };
