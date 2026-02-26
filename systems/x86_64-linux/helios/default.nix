@@ -4,6 +4,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
@@ -112,9 +113,18 @@
   };
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  services.pulseaudio = {
+    enable = false;
+    extraConfig = "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1";
+  };
   security.rtkit.enable = true;
-
+  /*
+  services.mpd.user = "helios";
+  systemd.services.mpd.environment = {
+    # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
+    XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.helios.uid}"; # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
+  };
+  */
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.helios = {
     isNormalUser = true;

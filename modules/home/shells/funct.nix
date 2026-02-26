@@ -124,7 +124,7 @@ with pkgs; {
             continue
         end
 
-        eval "$DOWNLOAD_CMD $link"
+        $DOWNLOAD_CMD $link
 
         if test $status -ne 0
           echo "Warning: Some items failed in $link - ignored"

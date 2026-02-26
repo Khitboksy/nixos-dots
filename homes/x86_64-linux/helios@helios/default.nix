@@ -23,7 +23,10 @@ in {
       waybar.enable = false;
     };
 
-    music.cava.enable = true;
+    music = {
+      rmpc.enable = true;
+      cava.enable = true;
+    };
   };
 
   shells.fish.enable = true;
@@ -153,6 +156,7 @@ in {
     cider-2
     fastfetch
     btop # better htop
+    mpd
   ];
   services = {
     gpg-agent = {
@@ -162,6 +166,10 @@ in {
       };
       enableSshSupport = true;
       enableBashIntegration = true;
+    };
+    mpd = {
+      enable = true;
+      musicDirectory = "/mnt/nix-data/media/music/";
     };
   };
 
