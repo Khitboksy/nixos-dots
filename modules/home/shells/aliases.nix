@@ -44,7 +44,7 @@ with pkgs; {
   ns = "nh os switch -- --cores 8 --max-jobs 1";
   nsu = "nh os switch --update -- --cores 8 --max-jobs 1";
   nb = "nh os boot -- --cores 8 --max-jobs 1";
-  nbu = "nh os boot --update --cores 8 --max-jobs 1";
+  nbu = "nh os boot --update --cores 12 --max-jobs 8";
   nfc = "nix flake check --cores 4 --max-jobs 1";
   nfu = "nix flake update --cores 4 --max-jobs 1";
 

@@ -170,6 +170,18 @@ in {
     mpd = {
       enable = true;
       musicDirectory = "/mnt/nix-data/media/music/";
+      extraConfig = ''
+        audio_output {
+          type  "pulse"
+          name  "PipeWire Output"
+        }
+        audio_output {
+          type   "fifo"
+          name   "my_fifo"
+          path   "/tmp/mpd.fifo"
+          format "44100:16:2"
+        }
+      '';
     };
   };
 

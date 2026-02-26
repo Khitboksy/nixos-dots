@@ -8,7 +8,7 @@
     draw_borders: false,
     format_tag_separator: " | ",
     browser_column_widths: [20, 38, 42],
-    background_color: "#1e1e2e",
+    background_color: None,
     text_color: "#cdd6f4",
     header_background_color: None,
     modal_background_color: None,
@@ -17,7 +17,7 @@
     preview_metadata_group_style: (fg: "yellow", modifiers: "Bold"),
     tab_bar: (
         active_style: (fg: "#1e1e2e", bg: "#cba6f7", modifiers: "Bold"),
-        inactive_style: (fg: "#cdd6f4", bg: "#1e1e2e"),
+        inactive_style: (fg: "#cdd6f4", bg: None),
     ),
     highlighted_item_style: (fg: "#cba6f7", modifiers: "Bold"),
     current_item_style: (fg: "#cba6f7", bg: "#45475a", modifiers: "Bold"),
@@ -118,7 +118,7 @@ cava: (
     inverted_bar_symbols: ['▔', '🮂', '🮃', '▀', '🮄', '🮅', '🮆', '█'],
 
     //bg_color: "", // background color, defaults to rmpc's bg color if not provided
-    bar_width: 1, // width of a single bar in columns
+    bar_width: 2, // width of a single bar in columns
     bar_spacing: 1, // free space between bars in columns
 
     // Possible values are "Top", "Bottom" and "Horizontal". Top makes the bars go from top to

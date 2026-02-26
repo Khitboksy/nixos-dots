@@ -49,7 +49,6 @@ in {
                 global: {
                     ":":       CommandMode,
                     ",":       VolumeDown,
-                    "s":       Stop,
                     ".":       VolumeUp,
                     "<Tab>":   NextTab,
                     "<S-Tab>": PreviousTab,
@@ -58,15 +57,16 @@ in {
                     "3":       SwitchToTab("Lists"),
                     "2":       SwitchToTab("Find"),
                     "q":       Quit,
-                    ">":       NextTrack,
                     "p":       TogglePause,
+                    "s":       Stop,
                     "<":       PreviousTrack,
+                    ">":       NextTrack,
                     "f":       SeekForward,
+                    "b":       SeekBack,
+                    "v":       ToggleSingle,
                     "z":       ToggleRepeat,
                     "x":       ToggleRandom,
                     "c":       ToggleConsume,
-                    "v":       ToggleSingle,
-                    "b":       SeekBack,
                     "~":       ShowHelp,
                     "I":       ShowCurrentSongInfo,
                     "O":       ShowOutputs,
@@ -131,12 +131,37 @@ in {
                 album_display_mode: SplitByDate,
                 album_sort_by: Date,
             ),
+            cava: (
+                framerate: 165,
+                autosens: true,
+                sensitivity: 115,
+                input: (
+                    method: Fifo,
+                    source: "/tmp/mpd.fifo",
+                    sample_rate: 44100,
+                    channels: 2,
+                    sample_bits: 16,
+                ),
+                smoothing: (
+                    noise_reduction: 25,
+                ),
+                eq: []
+            ),
             tabs: [
                 (
                     name: "Playing",
                     pane: Split(
-                        direction: Horizontal,
-                        panes: [(size: "65%", pane: Pane(Queue)), (size: "35%", pane: Pane(AlbumArt))],
+                        direction: Vertical,
+                        panes: [
+                            (size: "30%", pane: Split(
+                                direction: Horizontal,
+                                panes: [
+                                    (size: "70%", pane: Pane(Queue)),
+                                    (size: "30%", pane: Pane(AlbumArt)),
+                                ],
+                            )),
+                            (size: "60%", pane: Pane(Cava)),
+                        ],
                     ),
                 ),
                 (
