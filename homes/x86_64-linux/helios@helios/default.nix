@@ -174,6 +174,7 @@ in {
         audio_output {
           type  "pulse"
           name  "PipeWire Output"
+          format "44100:16:2"
         }
         audio_output {
           type   "fifo"

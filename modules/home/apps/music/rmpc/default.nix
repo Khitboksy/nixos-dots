@@ -32,7 +32,7 @@ in {
             lyrics_dir: Some("/mnt/nix-data/media/lyrics"),
         	  enable_config_hot_reload: true,
             cache_dir: None,
-            on_song_change: ["~/.config/rmpc/increment_play_count"],
+            on_song_change: None,
             volume_step: 5,
             max_fps: 30,
             scrolloff: 0,
@@ -155,20 +155,20 @@ in {
                     pane: Split(
                         direction: Vertical,
                         panes: [
-                            (size: "30%", pane: Split(
+                            (size: "70%", pane: Split(
                                 direction: Horizontal,
                                 panes: [
+                                    (size: "30%", pane: Split(
+                                        direction: Vertical,
+                                        panes: [
+                                            (size: "50%", pane: Pane(AlbumArt)),
+                                            (size: "50%", pane: Pane(Lyrics)),
+                                        ],
+                                    )),
                                     (size: "70%", pane: Pane(Queue)),
-                                    (size: "30%", pane: Pane(AlbumArt)),
                                 ],
                             )),
-                            (size: "60%", pane: Split(
-                                direction: Horizontal,
-                                panes : [
-                                    (size: "70%", pane: Pane(Cava)),
-                                    (size: "30%", pane: Pane(Lyrics), vertical_align: Center),
-                                ],
-                            )),
+                            (size: "30%", pane: Pane(Cava)),
                         ],
                     ),
                 ),
