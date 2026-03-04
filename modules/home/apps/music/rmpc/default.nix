@@ -6,6 +6,17 @@
 with lib;
 with lib.custom; let
   cfg = config.apps.music.rmpc;
+
+  incrementPlayCount = pkgs.writeShellScript "rmpc-increment-playcount" ''
+    #!/usr/bin/env sh
+
+    sticker=$(rmpc sticker get "$FILE" "playCount" | jq -r '.value')
+    if [ -z "$sticker" ]; then
+      rmpc sticker set "$FILE" "playCount" "1"
+    else
+      rmpc sticker set "$FILE" "playCount" "$((sticker + 1))"
+    fi
+  '';
 in {
   options.apps.music.rmpc = with types; {
     enable = mkBoolOpt false "Enable RMPC Rust Based CLI Music Player";
@@ -32,7 +43,7 @@ in {
             lyrics_dir: Some("/mnt/nix-data/media/lyrics"),
         	  enable_config_hot_reload: true,
             cache_dir: None,
-            on_song_change: None,
+            on_song_change: ["${incrementPlayCount}"],
             volume_step: 5,
             max_fps: 30,
             scrolloff: 0,
