@@ -13,9 +13,10 @@ in {
 
   config = mkIf cfg.enable {
     xdg.configFile = {
-      "rmpc/themes" = {
+      "rmpc/config" = {
         enable = true;
         source = ./themes;
+        recursive = true;
       };
     };
     programs.rmpc = {
@@ -28,9 +29,10 @@ in {
             address: "127.0.0.1:6600",
             password: None,
             theme: Some("~/.config/rmpc/themes/catppuccin-mocha.ron"),
+            lyrics_dir: Some("/mnt/nix-data/media/music/lyrics"),
         	  enable_config_hot_reload: true,
             cache_dir: None,
-            on_song_change: None,
+            on_song_change: ["~/.config/rmpc/increment_play_count"],
             volume_step: 5,
             max_fps: 30,
             scrolloff: 0,
@@ -160,7 +162,12 @@ in {
                                     (size: "30%", pane: Pane(AlbumArt)),
                                 ],
                             )),
-                            (size: "60%", pane: Pane(Cava)),
+                            (size: "60%", pane: Split(
+                                direction: Vertical,
+                                panes : [
+                                    (size: "70%", pane: Pane(Cava)),
+                                    (size: "30%", pane: Pane(Lyrics)),
+                                ],
                         ],
                     ),
                 ),
