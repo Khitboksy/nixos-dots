@@ -58,19 +58,25 @@
                 default: (kind: Text("Unknown"), style: (fg: "#fab387", modifiers: "Bold"))
             ),
             width: "20%",
-	    alignment: Right,
+	          alignment: Right,
         ),
         (
             prop: (kind: Text("-"), style: (fg: "#cdd6f4"), default: (kind: Text("Unknown"))),
             width: "1",
             alignment: Center,
         ),
-	(
+	      (
             prop: (kind: Property(Title), style: (fg: "#f9e2af", modifiers: "Bold"),
                 default: (kind: Text("Unknown"), style: (fg: "#f9e2af", modifiers: "Bold"))
             ),
             width: "80%",
-	    alignment: Left
+	          alignment: Left
+        ),
+        (
+            prop: (kind: Sticker("playCount"), default: (kind: Text("0"))),
+            width: "9",
+            alignment: Right,
+            label: "Playcount"
         ),
     ],
     components: {},
