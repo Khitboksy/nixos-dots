@@ -54,6 +54,12 @@
     ),
     song_table_format: [
         (
+            prop: (kind: Sticker("playCount"), default: (kind: Text("0"))),
+            width: "5",
+            alignment: Right,
+            label: "Playcount"
+        ),
+        (
             prop: (kind: Property(Artist), style: (fg: "#fab387", modifiers: "Bold"),
                 default: (kind: Text("Unknown"), style: (fg: "#fab387", modifiers: "Bold"))
             ),
@@ -72,12 +78,7 @@
             width: "80%",
 	          alignment: Left
         ),
-        (
-            prop: (kind: Sticker("playCount"), default: (kind: Text("0"))),
-            width: "9",
-            alignment: Right,
-            label: "Playcount"
-        ),
+        
     ],
     components: {},
     layout: Split(

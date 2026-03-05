@@ -219,7 +219,7 @@ in {
           {command = ["xwayland-satellite"];}
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
           {command = ["vesktop"];}
-          {command = ["cider-2"];}
+          {command = ["ghostty"];}
 
           #{command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
         ];
@@ -366,7 +366,7 @@ in {
             matches = [
               {
                 at-startup = true;
-                app-id = "^Cider";
+                title = "^Ghostty";
               }
             ];
 

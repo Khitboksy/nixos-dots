@@ -153,7 +153,7 @@ in {
     git
     openrgb-with-all-plugins # RGB LED controller
     vlc
-    cider-2
+    tidal-hifi
     fastfetch
     btop # better htop
     mpd
@@ -170,6 +170,8 @@ in {
     mpd = {
       enable = true;
       musicDirectory = "/mnt/nix-data/media/music/";
+      network.listenAddress = "127.0.0.1";
+      network.port = 6600;
       extraConfig = ''
         audio_output {
           type  "pulse"
@@ -183,6 +185,15 @@ in {
           format "44100:16:2"
         }
       '';
+    };
+    mpdscribble = {
+      enable = true;
+      endpoints = {
+        "last.fm" = {
+          passwordFile = "/home/helios/secrets/lastfm.txt";
+          username = "khitboksy";
+        };
+      };
     };
   };
 
