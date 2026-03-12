@@ -37,6 +37,8 @@ in {
         window-padding-balance = true;
 
         background-opacity = 0.8;
+
+        confirm-close-surface = false;
       };
     };
   };

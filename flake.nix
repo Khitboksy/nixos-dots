@@ -45,6 +45,11 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-databse = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -92,6 +97,7 @@
         catppuccin.nixosModules.catppuccin
         yeetmouse.nixosModules.default
         niri.nixosModules.niri
+        nix-index-databse.nixosModules.default
       ];
     };
 }

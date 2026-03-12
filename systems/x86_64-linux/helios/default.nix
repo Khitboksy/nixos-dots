@@ -30,6 +30,8 @@
       gamescopeSession.enable = true;
     };
     gamemode.enable = true;
+
+    nix-index-database.comma.enable = true;
   };
 
   services = {
@@ -129,7 +131,7 @@
   users.users.helios = {
     isNormalUser = true;
     description = "Taylor";
-    extraGroups = ["networkmanager" "wheel" "libvirtd" "plugdev"];
+    extraGroups = ["networkmanager" "wheel" "plugdev"];
     shell = pkgs.fish;
     initialPassword = "";
     packages = with pkgs; [
@@ -156,10 +158,10 @@
   # Steam
 
   # Virt-Manager
-  programs.virt-manager.enable = true;
+  programs.virt-manager.enable = false;
   users.groups.libvirtd.members = ["helios"];
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.libvirtd.enable = false;
+  virtualisation.spiceUSBRedirection.enable = false;
 
   nix = {
     gc = {

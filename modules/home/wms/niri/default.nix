@@ -220,6 +220,7 @@ in {
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
           {command = ["vesktop"];}
           {command = ["ghostty"];}
+          {command = [''openrgb --startminimized --profile "Helios(TMEM)"''];}
 
           #{command = ["${spawnSlackOnWeekday}/bin/spawn-slack-on-weekday"];}
         ];
@@ -236,6 +237,32 @@ in {
           enable = true; # Not explicitly 'off'
           # slowdown = 3.0; # Commented out
           # Individual animation settings can be added here if needed
+          workspace-switch = {
+            kind = {
+              spring = {
+                damping-ratio = 0.85;
+                stiffness = 700;
+                epsilon = 0.0001;
+              };
+            };
+          };
+
+          horizontal-view-movement = {
+            kind = {
+              spring = {
+                damping-ratio = 0.85;
+                stiffness = 700;
+                epsilon = 0.0001;
+              };
+            };
+          };
+          window-open = {
+            custom-shader = builtins.readFile ./shaders/tileDrop_open.glsl;
+          };
+
+          window-close = {
+            custom-shader = builtins.readFile ./shaders/tileDrop_close.glsl;
+          };
         };
 
         layer-rules = [
