@@ -50,6 +50,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -98,6 +103,7 @@
         yeetmouse.nixosModules.default
         niri.nixosModules.niri
         nix-index-databse.nixosModules.default
+        steam-config-nix.nixosModules.default
       ];
     };
 }

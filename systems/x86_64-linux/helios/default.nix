@@ -21,13 +21,74 @@
       defaultEditor = true;
     };
     fish.enable = true;
-
     steam = {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
       gamescopeSession.enable = true;
+
+      # steam-nix-config - declarative game arguments
+      config = {
+        enable = true;
+        defaultCompatTool = "Proton-Experimental";
+        closeSteam = true;
+
+        apps = {
+          deadlock = {
+            id = 1422450;
+            compatTool = "GE-Proton10-29";
+            launchOptions = {
+              env = {
+                PROTON_DLSS_UPGRADE = true;
+                PROTON_USE_NTSYNC = true;
+                PROTON_LOCAL_SHADER_CACHE = true;
+                PROTON_ENABLE_WAYLAND = true;
+              };
+              args = [
+                "-novid"
+                "-nojoy"
+                "-novsync"
+                "-threads 16"
+                "-dx11"
+                "-f"
+                "+exec autoexec.cfg"
+                "+cl_forcepreload 1"
+                "-no_prewarm_map"
+              ];
+              wrappers = [
+                (lib.getExe pkgs.gamemode)
+                "mangohud"
+              ];
+
+              preHook = ''
+                if [[ "$*" == *"-force-vulkan"* ]]; then
+                  export PROTON_ENABLE_WAYLAND=1
+                fi
+
+                for i in "''${!game_command[@]}"; do
+                  game_command[i]="''${game_command[i]//\/Launcher.exe/\/game.exe}"
+                done
+              '';
+            };
+          };
+
+          overwatch = {
+            id = 2357570;
+            compatTool = "GE-Proton10-29";
+            launchOptions = {
+              env = {
+                SDL_VIDEODRIVER = "x11";
+                PROTON_USE_NTSYNC = true;
+              };
+              wrappers = [
+                (lib.getExe pkgs.gamemode)
+                "gamescope -f -r 165 -w 1920 -h 1080 --force-grab-cursor --"
+              ];
+            };
+          };
+        };
+      };
     };
     gamemode.enable = true;
 

@@ -134,8 +134,8 @@ in {
     networkmanagerapplet
     wl-clipboard
     custom.enc
-    deadlock-mod-manager
-    element-desktop
+    #deadlock-mod-manager
+    #element-desktop
     r2modman
     nix-tree
     tokei

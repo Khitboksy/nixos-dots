@@ -23,15 +23,14 @@ in {
 
     gtk = {
       enable = true;
-
       font = {
-        name = "Cantarell";
-        size = 11;
+        name = "Iosevka";
+        size = 12;
       };
 
       theme = {
-        name = "Tokyonight-Dark";
-        package = pkgs.tokyonight-gtk-theme;
+        name = "Catppuccin-Mocha";
+        package = pkgs.catppuccin-gtk;
       };
 
       iconTheme = {
