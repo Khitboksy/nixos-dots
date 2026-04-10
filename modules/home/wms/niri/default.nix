@@ -109,7 +109,7 @@ in {
 
         # Output configuration
         outputs."DP-1" = {
-          enable = true; # Not explicitly 'off'
+          enable = false; # Not explicitly 'off'
           mode = {
             width = 1920;
             height = 1080;
@@ -123,7 +123,25 @@ in {
             flipped = false;
           };
           position = {
-            x = 1920;
+            x = 0;
+            y = 0;
+          };
+        };
+
+        outputs."HDMI-A-1" = {
+          enable = true;
+          mode = {
+            width = 1366;
+            height = 768;
+            refresh = 75.0;
+          };
+          scale = 1;
+          transform = {
+            rotation = 0;
+            flipped = false;
+          };
+          position = {
+            x = 0;
             y = 0;
           };
         };
