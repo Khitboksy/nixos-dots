@@ -133,7 +133,7 @@ in {
           mode = {
             width = 1366;
             height = 768;
-            refresh = 75.0;
+            refresh = 59.970;
           };
           scale = 1;
           transform = {
@@ -375,8 +375,8 @@ in {
                 app-id = "^deadlock.exe$";
               }
             ];
-
-            variable-refresh-rate = true;
+            open-on-workspace = "Games";
+            variable-refresh-rate = false;
           }
 
           {

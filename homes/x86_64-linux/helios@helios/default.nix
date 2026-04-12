@@ -150,6 +150,7 @@ in {
     vesktop
     tmux-sessionizer
     inputs.zen-browser.packages."${system}".default # beta
+    #inputs.osu-nixos.packages."${system}".osu-nixos
     git
     openrgb-with-all-plugins # RGB LED controller
     vlc
@@ -157,6 +158,7 @@ in {
     fastfetch
     btop # better htop
     mpd
+    #osu-lazer
   ];
   services = {
     gpg-agent = {

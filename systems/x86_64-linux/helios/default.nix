@@ -4,9 +4,11 @@
 {
   pkgs,
   lib,
-  config,
+  inputs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -37,13 +39,13 @@
         apps = {
           deadlock = {
             id = 1422450;
-            compatTool = "GE-Proton10-29";
+            compatTool = "GE-Proton10-32";
             launchOptions = {
               env = {
-                PROTON_DLSS_UPGRADE = true;
+                #PROTON_DLSS_UPGRADE = true;
                 PROTON_USE_NTSYNC = true;
-                PROTON_LOCAL_SHADER_CACHE = true;
-                PROTON_ENABLE_WAYLAND = true;
+                #PROTON_LOCAL_SHADER_CACHE = true;
+                #PROTON_ENABLE_WAYLAND = true;
               };
               args = [
                 "-novid"
@@ -58,7 +60,7 @@
               ];
               wrappers = [
                 (lib.getExe pkgs.gamemode)
-                "mangohud"
+                #"mangohud"
               ];
 
               preHook = ''
@@ -103,6 +105,7 @@
       variant = "";
     };
     xserver.enable = true;
+    xserver.wacom.enable = true;
 
     pipewire = {
       enable = true;
@@ -138,6 +141,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.blacklistedKernelModules = ["wacom" "hid_uclogic"];
 
   # NTFS compatibility
   boot.supportedFilesystems = ["ntfs"];
@@ -158,7 +162,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Chicago";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -192,7 +196,7 @@
   users.users.helios = {
     isNormalUser = true;
     description = "Taylor";
-    extraGroups = ["networkmanager" "wheel" "plugdev"];
+    extraGroups = ["networkmanager" "wheel" "plugdev" "uinput"];
     shell = pkgs.fish;
     initialPassword = "";
     packages = with pkgs; [

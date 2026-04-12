@@ -55,6 +55,10 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    #osu-nixos = {
+    #  url = "github:notgne2/osu-nixos";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
   };
 
   outputs = inputs:
@@ -66,8 +70,7 @@
       # in the next section for information on how you can move your
       # Nix files to a separate directory.
       src = ./.;
-      /*
-        overlays = with inputs; [
+      overlays = with inputs; [
         # rust-overlay.overlays.default
         (final: prev: {
           ghostty = ghostty.packages."x86_64-linux".default;
@@ -84,9 +87,9 @@
         #     patches = [];
         #   };
         # })
-        #niri.overlays.niri
+        niri.overlays.niri
+        #osu-nixos.overlay
       ];
-      */
 
       snowfall = {namespace = "custom";};
       channels-config = {
