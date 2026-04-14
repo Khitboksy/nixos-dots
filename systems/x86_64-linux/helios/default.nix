@@ -5,6 +5,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }: let
   system = pkgs.stdenv.hostPlatform.system;
@@ -39,39 +40,24 @@ in {
         apps = {
           deadlock = {
             id = 1422450;
-            compatTool = "GE-Proton10-32";
+            compatTool = "GE-Proton10-29";
             launchOptions = {
               env = {
-                #PROTON_DLSS_UPGRADE = true;
                 PROTON_USE_NTSYNC = true;
-                #PROTON_LOCAL_SHADER_CACHE = true;
-                #PROTON_ENABLE_WAYLAND = true;
+                DXVK_ASYNC = "1";
               };
               args = [
                 "-novid"
                 "-nojoy"
                 "-novsync"
-                "-threads 16"
-                "-dx11"
-                "-f"
                 "+exec autoexec.cfg"
-                "+cl_forcepreload 1"
                 "-no_prewarm_map"
               ];
               wrappers = [
                 (lib.getExe pkgs.gamemode)
-                #"mangohud"
+                "/home/helios/.local/bin/mangohud-def"
+                "gamescope -f -r 60 -w 1366 -h 768 --force-grab-cursor --rt --adaptive-sync --hdr-enabled=0 --"
               ];
-
-              preHook = ''
-                if [[ "$*" == *"-force-vulkan"* ]]; then
-                  export PROTON_ENABLE_WAYLAND=1
-                fi
-
-                for i in "''${!game_command[@]}"; do
-                  game_command[i]="''${game_command[i]//\/Launcher.exe/\/game.exe}"
-                done
-              '';
             };
           };
 
@@ -265,7 +251,7 @@ in {
     pkgs.meson
     pkgs.cpio
     pkgs.pwvucontrol
-    pkgs.mangohud
+    #pkgs.mangohud
 
     pkgs.swaybg
 

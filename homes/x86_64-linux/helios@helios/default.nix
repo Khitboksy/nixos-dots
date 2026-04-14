@@ -27,6 +27,13 @@ in {
       rmpc.enable = true;
       cava.enable = true;
     };
+
+    games = {
+      mangohud = {
+        enable = true;
+        defaultProfile = "bare";
+      };
+    };
   };
 
   shells.fish.enable = true;
