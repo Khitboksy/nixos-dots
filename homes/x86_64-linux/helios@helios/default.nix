@@ -76,7 +76,7 @@ in {
     dank-material-shell = {
       enable = true;
 
-      niri.enableKeybinds = true;
+      #niri.enableKeybinds = true;
       systemd.enable = true;
 
       enableVPN = true;
@@ -139,7 +139,7 @@ in {
     nautilus
     loupe
     networkmanagerapplet
-    wl-clipboard
+    wl-clipboard-rs
     custom.enc
     #deadlock-mod-manager
     #element-desktop

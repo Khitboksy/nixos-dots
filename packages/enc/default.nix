@@ -3,7 +3,7 @@
   gnupg,
   neovim,
   coreutils,
-  wl-clipboard,
+  wl-clipboard-rs,
   xclip,
 }:
 writeShellScriptBin "enc" ''
@@ -42,7 +42,7 @@ writeShellScriptBin "enc" ''
               "''${recipients[@]}" \
               "$temp_file"
 
-          cat "$temp_file".asc | ${wl-clipboard}/bin/wl-copy --type text/plain
+          cat "$temp_file".asc | ${wl-clipboard-rs}/bin/wl-copy --type text/plain
           echo "Encrypted content copied to Wayland clipboard"
       elif [[ -n "$DISPLAY" ]]; then
           ${gnupg}/bin/gpg --encrypt \

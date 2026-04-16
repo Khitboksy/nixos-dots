@@ -301,17 +301,15 @@ in {
 
         # Window rules
         window-rules = [
-          # Password manager rule (example from KDL comments)
-
+          {
+            opacity = 0.9;
+          }
+          # - Screencast Exceptions
           {
             matches = [
-              #{app-id = "^org\\.keepassxc\\.KeePassXC$";}
-              #{app-id = "^org\\.gnome\\.World\\.Secrets$";}
               {app-id = "^Bitwarden$";}
-              #{app-id = "^thunderbird$";}
               {app-id = "^signal$";}
               {app-id = "^vesktop$";}
-              #{app-id = "^slack$";}
             ];
             block-out-from = "screen-capture";
           }
@@ -349,13 +347,11 @@ in {
             matches = [
               {app-id = "^steam$";}
             ];
-
-            excludes = [{title = "^Steam$";}];
-
+            excludes = [
+              {title = "^Steam$";}
+            ];
             open-floating = true;
-
             open-focused = false;
-
             default-floating-position = {
               relative-to = "bottom-right";
               x = 16;
@@ -365,39 +361,27 @@ in {
 
           {
             matches = [
-              #{
-              #  app-id = "^cyberpunk2077.exe$";
-              #}
-              #{
-              #  app-id = "^Overwatch2.exe$";
-              #}
               {
                 app-id = "^deadlock.exe$";
               }
             ];
-            open-on-workspace = "Games";
-            variable-refresh-rate = false;
+            open-on-workspace = "games";
           }
 
           {
             matches = [
               {
-                at-startup = true;
                 app-id = "^zen$";
               }
             ];
 
             open-maximized = true;
-
             open-on-workspace = "browser";
           }
           {
             matches = [
               {
                 app-id = "^vesktop$";
-              }
-              {
-                app-id = "^equibop";
               }
               {
                 app-id = "^signal$";
@@ -414,26 +398,9 @@ in {
                 title = "^Ghostty";
               }
             ];
-
             open-maximized = true;
             open-on-workspace = "music";
           }
-          /*
-            {
-            matches = [
-              {
-                at-startup = true;
-                app-id = "^Slack$";
-              }
-              {
-                at-startup = true;
-                app-id = "^thunderbird$";
-              }
-            ];
-
-            open-on-workspace = "work";
-          }
-          */
         ];
 
         workspaces."I" = {
@@ -464,6 +431,9 @@ in {
             };
             "Mod+D" = {
               action = actions.spawn "fuzzel";
+            };
+            "Mod+Z" = {
+              action = actions.spawn "zen";
             };
             # "Mod+T" = { action = actions.spawn "bash" "-c" "notify-send hello && exec alacritty"; };
 

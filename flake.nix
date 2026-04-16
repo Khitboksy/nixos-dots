@@ -55,8 +55,8 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #osu-nixos = {
-    #  url = "github:notgne2/osu-nixos";
+    #niri-nix = {
+    #  url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
   };
