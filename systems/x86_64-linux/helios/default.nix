@@ -135,7 +135,7 @@ in {
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "helios"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

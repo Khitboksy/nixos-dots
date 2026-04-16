@@ -76,7 +76,7 @@ in {
     dank-material-shell = {
       enable = true;
 
-      #niri.enableKeybinds = true;
+      niri.enableKeybinds = true;
       systemd.enable = true;
 
       enableVPN = true;
