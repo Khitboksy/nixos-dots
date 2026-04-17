@@ -205,7 +205,7 @@ in {
       };
     };
     opencode = {
-      enable = false;
+      enable = true;
     };
   };
 
