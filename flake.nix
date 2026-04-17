@@ -55,6 +55,11 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    opencode = {
+      url = "github:anomalyco/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #niri-nix = {
     #  url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     #  inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +79,7 @@
         # rust-overlay.overlays.default
         (final: prev: {
           ghostty = ghostty.packages."x86_64-linux".default;
+          opencode = opencode.packages.${final.stdenv.system}.default;
         })
         # (final: prev: {
         #   shadps4 = prev.shadps4.overrideAttrs {

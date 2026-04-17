@@ -421,6 +421,26 @@
         "type": "github"
       }
     },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776410833,
+        "narHash": "sha256-zVHJohgro1KVXusUQ4srDqVF2b5WOdQ/Wm/JfMRstTY=",
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "rev": "c57c5315c17e1648d6699abd25db8ee195f44de1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "type": "github"
+      }
+    },
     "quickshell": {
       "inputs": {
         "nixpkgs": [
@@ -475,6 +495,7 @@
         "niri-src": "niri-src",
         "nix-index-databse": "nix-index-databse",
         "nixpkgs": "nixpkgs_3",
+        "opencode": "opencode",
         "rmpc": "rmpc",
         "snowfall-lib": "snowfall-lib",
         "steam-config-nix": "steam-config-nix",

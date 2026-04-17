@@ -204,6 +204,9 @@ in {
         };
       };
     };
+    opencode = {
+      enable = false;
+    };
   };
 
   home.stateVersion = "24.11";

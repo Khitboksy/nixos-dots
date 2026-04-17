@@ -52,11 +52,12 @@ in {
                 "-novsync"
                 "+exec autoexec.cfg"
                 "-no_prewarm_map"
+                "-f"
               ];
               wrappers = [
                 (lib.getExe pkgs.gamemode)
                 "/home/helios/.local/bin/mangohud-def"
-                "gamescope -f -r 60 -w 1366 -h 768 --force-grab-cursor --rt --adaptive-sync --hdr-enabled=0 --"
+                "gamescope -r 60 -w 1366 -h 768 --force-grab-cursor --rt --adaptive-sync --hdr-enabled=0 --"
               ];
             };
           };
@@ -92,20 +93,6 @@ in {
     };
     xserver.enable = true;
     xserver.wacom.enable = true;
-
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
-      #jack.enable = true;
-
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
-      #media-session.enable = true;
-    };
-
     # Mullvad
     mullvad-vpn = {
       enable = true;
@@ -165,19 +152,7 @@ in {
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable sound with pipewire.
-  services.pulseaudio = {
-    enable = false;
-    extraConfig = "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1";
-  };
   security.rtkit.enable = true;
-  /*
-  services.mpd.user = "helios";
-  systemd.services.mpd.environment = {
-    # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
-    XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.helios.uid}"; # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
-  };
-  */
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.helios = {
     isNormalUser = true;

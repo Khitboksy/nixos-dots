@@ -133,7 +133,7 @@ in {
           mode = {
             width = 1366;
             height = 768;
-            refresh = 59.970;
+            refresh = 59.790;
           };
           scale = 1;
           transform = {
@@ -234,7 +234,6 @@ in {
 
         # Spawn processes at startup
         spawn-at-startup = [
-          {command = ["xwayland-satellite"];}
           {command = ["${pkgs.writeShellScriptBin "zen-delayed" ''sleep 5; zen''}/bin/zen-delayed"];}
           {command = ["vesktop"];}
           {command = ["ghostty"];}
@@ -374,7 +373,7 @@ in {
                 app-id = "^zen$";
               }
             ];
-
+            open-focused = true;
             open-maximized = true;
             open-on-workspace = "browser";
           }
@@ -387,7 +386,7 @@ in {
                 app-id = "^signal$";
               }
             ];
-
+            open-focused = false;
             open-maximized = true;
             open-on-workspace = "chat";
           }
@@ -398,6 +397,7 @@ in {
                 title = "^Ghostty";
               }
             ];
+            open-focused = false;
             open-maximized = true;
             open-on-workspace = "music";
           }
