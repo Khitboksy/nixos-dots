@@ -166,6 +166,7 @@ in {
     btop # better htop
     mpd
     #osu-lazer
+    inputs.mcp-nixos.packages.${system}.default
   ];
   services = {
     gpg-agent = {

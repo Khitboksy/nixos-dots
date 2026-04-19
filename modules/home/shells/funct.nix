@@ -36,12 +36,12 @@ with pkgs; {
   '';
 
   ytv = ''
-    ${getExe yt-dlp} \
-        -f "bv*+ba/b" \
-        --ignore-errors \
-        --no-overwrites \
-        --concurrent-fragments 8 \
-        -o "%(playlist_index)02d.%(title)s.%(ext)s" \
+    ${getExe yt-dlp}
+        -f "bv*+ba/b"
+        --ignore-errors
+        --no-overwrites
+        --concurrent-fragments 8
+        -o "%(playlist_index)02d.%(title)s.%(ext)s"
         $argv
   '';
 
@@ -133,5 +133,8 @@ with pkgs; {
 
     echo ""
     echo "All downloads complete."
+  '';
+  openclient = ''
+    opencode attach "http://localhost:4096" $argv
   '';
 }

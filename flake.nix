@@ -64,6 +64,7 @@
     #  url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
+    mcp-nixos.url = "github:utensils/mcp-nixos";
   };
 
   outputs = inputs:
