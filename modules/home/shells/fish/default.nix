@@ -27,7 +27,9 @@ in {
         set -Ux MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
         if not set -q TMUX
-          tmux
+          # Start tmux, try to restore from continuum
+          # Continuum restores highest available slot (prefer your hard saves over auto-saves)
+          exec tmux -u new -A -D -s main
         end
       '';
 
@@ -54,9 +56,9 @@ in {
         }
       ];
 
-      functions = import ../funct.nix {inherit pkgs lib config;};
+      functions = import ../functions.nix {inherit pkgs lib config;};
 
-      shellAliases = import ../aliases.nix {inherit pkgs lib config;};
+      shellAliases = import ../shellAliases.nix {inherit pkgs lib config;};
     };
 
     home.packages = with pkgs;
@@ -124,14 +126,6 @@ in {
         qrencode
 
         unzip
-      ]
-      ++ (
-        if !pkgs.stdenv.isDarwin
-        then [
-          hcxdumptool
-          hashcat
-        ]
-        else []
-      );
-  };
+      ];
+    };
 }

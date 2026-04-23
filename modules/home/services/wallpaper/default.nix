@@ -7,7 +7,7 @@
 with lib;
 with lib.custom; let
   cfg = config.services.wallpaper;
-
+  theme = import ../../../../lib/theme/default.nix {inherit lib;};
   mkService = recursiveUpdate {
     Unit.PartOf = ["graphical-session.target"];
     Unit.After = ["graphical-session.target"];
@@ -15,7 +15,7 @@ with lib.custom; let
   };
 in {
   options.services.wallpaper = with types; {
-    enable = mkBoolOpt false "Enable MPD (Music Player Daemon)";
+    enable = mkBoolOpt false "Enable wallpaper service with swaybg";
   };
 
   config = mkIf cfg.enable {
@@ -23,7 +23,7 @@ in {
       swaybg = mkService {
         Unit.Description = "Wallpaper Chooser";
         Service = {
-          ExecStart = "${getExe pkgs.swaybg} -i ${wallpaper}";
+          ExecStart = "${getExe pkgs.swaybg} -i ${theme.wallpaper}";
           Restart = "always";
         };
       };

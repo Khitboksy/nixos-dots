@@ -11,21 +11,20 @@ in {
       neovim.enable = true;
       tmux.enable = true;
       lf.enable = true;
+      cava.enable = true;
+      dms.enable = true;
     };
 
     term = {
       kitty.enable = true;
-      ghostty.enable = true;
     };
 
     helpers = {
-      rofi.enable = true;
-      waybar.enable = false;
+      tofi.enable = true;
     };
 
     music = {
       rmpc.enable = true;
-      cava.enable = true;
     };
 
     games = {
@@ -36,11 +35,55 @@ in {
     };
   };
 
-  shells.fish.enable = true;
+  shells = {
+    fish.enable = true;
+  };
 
-  wms = {
-    hyprland.enable = false;
-    niri.enable = true;
+  wayland.windowManager.niri = {
+    enable = true;
+  };
+
+  services = {
+    wallpaper.enable = true;
+    gpg-agent = {
+      enable = true;
+      pinentry = {
+        package = lib.mkForce pkgs.pinentry-gnome3;
+      };
+      enableSshSupport = true;
+      enableBashIntegration = true;
+    };
+    mpd = {
+      enable = true;
+      musicDirectory = "/mnt/nix-data/media/music/";
+      network.listenAddress = "127.0.0.1";
+      network.port = 6600;
+      extraConfig = ''
+        audio_output {
+          type  "pulse"
+          name  "PipeWire Output"
+          format "44100:16:2"
+        }
+        audio_output {
+          type   "fifo"
+          name   "my_fifo"
+          path   "/tmp/mpd.fifo"
+          format "44100:16:2"
+        }
+      '';
+    };
+    mpdscribble = {
+      enable = true;
+      endpoints = {
+        "last.fm" = {
+          passwordFile = "/home/helios/secrets/lastfm.txt";
+          username = "khitboksy";
+        };
+      };
+    };
+    opencode = {
+      enable = true;
+    };
   };
 
   rice.gtk.enable = true;
@@ -50,20 +93,15 @@ in {
     accent = "sapphire";
 
     btop.enable = true;
-    fuzzel.enable = true;
-    kitty.enable = true;
     fzf.enable = true;
   };
+
   programs = {
     gpg.enable = true;
-
-    fuzzel.enable = true;
-
     fzf.enable = true;
 
     btop = {
       enable = true;
-      #catppuccin.enable = true;
       extraConfig = ''
         update_ms = 100
         vim_keys = true
@@ -71,19 +109,6 @@ in {
       settings = {
         theme_background = false;
       };
-    };
-
-    dank-material-shell = {
-      enable = true;
-
-      niri.enableKeybinds = true;
-      systemd.enable = true;
-
-      enableVPN = true;
-      enableCalendarEvents = true;
-      enableDynamicTheming = true;
-      enableSystemMonitoring = true;
-      enableAudioWavelength = true;
     };
 
     obs-studio = {
@@ -126,8 +151,8 @@ in {
       "default" = "kitty";
     };
     "org/gnome/Loupe" = {
-      "interpolation-quality" = "high"; # Set image scaling quality
-      "zoom-gesture" = true; # Enable zoom gesture
+      "interpolation-quality" = "high";
+      "zoom-gesture" = true;
     };
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = ["qemu:///system"];
@@ -148,67 +173,29 @@ in {
     tokei
     clonehero
     prismlauncher
-    ckan # Comprehensive Kerbal Archive Network. KSP mod manager
+    ckan
     qbittorrent
     libimobiledevice
     ifuse
     lf
     signal-desktop
     vesktop
-    tmux-sessionizer
-    inputs.zen-browser.packages."${system}".default # beta
+    inputs.zen-browser.packages."${system}".default
     #inputs.osu-nixos.packages."${system}".osu-nixos
     git
-    openrgb-with-all-plugins # RGB LED controller
+    openrgb-with-all-plugins
     vlc
     tidal-hifi
     fastfetch
-    btop # better htop
+    btop
     mpd
     #osu-lazer
     inputs.mcp-nixos.packages.${system}.default
+    ttfautohint
+    nodejs
+    bitwarden-desktop
+    nh
   ];
-  services = {
-    gpg-agent = {
-      enable = true;
-      pinentry = {
-        package = lib.mkForce pkgs.pinentry-gnome3;
-      };
-      enableSshSupport = true;
-      enableBashIntegration = true;
-    };
-    mpd = {
-      enable = true;
-      musicDirectory = "/mnt/nix-data/media/music/";
-      network.listenAddress = "127.0.0.1";
-      network.port = 6600;
-      extraConfig = ''
-        audio_output {
-          type  "pulse"
-          name  "PipeWire Output"
-          format "44100:16:2"
-        }
-        audio_output {
-          type   "fifo"
-          name   "my_fifo"
-          path   "/tmp/mpd.fifo"
-          format "44100:16:2"
-        }
-      '';
-    };
-    mpdscribble = {
-      enable = true;
-      endpoints = {
-        "last.fm" = {
-          passwordFile = "/home/helios/secrets/lastfm.txt";
-          username = "khitboksy";
-        };
-      };
-    };
-    opencode = {
-      enable = true;
-    };
-  };
 
   home.stateVersion = "24.11";
 }

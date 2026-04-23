@@ -7,7 +7,6 @@
 with lib;
 with lib.custom; let
   cfg = config.apps.tools.neovim;
-  system = pkgs.stdenv.hostPlatform.system;
 
   lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "lazy-nix-helper.nvim";
@@ -36,7 +35,8 @@ in {
     programs.neovim = {
       enable = true;
       defaultEditor = true;
-      # package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+      withRuby = true;
+      withPython3 = true;
       extraPackages = with pkgs; [
         # Formatters
         alejandra # Nix
@@ -53,9 +53,6 @@ in {
         markdownlint-cli2
         sqlfluff
         # go
-
-        # tailwindcss-language-server
-
         # Tools
         git
         html-tidy
@@ -66,6 +63,7 @@ in {
         sqlite
         postgresql
         vscode-extensions.vadimcn.vscode-lldb.adapter
+        tree-sitter # Required for nvim-treesitter to compile parsers
       ];
       plugins = with pkgs.vimPlugins; [
         lazy-nix-helper-nvim

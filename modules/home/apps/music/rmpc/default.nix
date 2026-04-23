@@ -2,11 +2,13 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
 with lib.custom; let
   cfg = config.apps.music.rmpc;
+  system = pkgs.stdenv.hostPlatform.system;
 
   incrementPlayCount = pkgs.writeShellScript "rmpc-increment-playcount" ''
     #!/usr/bin/env sh
@@ -32,6 +34,7 @@ in {
       };
     };
     programs.rmpc = {
+      package = inputs.rmpc.packages.${system}.rmpc;
       enable = true;
       config = ''
         #![enable(implicit_some)]

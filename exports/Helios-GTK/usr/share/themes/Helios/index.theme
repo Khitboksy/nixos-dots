@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Helios
+Comment=Helios GTK Theme (Catppuccin Mocha)
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkColorScheme=crust=#11111b,base=#1e1e2e,surface0=#313244,surface1=#45475a,surface2=#585b70,text=#cdd6f4,subtext0=#a6adc8,subtext1=#bac2de,overlay0=#6c7086,overlay1=#7f849c,overlay2=#9399b2,blue=#89b4fa,lavender=#b4befe,mauve=#cba6f7,pink=#f5c2e7,red=#f38ba8,peach=#fab387,yellow=#f9e2af,green=#a6e3a1,teal=#94e2d5
+
+[Settings]
+gtk-application-prefer-dark-theme=1
+gtk-font-name=Helios 12
+gtk-hintStyle=hintslight
+gtk-antialiasing=1
+gtk-xft-antialias=1
+gtk-xft-hinting=1
+gtk-xft-rgba=rgb

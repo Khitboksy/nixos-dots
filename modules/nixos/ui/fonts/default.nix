@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   pkgs,
@@ -16,44 +15,28 @@ in {
   config = mkIf cfg.enable {
     fonts = {
       packages = with pkgs; [
-        iosevka
-        cantarell-fonts
-        # (iosevka.override {
-        #   set = "Custom";
-        #   privateBuildPlan = ''
-        #     [buildPlans.IosevkaCustom]
-        #     family = "Iosevka"
-        #     spacing = "normal"
-        #     serifs = "sans"
-        #     noCvSs = true
-        #     exportGlyphNames = true
-        #
-        #       [buildPlans.IosevkaCustom.variants]
-        #       inherits = "ss03"
-        #   '';
-        # })
-        noto-fonts
-        noto-fonts-cjk-sans
         noto-fonts-color-emoji
-        nerd-fonts.jetbrains-mono
-        # nerd-fonts.iosevka
       ];
 
       enableDefaultPackages = false;
 
-      # this fixes emoji stuff
-      fontconfig = {
-        defaultFonts = {
-          monospace = [
-            # "ZedMono Nerd Font Mono"
-            "Iosevka"
-            "Noto Color Emoji"
-          ];
-          sansSerif = ["Cantarell" "Noto Color Emoji"];
-          serif = ["Noto Serif" "Noto Color Emoji"];
-          emoji = ["Noto Color Emoji"];
+        fontconfig = {
+          defaultFonts = {
+            monospace = [
+              "HeliosTerm"
+              "Noto Color Emoji"
+            ];
+            sansSerif = [
+              "HeliosProportional"
+              "Noto Color Emoji"
+            ];
+            serif = [
+              "HeliosProportional"
+              "Noto Color Emoji"
+            ];
+            emoji = ["Noto Color Emoji"];
+          };
         };
-      };
     };
   };
 }

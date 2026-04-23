@@ -9,7 +9,8 @@ with lib;
 with lib.custom; let
   cfg = config.services.opencode;
   system = pkgs.stdenv.hostPlatform.system;
-  openpkg = inputs.opencode.packages.${system}.default;
+  openpkg = pkgs.opencode;
+
   mkService = recursiveUpdate {
     Unit.PartOf = ["graphical-session.target"];
     Unit.After = ["graphical-session.target"];
@@ -21,6 +22,7 @@ in {
     package = mkOpt types.package openpkg "OpenCode package";
     port = mkOpt types.port 4096 "Port for opencode server";
     hostname = mkOpt types.str "127.0.0.1" "Hostname for opencode server";
+    model = mkOpt types.str "minimax/minimax-m2.5:free" "Model to use for OpenCode";
   };
 
   config = mkIf cfg.enable {
@@ -28,6 +30,10 @@ in {
       enable = true;
       package = cfg.package;
       settings = {
+        # Keep the same model string
+        model = cfg.model;
+
+        # OpenRouter disabled: provider not used
         permission = {
           git = "deny";
         };
@@ -35,23 +41,44 @@ in {
           port = cfg.port;
           hostname = cfg.hostname;
         };
+        default_agent = "minerva";
+
         mcp = {
           nixos = {
             type = "local";
             command = ["${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos"];
           };
+          context7 = {
+            type = "remote";
+            url = "https://mcp.context7.com/mcp";
+          };
+          filesystem = {
+            type = "local";
+            command = ["${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem" "/home/helios"];
+          };
+          github = {
+            type = "local";
+            command = ["${pkgs.github-mcp-server}/bin/github-mcp-server" "stdio" "--read-only"];
+          };
+          "sequential-thinking" = {
+            type = "local";
+            command = ["${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking"];
+          };
         };
       };
     };
-    systemd.user.services = {
-      opencode = mkService {
-        Unit.Description = "OpenCode Server";
-        Service = {
-          ExecStart = "${openpkg}/bin/opencode serve --port ${toString cfg.port} --hostname ${cfg.hostname}";
-          Restart = "always";
-        };
+
+    systemd.user.services.minerva = mkService {
+      Unit.Description = "OpenCode Server";
+      Service = {
+        ExecStart = "${openpkg}/bin/opencode serve --port ${toString cfg.port} --hostname ${cfg.hostname}";
+        Restart = "always";
+
+        # Keep OpenRouter key but provider is disabled
+        EnvironmentFile = ["/home/helios/secrets/git_mcp_pat.env" "/home/helios/secrets/openrouter.env"];
       };
     };
+
     home.file.".opencode/agents" = {
       source = ./agents;
       recursive = true;

@@ -8,9 +8,18 @@ with lib;
 with lib.custom; let
   cfg = config.rice.gtk;
   ctp = config.catppuccin;
+  gtkMocha = builtins.readFile ./themes/Helios/Helios.css;
 in {
   options.rice.gtk = with types; {
     enable = mkBoolOpt false "Enable GTK Customization";
+  };
+
+  options.custom = {
+    colors = mkOption {
+      type = types.attrsOf types.attrs;
+      internal = true;
+      description = "Theme color definitions";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -24,14 +33,16 @@ in {
     gtk = {
       enable = true;
       font = {
-        name = "Iosevka";
+        name = "HeliosTerm";
         size = 12;
       };
 
       theme = {
-        name = "Catppuccin-Mocha";
-        package = pkgs.catppuccin-gtk;
+        name = "Helios";
       };
+
+      gtk3.extraCss = gtkMocha;
+      gtk4.extraCss = gtkMocha;
 
       iconTheme = {
         name = "Papirus-Dark";
@@ -49,11 +60,12 @@ in {
         gtk-application-prefer-dark-theme = 1;
       };
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4.theme = null;
       gtk2.extraConfig = ''
         gtk-xft-antialias=1
         gtk-xft-hinting=1
         gtk-xft-hintstyle="hintslight"
-        gtk-xft-rgba="rgb"
+        gtk-xft-rgba=rgb
       '';
     };
 

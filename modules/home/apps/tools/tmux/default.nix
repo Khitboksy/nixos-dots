@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   pkgs,
@@ -31,6 +30,7 @@ in {
         tmuxPlugins.yank
         tmuxPlugins.cpu
         tmuxPlugins.resurrect
+        tmuxPlugins.continuum
       ];
       extraConfig = ''
         set-option -sa terminal-overrides ",xterm*:Tc"
@@ -58,26 +58,28 @@ in {
         set -g @resurrect-restore 'R'
         set -g @resurrect-strategy-nvim 'session'
 
+        # ----- Tmux Continuum (auto-save/auto-restore) -----
+        set -g @continuum-save '15m'      # Auto-save every 15 minutes
+        set -g @continuum-restore 'off'    # We handle restore manually in fish
+        set -g @continuum-boot 'off'    # Disabled - fish handles startup
+
+        # Vim-style copy mode bindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection
         bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
         bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
+        # Split panes
         bind '"' split-window -v -c "#{pane_current_path}"
         bind % split-window -v -c "#{pane_current_path}"
 
+        # Prefix setup
         unbind C-b
         set -g prefix C-Space
         bind C-Space send-prefix
 
+        # Alt+arrows to switch panes
         bind -n M-H previous-window
         bind -n M-L next-window
-
-
-        bind-key C-j display-popup -E "\
-            tmux list-sessions -F '#{session_name}' |\
-            fzf --reverse --header 'Switch sessions' |\
-            xargs tmux switch-client -t"
-
 
         set-option -g destroy-unattached on
         set-option -g exit-empty on

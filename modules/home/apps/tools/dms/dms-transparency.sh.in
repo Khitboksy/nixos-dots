@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# DMS transparency configuration script
+# This script writes transparency settings to DMS settings.d/
+# which DMS reads and merges on startup
+
+set -e
+
+TARGET_DIR="$HOME/.config/DankMaterialShell/settings.json.d"
+mkdir -p "$TARGET_DIR"
+
+# Bar transparency: very transparent
+cat > "$TARGET_DIR/bar-transparency.json" << 'DMSEOF'
+{
+  "barConfigs": [
+    {
+      "id": "default",
+      "transparency": __BAR_TRANSPARENCY__
+    }
+  ]
+}
+DMSEOF
+
+# Notepad transparency
+cat > "$TARGET_DIR/notepad-transparency.json" << 'DMSEOF'
+{
+  "notepadTransparencyOverride": __NOTEPAD_TRANSPARENCY__
+}
+DMSEOF
+
+# Widget/menu transparency
+cat > "$TARGET_DIR/widget-transparency.json" << 'DMSEOF'
+{
+  "widgetMenuTransparency": __WIDGET_TRANSPARENCY__
+}
+DMSEOF
+
+echo "DMS transparency settings written to $TARGET_DIR"

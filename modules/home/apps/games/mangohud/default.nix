@@ -1,5 +1,5 @@
 {
-  config,
+config,
   lib,
   pkgs,
   ...
@@ -7,16 +7,9 @@
 with lib;
 with lib.custom; let
   cfg = config.apps.games.mangohud;
+  colors = config.custom.colors;
   stripHash = hex: builtins.substring 1 (builtins.stringLength hex - 1) hex;
-  mkWrapper = profile: let
-    homeDir = config.home.homeDirectory;
-    confPath = "${homeDir}/.config/MangoHud/${profile}.conf";
-  in ''
-    #!${pkgs.bash}/bin/bash
-    export MANGOHUD_CONFIGFILE="${confPath}"
-    exec ${pkgs.mangohud}/bin/mangohud "$@"
-  '';
-in {
+  in {
   options.apps.games.mangohud = {
     enable = mkOption {
       type = types.bool;
@@ -131,19 +124,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       mangohud
-      nerd-fonts.iosevka
     ];
-
-    home.file = foldl' recursiveUpdate {} (mapAttrsToList (name: content: {
-        ".local/bin/mangohud-${name}" = {
-          text = mkWrapper name;
-          executable = true;
-        };
-        ".config/MangoHud/${name}.conf" = {
-          text = content;
-          executable = false;
-        };
-      })
-      cfg.profiles);
   };
 }
+

@@ -1,0 +1,144 @@
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: condensed;
+	font-style: normal;
+	src: url('WOFF2/Helios-Condensed.woff2') format('woff2'), url('TTF/Helios-Condensed.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2/Helios-Regular.woff2') format('woff2'), url('TTF/Helios-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: condensed;
+	font-style: italic;
+	src: url('WOFF2/Helios-CondensedItalic.woff2') format('woff2'), url('TTF/Helios-CondensedItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2/Helios-Italic.woff2') format('woff2'), url('TTF/Helios-Italic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: condensed;
+	font-style: normal;
+	src: url('WOFF2/Helios-CondensedBold.woff2') format('woff2'), url('TTF/Helios-CondensedBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2/Helios-Bold.woff2') format('woff2'), url('TTF/Helios-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: condensed;
+	font-style: italic;
+	src: url('WOFF2/Helios-CondensedBoldItalic.woff2') format('woff2'), url('TTF/Helios-CondensedBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2/Helios-BoldItalic.woff2') format('woff2'), url('TTF/Helios-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: condensed;
+	font-style: normal;
+	src: url('WOFF2/Helios-CondensedLight.woff2') format('woff2'), url('TTF/Helios-CondensedLight.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2/Helios-Light.woff2') format('woff2'), url('TTF/Helios-Light.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: condensed;
+	font-style: italic;
+	src: url('WOFF2/Helios-CondensedLightItalic.woff2') format('woff2'), url('TTF/Helios-CondensedLightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2/Helios-LightItalic.woff2') format('woff2'), url('TTF/Helios-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: condensed;
+	font-style: normal;
+	src: url('WOFF2/Helios-CondensedSemiBold.woff2') format('woff2'), url('TTF/Helios-CondensedSemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2/Helios-SemiBold.woff2') format('woff2'), url('TTF/Helios-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: condensed;
+	font-style: italic;
+	src: url('WOFF2/Helios-CondensedSemiBoldItalic.woff2') format('woff2'), url('TTF/Helios-CondensedSemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2/Helios-SemiBoldItalic.woff2') format('woff2'), url('TTF/Helios-SemiBoldItalic.ttf') format('truetype');
+}

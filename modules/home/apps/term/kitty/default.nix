@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib;
@@ -8,37 +9,43 @@ with lib.custom; let
   cfg = config.apps.term.kitty;
 in {
   options.apps.term.kitty = with types; {
-    enable = mkBoolOpt false "Enable Kitty Term";
-
-    fonts = {
-      normal = mkStringOpt "JetBrainsMonoNL Nerd Font Mono Bold" "Normal Font";
-      bold = mkStringOpt "JetBrainsMonoNL Nerd Font Mono ExtraBold" "Bold Font";
-      italic = mkStringOpt "JetBrainsMonoNL Nerd Font Mono Bold Italic" "Italic Font";
-      bold_italic = mkStringOpt "JetBrainsMonoNL Nerd Font Mono ExtraBold Italic" "Bold Italic Font";
-      # normal = mkStringOpt "Iosevka Bold" "Normal Font";
-      # bold = mkStringOpt "Iosevka ExtraBold" "Bold Font";
-      # italic = mkStringOpt "Iosevka Bold Italic" "Italic Font";
-      # bold_italic = mkStringOpt "Iosevka ExtraBold Italic" "Bold Italic Font";
-    };
+    enable = mkBoolOpt false "Enable Kitty terminal";
   };
 
   config = mkIf cfg.enable {
     programs.kitty = {
+      package = pkgs.kitty;
       enable = true;
-      font = {
-        name = cfg.fonts.normal;
-        size = 14;
-      };
-
-      extraConfig = ''
-        bold_font ${cfg.fonts.bold}
-        italic_font ${cfg.fonts.italic}
-        bold_italic_font ${cfg.fonts.bold_italic}
-      '';
 
       settings = {
-        window_padding_width = 4;
-        background_opacity = "0.6";
+        font_family = "HeliosTerm";
+        font_size = 14;
+        bold_font = "HeliosTerm Bold";
+        italic_font = "HeliosTerm Italic";
+        bold_italic_font = "HeliosTerm Bold Italic";
+
+        disable_ligatures = "never";
+        disable_ligatures_in_monitored_types = "all";
+
+        window_padding_width = 14;
+        window_padding_height = 14;
+
+        background_opacity = 0.8;
+
+        macos_option_as_alt = true;
+        macos_titlebar_color = "background";
+
+        wayland_enable = true;
+        linux_bell_command = "";
+
+        repaint_delay = 10;
+        input_delay = 3;
+        sync_to_cursor = "no";
+
+        scrollback_lines = 10000;
+
+        confirm_window_close = 0;
+        startup_session = "none";
       };
     };
   };
