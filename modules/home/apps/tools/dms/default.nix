@@ -1,14 +1,14 @@
 {
-  options,
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.tools.dms;
-in {
+in
+{
   options.apps.tools.dms = with types; {
     enable = mkBoolOpt false "Enable DMS (DankMaterialShell)";
 
@@ -38,9 +38,9 @@ in {
       enableAudioWavelength = true;
 
       settings = {
-        # Fonts - using Helios typespace
-        fontFamily = "HeliosProportional";
-        monoFontFamily = "HeliosFixed";
+        # Fonts - using Iosevka typespace
+        fontFamily = "Iosevka";
+        monoFontFamily = "Iosevka";
         fontWeight = 400;
         fontScale = 1.0;
 
@@ -99,3 +99,4 @@ in {
     };
   };
 }
+

@@ -3,9 +3,11 @@
   lib,
   inputs,
   ...
-}: let
+}:
+let
   system = pkgs.stdenv.hostPlatform.system;
-in {
+in
+{
   apps = {
     tools = {
       neovim.enable = true;
@@ -30,7 +32,7 @@ in {
     games = {
       mangohud = {
         enable = true;
-        defaultProfile = "bare";
+        defaultProfile = "def";
       };
     };
   };
@@ -90,7 +92,7 @@ in {
 
   catppuccin = {
     flavor = "mocha";
-    accent = "sapphire";
+    accent = "mauve";
 
     btop.enable = true;
     fzf.enable = true;
@@ -129,16 +131,16 @@ in {
       "x-scheme-handler/about" = "zen-browser.desktop";
       "x-scheme-handler/unknown" = "zen-browser.desktop";
 
-      "inode/directory" = ["org.gnome.Nautilus.desktop"];
+      "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
 
-      "image/jpeg" = ["org.gnome.Loupe.desktop"];
-      "image/png" = ["org.gnome.Loupe.desktop"];
-      "image/gif" = ["org.gnome.Loupe.desktop"];
-      "image/webp" = ["org.gnome.Loupe.desktop"];
-      "image/tiff" = ["org.gnome.Loupe.desktop"];
-      "image/bmp" = ["org.gnome.Loupe.desktop"];
-      "image/x-icon" = ["org.gnome.Loupe.desktop"];
-      "image/svg+xml" = ["org.gnome.Loupe.desktop"];
+      "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
+      "image/png" = [ "org.gnome.Loupe.desktop" ];
+      "image/gif" = [ "org.gnome.Loupe.desktop" ];
+      "image/webp" = [ "org.gnome.Loupe.desktop" ];
+      "image/tiff" = [ "org.gnome.Loupe.desktop" ];
+      "image/bmp" = [ "org.gnome.Loupe.desktop" ];
+      "image/x-icon" = [ "org.gnome.Loupe.desktop" ];
+      "image/svg+xml" = [ "org.gnome.Loupe.desktop" ];
     };
   };
 
@@ -155,8 +157,8 @@ in {
       "zoom-gesture" = true;
     };
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
     };
   };
 
@@ -166,8 +168,6 @@ in {
     networkmanagerapplet
     wl-clipboard-rs
     custom.enc
-    #deadlock-mod-manager
-    #element-desktop
     r2modman
     nix-tree
     tokei
@@ -181,7 +181,6 @@ in {
     signal-desktop
     vesktop
     inputs.zen-browser.packages."${system}".default
-    #inputs.osu-nixos.packages."${system}".osu-nixos
     git
     openrgb-with-all-plugins
     vlc
@@ -189,7 +188,6 @@ in {
     fastfetch
     btop
     mpd
-    #osu-lazer
     inputs.mcp-nixos.packages.${system}.default
     ttfautohint
     nodejs

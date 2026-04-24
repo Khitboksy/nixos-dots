@@ -19,7 +19,7 @@
     };
     niri-src.url = "github:YaLTeR/niri";
     niri-src.inputs.nixpkgs.follows = "nixpkgs";
-        dms = {
+    dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -45,14 +45,17 @@
     };
     mcp-nixos.url = "github:utensils/mcp-nixos";
   };
-  outputs = inputs:
+  outputs =
+    inputs:
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
       src = ./.;
       #overlays = [
-      #  opencode = inputs.opencode.packages."x86_64=linux".default;
+      #(final: prev: { opencode = inputs.opencode.packages."x86_64=linux".default; })
       #];
-      snowfall = {namespace = "custom";};
+      snowfall = {
+        namespace = "custom";
+      };
       channels-config = {
         allowUnfree = true;
       };

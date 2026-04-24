@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/layout.json",
+  "name": "Helios",
+  "config": {
+    "messageSeparation": 1,
+    "messagePaddingTop": 1,
+    "messagePaddingBottom": 1,
+    "messagePaddingLeft": 2,
+    "containerPaddingTop": 1,
+    "containerPaddingBottom": 1,
+    "containerGap": 1,
+    "toolMarginTop": 0,
+    "agentInfoMarginTop": 0,
+    "containerPaddingLeft": 2,
+    "containerPaddingRight": 2,
+    "textIndent": 2,
+    "toolIndent": 2,
+    "showHeader": true,
+    "showFooter": true,
+    "forceSidebarHidden": false,
+    "showInputAgentInfo": true,
+    "showInputBorder": true,
+    "inputAgentInfoPaddingTop": 1,
+    "inputBoxPaddingTop": 1,
+    "inputBoxPaddingBottom": 1
+  }
+}

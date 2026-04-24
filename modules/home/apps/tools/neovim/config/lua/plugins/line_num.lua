@@ -1,34 +1,34 @@
 return {
   "sethen/line-number-change-mode.nvim",
   config = function()
-    -- Load colors from custom theme
-    local colors = require("themes.colors")
+    -- Get catppuccin mocha palette
+    local mocha = require("catppuccin.palettes").get_palette("mocha")
 
     require("line-number-change-mode").setup({
       mode = {
         i = {
-          bg = colors.green.hex,
-          fg = colors.mantle.hex,
+          bg = mocha.green,
+          fg = mocha.mantle,
           bold = true,
         },
         n = {
-          bg = colors.blue.hex,
-          fg = colors.mantle.hex,
+          bg = mocha.blue,
+          fg = mocha.mantle,
           bold = true,
         },
         R = {
-          bg = colors.maroon.hex,
-          fg = colors.mantle.hex,
+          bg = mocha.maroon,
+          fg = mocha.mantle,
           bold = true,
         },
         v = {
-          bg = colors.mauve.hex,
-          fg = colors.mantle.hex,
+          bg = mocha.mauve,
+          fg = mocha.mantle,
           bold = true,
         },
         V = {
-          bg = colors.mauve.hex,
-          fg = colors.mantle.hex,
+          bg = mocha.mauve,
+          fg = mocha.mantle,
           bold = true,
         },
       },

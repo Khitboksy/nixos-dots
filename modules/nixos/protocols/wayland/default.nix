@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   pkgs,
@@ -7,10 +6,12 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.protocols.wayland;
   system = pkgs.stdenv.hostPlatform.system;
-in {
+in
+{
   options.protocols.wayland = with types; {
     enable = mkBoolOpt false "Enable Wayland Protocol";
   };
@@ -36,16 +37,13 @@ in {
 
     services.displayManager.gdm.enable = true;
 
-    programs.uwsm.enable = true;
-
-    programs.hyprland = {
-      withUWSM = true;
-      enable = false;
+    programs = {
+      uwsm.enable = true;
+      niri = {
+        enable = true;
+        package = inputs.niri-src.packages.${system}.niri;
+      };
     };
-
-    programs.niri.enable = true;
-    programs.niri.package = inputs.niri-src.packages.${system}.niri;
-
     environment = {
       variables = {
         NIXOS_OZONE_WL = "1";

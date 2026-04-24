@@ -18,11 +18,11 @@ in {
       enable = true;
 
       settings = {
-        font_family = "HeliosTerm";
+        font_family = "Iosevka";
         font_size = 14;
-        bold_font = "HeliosTerm Bold";
-        italic_font = "HeliosTerm Italic";
-        bold_italic_font = "HeliosTerm Bold Italic";
+        bold_font = "Iosevka Bold";
+        italic_font = "Iosevka Italic";
+        bold_italic_font = "Iosevka Bold Italic";
 
         disable_ligatures = "never";
         disable_ligatures_in_monitored_types = "all";

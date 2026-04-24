@@ -40,6 +40,8 @@ in {
       extraPackages = with pkgs; [
         # Formatters
         alejandra # Nix
+        statix # Nix linter/analyzer
+        nixfmt # Nix formatter
         prettierd # Multi-language
         isort
         stylua

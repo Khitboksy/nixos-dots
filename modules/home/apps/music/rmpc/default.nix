@@ -6,7 +6,8 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.music.rmpc;
   system = pkgs.stdenv.hostPlatform.system;
 
@@ -20,7 +21,8 @@ with lib.custom; let
       rmpc sticker set "$FILE" "playCount" "$((sticker + 1))"
     fi
   '';
-in {
+in
+{
   options.apps.music.rmpc = with types; {
     enable = mkBoolOpt false "Enable RMPC Rust Based CLI Music Player";
   };

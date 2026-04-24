@@ -5,9 +5,11 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.helpers.tofi;
-in {
+in
+{
   options.apps.helpers.tofi = with types; {
     enable = mkBoolOpt false "Enable Tofi";
   };
@@ -18,8 +20,8 @@ in {
       package = pkgs.tofi;
 
       settings = {
-        font = "HeliosTerm SemiBold";
-        font-size = 16;
+        font = "Iosevka Bold";
+        font-size = 32;
         hint-font = false;
 
         width = "26%";
@@ -58,4 +60,3 @@ in {
     };
   };
 }
-

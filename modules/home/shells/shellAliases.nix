@@ -4,7 +4,8 @@
   ...
 }:
 with lib;
-with pkgs; {
+with pkgs;
+{
   vpn = "mullvad";
   uuid = "cat /proc/sys/kernel/random/uuid";
   grep = getExe ripgrep;

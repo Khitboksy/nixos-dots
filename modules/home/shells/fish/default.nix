@@ -1,14 +1,15 @@
 {
-  options,
   config,
   lib,
   pkgs,
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.shells.fish;
-in {
+in
+{
   options.shells.fish = with types; {
     enable = mkBoolOpt false "Enable Fish Configuration";
   };
@@ -26,106 +27,123 @@ in {
         set -Ux MANROFFOPT '-c'
         set -Ux MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
+        # Remove default greeting
+        set -g fish_greeting ""
+
         if not set -q TMUX
           # Start tmux, try to restore from continuum
           # Continuum restores highest available slot (prefer your hard saves over auto-saves)
-          exec tmux -u new -A -D -s main
+          exec tmux -u new -s main
         end
       '';
+      functions = import ../functions.nix { inherit pkgs lib config; } // {
+        fish_prompt = {
+          body = ''
+            # Capture exit status FIRST, before any other commands
+            set -l last_status $status
 
-      plugins = [
-        {
-          name = "foreign-env";
-          src = pkgs.fishPlugins.foreign-env.src;
-        }
-        {
-          name = "fzf.fish";
-          src = pkgs.fishPlugins.fzf-fish.src;
-        }
-        {
-          name = "z";
-          src = pkgs.fishPlugins.z.src;
-        }
-        {
-          name = "done";
-          src = pkgs.fishPlugins.done.src;
-        }
-        {
-          name = "colored-man-pages";
-          src = pkgs.fishPlugins.colored-man-pages.src;
-        }
-      ];
+            # Colors from lib.custom.colors
+            set -l c_dir (set_color "${colors.mauve.hex}")
+            set -l c_clean (set_color "${colors.green.hex}")
+            set -l c_dirty (set_color "${colors.yellow.hex}")
+            set -l c_err (set_color "${colors.red.hex}")
+            set -l c_reset (set_color normal)
 
-      functions = import ../functions.nix {inherit pkgs lib config;};
+            # Current directory (condensed with ~)
+            set -l prompt_dir (prompt_pwd)
 
-      shellAliases = import ../shellAliases.nix {inherit pkgs lib config;};
+            # Git status
+            set -l git_status ""
+            if type -q git
+                set -l git_branch (git symbolic-ref --short HEAD 2>/dev/null)
+                if test -n "$git_branch"
+                    set -l dirty (git status --porcelain 2>/dev/null | wc -l)
+                    if test "$dirty" -gt "0"
+                        set git_status " $c_dirty$git_branch$c_reset"
+                    else
+                        set git_status " $c_clean$git_branch$c_reset"
+                    end
+                end
+            end
+
+            # Error status
+            set -l status_text ""
+            if test $last_status -ne 0
+                set status_text " $c_err$last_status$c_reset"
+            end
+
+            # Output prompt without newline
+            printf "%s%s%s%s%s%s$c_clean ->$c_reset " "$c_reset" "$c_dir" "$prompt_dir" "$c_reset" "$git_status" "$status_text"
+          '';
+        };
+      };
+      shellAliases = import ../shellAliases.nix { inherit pkgs lib config; };
     };
+    home.packages = with pkgs; [
+      gnumake
+      # Runs programs without installing them
+      comma
 
-    home.packages = with pkgs;
-      [
-        gnumake
-        # Runs programs without installing them
-        comma
+      # grep replacement
+      ripgrep
 
-        # grep replacement
-        ripgrep
+      # ping, but with cool graph
+      gping
 
-        # ping, but with cool graph
-        gping
+      fzf
 
-        fzf
+      # dns client
+      doggo
 
-        # dns client
-        doggo
+      # neofetch but for git repos
+      onefetch
 
-        # neofetch but for git repos
-        onefetch
+      # neofetch but for cpu's
+      cpufetch
 
-        # neofetch but for cpu's
-        cpufetch
+      # download from yt and other websites
+      yt-dlp
 
-        # download from yt and other websites
-        yt-dlp
+      # man pages for tiktok attention span mfs
+      tealdeer
 
-        # man pages for tiktok attention span mfs
-        tealdeer
+      # markdown previewer
+      glow
 
-        # markdown previewer
-        glow
+      # profiling tool
+      hyperfine
 
-        # profiling tool
-        hyperfine
+      imagemagick
+      ffmpeg-full
 
-        imagemagick
-        ffmpeg-full
+      # preview images in terminal
+      catimg
 
-        # preview images in terminal
-        catimg
+      # networking stuff
+      nmap
+      wget
 
-        # networking stuff
-        nmap
-        wget
+      # faster find
+      fd
 
-        # faster find
-        fd
+      # http request thingy
+      xh
 
-        # http request thingy
-        xh
+      # generate regex
+      grex
 
-        # generate regex
-        grex
+      # json thingy
+      jq
 
-        # json thingy
-        jq
+      # syncthnig for acoustic people
+      rsync
 
-        # syncthnig for acoustic people
-        rsync
+      figlet
+      # Generate qr codes
+      qrencode
 
-        figlet
-        # Generate qr codes
-        qrencode
+      unzip
+    ];
 
-        unzip
-      ];
-    };
+  };
 }

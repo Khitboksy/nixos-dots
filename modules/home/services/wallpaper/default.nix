@@ -5,15 +5,17 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.services.wallpaper;
-  theme = import ../../../../lib/theme/default.nix {inherit lib;};
+  theme = import ../../../../lib/theme/default.nix { inherit lib; };
   mkService = recursiveUpdate {
-    Unit.PartOf = ["graphical-session.target"];
-    Unit.After = ["graphical-session.target"];
-    Install.WantedBy = ["graphical-session.target"];
+    Unit.PartOf = [ "graphical-session.target" ];
+    Unit.After = [ "graphical-session.target" ];
+    Install.WantedBy = [ "graphical-session.target" ];
   };
-in {
+in
+{
   options.services.wallpaper = with types; {
     enable = mkBoolOpt false "Enable wallpaper service with swaybg";
   };

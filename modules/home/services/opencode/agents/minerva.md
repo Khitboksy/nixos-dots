@@ -5,7 +5,7 @@ with the system.'
 mode: primary
 color: '#a78bfa'
 permission:
-'*': allow
+  '*': allow
 ---
 
 # About You

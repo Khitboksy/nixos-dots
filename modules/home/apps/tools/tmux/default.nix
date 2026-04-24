@@ -5,9 +5,11 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.tools.tmux;
-in {
+in
+{
   options.apps.tools.tmux = with types; {
     enable = mkBoolOpt false "Enable Tmux";
   };
@@ -60,8 +62,8 @@ in {
 
         # ----- Tmux Continuum (auto-save/auto-restore) -----
         set -g @continuum-save '15m'      # Auto-save every 15 minutes
-        set -g @continuum-restore 'off'    # We handle restore manually in fish
-        set -g @continuum-boot 'off'    # Disabled - fish handles startup
+        set -g @continuum-restore 'on'
+        set -g @continuum-boot 'on'    
 
         # Vim-style copy mode bindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection

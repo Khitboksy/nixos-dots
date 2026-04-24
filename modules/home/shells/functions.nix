@@ -4,7 +4,8 @@
   ...
 }:
 with lib;
-with pkgs; {
+with pkgs;
+{
   pf = ''
     fzf --bind ctrl-y:preview-up,ctrl-e:preview-down \
         --bind ctrl-b:preview-page-up,ctrl-f:preview-page-down \

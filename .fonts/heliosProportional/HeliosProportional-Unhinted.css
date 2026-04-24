@@ -1,0 +1,144 @@
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-Regular.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-Extended.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-Extended.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-Italic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-Italic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-Bold.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-BoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-Light.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-Light.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedLight.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedLight.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-LightItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedLightItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedLightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-SemiBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedSemiBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedSemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-SemiBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-SemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Proportional Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosProportional-ExtendedSemiBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosProportional-ExtendedSemiBoldItalic.ttf') format('truetype');
+}

@@ -1,13 +1,14 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.hardware.audio;
-in {
+in
+{
   options.hardware.audio = with types; {
     enable = mkBoolOpt false "Enable Audio";
   };
@@ -27,7 +28,7 @@ in {
       extraConfig.pipewire.adjust-sample-rate = {
         "context.properties" = {
           "default.clock.rate" = 44100;
-          "default.allowed-rates" = [44100];
+          "default.allowed-rates" = [ 44100 ];
         };
       };
       extraConfig.pipewire.disable-auto-adjustments = {

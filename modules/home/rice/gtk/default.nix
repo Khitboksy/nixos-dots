@@ -5,11 +5,13 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.rice.gtk;
   ctp = config.catppuccin;
   gtkMocha = builtins.readFile ./themes/Helios/Helios.css;
-in {
+in
+{
   options.rice.gtk = with types; {
     enable = mkBoolOpt false "Enable GTK Customization";
   };
@@ -33,7 +35,7 @@ in {
     gtk = {
       enable = true;
       font = {
-        name = "HeliosTerm";
+        name = "Iosevka Term Slab";
         size = 12;
       };
 

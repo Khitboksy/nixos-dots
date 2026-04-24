@@ -5,13 +5,14 @@ require("lazy").setup({
     -- import/override with your plugins
     { import = "plugins" },
     { import = "plugins.extras.rust" },
+    { import = "lazyvim.plugins.extras.coding.yanky" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded
     lazy = false,
     version = false,
   },
-  install = { colorscheme = { "mocha" } },
+  install = { colorscheme = { "catppuccin-mocha", "habamax" } },
   checker = {
     enabled = true,
     notify = false,

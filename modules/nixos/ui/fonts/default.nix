@@ -5,9 +5,11 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.ui.fonts;
-in {
+in
+{
   options.ui.fonts = with types; {
     enable = mkBoolOpt false "Enable Custom Fonts";
   };
@@ -16,27 +18,31 @@ in {
     fonts = {
       packages = with pkgs; [
         noto-fonts-color-emoji
+        iosevka
       ];
 
       enableDefaultPackages = false;
 
-        fontconfig = {
-          defaultFonts = {
-            monospace = [
-              "HeliosTerm"
-              "Noto Color Emoji"
-            ];
-            sansSerif = [
-              "HeliosProportional"
-              "Noto Color Emoji"
-            ];
-            serif = [
-              "HeliosProportional"
-              "Noto Color Emoji"
-            ];
-            emoji = ["Noto Color Emoji"];
-          };
+      fontconfig = {
+        defaultFonts = {
+          monospace = [
+            "Iosevka"
+            "Iosevka"
+            "Noto Color Emoji"
+          ];
+          sansSerif = [
+            "Iosevka"
+            "Iosevka"
+            "Noto Color Emoji"
+          ];
+          serif = [
+            "Iosevka"
+            "Iosevka"
+            "Noto Color Emoji"
+          ];
+          emoji = [ "Noto Color Emoji" ];
         };
+      };
     };
   };
 }

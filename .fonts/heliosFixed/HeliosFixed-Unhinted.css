@@ -1,0 +1,144 @@
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-Regular.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-Extended.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-Extended.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-Italic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-Italic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-Bold.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-BoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-Light.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-Light.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedLight.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedLight.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-LightItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 300;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedLightItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedLightItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-SemiBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedSemiBold.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedSemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-SemiBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-SemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Helios Fixed Web';
+	font-display: swap;
+	font-weight: 600;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url('WOFF2-Unhinted/HeliosFixed-ExtendedSemiBoldItalic.woff2') format('woff2'), url('TTF-Unhinted/HeliosFixed-ExtendedSemiBoldItalic.ttf') format('truetype');
+}

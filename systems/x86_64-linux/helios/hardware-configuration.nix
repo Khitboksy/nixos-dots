@@ -6,12 +6,20 @@
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "xhci_pci"
+    "ahci"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/d8549c68-ef86-425f-8b9b-5125e8973b77";
@@ -21,7 +29,10 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/9861-91BE";
     fsType = "vfat";
-    options = ["fmask=0077" "dmask=0077"];
+    options = [
+      "fmask=0077"
+      "dmask=0077"
+    ];
   };
 
   fileSystems."/mnt/oldnix" = {
@@ -38,7 +49,7 @@
     device = "/dev/disk/by-uuid/3e0c8f46-7ef6-4e81-a286-b709e2011c25";
     fsType = "ext4";
   };
-  swapDevices = [];
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -58,7 +69,7 @@
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     # Modesetting is required.
@@ -126,5 +137,5 @@
   };
   hardware.opentabletdriver.enable = true;
   hardware.uinput.enable = true;
-  boot.kernelModules = ["uinput"];
+  boot.kernelModules = [ "uinput" ];
 }

@@ -1,15 +1,17 @@
 {
-config,
+  config,
   lib,
   pkgs,
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.games.mangohud;
-  colors = config.custom.colors;
+  inherit colors;
   stripHash = hex: builtins.substring 1 (builtins.stringLength hex - 1) hex;
-  in {
+in
+{
   options.apps.games.mangohud = {
     enable = mkOption {
       type = types.bool;
@@ -22,6 +24,7 @@ with lib.custom; let
       default = {
         def = ''
           font_size=18
+          font_face=Iosevka
           transparent_background
           frame_timing=0
           text_color=${stripHash colors.text.hex}
@@ -54,6 +57,7 @@ with lib.custom; let
         '';
         fps = ''
           font_size=18
+          font_face=Iosevka
           transparent_background
           text_color=${stripHash colors.text.hex}
 
@@ -67,6 +71,7 @@ with lib.custom; let
         '';
         testing = ''
           font_size=18
+          font_face=Iosevka
           transparent_background
           frame_timing=0
           text_color=${stripHash colors.text.hex}
@@ -127,4 +132,3 @@ with lib.custom; let
     ];
   };
 }
-
