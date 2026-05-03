@@ -4,8 +4,12 @@
   pkgs,
   ...
 }:
+
 with lib;
-with lib.custom; let
+with lib.custom;
+
+let
+
   cfg = config.apps.tools.neovim;
 
   lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -18,15 +22,22 @@ with lib.custom; let
     };
   };
 
-  sanitizePluginName = input: let
-    name = strings.getName input;
-    intermediate = strings.removePrefix "vimplugin-" name;
-    result = strings.removePrefix "lua5.1-" intermediate;
-  in
+  sanitizePluginName =
+    input:
+    let
+      name = strings.getName input;
+      intermediate = strings.removePrefix "vimplugin-" name;
+      result = strings.removePrefix "lua5.1-" intermediate;
+    in
     result;
 
-  pluginList = plugins: strings.concatMapStrings (plugin: "  [\"${sanitizePluginName plugin.name}\"] = \"${plugin.outPath}\",\n") plugins;
-in {
+  pluginList =
+    plugins:
+    strings.concatMapStrings (
+      plugin: "  [\"${sanitizePluginName plugin.name}\"] = \"${plugin.outPath}\",\n"
+    ) plugins;
+in
+{
   options.apps.tools.neovim = with types; {
     enable = mkBoolOpt false "Enable Neovim";
   };
@@ -38,34 +49,29 @@ in {
       withRuby = true;
       withPython3 = true;
       extraPackages = with pkgs; [
-        # Formatters
-        alejandra # Nix
-        statix # Nix linter/analyzer
-        nixfmt # Nix formatter
-        prettierd # Multi-language
+        alejandra
+        nixfmt
+        prettierd
         isort
         stylua
         rustywind
-        # LSP
         lua-language-server
+        vscode-json-languageserver
         nixd
         rust-analyzer
-        #nodePackages.astro-language-server
         taplo
         markdownlint-cli2
         sqlfluff
-        # go
-        # Tools
         git
         html-tidy
         fzf
         gcc
         nodejs
-        fswatch # File watcher utility, replacing libuv.fs_event for neovim 10.0
+        fswatch
         sqlite
         postgresql
         vscode-extensions.vadimcn.vscode-lldb.adapter
-        tree-sitter # Required for nvim-treesitter to compile parsers
+        tree-sitter
       ];
       plugins = with pkgs.vimPlugins; [
         lazy-nix-helper-nvim
@@ -105,7 +111,7 @@ in {
         		"clone",
         		"--filter=blob:none",
         		"https://github.com/folke/lazy.nvim.git",
-        		"--branch=stable", -- latest stable release
+        		"--branch=stable",
         		lazypath,
         	})
         end
@@ -120,6 +126,10 @@ in {
         source = ./config;
         recursive = true;
       };
+      "nvim/lua/themes/colors.lua" = {
+        text = (import ./colors.nix) { inherit lib; };
+      };
     };
   };
 }
+

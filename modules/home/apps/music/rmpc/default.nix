@@ -5,22 +5,23 @@
   inputs,
   ...
 }:
+
 with lib;
 with lib.custom;
+
 let
+
   cfg = config.apps.music.rmpc;
   system = pkgs.stdenv.hostPlatform.system;
 
-  incrementPlayCount = pkgs.writeShellScript "rmpc-increment-playcount" ''
-    #!/usr/bin/env sh
+  incrementPlayCount =
+    builtins.readFile ./config/utils/incrementPlayCount.sh
+    |> pkgs.writeShellScript "rmpc-increment-playcount";
 
-    sticker=$(rmpc sticker get "$FILE" "playCount" | jq -r '.value')
-    if [ -z "$sticker" ]; then
-      rmpc sticker set "$FILE" "playCount" "1"
-    else
-      rmpc sticker set "$FILE" "playCount" "$((sticker + 1))"
-    fi
-  '';
+  fetchLyrics =
+    builtins.readFile ./config/utils/fetch_album_lyrics.sh
+    |> pkgs.writeShellScriptBin "rmpc-fetch-lyrics";
+
 in
 {
   options.apps.music.rmpc = with types; {
@@ -28,28 +29,39 @@ in
   };
 
   config = mkIf cfg.enable {
+
     xdg.configFile = {
-      "rmpc" = {
-        enable = true;
-        source = ./config;
-        recursive = true;
+
+      "rmpc/themes/helios.ron" = {
+        text = import ./config/themes/helios.nix { inherit lib config; };
       };
     };
+
     programs.rmpc = {
       package = inputs.rmpc.packages.${system}.rmpc;
       enable = true;
+
       config = ''
         #![enable(implicit_some)]
         #![enable(unwrap_newtypes)]
         #![enable(unwrap_variant_newtypes)]
+
+
         (
             address: "127.0.0.1:6600",
             password: None,
-            theme: Some("~/.config/rmpc/themes/catppuccin-mocha.ron"),
+            theme: Some("~/.config/rmpc/themes/helios.ron"),
             lyrics_dir: Some("/mnt/nix-data/media/lyrics"),
         	  enable_config_hot_reload: true,
             cache_dir: None,
-            on_song_change: ["${incrementPlayCount}"],
+
+
+            on_song_change: [
+              "${incrementPlayCount}",
+              "${fetchLyrics} --song $FILE"
+            ],
+
+
             volume_step: 5,
             max_fps: 30,
             scrolloff: 0,
@@ -57,6 +69,8 @@ in
             enable_mouse: true,
             status_update_interval_ms: 1000,
             select_current_song_on_change: false,
+
+
             album_art: (
                 method: Auto,
                 max_size_px: (width: 500, height: 500),
@@ -64,7 +78,10 @@ in
                 vertical_align: Center,
                 horizontal_align: Center,
             ),
+
+
             keybinds: (
+
                 global: {
                     ":":       CommandMode,
                     ",":       VolumeDown,
@@ -91,6 +108,8 @@ in
                     "O":       ShowOutputs,
                     "P":       ShowDecoders,
                 },
+
+
                 navigation: {
                     "k":         Up,
                     "j":         Down,
@@ -124,6 +143,8 @@ in
                     "K":         MoveUp,
                     "D":         Delete,
                 },
+
+
                 queue: {
                     "D":       DeleteAll,
                     "<CR>":    Play,
@@ -133,10 +154,16 @@ in
                     "i":       ShowInfo,
                     "C":       JumpToCurrent,
                 },
+
             ),
+
+
             search: (
+
                 case_sensitive: false,
                 mode: Contains,
+
+
                 tags: [
                     (value: "any",         label: "Any Tag"),
                     (value: "title",       label: "Title"),
@@ -145,15 +172,23 @@ in
                     (value: "filename",    label: "Filename"),
                     (value: "genre",       label: "Genre"),
                 ],
+
             ),
+
+
             artists: (
                 album_display_mode: SplitByDate,
                 album_sort_by: Date,
             ),
+
+
             cava: (
+
                 framerate: 165,
                 autosens: true,
-                sensitivity: 115,
+                sensitivity: 200,
+
+
                 input: (
                     method: Fifo,
                     source: "/tmp/mpd.fifo",
@@ -161,11 +196,18 @@ in
                     channels: 2,
                     sample_bits: 16,
                 ),
+
+
                 smoothing: (
-                    noise_reduction: 25,
+                    noise_reduction: 0,
                 ),
+
+
                 eq: []
+
             ),
+
+
             tabs: [
                 (
                     name: "Playing",
@@ -182,7 +224,7 @@ in
                                             (size: "50%", pane: Pane(Lyrics)),
                                         ],
                                     )),
-                                    (size: "70%", pane: Pane(Queue)),
+                                    (size: "40%", pane: Pane(Queue)),
                                 ],
                             )),
                             (size: "30%", pane: Pane(Cava)),

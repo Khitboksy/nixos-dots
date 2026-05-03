@@ -4,18 +4,24 @@
   pkgs,
   ...
 }:
+
 with lib;
 with lib.custom;
+
 let
   cfg = config.apps.tools.tmux;
 in
+
 {
+
   options.apps.tools.tmux = with types; {
     enable = mkBoolOpt false "Enable Tmux";
   };
 
   config = mkIf cfg.enable {
+
     catppuccin.tmux = {
+
       enable = true;
       extraConfig = ''
         set -g @catppuccin_window_status_style "basic"
@@ -23,8 +29,9 @@ in
     };
 
     programs.tmux = {
+
       enable = true;
-      shell = "${lib.getExe pkgs.fish}";
+      shell = "${getExe pkgs.fish}";
       historyLimit = 100000;
       plugins = with pkgs; [
         tmuxPlugins.sensible
@@ -72,7 +79,7 @@ in
 
         # Split panes
         bind '"' split-window -v -c "#{pane_current_path}"
-        bind % split-window -v -c "#{pane_current_path}"
+        bind % split-window -h -c "#{pane_current_path}"
 
         # Prefix setup
         unbind C-b

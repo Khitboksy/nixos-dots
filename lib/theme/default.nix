@@ -1,6 +1,5 @@
 { lib }:
 let
-  # Convert a single hex char to int
   hexCharToInt =
     char:
     let
@@ -19,44 +18,43 @@ let
     else if charCode >= ACode && charCode <= FCode then
       charCode - ACode + 10
     else
-      builtins.throw "Invalid hex character: ${builtins.toString char}";
+      throw "Invalid hex character: ${toString char}";
 
-  # Convert a hex component (e.g., "ff") to int
   hexCompToInt =
     hexComp:
     let
       trimmedStr = lib.strings.removePrefix "0x" hexComp;
-      chars = lib.strings.stringToCharacters trimmedStr;
-      op = acc: char: (acc * 16) + (hexCharToInt char);
     in
-    if trimmedStr == "" then 0 else builtins.foldl' op 0 chars;
+    if trimmedStr == "" then
+      0
+    else
+      trimmedStr
+      |> lib.strings.stringToCharacters
+      |> builtins.foldl' (acc: char: (acc * 16) + (hexCharToInt char)) 0;
 
-  # Convert int to 2-digit hex
   intCompToHex =
     intComp:
     let
-      clampedInt = lib.max 0 (lib.min 255 (builtins.floor (intComp + 0.5)));
+      clampedInt = (lib.max 0) <| (lib.min 255) <| builtins.floor <| (intComp + 0.5);
       hexString = lib.trivial.toHexString clampedInt;
     in
     lib.strings.fixedWidthString 2 "0" hexString;
 
-  # Hex to RGB record
   hexToRgb =
     hexColor:
     let
-      hex = lib.strings.removePrefix "#" hexColor;
+      stripHash = lib.strings.removePrefix "#";
+      getPart = start: len: hexCompToInt <| lib.strings.substring start len <| stripHash <| hexColor;
     in
     {
-      r = hexCompToInt (lib.strings.substring 0 2 hex);
-      g = hexCompToInt (lib.strings.substring 2 2 hex);
-      b = hexCompToInt (lib.strings.substring 4 2 hex);
+      r = getPart 0 2;
+      g = getPart 2 2;
+      b = getPart 4 2;
     };
 
-  # RGB to Hex
   rgbToHex =
     rgbColor: "#${intCompToHex rgbColor.r}${intCompToHex rgbColor.g}${intCompToHex rgbColor.b}";
 
-  # RGB to HSL string
   rgbToHsl =
     rgb:
     let
@@ -64,19 +62,18 @@ let
       g = rgb.g / 255;
       b = rgb.b / 255;
 
-      maxVal = builtins.foldl' builtins.max 0 [
+      maxVal = builtins.foldl' (a: b: if a > b then a else b) 0 [
         r
         g
         b
       ];
-      minVal = builtins.foldl' builtins.min 1 [
+      minVal = builtins.foldl' (a: b: if a < b then a else b) 1 [
         r
         g
         b
       ];
       l = (maxVal + minVal) / 2;
 
-      # Calculate saturation
       s =
         if maxVal == minVal then
           0
@@ -85,7 +82,6 @@ let
         else
           (maxVal - minVal) / (2 - maxVal - minVal);
 
-      # Calculate hue
       h =
         if maxVal == minVal then
           0
@@ -105,10 +101,8 @@ let
     in
     "hsl(${toString hDeg}, ${toString sPct}%, ${toString lPct}%)";
 
-  # Hex to HSL string
-  hexToHsl = hex: rgbToHsl (hexToRgb hex);
+  hexToHsl = hex: hexToRgb <| rgbToHsl <| hex;
 
-  # Linearly interpolate between two hex colors
   lerpColorFunc =
     color1Hex: color2Hex: t:
     let
@@ -124,39 +118,92 @@ let
       b = lerpedB;
     };
 
-  in
+in
 {
   colors = rec {
     bg = crust;
     fg = text;
     primary = pink;
 
-    rosewater = { hex = "#f5e0dc"; };
-    flamingo = { hex = "#f2cdcd"; };
-    pink = { hex = "#f5c2e7"; };
-    mauve = { hex = "#cba6f7"; };
-    red = { hex = "#f38ba8"; };
-    maroon = { hex = "#eba0ac"; };
-    peach = { hex = "#fab387"; };
-    yellow = { hex = "#f9e2af"; };
-    green = { hex = "#a6e3a1"; };
-    teal = { hex = "#94e2d5"; };
-    sky = { hex = "#89dceb"; };
-    sapphire = { hex = "#74c7ec"; };
-    blue = { hex = "#89b4fa"; };
-    lavender = { hex = "#b4befe"; };
-    text = { hex = "#cdd6f4"; };
-    subtext1 = { hex = "#bac2de"; };
-    subtext0 = { hex = "#a6adc8"; };
-    overlay2 = { hex = "#9399b2"; };
-    overlay1 = { hex = "#7f849c"; };
-    overlay0 = { hex = "#6c7086"; };
-    surface2 = { hex = "#585b70"; };
-    surface1 = { hex = "#45475a"; };
-    surface0 = { hex = "#313244"; };
-    base = { hex = "#1e1e2e"; };
-    mantle = { hex = "#181825"; };
-    crust = { hex = "#11111b"; };
+    rosewater = {
+      hex = "#f5e0dc";
+    };
+    flamingo = {
+      hex = "#f2cdcd";
+    };
+    pink = {
+      hex = "#f5c2e7";
+    };
+    mauve = {
+      hex = "#cba6f7";
+    };
+    red = {
+      hex = "#f38ba8";
+    };
+    maroon = {
+      hex = "#eba0ac";
+    };
+    peach = {
+      hex = "#fab387";
+    };
+    yellow = {
+      hex = "#f9e2af";
+    };
+    green = {
+      hex = "#a6e3a1";
+    };
+    teal = {
+      hex = "#94e2d5";
+    };
+    sky = {
+      hex = "#89dceb";
+    };
+    sapphire = {
+      hex = "#74c7ec";
+    };
+    blue = {
+      hex = "#89b4fa";
+    };
+    lavender = {
+      hex = "#b4befe";
+    };
+
+    text = {
+      hex = "#cdd6f4";
+    };
+    subtext1 = {
+      hex = "#bac2de";
+    };
+    subtext0 = {
+      hex = "#a6adc8";
+    };
+    overlay2 = {
+      hex = "#9399b2";
+    };
+    overlay1 = {
+      hex = "#7f849c";
+    };
+    overlay0 = {
+      hex = "#6c7086";
+    };
+    surface2 = {
+      hex = "#585b70";
+    };
+    surface1 = {
+      hex = "#45475a";
+    };
+    surface0 = {
+      hex = "#313244";
+    };
+    base = {
+      hex = "#1e1e2e";
+    };
+    mantle = {
+      hex = "#181825";
+    };
+    crust = {
+      hex = "#11111b";
+    };
   };
 
   wallpaper = ./wall4.jpg;
@@ -164,4 +211,3 @@ let
   inherit hexToHsl;
   lerpColor = lerpColorFunc;
 }
-

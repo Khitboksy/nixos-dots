@@ -1,3 +1,8 @@
+{ lib }:
+
+with lib;
+with lib.custom;
+
 {
   # Workspaces
   workspace = [
@@ -5,25 +10,11 @@
     { _args = [ "chat" ]; }
     { _args = [ "code" ]; }
     { _args = [ "browser" ]; }
-    { _args = [ "misc" ]; }
   ];
 
-  # Layout config (colors set in default.nix)
   layout = {
-    geometry-corner-radius = [
-      12
-      12
-      12
-      12
-    ];
-    clip-to-geometry = true;
-    opacity = 0.8;
-    background-effect = {
-      blur = true;
-    };
-    draw-border-with-background = false;
-
     gaps = 8;
+    background-color = "${colors.mantle.hex}";
     center-focused-column = "never";
     preset-column-widths._children = [
       { proportion = 0.33333; }
@@ -32,10 +23,14 @@
     ];
     focus-ring = {
       on = [ ];
-      width = 4;
+      active-color = "${colors.mauve.hex}";
+      inactive-color = "${colors.sapphire.hex}";
+      width = 6;
     };
     border = {
       on = [ ];
+      active-color = "${colors.surface0.hex}";
+      inactive-color = "${colors.sapphire.hex}";
       width = 2;
     };
   };

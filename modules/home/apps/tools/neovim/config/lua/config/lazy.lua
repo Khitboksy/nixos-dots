@@ -1,14 +1,16 @@
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
+    -- 1. LazyVim base plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
-    { import = "plugins" },
-    { import = "plugins.extras.rust" },
+
+    -- 2. LazyVim extras (imported manually since lazyvim.jsonc reading approach failed)
     { import = "lazyvim.plugins.extras.coding.yanky" },
+    { import = "lazyvim.plugins.extras.editor.neo-tree" },
+
+    -- 3. Your plugins (core, lsp, ui, tools, lang/, extras/)
+    { import = "plugins" },
   },
   defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded
     lazy = false,
     version = false,
   },

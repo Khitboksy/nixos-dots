@@ -35,24 +35,28 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #opencode = {
-    #  url = "github:anomalyco/opencode";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
     niri-nix = {
       url = "git+https://codeberg.org/BANanaD3V/niri-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mcp-nixos.url = "github:utensils/mcp-nixos";
+    yazi = {
+      url = "github:sxyazi/yazi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs:
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
       src = ./.;
-      #overlays = [
-      #(final: prev: { opencode = inputs.opencode.packages."x86_64=linux".default; })
-      #];
+      overlays = [
+        (final: prev: {
+          openldap = prev.openldap.overrideAttrs (old: {
+            doCheck = false;
+          });
+        })
+      ];
       snowfall = {
         namespace = "custom";
       };

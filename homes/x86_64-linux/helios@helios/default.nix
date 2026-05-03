@@ -8,13 +8,17 @@ let
   system = pkgs.stdenv.hostPlatform.system;
 in
 {
+  # Custom Home-Manager Modules located in ../../../modules/home/*
   apps = {
+
     tools = {
+
       neovim.enable = true;
       tmux.enable = true;
       lf.enable = true;
+      yazi.enable = true;
       cava.enable = true;
-      dms.enable = true;
+
     };
 
     term = {
@@ -30,10 +34,7 @@ in
     };
 
     games = {
-      mangohud = {
-        enable = true;
-        defaultProfile = "def";
-      };
+      mangohud.enable = true;
     };
   };
 
@@ -46,7 +47,12 @@ in
   };
 
   services = {
+
+    # Custom Home-Manager Services located in ../../../modules/home/services/*
     wallpaper.enable = true;
+    opencode.enable = true;
+    musicPlayerDaemon.enable = true;
+
     gpg-agent = {
       enable = true;
       pinentry = {
@@ -55,45 +61,15 @@ in
       enableSshSupport = true;
       enableBashIntegration = true;
     };
-    mpd = {
-      enable = true;
-      musicDirectory = "/mnt/nix-data/media/music/";
-      network.listenAddress = "127.0.0.1";
-      network.port = 6600;
-      extraConfig = ''
-        audio_output {
-          type  "pulse"
-          name  "PipeWire Output"
-          format "44100:16:2"
-        }
-        audio_output {
-          type   "fifo"
-          name   "my_fifo"
-          path   "/tmp/mpd.fifo"
-          format "44100:16:2"
-        }
-      '';
-    };
-    mpdscribble = {
-      enable = true;
-      endpoints = {
-        "last.fm" = {
-          passwordFile = "/home/helios/secrets/lastfm.txt";
-          username = "khitboksy";
-        };
-      };
-    };
-    opencode = {
-      enable = true;
-    };
   };
 
   rice.gtk.enable = true;
 
+  # Standard home.nix configuration stuff
+
   catppuccin = {
     flavor = "mocha";
     accent = "mauve";
-
     btop.enable = true;
     fzf.enable = true;
   };
@@ -104,10 +80,12 @@ in
 
     btop = {
       enable = true;
+
       extraConfig = ''
         update_ms = 100
         vim_keys = true
       '';
+
       settings = {
         theme_background = false;
       };
@@ -165,7 +143,6 @@ in
   home.packages = with pkgs; [
     nautilus
     loupe
-    networkmanagerapplet
     wl-clipboard-rs
     custom.enc
     r2modman
@@ -182,17 +159,16 @@ in
     vesktop
     inputs.zen-browser.packages."${system}".default
     git
-    openrgb-with-all-plugins
     vlc
     tidal-hifi
     fastfetch
     btop
-    mpd
     inputs.mcp-nixos.packages.${system}.default
     ttfautohint
     nodejs
     bitwarden-desktop
     nh
+
   ];
 
   home.stateVersion = "24.11";

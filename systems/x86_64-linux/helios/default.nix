@@ -1,77 +1,58 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
+## SYSTEM related configuration. Add NIXOS SYSTEM options here.
 {
   pkgs,
   lib,
+  modulesPath,
   ...
 }:
+
 {
+
   imports = [
-    ./hardware-configuration.nix
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ./bootnet-configuration.nix
+    ./disk-configuration.nix
   ];
 
+  # Custom NixOS Modules located in ../../../modules/nixos/*
+  #apps.steam.enable = true;
+  ui.fonts.enable = true;
+  protocols.wayland.enable = true;
+  apps.steam.enable = true;
+
+  hardware = {
+    audio.enable = true;
+    xpus.enable = true;
+  };
+
+  services = {
+    bluetooth.enable = true;
+    io.enable = true;
+    nfs.enable = true;
+    openrgb.enable = true;
+    vpn.enable = true;
+  };
+
+  # Standard configuration.nix configuration stuff
   programs = {
+
+    fish.enable = true;
+    gamemode.enable = true;
     virt-manager.enable = false;
+
     direnv = {
       enable = true;
       enableBashIntegration = true;
     };
-    fish.enable = true;
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-      gamescopeSession.enable = true;
-      config = {
-        enable = true;
-        defaultCompatTool = "Proton-Experimental";
-        closeSteam = true;
-        apps = {
-          deadlock = {
-            id = 1422450;
-            compatTool = "GE-Proton10-29";
-            launchOptions = {
-              env = {
-                PROTON_USE_NTSYNC = true;
-                DXVK_ASYNC = "1";
-              };
-              args = [
-                "-novid"
-                "-nojoy"
-                "-novsync"
-                "+exec autoexec.cfg"
-                "-no_prewarm_map"
-                "-f"
-              ];
-              wrappers = [
-                (lib.getExe pkgs.gamemode)
-                #"/home/helios/.local/bin/mangohud-def"
-                pkgs.mangohud
-                "gamescope -r 60 -w 1366 -h 768 --force-grab-cursor --rt --adaptive-sync --hdr-enabled=0 --"
-              ];
-            };
-          };
-          overwatch = {
-            id = 2357570;
-            compatTool = "GE-Proton10-29";
-            launchOptions = {
-              env = {
-                SDL_VIDEODRIVER = "x11";
-                PROTON_USE_NTSYNC = true;
-              };
-              wrappers = [
-                (lib.getExe pkgs.gamemode)
-                "gamescope -f -r 165 -w 1920 -h 1080 --force-grab-cursor --"
-              ];
-            };
-          };
+    /*
+        steam = {
+          enable = true;
+          remotePlay.openFirewall = true;
+          dedicatedServer.openFirewall = true;
+          localNetworkGameTransfers.openFirewall = true;
+          gamescopeSession.enable = true;
         };
-      };
-    };
-
-    gamemode.enable = true;
+    */
   };
 
   services = {
@@ -88,49 +69,11 @@
       wacom.enable = true;
     };
 
-    mullvad-vpn = {
-      enable = true;
-      package = pkgs.mullvad-vpn;
-    };
-
     udev.packages = [ pkgs.libratbag ];
     gvfs.enable = true;
     usbmuxd.enable = true;
 
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
-      wireplumber.enable = true;
-    };
-
-    hardware = {
-      openrgb.enable = true;
-    };
-  };
-
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    blacklistedKernelModules = [
-      "wacom"
-      "hid_uclogic"
-    ];
-    supportedFilesystems = [ "ntfs" ];
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
-
-  ui.fonts.enable = true;
-
-  protocols.wayland.enable = true;
-
-  networking = {
-    hostName = "helios";
-    networkmanager.enable = true;
+    rpcbind.enable = true;
   };
 
   time = {
@@ -191,21 +134,22 @@
           pkgs.wayland
         ];
       })
-
       pkgs.protonup-qt
+
       pkgs.piper
       pkgs.libratbag
       pkgs.cmake
       pkgs.meson
       pkgs.cpio
-      pkgs.pwvucontrol
       pkgs.swaybg
       pkgs.xwayland-satellite
-      pkgs.openrgb
     ];
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    hostPlatform = lib.mkDefault "x86_64-linux";
+  };
 
   virtualisation = {
     libvirtd.enable = false;
@@ -225,60 +169,11 @@
     settings.experimental-features = [
       "nix-command"
       "flakes"
+      "pipe-operators"
     ];
   };
 
   home-manager.backupFileExtension = "bk";
   system.stateVersion = "24.11";
 
-  systemd.services = {
-    mullvad-auto-connect = {
-      description = "Mullvad VPN auto-connect";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = [
-          "${pkgs.mullvad}/bin/mullvad auto-connect set on"
-          "${pkgs.mullvad}/bin/mullvad connect"
-        ];
-      };
-    };
-
-    ratbagd = {
-      enable = true;
-      description = "Daemon for configuring gaming mice (used by Piper)";
-      serviceConfig = {
-        ExecStart = "${pkgs.libratbag}/bin/ratbagd";
-        Restart = "on-failure";
-      };
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    NetworkManager-wait-online.enable = lib.mkForce false;
-
-    openrgb = lib.mkForce {
-      description = "OpenRGB SDK Server";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.openrgb}/bin/openrgb --server";
-        Restart = "on-failure";
-        RestartSec = 2;
-      };
-    };
-
-    openrgb-profile = lib.mkForce {
-      description = "OpenRGB Profile Loader";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "openrgb.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.openrgb}/bin/openrgb --profile \"Helios(TMEM).orp\"";
-        RemainAfterExit = true;
-      };
-    };
-  };
 }

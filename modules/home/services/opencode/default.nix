@@ -10,8 +10,9 @@ with lib.custom;
 let
   cfg = config.services.opencode;
   system = pkgs.stdenv.hostPlatform.system;
-  openpkg = pkgs.opencode;
-
+  pkg = pkgs.opencode;
+  agents = "file:./agents";
+  model = "openrouter/minimax/minimax-m2.5:free";
   mkService = recursiveUpdate {
     Unit.PartOf = [ "graphical-session.target" ];
     Unit.After = [ "graphical-session.target" ];
@@ -21,36 +22,67 @@ in
 {
   options.services.opencode = with types; {
     enable = mkBoolOpt true "Enable OpenCode AI coding agent";
-    package = mkOpt types.package openpkg "OpenCode package";
-    port = mkOpt types.port 4096 "Port for opencode server";
-    hostname = mkOpt types.str "127.0.0.1" "Hostname for opencode server";
-    model = mkOpt types.str "openrouter/minimax/minimax-m2.5:free" "Model to use for OpenCode";
   };
 
   config = mkIf cfg.enable {
     programs.opencode = {
       enable = true;
-      package = cfg.package;
+      package = pkg;
       settings = {
-        # Enable OpenRouter provider
-        provider = {
-          openrouter = {
-            # API key loaded from environment variable
-          };
-        };
-
-        model = cfg.model;
-        # OpenRouter enabled via provider config
-        permission = {
-          git = "deny";
-        };
+        # Defines the `opecode serve` args (127.0.0.1)
         server = {
-          port = cfg.port;
-          hostname = cfg.hostname;
+          hostname = "localhost"; # Default
+          port = 4096; # Deafult
+          mdns = false; # True = 0.0.0.0:4096
+        };
+        # We load API key via env-var on jupiter.service
+        provider.openrouter = { };
+        permission = {
+          git = "ask";
         };
         default_agent = "minerva";
+        plugin = [ "@mohak34/opencode-notifier@latest" ];
         agent = {
-          minerva.model = cfg.model;
+          minerva = {
+            mode = "primary";
+            model = "${model}";
+            prompt = "{${agents}/minerva.md}";
+          };
+          flavius = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/flavius.md}";
+          };
+          ceasar = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/ceasar.md}";
+          };
+          gaius = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/gaius.md}";
+          };
+          vestal = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/vestal.md}";
+          };
+          thermae = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/thermae.md}";
+          };
+          naturalis = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "{${agents}/naturalis.md}";
+          };
+          pytheas = {
+            mode = "subagent";
+            model = "${model}";
+            prompt = "${agents}/pytheas.md";
+          };
         };
         mcp = {
           nixos = {
@@ -76,41 +108,56 @@ in
               "--read-only"
             ];
           };
-          "sequential-thinking" = {
+          sequential-thinking = {
             type = "local";
             command = [ "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking" ];
+          };
+          web-search = {
+            type = "local";
+            command = [
+              "npx"
+              "-y"
+              "@zhafron/mcp-web-search"
+            ];
+            enabled = true;
+            environment = {
+              DEFAULT_SEARCH_PROVIDER = "searxng";
+              SEARXNG_URL = "https://search.zoeys.computer/search";
+            };
           };
         };
       };
     };
 
-    systemd.user.services.minerva = mkService {
+    systemd.user.services.jupiter = mkService {
       Unit.Description = "OpenCode Server";
+      #serves a listening server at locahost:4096
       Service = {
-        ExecStart = "${openpkg}/bin/opencode serve --port ${toString cfg.port} --hostname ${cfg.hostname}";
+        ExecStart = "${pkg}/bin/opencode serve";
         Restart = "always";
-
-        # Load OpenRouter key from env file
+        Environment = [
+          "SQLITE_JOURNAL_MODE=WAL"
+          "SQLITE_SYNCHRONOUS=NORMAL"
+          # NFS Shares
+          "XDG_DATA_HOME=/home/helios/shared"
+          "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode-stable.db"
+        ];
         EnvironmentFile = [
           "/home/helios/secrets/git_mcp_pat.env"
           "/home/helios/secrets/openrouter.env"
         ];
       };
     };
-
-    home.file = {
-      ".opencode/agents" = {
-        source = ./agents;
+    xdg.configFile = {
+      "opencode" = {
+        source = ./config;
         recursive = true;
       };
-      ".opencode/themes/helios-mocha.json" = {
-        source = ./config/themes/helios-mocha.json;
-      };
-      ".opencode/tui.json" = {
+      "opencode/tui.json" = {
         text = builtins.toJSON {
           theme = "helios-mocha";
+          layout = "helios";
         };
-
       };
     };
   };

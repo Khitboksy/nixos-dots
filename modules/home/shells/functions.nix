@@ -134,7 +134,7 @@ with pkgs;
     echo ""
     echo "All downloads complete."
   '';
-  openclient = ''
+  jupiter = ''
     opencode attach "http://localhost:4096" $argv
   '';
 }

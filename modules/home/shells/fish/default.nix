@@ -30,6 +30,23 @@ in
         # Remove default greeting
         set -g fish_greeting ""
 
+        # Colorize command output to blue
+        # grc wraps commands to colorize their output
+        set -gx GRCSYSTEMS '.*'
+        set -gx GRCLOL 0
+        set -gx COLORSCHEME 'dark'
+
+        # Custom sudo prompt in red
+        function sudo
+          if test (count $argv) -eq 0
+            command sudo
+          else
+            set -l prompt_color (set_color red)
+            set -l reset (set_color normal)
+            command sudo -p "$prompt_color sudo > $reset" $argv
+          end
+        end
+
         if not set -q TMUX
           # Start tmux, try to restore from continuum
           # Continuum restores highest available slot (prefer your hard saves over auto-saves)

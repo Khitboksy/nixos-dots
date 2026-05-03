@@ -16,6 +16,8 @@ rec {
 
   mkBoolOpt' = mkOpt' types.bool;
 
+  mkPathOpt = mkOpt types.path;
+
   enabled = {
     enable = true;
   };

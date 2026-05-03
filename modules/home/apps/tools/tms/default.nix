@@ -20,7 +20,7 @@ in
     xdg.configFile = {
       "tms/config.toml" =
         let
-          pathsStr = builtins.concatStringsSep ",\n  " (map (p: "\"${p}\"") cfg.paths);
+          pathsStr = cfg.paths |> map (p: "\"${p}\"") |> builtins.concatStringsSep ",\n  ";
         in
         pkgs.writeTextDir "tms-config.toml" ''
           # Tmux Sessionizer Configuration

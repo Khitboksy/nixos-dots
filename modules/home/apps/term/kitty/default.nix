@@ -5,24 +5,37 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.apps.term.kitty;
-in {
+in
+{
   options.apps.term.kitty = with types; {
     enable = mkBoolOpt false "Enable Kitty terminal";
   };
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      iosevka
+      jetbrains-mono
+      noto-fonts-color-emoji
+      nerd-fonts.iosevka-term
+      nerd-fonts.jetbrains-mono
+    ];
+
     programs.kitty = {
       package = pkgs.kitty;
       enable = true;
 
       settings = {
-        font_family = "Iosevka";
-        font_size = 14;
-        bold_font = "Iosevka Bold";
-        italic_font = "Iosevka Italic";
-        bold_italic_font = "Iosevka Bold Italic";
+        font_family = "Iosevka Term Nerd Font";
+        font_size = 12;
+        bold_font = "Iosevka Term Nerd Font Bold";
+        italic_font = "Iosevka Term Nerd Font Italic";
+        bold_italic_font = "Iosevka Term Nerd Font Bold Italic";
+
+        # Fallback fonts - JetBrains Mono then Color Emoji
+        font_features = "+Iosevka";
 
         disable_ligatures = "never";
         disable_ligatures_in_monitored_types = "all";

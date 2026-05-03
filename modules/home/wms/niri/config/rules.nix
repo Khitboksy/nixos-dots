@@ -11,14 +11,11 @@
     {
       match = [
         { _props.app-id = "^zen$"; }
-      ];
-    }
-    {
-      match = [
-        { _props.app-id = "^zen$"; }
         { _props.at-startup = true; }
       ];
       open-on-workspace = "browser";
+      open-focused = false;
+      open-maximized = true;
     }
 
     # Bitwarden, Signal, Vesktop - block from screen capture
@@ -65,14 +62,14 @@
 
     # Kitty
     {
-      match._props.title = "^fish$";
+      match._props.app-id = "^kitty$";
       opacity = 1.0;
       open-focused = true;
       open-floating = true;
     }
     {
       match = [
-        { _props.title = "^fish$"; }
+        { _props.title = "^kitty$"; }
         { _props.at-startup = true; }
       ];
       open-on-workspace = "code";

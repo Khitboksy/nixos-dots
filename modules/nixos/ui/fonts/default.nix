@@ -19,6 +19,7 @@ in
       packages = with pkgs; [
         noto-fonts-color-emoji
         iosevka
+        jetbrains-mono
       ];
 
       enableDefaultPackages = false;
@@ -27,17 +28,17 @@ in
         defaultFonts = {
           monospace = [
             "Iosevka"
-            "Iosevka"
+            "JetBrains Mono"
             "Noto Color Emoji"
           ];
           sansSerif = [
             "Iosevka"
-            "Iosevka"
+            "JetBrains Mono"
             "Noto Color Emoji"
           ];
           serif = [
             "Iosevka"
-            "Iosevka"
+            "JetBrains Mono"
             "Noto Color Emoji"
           ];
           emoji = [ "Noto Color Emoji" ];

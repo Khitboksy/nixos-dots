@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -42,5 +43,8 @@ in
       # no need to redefine it in your config for now)
       wireplumber.enable = true;
     };
+    environment.systemPackages = [
+      pkgs.pwvucontrol
+    ];
   };
 }

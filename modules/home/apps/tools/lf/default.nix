@@ -15,7 +15,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    xdg.configFile."lf/icons".source = ./icons;
+    xdg.configFile."lf/icons".source = ./icons/icons;
     programs.lf = {
       enable = true;
       commands = {
@@ -45,7 +45,7 @@ in
 
         gh = "cd ~";
         gb = "cd ..";
-
+        d = "delete";
         ee = "editor-open";
         #V = ''$${pkgs.bat}/bin/bat --paging=always --theme=gruvbox "$f"'';
 
@@ -56,7 +56,7 @@ in
         preview = true;
         hidden = true;
         drawbox = false;
-        icons = false;
+        icons = true;
         ignorecase = true;
       };
       extraConfig =

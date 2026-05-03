@@ -1,31 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage: fetch_album_lyrics_simple.sh "/path/to/Artist/Album"
-# Example: fetch_album_lyrics_simple.sh "$HOME/Music/mpd/Anderson .Paak/Ventura"
+# Config roots
+MUSIC_ROOT="/mnt/nix-data/media/music"
+LYRICS_ROOT="/mnt/nix-data/media/lyrics"
 
 LRCLIB_API="https://lrclib.net/api/get"
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 \"/path/to/Artist/Album\""
+usage() {
+  echo "Usage:"
+  echo "  $0 artist/album                   # fetch all songs in album"
+  echo "  $0 --song /full/path/to/file.ext  # fetch lyrics for a single song"
   exit 1
-fi
+}
 
-ALBUM_DIR="$1"
-if [ ! -d "$ALBUM_DIR" ]; then
-  echo "Error: '$ALBUM_DIR' is not a directory."
-  exit 1
-fi
-
-ARTIST="$(basename "$(dirname "$ALBUM_DIR")")"
-ALBUM="$(basename "$ALBUM_DIR")"
-
-# Try to fetch synced lyrics (only the [mm:ss.xx] lines) for a given title
-# Arguments:
-#   $1 = artist
-#   $2 = album
-#   $3 = title_to_try
-# Returns stdout = JSON .syncedLyrics (or "null"/empty)
+# Get synced lyrics from LRCLIB API
 get_lyrics_for() {
   local artist="$1"
   local album="$2"
@@ -39,28 +28,23 @@ get_lyrics_for() {
     jq -r '.syncedLyrics'
 }
 
-# Attempt a single fetch:
-#   1) Try with TITLE_RAW (may include “(feat ...)”)
-#   2) If that yields "" or "null", strip “(…)" and retry
-#   3) If still no lyrics, give up
-#   4) If we do get lyrics, write them verbatim to the .lrc file
-#
-# Arguments:
-#   $1 = ARTIST
-#   $2 = ALBUM
-#   $3 = TITLE_RAW
-#   $4 = OUTPUT_LRC_FILE (full path, e.g. /.../Song.lrc)
+# Fetch lyrics for a single song
 fetch_for_plain() {
   local artist="$1"
   local album="$2"
   local title_try="$3"
   local out_lrc="$4"
 
-  # 1. First-pass lookup
+  # Skip if .lrc already exists
+  [ -f "$out_lrc" ] && {
+    echo "– Skipping \"$title_try\" (already have .lrc)"
+    return 0
+  }
+
   local lyrics
   lyrics="$(get_lyrics_for "$artist" "$album" "$title_try")"
 
-  # 2. If empty or "null", try stripping "(...)" from title
+  # Retry without parentheses
   if [ -z "$lyrics" ] || [ "$lyrics" == "null" ]; then
     local stripped
     stripped="$(echo "$title_try" | sed -E 's/ *\([^)]*\)//g')"
@@ -70,40 +54,65 @@ fetch_for_plain() {
     fi
   fi
 
-  # 3. If still empty/null → skip
   if [ -z "$lyrics" ] || [ "$lyrics" == "null" ]; then
     echo "✗ No lyrics for: \"$title_try\""
     return 1
   fi
 
-  # 4. Write only the synced‐lyrics lines (timestamps + text)
-  #    We drop any existing [ar:], [al:], [ti:] lines from the API payload,
-  #    but typically lrclib returns only timestamped lines anyway.
+  mkdir -p "$(dirname "$out_lrc")"
   echo "$lyrics" | sed -E '/^\[(ar|al|ti):/d' >"$out_lrc"
   echo "✔ Saved lyrics: $(basename "$out_lrc")"
-  return 0
 }
 
-echo "▶ Fetching lyrics for all .mp3 in: $ALBUM_DIR"
-echo "  Artist: $ARTIST"
-echo "  Album:  $ALBUM"
-echo
+# Main logic
+if [ $# -eq 2 ] && [ "$1" == "--song" ]; then
+  SONG_PATH="$2"
+  [ -f "$SONG_PATH" ] || {
+    echo "File not found: $SONG_PATH"
+    exit 1
+  }
 
-shopt -s nullglob
-for mp3 in "$ALBUM_DIR"/*.mp3; do
-  TITLE_RAW="$(basename "$mp3" .mp3)"
-  LRC_FILE="${mp3%.mp3}.lrc"
+  # Determine artist/album from path
+  REL_PATH="${SONG_PATH#$MUSIC_ROOT/}" # strip /music root
+  ARTIST="$(echo "$REL_PATH" | cut -d/ -f1)"
+  ALBUM="$(echo "$REL_PATH" | cut -d/ -f2)"
+  filename="$(basename "$SONG_PATH")"
+  TITLE_RAW="${filename%.*}"
+  LRC_FILE="$LYRICS_ROOT/$ARTIST/$ALBUM/$TITLE_RAW.lrc"
 
-  if [ -f "$LRC_FILE" ]; then
-    echo "– Skipping \"$TITLE_RAW\" (already have .lrc)"
-    continue
-  fi
+  fetch_for_plain "$ARTIST" "$ALBUM" "$TITLE_RAW" "$LRC_FILE"
+  exit 0
+fi
 
-  if ! fetch_for_plain "$ARTIST" "$ALBUM" "$TITLE_RAW" "$LRC_FILE"; then
-    # a failure just prints the “No lyrics for…” message and moves on
-    continue
-  fi
-done
+# Album mode (existing behavior)
+if [ $# -eq 1 ]; then
+  ALBUM_REL="$1"
+  ALBUM_DIR="$MUSIC_ROOT/$ALBUM_REL"
+  [ -d "$ALBUM_DIR" ] || {
+    echo "Album not found: $ALBUM_DIR"
+    exit 1
+  }
 
-echo
-echo "Done."
+  ARTIST="$(basename "$(dirname "$ALBUM_DIR")")"
+  ALBUM="$(basename "$ALBUM_DIR")"
+
+  echo "▶ Fetching lyrics for all ".*" audio in: $ALBUM_DIR"
+  echo "  Artist: $ARTIST"
+  echo "  Album:  $ALBUM"
+  echo
+
+  shopt -s nullglob
+  for file in "$ALBUM_DIR"/*.mp3 "$ALBUM_DIR"/*.flac; do
+    [ -f "$file" ] || continue # skip if nothing matches
+    filename="$(basename "$file")"
+    TITLE_RAW="${filename%.*}" # <-- universal stripping
+    LRC_FILE="$LYRICS_ROOT/$ARTIST/$ALBUM/$TITLE_RAW.lrc"
+    fetch_for_plain "$ARTIST" "$ALBUM" "$TITLE_RAW" "$LRC_FILE"
+  done
+
+  echo
+  echo "Done."
+  exit 0
+fi
+
+usage
