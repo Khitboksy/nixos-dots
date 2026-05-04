@@ -149,15 +149,23 @@ in
       };
     };
     xdg.configFile = {
-      "opencode" = {
-        source = ./config;
-        recursive = true;
-      };
       "opencode/tui.json" = {
         text = builtins.toJSON {
-          theme = "helios-mocha";
-          layout = "helios";
+          theme = "helios-opencodeTheme";
+          layout = "helios-opencodeLayout";
         };
+      };
+
+      "opencode/themes/helios-opencodeTheme.json" = {
+        text = (import ./config/themes/helios-opencodeTheme.nix) { inherit lib; };
+      };
+
+      "opencode/layouts/helios-opencodeLayout.json" = {
+        text = import ./config/layouts/helios-opencodeLayout.nix;
+      };
+
+      "opencode/plugins/opencodeNotifier.json" = {
+        text = import ./config/plugins/opencodeNotifier.nix;
       };
     };
   };
