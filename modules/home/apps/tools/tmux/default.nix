@@ -67,10 +67,9 @@ in
         set -g @resurrect-restore 'R'
         set -g @resurrect-strategy-nvim 'session'
 
-        # ----- Tmux Continuum (auto-save/auto-restore) -----
         set -g @continuum-save '15m'      # Auto-save every 15 minutes
-        set -g @continuum-restore 'on'
-        set -g @continuum-boot 'on'    
+        set -g @continuum-restore 'off'    # Disable auto-restore
+        set -g @continuum-boot 'off'       # Disable boot restore    
 
         # Vim-style copy mode bindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection

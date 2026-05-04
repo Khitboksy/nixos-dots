@@ -34,7 +34,6 @@ in
         italic_font = "Iosevka Term Nerd Font Italic";
         bold_italic_font = "Iosevka Term Nerd Font Bold Italic";
 
-        # Fallback fonts - JetBrains Mono then Color Emoji
         font_features = "+Iosevka";
 
         disable_ligatures = "never";
@@ -59,6 +58,50 @@ in
 
         confirm_window_close = 0;
         startup_session = "none";
+
+        foreground = "${colors.text.hex}";
+        background = "${colors.crust.hex}";
+        selection_foreground = "${colors.base.hex}";
+        selection_background = "${colors.rosewater.hex}";
+        cursor = "${colors.rosewater.hex}";
+        cursor_text_color = "${colors.base.hex}";
+        scrollbar_handle_color = "${colors.overlay2.hex}";
+        scrollbar_track_color = "${colors.surface1.hex}";
+        url_color = "${colors.rosewater.hex}";
+
+        active_border_color = "${colors.lavender.hex}";
+        inactive_border_color = "${colors.overlay0.hex}";
+        bell_border_color = "${colors.yellow.hex}";
+
+        active_tab_foreground = "${colors.crust.hex}";
+        active_tab_background = "${colors.mauve.hex}";
+        inactive_tab_foreground = "${colors.text.hex}";
+        inactive_tab_background = "${colors.mantle.hex}";
+        tab_bar_background = "${colors.crust.hex}";
+
+        mark1_foreground = "${colors.base.hex}";
+        mark1_background = "${colors.lavender.hex}";
+        mark2_foreground = "${colors.base.hex}";
+        mark2_background = "${colors.mauve.hex}";
+        mark3_foreground = "${colors.base.hex}";
+        mark3_background = "${colors.sapphire.hex}";
+
+        color0 = "${colors.surface1.hex}";
+        color8 = "${colors.surface2.hex}";
+        color1 = "${colors.red.hex}";
+        color9 = "${colors.red.hex}";
+        color2 = "${colors.green.hex}";
+        color10 = "${colors.green.hex}";
+        color3 = "${colors.yellow.hex}";
+        color11 = "${colors.yellow.hex}";
+        color4 = "${colors.blue.hex}";
+        color12 = "${colors.blue.hex}";
+        color5 = "${colors.pink.hex}";
+        color13 = "${colors.pink.hex}";
+        color6 = "${colors.teal.hex}";
+        color14 = "${colors.teal.hex}";
+        color7 = "${colors.subtext1.hex}";
+        color15 = "${colors.subtext0.hex}";
       };
     };
   };

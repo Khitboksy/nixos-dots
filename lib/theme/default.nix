@@ -125,6 +125,7 @@ in
     fg = text;
     primary = pink;
 
+    # Catpuccin-Mocha Colour
     rosewater = {
       hex = "#f5e0dc";
     };
@@ -168,6 +169,7 @@ in
       hex = "#b4befe";
     };
 
+    # Catpuccin Greyscale
     text = {
       hex = "#cdd6f4";
     };
@@ -203,6 +205,23 @@ in
     };
     crust = {
       hex = "#11111b";
+    };
+
+    # Saturated
+    white = {
+      hex = "#ffffff";
+    };
+    black = {
+      hex = "#000000";
+    };
+    rgb-blue = {
+      hex = "#0000ff";
+    };
+    rgb-red = {
+      hex = "#ff0000";
+    };
+    rgb-green = {
+      hex = "#00ff00";
     };
   };
 
