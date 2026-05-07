@@ -39,8 +39,8 @@ in
         disable_ligatures = "never";
         disable_ligatures_in_monitored_types = "all";
 
-        window_padding_width = 14;
-        window_padding_height = 14;
+        window_padding_width = 12;
+        window_padding_height = 12;
 
         background_opacity = 0.8;
 
@@ -60,7 +60,7 @@ in
         startup_session = "none";
 
         foreground = "${colors.text.hex}";
-        background = "${colors.crust.hex}";
+        background = "${colors.black.hex}";
         selection_foreground = "${colors.base.hex}";
         selection_background = "${colors.rosewater.hex}";
         cursor = "${colors.rosewater.hex}";

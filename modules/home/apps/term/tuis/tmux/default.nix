@@ -9,12 +9,12 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.apps.tools.tmux;
+  cfg = config.apps.term.tuis.tmux;
 in
 
 {
 
-  options.apps.tools.tmux = with types; {
+  options.apps.term.tuis.tmux = with types; {
     enable = mkBoolOpt false "Enable Tmux";
   };
 
@@ -68,8 +68,12 @@ in
         set -g @resurrect-strategy-nvim 'session'
 
         set -g @continuum-save '15m'      # Auto-save every 15 minutes
-        set -g @continuum-restore 'off'    # Disable auto-restore
-        set -g @continuum-boot 'off'       # Disable boot restore    
+        set -g @continuum-restore 'on'     # Auto-restore on tmux start
+        set -g @continuum-boot 'on'        # Restore on boot/login
+
+        # Manual save/restore with prefix + Ctrl
+        bind C-s run-shell "tmux run '~/.tmux/plugins/tmux-resurrect/scripts/save.sh'"
+        bind C-r run-shell "tmux run '~/.tmux/plugins/tmux-resurrect/scripts/restore.sh'"
 
         # Vim-style copy mode bindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection

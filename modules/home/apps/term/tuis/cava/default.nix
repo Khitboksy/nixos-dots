@@ -6,10 +6,10 @@
 with lib;
 with lib.custom;
 let
-  cfg = config.apps.tools.cava;
+  cfg = config.apps.term.tuis.cava;
 in
 {
-  options.apps.tools.cava = with types; {
+  options.apps.term.tuis.cava = with types; {
     enable = mkBoolOpt false "Enable Cava Audio Visualizer";
   };
 

@@ -18,14 +18,14 @@ in
     term = {
       kitty.enable = true;
       tuis = {
-        yazi.enable = true;
         tmux.enable = true;
+        yazi.enable = true;
         cava.enable = true;
       };
     };
 
     helpers = {
-      tofi.enable = true;
+      rofi.enable = true;
     };
 
     music = {
