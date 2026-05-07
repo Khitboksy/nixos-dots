@@ -207,6 +207,14 @@ in
       hex = "#11111b";
     };
 
+    # SHES TRANS???
+    tblue = {
+      hex = "#5BCEFA";
+    };
+    tpink = {
+      hex = "#F5A9B8";
+    };
+
     # Saturated
     white = {
       hex = "#ffffff";

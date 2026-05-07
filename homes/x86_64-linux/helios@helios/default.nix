@@ -13,6 +13,7 @@ in
 
     tools = {
       neovim.enable = true;
+      macchina.enable = true;
     };
 
     term = {
