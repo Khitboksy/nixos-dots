@@ -50,13 +50,6 @@
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
       src = ./.;
-      overlays = [
-        (final: prev: {
-          openldap = prev.openldap.overrideAttrs (old: {
-            doCheck = false;
-          });
-        })
-      ];
       snowfall = {
         namespace = "custom";
       };
@@ -72,7 +65,6 @@
         home-manager.nixosModules.home-manager
         catppuccin.nixosModules.catppuccin
         yeetmouse.nixosModules.default
-        #niri.nixosModules.niri
         niri-nix.nixosModules.default
         nix-index-database.nixosModules.default
         steam-config-nix.nixosModules.default
