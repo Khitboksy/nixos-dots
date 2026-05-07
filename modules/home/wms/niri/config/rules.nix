@@ -1,24 +1,6 @@
 {
   # Window rules
   window-rule = [
-    # Zen browser
-    {
-      match._props.app-id = "^zen$";
-      draw-border-with-background = false;
-      open-focused = false;
-      open-maximized = true;
-    }
-    {
-      match = [
-        { _props.app-id = "^zen$"; }
-        { _props.at-startup = true; }
-      ];
-      open-on-workspace = "browser";
-      open-focused = false;
-      open-maximized = true;
-    }
-
-    # Bitwarden, Signal, Vesktop - block from screen capture
     {
       match = [
         { _props.app-id = "^Bitwarden$"; }
@@ -27,8 +9,28 @@
       ];
       block-out-from = [ "screen-capture" ];
     }
-
-    # Steam
+    {
+      opacity = 0.8;
+      background-effect = {
+        blur = true;
+      };
+      geometry-corner-radius = [
+        12
+        12
+        12
+        12
+      ];
+      clip-to-geometry = true;
+      draw-border-with-background = false;
+    }
+    {
+      match = [
+        { _props.app-id = "^Bitwarden$"; }
+        { _props.app-id = "^signal$"; }
+        { _props.app-id = "^vesktop$"; }
+      ];
+      block-out-from = [ "screen-capture" ];
+    }
     {
       match._props.app-id = "^steam$";
       exclude._props.title = "^Steam$";
@@ -44,23 +46,40 @@
       open-floating = true;
     }
 
-    # Gamescope
     {
-      match._props.app-id = "^gamescope$";
+      match._props.title = "^Deadlock$";
       open-on-workspace = "games";
       open-maximized-to-edges = true;
       open-focused = true;
     }
-
-    # Vesktop
     {
-      match._props.title = "^Vesktop$";
+      match._props.app-id = "^zen$";
+      draw-border-with-background = false;
+      open-focused = true;
+      open-maximized = true;
+    }
+    {
+      match = [
+        { _props.app-id = "^zen$"; }
+        { _props.at-startup = true; }
+      ];
+      open-on-workspace = "browser";
+      open-focused = false;
+    }
+
+    {
+      match._props.app-id = "^mpv$";
+      open-maximized = true;
+      open-focused = true;
+      opacity = 1.0;
+    }
+
+    {
+      match._props.app-id = "^vesktop$";
       open-on-workspace = "chat";
       open-maximized = true;
       open-focused = false;
     }
-
-    # Kitty
     {
       match._props.app-id = "^kitty$";
       opacity = 1.0;
@@ -69,9 +88,10 @@
     }
     {
       match = [
-        { _props.title = "^kitty$"; }
+        { _props.app-id = "^kitty$"; }
         { _props.at-startup = true; }
       ];
+      opacity = 1.0;
       open-on-workspace = "code";
       open-floating = false;
       open-maximized = true;

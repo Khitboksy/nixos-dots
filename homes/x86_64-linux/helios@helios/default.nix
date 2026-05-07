@@ -12,17 +12,16 @@ in
   apps = {
 
     tools = {
-
       neovim.enable = true;
-      tmux.enable = true;
-      lf.enable = true;
-      yazi.enable = true;
-      cava.enable = true;
-
     };
 
     term = {
       kitty.enable = true;
+      tuis = {
+        yazi.enable = true;
+        tmux.enable = true;
+        cava.enable = true;
+      };
     };
 
     helpers = {
@@ -108,31 +107,12 @@ in
       "x-scheme-handler/https" = "zen-browser.desktop";
       "x-scheme-handler/about" = "zen-browser.desktop";
       "x-scheme-handler/unknown" = "zen-browser.desktop";
-
-      "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
-
-      "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
-      "image/png" = [ "org.gnome.Loupe.desktop" ];
-      "image/gif" = [ "org.gnome.Loupe.desktop" ];
-      "image/webp" = [ "org.gnome.Loupe.desktop" ];
-      "image/tiff" = [ "org.gnome.Loupe.desktop" ];
-      "image/bmp" = [ "org.gnome.Loupe.desktop" ];
-      "image/x-icon" = [ "org.gnome.Loupe.desktop" ];
-      "image/svg+xml" = [ "org.gnome.Loupe.desktop" ];
     };
   };
 
   dconf.settings = {
-    "org/gnome/nautilus/preferences" = {
-      "default-folder-viewer" = "list-view";
-      "search-filter-time-type" = "last_modified";
-    };
     "org/gnome/terminal/legacy/profiles:" = {
       "default" = "kitty";
-    };
-    "org/gnome/Loupe" = {
-      "interpolation-quality" = "high";
-      "zoom-gesture" = true;
     };
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
@@ -141,27 +121,19 @@ in
   };
 
   home.packages = with pkgs; [
-    nautilus
-    loupe
     wl-clipboard-rs
     custom.enc
     r2modman
-    nix-tree
-    tokei
     clonehero
     prismlauncher
     ckan
     qbittorrent
     libimobiledevice
     ifuse
-    lf
     signal-desktop
     vesktop
     inputs.zen-browser.packages."${system}".default
     git
-    vlc
-    tidal-hifi
-    fastfetch
     btop
     inputs.mcp-nixos.packages.${system}.default
     ttfautohint

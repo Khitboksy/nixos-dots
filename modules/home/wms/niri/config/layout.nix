@@ -25,7 +25,7 @@ with lib.custom;
       on = [ ];
       active-color = "${colors.mauve.hex}";
       inactive-color = "${colors.sapphire.hex}";
-      width = 6;
+      width = 4;
     };
     border = {
       on = [ ];

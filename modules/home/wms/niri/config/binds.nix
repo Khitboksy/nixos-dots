@@ -1,5 +1,5 @@
 {
-  # Terminal/Launcher
+
   "Mod+Return" = {
     spawn = "kitty";
   };
@@ -7,33 +7,23 @@
     spawn = [
       "fish"
       "-c"
-      "tofi-drun"
+      "rofi -show drun"
     ];
   };
   "Mod+Z" = {
     spawn = "zen";
   };
-
-  # Quit/Lock
   "Mod+Q" = {
     close-window = [ ];
   };
-  "Mod+Shift+E" = {
-    quit = [ ];
-  };
-  "Mod+Shift+L" = {
-    spawn = "swaylock --grace 0";
-  };
-  "Mod+Shift+Slash" = {
-    show-hotkey-overlay = [ ];
-  };
-  "Ctrl+Alt+Delete" = {
-    quit = [ ];
-  };
-
-  # Focus - columns (vim-like)
   "Mod+H" = {
     focus-column-left = [ ];
+  };
+  "Mod+J" = {
+    focus-workspace-down = [ ];
+  };
+  "Mod+K" = {
+    focus-workspace-up = [ ];
   };
   "Mod+L" = {
     focus-column-right = [ ];
@@ -44,24 +34,10 @@
   "Mod+End" = {
     focus-column-last = [ ];
   };
-  "Mod+Left" = {
-    focus-column-left = [ ];
-  };
-  "Mod+Right" = {
-    focus-column-right = [ ];
-  };
-
-  # Focus - workspaces (vim-like)
-  "Mod+J" = {
+  "Mod+Shift+J" = {
     focus-workspace-down = [ ];
   };
-  "Mod+K" = {
-    focus-workspace-up = [ ];
-  };
-  "Mod+U" = {
-    focus-workspace-down = [ ];
-  };
-  "Mod+I" = {
+  "Mod+Shift+K" = {
     focus-workspace-up = [ ];
   };
   "Mod+Page_Down" = {
@@ -70,19 +46,29 @@
   "Mod+Page_Up" = {
     focus-workspace-up = [ ];
   };
-  "Mod+Down" = {
+  "Mod+U" = {
     focus-workspace-down = [ ];
   };
-  "Mod+Up" = {
+  "Mod+I" = {
     focus-workspace-up = [ ];
   };
-
-  # Focus - with modifiers
-  "Mod+Shift+J" = {
+  "Mod+WheelScrollDown" = {
+    _props = {
+      cooldown-ms = 150;
+    };
     focus-workspace-down = [ ];
   };
-  "Mod+Shift+K" = {
+  "Mod+WheelScrollUp" = {
+    _props = {
+      cooldown-ms = 150;
+    };
     focus-workspace-up = [ ];
+  };
+  "Mod+Ctrl+Shift+F" = {
+    toggle-windowed-fullscreen = [ ];
+  };
+  "Mod+Ctrl+H" = {
+    move-column-left = [ ];
   };
   "Mod+Ctrl+J" = {
     focus-workspace-down = [ ];
@@ -90,33 +76,8 @@
   "Mod+Ctrl+K" = {
     focus-workspace-up = [ ];
   };
-
-  # Move - columns
-  "Mod+Ctrl+H" = {
-    move-column-left = [ ];
-  };
   "Mod+Ctrl+L" = {
     move-column-right = [ ];
-  };
-  "Mod+Ctrl+Home" = {
-    move-column-to-first = [ ];
-  };
-  "Mod+Ctrl+End" = {
-    move-column-to-last = [ ];
-  };
-  "Mod+Ctrl+Left" = {
-    move-column-left = [ ];
-  };
-  "Mod+Ctrl+Right" = {
-    move-column-right = [ ];
-  };
-
-  # Move - workspaces
-  "Mod+Shift+U" = {
-    move-workspace-down = [ ];
-  };
-  "Mod+Shift+I" = {
-    move-workspace-up = [ ];
   };
   "Mod+Shift+Page_Down" = {
     move-workspace-down = [ ];
@@ -124,22 +85,18 @@
   "Mod+Shift+Page_Up" = {
     move-workspace-up = [ ];
   };
-
-  # Move - column to workspace
+  "Mod+Shift+U" = {
+    move-workspace-down = [ ];
+  };
+  "Mod+Shift+I" = {
+    move-workspace-up = [ ];
+  };
   "Mod+Ctrl+Page_Down" = {
     move-column-to-workspace-down = [ ];
   };
   "Mod+Ctrl+Page_Up" = {
     move-column-to-workspace-up = [ ];
   };
-  "Mod+Ctrl+Down" = {
-    move-column-to-workspace-down = [ ];
-  };
-  "Mod+Ctrl+Up" = {
-    move-column-to-workspace-up = [ ];
-  };
-
-  # Window actions
   "Mod+R" = {
     switch-preset-column-width = [ ];
   };
@@ -158,14 +115,12 @@
   "Mod+Shift+V" = {
     toggle-window-floating = [ ];
   };
-  "Mod+Ctrl+F" = {
-    expand-column-to-available-width = [ ];
+  "Mod+Shift+Comma" = {
+    consume-window-into-column = [ ];
   };
-  "Mod+Ctrl+R" = {
-    reset-window-height = [ ];
+  "Mod+Period" = {
+    expel-window-from-column = [ ];
   };
-
-  # Size
   "Mod+Minus" = {
     set-column-width = "-10%";
   };
@@ -178,27 +133,18 @@
   "Mod+Shift+Equal" = {
     set-window-height = "+10%";
   };
-
-  # Consume/expel
-  "Mod+Shift+Comma" = {
-    consume-window-into-column = [ ];
+  "Print" = {
+    screenshot = [ ];
   };
-  "Mod+Period" = {
-    expel-window-from-column = [ ];
+  "Mod+Shift+E" = {
+    quit = [ ];
   };
-  "Mod+BracketLeft" = {
-    consume-or-expel-window-left = [ ];
+  "Mod+Shift+L" = {
+    spawn = "swaylock --grace 0";
   };
-  "Mod+BracketRight" = {
-    consume-or-expel-window-right = [ ];
+  "Mod+Shift+Slash" = {
+    show-hotkey-overlay = [ ];
   };
-
-  # Toggle fullscreen
-  "Mod+Ctrl+Shift+F" = {
-    toggle-windowed-fullscreen = [ ];
-  };
-
-  # Workspaces
   "Mod+1" = {
     focus-workspace = 1;
   };
@@ -226,8 +172,6 @@
   "Mod+9" = {
     focus-workspace = 9;
   };
-
-  # Move window to workspace
   "Mod+Shift+1" = {
     move-window-to-workspace = 1;
   };
@@ -255,19 +199,35 @@
   "Mod+Shift+9" = {
     move-window-to-workspace = 9;
   };
-
-  # Mouse scroll
-  "Mod+WheelScrollDown" = {
-    _props = {
-      cooldown-ms = 150;
-    };
+  "Mod+Left" = {
+    focus-column-left = [ ];
+  };
+  "Mod+Down" = {
     focus-workspace-down = [ ];
   };
-  "Mod+WheelScrollUp" = {
-    _props = {
-      cooldown-ms = 150;
-    };
+  "Mod+Up" = {
     focus-workspace-up = [ ];
+  };
+  "Mod+Right" = {
+    focus-column-right = [ ];
+  };
+  "Mod+Ctrl+Left" = {
+    move-column-left = [ ];
+  };
+  "Mod+Ctrl+Down" = {
+    move-column-to-workspace-down = [ ];
+  };
+  "Mod+Ctrl+Up" = {
+    move-column-to-workspace-up = [ ];
+  };
+  "Mod+Ctrl+Right" = {
+    move-column-right = [ ];
+  };
+  "Mod+Ctrl+Home" = {
+    move-column-to-first = [ ];
+  };
+  "Mod+Ctrl+End" = {
+    move-column-to-last = [ ];
   };
   "Mod+Shift+WheelScrollDown" = {
     focus-column-right = [ ];
@@ -293,18 +253,24 @@
   "Mod+Ctrl+Shift+WheelScrollUp" = {
     move-column-left = [ ];
   };
-
-  # Screenshot/Power
-  "Print" = {
-    screenshot = [ ];
+  "Mod+BracketLeft" = {
+    consume-or-expel-window-left = [ ];
+  };
+  "Mod+BracketRight" = {
+    consume-or-expel-window-right = [ ];
+  };
+  "Mod+Ctrl+R" = {
+    reset-window-height = [ ];
+  };
+  "Mod+Ctrl+F" = {
+    expand-column-to-available-width = [ ];
+  };
+  "Ctrl+Alt+Delete" = {
+    quit = [ ];
   };
   "Mod+Shift+End" = {
     power-off-monitors = [ ];
   };
-  "Mod+Shift+Home" = {
-    power-on-monitors = [ ];
-  };
-
   # DMS
   "Super+v" = {
     spawn = [
@@ -332,4 +298,5 @@
       "5"
     ];
   };
+
 }
