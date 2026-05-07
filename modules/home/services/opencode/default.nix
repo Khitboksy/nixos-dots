@@ -12,7 +12,7 @@ let
   system = pkgs.stdenv.hostPlatform.system;
   pkg = pkgs.opencode;
   agents = "file:./agents";
-  model = "openrouter/minimax/minimax-m2.5:free";
+  model = "opencode/minimax-m2.5-free";
   mkService = recursiveUpdate {
     Unit.PartOf = [ "graphical-session.target" ];
     Unit.After = [ "graphical-session.target" ];
@@ -97,7 +97,9 @@ in
             type = "local";
             command = [
               "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem"
-              "/home/helios"
+              "/home/helios/builds"
+              "/home/helios/shared"
+              "/home/helios/.config "
             ];
           };
           github = {
@@ -149,6 +151,12 @@ in
       };
     };
     xdg.configFile = {
+
+      "opencode/agents" = {
+        source = ./config/agents;
+        recursive = true;
+      };
+
       "opencode/tui.json" = {
         text = builtins.toJSON {
           theme = "helios-opencodeTheme";
