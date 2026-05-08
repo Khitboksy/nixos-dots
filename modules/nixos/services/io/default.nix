@@ -19,6 +19,11 @@ in
 
   config = mkIf cfg.enable {
 
+    environment.systemPackages = with pkgs; [
+      piper
+      libratbag
+    ];
+
     hardware.yeetmouse = {
       enable = false;
       sensitivity = 1.0;

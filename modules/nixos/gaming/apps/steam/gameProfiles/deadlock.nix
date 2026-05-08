@@ -26,8 +26,8 @@
 
     wrappers = [
       #"/home/helios/.local/bin/mangohud-def"
-      (lib.getExe pkgs.mangohud)
-      "gamescope -r 165 -w 1366 -h 768 --force-grab-cursor --"
+      pkgs.mangohud
+      (lib.getExe pkgs.gamemode)
     ];
 
   };

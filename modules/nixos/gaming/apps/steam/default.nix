@@ -9,11 +9,11 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.apps.steam;
+  cfg = config.gaming.apps.steam;
 in
 
 {
-  options.apps.steam = with types; {
+  options.gaming.apps.steam = with types; {
     enable = mkBoolOpt false "Enable Steam";
   };
 
@@ -33,21 +33,16 @@ in
         closeSteam = true;
         apps = {
 
-          deadlock = (import ./apps/deadlock.nix) { inherit pkgs lib; };
-          overwatch = (import ./apps/overwatch.nix) { inherit pkgs lib; };
-          kerbal = (import ./apps/kerbal.nix) { inherit pkgs lib; };
+          deadlock = (import ./gameProfiles/deadlock.nix) { inherit pkgs lib; };
+          overwatch = (import ./gameProfiles/overwatch.nix) { inherit pkgs lib; };
+          kerbal = (import ./gameProfiles/kerbal.nix) { inherit pkgs lib; };
 
         };
       };
     };
 
-    environment = {
-      variables = {
-        PROTON_ENABLE_WAYLAND = "1";
-      };
-      systemPackages = [
-        pkgs.protonup-qt
-      ];
+    environment.variables = {
+      PROTON_ENABLE_WAYLAND = "1";
     };
   };
 }

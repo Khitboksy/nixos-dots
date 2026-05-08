@@ -124,10 +124,6 @@ in
   home.packages = with pkgs; [
     wl-clipboard-rs
     custom.enc
-    r2modman
-    clonehero
-    prismlauncher
-    ckan
     qbittorrent
     libimobiledevice
     ifuse
