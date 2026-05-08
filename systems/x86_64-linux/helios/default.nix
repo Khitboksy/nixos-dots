@@ -18,7 +18,7 @@
   #apps.steam.enable = true;
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
-  apps.steam.enable = true;
+  gaming.enable = true;
 
   hardware = {
     audio.enable = true;
@@ -37,22 +37,12 @@
   programs = {
 
     fish.enable = true;
-    gamemode.enable = true;
     virt-manager.enable = false;
 
     direnv = {
       enable = true;
       enableBashIntegration = true;
     };
-    /*
-        steam = {
-          enable = true;
-          remotePlay.openFirewall = true;
-          dedicatedServer.openFirewall = true;
-          localNetworkGameTransfers.openFirewall = true;
-          gamescopeSession.enable = true;
-        };
-    */
   };
 
   services = {
@@ -124,25 +114,17 @@
   };
 
   environment = {
+
     variables = {
       NH_FLAKE = "/home/helios/builds";
     };
-    systemPackages = [
-      (pkgs.lutris.override {
-        extraLibraries = pkgs: [
-          pkgs.libsForQt5.qt5.qtwayland
-          pkgs.wayland
-        ];
-      })
-      pkgs.protonup-qt
 
-      pkgs.piper
-      pkgs.libratbag
-      pkgs.cmake
-      pkgs.meson
-      pkgs.cpio
-      pkgs.swaybg
-      pkgs.xwayland-satellite
+    systemPackages = with pkgs; [
+      cmake
+      meson
+      cpio
+      swaybg
+      xwayland-satellite
     ];
   };
 
