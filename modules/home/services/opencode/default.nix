@@ -187,7 +187,7 @@ in
 
       # MCP Server scripts - reproducible from Nix
       "opencode/mcps/memory-db-mcp/package.json" = {
-        text = builtins.toJSON (import ./config/mcps/memory-db-mcp/package.json.nix);
+        text = builtins.toJSON (import ./config/mcps/memory-db-mcp/package.nix);
       };
       "opencode/mcps/memory-db-mcp/server.mjs" = {
         text = (import ./config/mcps/memory-db-mcp/server.nix);
