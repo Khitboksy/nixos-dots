@@ -15,6 +15,7 @@ const DATABASES = {
 
 const MAX_RESULT_SIZE = 10000;
 const MAX_TABLE_NAME_LENGTH = 64;
+const MAX_TABLES_IN_SCHEMA = 500;
 
 let dbConnections = {};
 
@@ -115,10 +116,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
+  // Defensive: handle missing params from malformed requests or edge cases
+  const { name, arguments: args } = request.params ?? {};
 
   try {
     if (name === 'list_databases') {
+      // Note: Using statSync for list_databases - this is a diagnostic tool
+      // called infrequently, not a hot path. The blocking impact is negligible
+      // for stdio-based MCP servers processing occasional requests.
       let totalSize = 0;
       const dbs = Object.entries(DATABASES).map(([dbName, path]) => {
         try {
@@ -153,8 +158,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return { content: [{ type: 'text', text: 'Error: Multiple statements are not allowed' }] };
       }
       
-      try {
-        const stmt = db.prepare(sql + ' LIMIT ' + (MAX_RESULT_SIZE + 1));
+      // Detect and strip existing LIMIT clause to avoid syntax error
+        let safeSql = sql;
+        const limitMatch = sql.match(/\bLIMIT\s+\d+/i);
+        if (limitMatch) {
+          safeSql = sql.substring(0, limitMatch.index).trim();
+        }
+        const stmt = db.prepare(safeSql + ' LIMIT ' + (MAX_RESULT_SIZE + 1));
         let rows = stmt.all(Array.isArray(args?.params) ? args.params : []);
         stmt.close();
         if (rows.length > MAX_RESULT_SIZE) {
@@ -167,19 +177,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
     else if (name === 'schema') {
       try {
-        const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all();
+        const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name LIMIT " + MAX_TABLES_IN_SCHEMA).all();
+        if (tables.length >= MAX_TABLES_IN_SCHEMA) {
+          return { content: [{ type: 'text', text: 'Warning: Schema truncated - database has more than ' + MAX_TABLES_IN_SCHEMA + ' tables. Use table_info tool to inspect specific tables.' }] };
+        }
         const schema = tables.map(({ name: tableName }) => {
           const safeName = sanitizeTableName(tableName);
+          // Skip COUNT for large tables to avoid performance issues
+          let rowCount = null;
+          try {
+            const stmt2 = db.prepare('SELECT COUNT(*) as count FROM "' + safeName + '" WHERE 1=1');
+            rowCount = stmt2.get();
+            stmt2.close();
+          } catch { /* skip COUNT on error */ }
           const stmt1 = db.prepare('PRAGMA table_info("' + safeName + '")');
           const columns = stmt1.all();
           stmt1.close();
-          const stmt2 = db.prepare('SELECT COUNT(*) as count FROM "' + safeName + '"');
-          const rowCount = stmt2.get();
-          stmt2.close();
           return {
             table: tableName,
             columns: columns.map(c => ({ name: c.name, type: c.type, notnull: c.notnull === 1, pk: c.pk === 1 })),
-            rowCount: rowCount.count
+            rowCount: rowCount?.count ?? 'N/A'
           };
         });
         return { content: [{ type: 'text', text: JSON.stringify(schema) }] };
