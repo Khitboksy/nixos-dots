@@ -41,7 +41,9 @@ in
           git = "ask";
         };
         default_agent = "minerva";
-        plugin = [ "@mohak34/opencode-notifier@latest" ];
+        plugin = [
+          "@mohak34/opencode-notifier@latest"
+        ];
         agent = {
           minerva = {
             mode = "primary";
@@ -126,6 +128,16 @@ in
               DEFAULT_SEARCH_PROVIDER = "searxng";
               SEARXNG_URL = "https://search.zoeys.computer/search";
             };
+          };
+          sqlite = {
+            type = "local";
+            command = [
+              "npx"
+              "-y"
+              "mcp-sqlite-server"
+              # Point to directory containing databases
+              "/home/helios/shared/opencode"
+            ];
           };
         };
       };
