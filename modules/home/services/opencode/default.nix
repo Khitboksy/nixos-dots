@@ -132,11 +132,8 @@ in
           sqlite = {
             type = "local";
             command = [
-              "npx"
-              "-y"
-              "mcp-sqlite-server"
-              # Point to directory containing databases
-              "/home/helios/shared/opencode"
+              "node"
+              "${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp/server.mjs"
             ];
           };
         };
@@ -186,6 +183,14 @@ in
 
       "opencode/plugins/opencodeNotifier.json" = {
         text = import ./config/plugins/opencodeNotifier.nix;
+      };
+
+      # MCP Server scripts - reproducible from Nix
+      "opencode/mcps/memory-db-mcp/package.json" = {
+        text = builtins.toJSON (import ./config/mcps/memory-db-mcp/package.json.nix);
+      };
+      "opencode/mcps/memory-db-mcp/server.mjs" = {
+        text = (import ./config/mcps/memory-db-mcp/server.nix);
       };
     };
   };
