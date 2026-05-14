@@ -52,6 +52,7 @@ in
     wallpaper.enable = true;
     opencode.enable = true;
     musicPlayerDaemon.enable = true;
+    t3code.enable = true;
 
     gpg-agent = {
       enable = true;
