@@ -127,6 +127,18 @@ in
               SEARXNG_URL = "https://search.zoeys.computer/search";
             };
           };
+          sqlite = {
+            type = "local";
+            command = [
+              "npx"
+              "-y"
+              "mcp-sqlite-server"
+            ];
+            # Optional: specify database path to watch
+            # environment = {
+            #   DB_PATH = "/home/helios/shared/opencode/opencode-stable.db";
+            # };
+          };
         };
       };
     };
