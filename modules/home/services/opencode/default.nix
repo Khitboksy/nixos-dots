@@ -41,7 +41,12 @@ in
           git = "ask";
         };
         default_agent = "minerva";
-        plugin = [ "@mohak34/opencode-notifier@latest" ];
+        plugin = [
+          "@mohak34/opencode-notifier@latest"
+          # Optional: Add supermemory for automatic persistent memory
+          # Requires SUPERMEMORY_API_KEY environment variable to be set
+          # "opencode-supermemory"
+        ];
         agent = {
           minerva = {
             mode = "primary";
@@ -134,10 +139,10 @@ in
               "-y"
               "mcp-sqlite-server"
             ];
-            # Optional: specify database path to watch
-            # environment = {
-            #   DB_PATH = "/home/helios/shared/opencode/opencode-stable.db";
-            # };
+            # Point to shared folder containing all databases
+            environment = {
+              DB_PATH = "/home/helios/shared/opencode";
+            };
           };
         };
       };
@@ -155,6 +160,8 @@ in
           # NFS Shares
           "XDG_DATA_HOME=/home/helios/shared"
           "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode-stable.db"
+          # Supermemory API key (optional - uncomment after getting key from app.supermemory.ai)
+          # "SUPERMEMORY_API_KEY=sm_..."
         ];
         EnvironmentFile = [
           "/home/helios/secrets/git_mcp_pat.env"
@@ -187,6 +194,18 @@ in
       "opencode/plugins/opencodeNotifier.json" = {
         text = import ./config/plugins/opencodeNotifier.nix;
       };
+
+      # Supermemory configuration (optional - enable plugin above and set API key to use)
+      # "opencode/supermemory.json" = {
+      #   text = builtins.toJSON {
+      #     similarityThreshold = 0.6;
+      #     maxMemories = 5;
+      #     maxProjectMemories = 10;
+      #     injectProfile = true;
+      #     containerTagPrefix = "helios";
+      #     compactionThreshold = 0.8;
+      #   };
+      # };
     };
   };
 }
