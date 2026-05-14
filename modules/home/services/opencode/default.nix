@@ -43,8 +43,6 @@ in
         default_agent = "minerva";
         plugin = [
           "@mohak34/opencode-notifier@latest"
-          # Local memory plugin for automatic persistent memory (no cloud/API key)
-          "./plugins/opencode-local-memory"
         ];
         agent = {
           minerva = {
@@ -137,11 +135,9 @@ in
               "npx"
               "-y"
               "mcp-sqlite-server"
+              # Point to directory containing databases
+              "/home/helios/shared/opencode"
             ];
-            # Point to shared folder containing all databases
-            environment = {
-              DB_PATH = "/home/helios/shared/opencode";
-            };
           };
         };
       };
@@ -159,8 +155,6 @@ in
           # NFS Shares
           "XDG_DATA_HOME=/home/helios/shared"
           "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode-stable.db"
-          # Local memory databases directory
-          "MEMORY_DIR=/home/helios/shared/opencode"
         ];
         EnvironmentFile = [
           "/home/helios/secrets/git_mcp_pat.env"
