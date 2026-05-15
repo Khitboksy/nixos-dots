@@ -132,8 +132,9 @@ in
           sqlite = {
             type = "local";
             command = [
-              "node"
-              "${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp/server.mjs"
+              "bash"
+              "-c"
+              "cd /home/helios/.config/opencode/mcps/memory-db-mcp && MCP_AGENT_NAME=minerva node server.cjs"
             ];
           };
         };
@@ -166,6 +167,16 @@ in
         recursive = true;
       };
 
+      "opencode/plugins" = {
+        source = ./config/plugins;
+        recursive = true;
+      };
+
+      "opencode/mcps" = {
+        source = ./config/mcps;
+        recursive = true;
+      };
+
       "opencode/tui.json" = {
         text = builtins.toJSON {
           theme = "helios-opencodeTheme";
@@ -179,18 +190,6 @@ in
 
       "opencode/layouts/helios-opencodeLayout.json" = {
         text = import ./config/layouts/helios-opencodeLayout.nix;
-      };
-
-      "opencode/plugins/opencodeNotifier.json" = {
-        text = import ./config/plugins/opencodeNotifier.nix;
-      };
-
-      # MCP Server scripts - reproducible from Nix
-      "opencode/mcps/memory-db-mcp/package.json" = {
-        text = builtins.toJSON (import ./config/mcps/memory-db-mcp/package.nix);
-      };
-      "opencode/mcps/memory-db-mcp/server.mjs" = {
-        text = (import ./config/mcps/memory-db-mcp/server.nix);
       };
     };
   };

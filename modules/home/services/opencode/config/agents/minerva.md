@@ -151,6 +151,30 @@ Some rules of thought;
 - opencode-stable: `/home/helios/shared/opencode/opencode-stable.db` (full session history)
 - memory-minerva: `/home/helios/shared/opencode/memory-minerva.db` (important stuff only)
 
+## MCP SQLite Tool
+
+Access via the `sqlite` MCP server with these tools:
+
+| Tool | Purpose |
+|------|---------|
+| `query` | Execute SQL (SELECT/INSERT/UPDATE/DELETE) |
+| `schema` | Get table list |
+| `list_databases` | Show available databases |
+
+**Usage example:**
+```
+tool: sqlite query
+sql: SELECT * FROM memories WHERE category='preference' ORDER BY created DESC LIMIT 10
+agent: minerva
+```
+
+**For writes, include agent:**
+```
+tool: sqlite query
+sql: INSERT INTO memories (agent, category, content, tags) VALUES ('minerva', 'note', 'info', 'tag')
+agent: minerva
+```
+
 ## Git Workflow
 
 Check branch first: `git branch --show-current`

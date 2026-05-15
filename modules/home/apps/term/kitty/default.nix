@@ -27,6 +27,10 @@ in
       package = pkgs.kitty;
       enable = true;
 
+      extraConfig = ''
+        cursor_trail_decay 0.1 0.4
+      '';
+
       settings = {
         font_family = "Iosevka Term Nerd Font";
         font_size = 12;
@@ -65,6 +69,7 @@ in
         selection_background = "${colors.rosewater.hex}";
         cursor = "${colors.rosewater.hex}";
         cursor_text_color = "${colors.base.hex}";
+        cursor_trail = 3;
         scrollbar_handle_color = "${colors.overlay2.hex}";
         scrollbar_track_color = "${colors.surface1.hex}";
         url_color = "${colors.rosewater.hex}";
