@@ -36,13 +36,14 @@ Provide Minerva with:
 - Warnings about potential issues
 - Priority order for fixes
 
-## Search Priorities
+## Search Locations
 
-1. NixOS documentation
-2. nixpkgs
-3. Home Manager
-4. NixOS discourse
-5. GitHub issues/PRs
+These are the sources searched (no particular order):
+- NixOS documentation
+- nixpkgs
+- Home Manager
+- NixOS discourse
+- GitHub issues/PRs
 
 ## Example Output
 
