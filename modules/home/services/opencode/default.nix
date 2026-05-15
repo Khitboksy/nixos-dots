@@ -129,14 +129,15 @@ in
               SEARXNG_URL = "https://search.zoeys.computer/search";
             };
           };
-          sqlite = {
+          memory-db = {
             type = "local";
             command = [
               "bash"
               "-c"
-              "cd /home/helios/.config/opencode/mcps/memory-db-mcp && MCP_AGENT_NAME=minerva node server.cjs"
+              "cd /home/helios/.config/opencode/mcps/memory-db-mcp && node server.cjs"
             ];
           };
+
         };
       };
     };
