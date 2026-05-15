@@ -179,7 +179,11 @@ async function handleRequest(req) {
       try {
         var sql = '';
         if (toolArgs && toolArgs.sql) { sql = toolArgs.sql; }
-        var agentName = (toolArgs && toolArgs.agent) ? toolArgs.agent : DEFAULT_AGENT;
+        // Use tool arg agent if provided, otherwise fallback to flavius
+        var agentName = 'flavius';
+        if (toolArgs && toolArgs.agent) {
+          agentName = toolArgs.agent;
+        }
         const upper = sql.trim().toUpperCase();
         const isSelect = upper.indexOf('SELECT') === 0 || upper.indexOf('PRAGMA') === 0 || upper.indexOf('WITH') === 0;
         const isWrite = upper.indexOf('INSERT') === 0 || upper.indexOf('UPDATE') === 0 || upper.indexOf('DELETE') === 0 || upper.indexOf('CREATE') === 0 || upper.indexOf('DROP') === 0 || upper.indexOf('ALTER') === 0;
@@ -188,23 +192,9 @@ async function handleRequest(req) {
           return;
         }
         if (isWrite) {
-          // Auto-add agent column to INSERT statements if not present
-          if (upper.indexOf('INSERT INTO memories') === 0 && upper.indexOf('agent') === -1) {
-            // Check if it's a standard insert and add agent
-            sql = sql.replace(
-              /INSERT INTO memories \(([^)]+)\)/i,
-              function(match, cols) {
-                return 'INSERT INTO memories (agent, ' + cols + ')';
-              }
-            );
-            // Add agent value to the VALUES part
-            sql = sql.replace(
-              /VALUES \(([^)]+)\)/i,
-              function(match, vals) {
-                return "VALUES ('" + agentName + "', " + vals + ")";
-              }
-            );
-          }
+          // Hardcode flavius for now - debug why auto-inject not working
+          sql = sql.replace('INSERT INTO memories (', 'INSERT INTO memories (agent, ');
+          sql = sql.replace('VALUES (', "VALUES ('flavius', ");
           db.run(sql);
           saveDb('memories');
           send({ jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: JSON.stringify({ affected: db.getRowsModified() }) }] }});
