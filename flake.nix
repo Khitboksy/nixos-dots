@@ -2,6 +2,8 @@
   description = "A very basic flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +45,10 @@
     yazi = {
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    t3code-flake = {
+      url = "github:Khitboksy/t3code";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
   outputs =

@@ -370,6 +370,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1767313136,
+        "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ac62194c3917d5f474c1a844b6fd6da2db95077d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1776548001,
@@ -488,9 +504,11 @@
         "niri-src": "niri-src",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-stable": "nixpkgs-stable",
         "rmpc": "rmpc",
         "snowfall-lib": "snowfall-lib",
         "steam-config-nix": "steam-config-nix",
+        "t3code-flake": "t3code-flake",
         "umu": "umu",
         "yazi": "yazi",
         "yeetmouse": "yeetmouse",
@@ -640,6 +658,43 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "t3code-flake": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ],
+        "t3code-src": "t3code-src"
+      },
+      "locked": {
+        "lastModified": 1778961696,
+        "narHash": "sha256-cY7u1VwP/AckPF2E3NH4VQdzPwm4tAT1PjbsS5tRWbU=",
+        "owner": "Khitboksy",
+        "repo": "t3code",
+        "rev": "5a2ef68f7b93d5284165e21fc045c6332105e7a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Khitboksy",
+        "repo": "t3code",
+        "type": "github"
+      }
+    },
+    "t3code-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778827213,
+        "narHash": "sha256-lj871RSuJ82xulQAMcGW39x+LWPuNPoQIxEss6/UoKw=",
+        "owner": "pingdotgg",
+        "repo": "t3code",
+        "rev": "d1e85c4e8fdef82fbaded9539532b754080419e0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pingdotgg",
+        "repo": "t3code",
         "type": "github"
       }
     },
