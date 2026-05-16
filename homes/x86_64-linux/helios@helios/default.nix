@@ -14,6 +14,7 @@ in
     tools = {
       neovim.enable = true;
       macchina.enable = true;
+      t3code.enable = true;
     };
 
     term = {
@@ -48,11 +49,9 @@ in
 
   services = {
 
-    # Custom Home-Manager Services located in ../../../modules/home/services/*
     wallpaper.enable = true;
     opencode.enable = true;
     musicPlayerDaemon.enable = true;
-    t3code.enable = true;
 
     gpg-agent = {
       enable = true;
