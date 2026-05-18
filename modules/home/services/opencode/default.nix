@@ -10,7 +10,6 @@ with lib.custom;
 let
   cfg = config.services.opencode;
   system = pkgs.stdenv.hostPlatform.system;
-  pkg = pkgs.opencode;
   agents = "file:./agents";
   model = "opencode/minimax-m2.5-free";
   mkService = recursiveUpdate {
@@ -25,120 +24,39 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    home.packages = [
+      inputs.mcp-nixos.packages.${system}.default
+    ];
+
     programs.opencode = {
       enable = true;
-      package = pkg;
+      package = pkgs.opencode;
       settings = {
+
+        lsp = (import ./config/lsp.nix) { inherit pkgs; };
+
+        agent = (import ./config/agent.nix) { inherit model agents; };
+        default_agent = "minerva";
+        permission = {
+          lsp = "allow";
+        };
+
+        mcp = (import ./config/mcp.nix) { inherit config ${system} pkgs; };
+        
         # Defines the `opecode serve` args (127.0.0.1)
         server = {
-          hostname = "localhost"; # Default
+          hostname = "127.0.0.1"; # Default
           port = 4096; # Deafult
           mdns = false; # True = 0.0.0.0:4096
+        
         };
-        # We load API key via env-var on jupiter.service
+        # We load API key via env-var in services.jupiter
         provider.openrouter = { };
-        permission = {
-          git = "ask";
-        };
-        default_agent = "minerva";
+        
         plugin = [
           "@mohak34/opencode-notifier@latest"
         ];
-        agent = {
-          minerva = {
-            mode = "primary";
-            model = "${model}";
-            prompt = "{${agents}/minerva.md}";
-          };
-          flavius = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/flavius.md}";
-          };
-          ceasar = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/ceasar.md}";
-          };
-          gaius = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/gaius.md}";
-          };
-          vestal = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/vestal.md}";
-          };
-          thermae = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/thermae.md}";
-          };
-          naturalis = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "{${agents}/naturalis.md}";
-          };
-          pytheas = {
-            mode = "subagent";
-            model = "${model}";
-            prompt = "${agents}/pytheas.md";
-          };
-        };
-        mcp = {
-          nixos = {
-            type = "local";
-            command = [ "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" ];
-          };
-          context7 = {
-            type = "remote";
-            url = "https://mcp.context7.com/mcp";
-          };
-          filesystem = {
-            type = "local";
-            command = [
-              "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem"
-              "/home/helios/builds"
-              "/home/helios/shared"
-              "/home/helios/.config "
-            ];
-          };
-          github = {
-            type = "local";
-            command = [
-              "${pkgs.github-mcp-server}/bin/github-mcp-server"
-              "stdio"
-              "--read-only"
-            ];
-          };
-          sequential-thinking = {
-            type = "local";
-            command = [ "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking" ];
-          };
-          web-search = {
-            type = "local";
-            command = [
-              "npx"
-              "-y"
-              "@zhafron/mcp-web-search"
-            ];
-            enabled = true;
-            environment = {
-              DEFAULT_SEARCH_PROVIDER = "searxng";
-              SEARXNG_URL = "https://search.zoeys.computer/search";
-            };
-          };
-          memory-db = {
-            type = "local";
-            command = [
-              "bash"
-              "-c"
-              "cd /home/helios/.config/opencode/mcps/memory-db-mcp && node server.cjs"
-            ];
-          };
-
-        };
       };
     };
 
@@ -146,7 +64,7 @@ in
       Unit.Description = "OpenCode Server";
       #serves a listening server at locahost:4096
       Service = {
-        ExecStart = "${pkg}/bin/opencode serve";
+        ExecStart = "${pkgs.opencode}/bin/opencode serve";
         Restart = "always";
         Environment = [
           "SQLITE_JOURNAL_MODE=WAL"
@@ -154,6 +72,8 @@ in
           # NFS Shares
           "XDG_DATA_HOME=/home/helios/shared"
           "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode-stable.db"
+          # Enable experimental LSP tool for AI code intelligence
+          "OPENCODE_EXPERIMENTAL_LSP_TOOL=true"
         ];
         EnvironmentFile = [
           "/home/helios/secrets/git_mcp_pat.env"
