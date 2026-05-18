@@ -42,7 +42,7 @@ in
           lsp = "allow";
         };
 
-        mcp = (import ./config/mcp.nix) { inherit config ${system} pkgs; };
+        mcp = (import ./config/mcp.nix) { inherit inputs pkgs; };
         
         # Defines the `opecode serve` args (127.0.0.1)
         server = {

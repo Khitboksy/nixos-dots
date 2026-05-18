@@ -1,9 +1,12 @@
 {
   inputs,
-  system,
   pkgs,
   ...
 }:
+
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 
 {
   nixos = {
