@@ -13,14 +13,24 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
-    umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
     zen-browser.url = "github:zackartz/zen-browser-flake";
     yeetmouse = {
       url = "github:AndyFilter/YeetMouse?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri-src.url = "github:YaLTeR/niri";
-    niri-src.inputs.nixpkgs.follows = "nixpkgs";
+    /*
+      TODO: niri-src pinned to avoid VRAM/RAM regression on NVIDIA.
+            issue: niri-wm/niri#4113
+            remove pin once a fix lands on main.
+    */
+    niri-src = {
+      url = "github:YaLTeR/niri/4294948cf1c70c50e938383c2c865d7ca455ac7e";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri-nix = {
+      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,18 +47,18 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri-nix = {
-      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mcp-nixos.url = "github:utensils/mcp-nixos";
     yazi = {
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     t3code-flake = {
-      url = "github:Khitboksy/t3code";
+      url = "path:/home/helios/repos/t3code";
       inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =
@@ -81,6 +91,7 @@
         niri-nix.nixosModules.default
         nix-index-database.nixosModules.default
         steam-config-nix.nixosModules.default
+        sops-nix.nixosModules.sops
       ];
     };
 }

@@ -15,10 +15,33 @@
   ];
 
   # Custom NixOS Modules located in ../../../modules/nixos/*
-  #apps.steam.enable = true;
   ui.fonts.enable = true;
   protocols.wayland.enable = true;
   gaming.enable = true;
+
+  greetd.enable = true;
+
+  # ── Sops secrets ─────────────────────────────────────────────
+  sops = {
+    age.keyFile = "/home/helios/.config/sops/age/keys.txt";
+    secrets = {
+      lastfm = {
+        sopsFile = ../../../secrets/lastfm;
+      };
+      git_mcp_pat = {
+        sopsFile = ../../../secrets/git_mcp_pat;
+        path = "/run/secrets/git_mcp_pat.env";
+      };
+      openrouter = {
+        sopsFile = ../../../secrets/openrouter;
+        path = "/run/secrets/openrouter.env";
+      };
+      git_mcp_cat = {
+        sopsFile = ../../../secrets/git_mcp_cat;
+        path = "/run/secrets/git_mcp_cat.env";
+      };
+    };
+  };
 
   hardware = {
     audio.enable = true;
@@ -31,6 +54,8 @@
     nfs.enable = true;
     openrgb.enable = true;
     vpn.enable = true;
+    ssh.enable = true;
+    tails.enable = true;
   };
 
   # Standard configuration.nix configuration stuff
@@ -125,6 +150,7 @@
       cpio
       swaybg
       xwayland-satellite
+      python3Packages.youtube-transcript-api
     ];
   };
 

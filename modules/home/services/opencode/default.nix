@@ -11,7 +11,7 @@ let
   cfg = config.services.opencode;
   system = pkgs.stdenv.hostPlatform.system;
   agents = "file:./agents";
-  model = "opencode/minimax-m2.5-free";
+  model = "opencode/deepseek-v4-flash-free";
   mkService = recursiveUpdate {
     Unit.PartOf = [ "graphical-session.target" ];
     Unit.After = [ "graphical-session.target" ];
@@ -20,12 +20,13 @@ let
 in
 {
   options.services.opencode = with types; {
-    enable = mkBoolOpt true "Enable OpenCode AI coding agent";
+    enable = mkBoolOpt false "Enable OpenCode AI coding agent";
   };
 
   config = mkIf cfg.enable {
 
     home.packages = [
+      pkgs.bun
       inputs.mcp-nixos.packages.${system}.default
     ];
 
@@ -76,8 +77,8 @@ in
           "OPENCODE_EXPERIMENTAL_LSP_TOOL=true"
         ];
         EnvironmentFile = [
-          "/home/helios/secrets/git_mcp_pat.env"
-          "/home/helios/secrets/openrouter.env"
+          "/run/secrets/git_mcp_pat.env"
+          "/run/secrets/openrouter.env"
         ];
       };
     };

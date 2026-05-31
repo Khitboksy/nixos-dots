@@ -137,4 +137,36 @@ with pkgs;
   jupiter = ''
     opencode attach "http://localhost:4096" $argv
   '';
+
+  # ── Nix build commands ────────────────────────────────────
+  ns = ''
+    nh os switch -- --cores 8 --max-jobs 1 $argv
+    and echo "✓ switch complete"
+  '';
+  nsu = ''
+    nh os switch --update -- --cores 12 --max-jobs 8 $argv
+    and echo "✓ switch + update complete"
+  '';
+  nb = ''
+    nh os boot -- --cores 8 --max-jobs 1 $argv
+    and echo "✓ boot build complete"
+  '';
+  nbu = ''
+    nh os boot --update -- --cores 12 --max-jobs 8 $argv
+    and echo "✓ boot + update complete"
+  '';
+  nfu = ''
+    nix flake update $argv
+    and echo "✓ flake lockfile updated"
+  '';
+  nfc = ''
+    nix flake check $argv 2>&1 \
+      | grep -v '^warning:' \
+      | grep -v '^The check omitted' \
+      | grep -v "^Use '--all-systems'" \
+      | grep -v '^\s*$'
+    if test $pipestatus[1] -eq 0
+      echo "✓ all checks passed"
+    end
+  '';
 }

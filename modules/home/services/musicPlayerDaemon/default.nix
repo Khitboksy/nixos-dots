@@ -48,7 +48,7 @@ in
         enable = true;
         endpoints = {
           "last.fm" = {
-            passwordFile = "/home/helios/secrets/lastfm.txt";
+            passwordFile = "/run/secrets/lastfm";
             username = "khitboksy";
           };
         };

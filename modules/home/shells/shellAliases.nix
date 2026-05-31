@@ -26,7 +26,7 @@ with pkgs;
   ls = "${getExe eza} -h --git --icons --color=auto --group-directories-first -s extension";
   tree = "${getExe eza} --tree --icons --tree";
   kys = "shutdown now";
-  hy = "chlear && macchina";
+  hy = "clear && macchina";
   #w = ''| nvim -c "setlocal buftype=nofile bufhidden=wipe" -c "nnoremap <buffer> q :q!<CR>" -'';
   lv = "nvim -c \"normal '\''0\"";
   #pf = ''
@@ -43,18 +43,10 @@ with pkgs;
   gaa = "git add";
   gcm = "git commit";
 
-  ns = "nh os switch -- --cores 8 --max-jobs 1";
-  nsu = "nh os switch --update -- --cores 8 --max-jobs 1";
-  nb = "nh os boot -- --cores 8 --max-jobs 1";
-  nbu = "nh os boot --update -- --cores 12 --max-jobs 8";
-  nfc = "nix flake check";
-  nfu = "nix flake update";
-
-  flake = "cd builds && nvim";
+  flake = "cd ~/builds && nvim";
 
   deadlock = "cd /mnt/nix-data/Games/steam/steamLibrary/steamapps/common/Deadlock/game/citadel/ && nvim";
 
-  #vm = "nixos-rebuild build-vm --flake ~/nixos#earth";
   #mnt = "udisksctl mount -b";
   #umnt = "udisksctl unmount -b";
   burn = "pkill -9";

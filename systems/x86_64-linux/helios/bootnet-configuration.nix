@@ -25,8 +25,9 @@
       "usb_storage"
       "usbhid"
       "sd_mod"
-      "ntsync"
     ];
+
+    kernelModules = [ "ntsync" ];
 
   };
 
@@ -36,6 +37,7 @@
     networkmanager.enable = true;
 
     firewall.allowedTCPPorts = [
+      22
       111
       2049
       4096
