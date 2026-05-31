@@ -14,7 +14,7 @@ in
     tools = {
       neovim.enable = true;
       macchina.enable = true;
-      t3code.enable = true;
+      t3code.enable = false;
     };
 
     term = {
@@ -103,11 +103,11 @@ in
     enable = true;
 
     defaultApplications = {
-      "text/html" = "zen-browser.desktop";
-      "x-scheme-handler/http" = "zen-browser.desktop";
-      "x-scheme-handler/https" = "zen-browser.desktop";
-      "x-scheme-handler/about" = "zen-browser.desktop";
-      "x-scheme-handler/unknown" = "zen-browser.desktop";
+      "text/html" = "zen.desktop";
+      "x-scheme-handler/http" = "zen.desktop";
+      "x-scheme-handler/https" = "zen.desktop";
+      "x-scheme-handler/about" = "zen.desktop";
+      "x-scheme-handler/unknown" = "zen.desktop";
     };
   };
 
@@ -132,11 +132,11 @@ in
     inputs.zen-browser.packages."${system}".default
     git
     btop
-    inputs.mcp-nixos.packages.${system}.default
     ttfautohint
     nodejs
     bitwarden-desktop
     nh
+    obsidian
 
   ];
 

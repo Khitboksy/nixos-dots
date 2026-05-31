@@ -63,10 +63,13 @@ in
   bun = {
     type = "local";
     command = [
-      "npx"
-      "-y"
-      "carlosedp/mcp-bun"
+      "bunx"
+      "--bun"
+      "mcp-bun@latest"
     ];
+    environment = {
+      DISABLE_NOTIFICATIONS = "true";
+    };
   };
 
 }

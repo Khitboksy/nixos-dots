@@ -21,7 +21,7 @@ in
     services.nfs.server = {
       enable = true;
       exports = ''
-        ~/shared/opencode
+        /home/helios/shared/opencode
         192.168.1.218(rw,sync,no_subtree_check,no_root_squash)
       '';
     };

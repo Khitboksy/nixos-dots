@@ -38,8 +38,6 @@ in
         tmuxPlugins.vim-tmux-navigator
         tmuxPlugins.yank
         tmuxPlugins.cpu
-        tmuxPlugins.resurrect
-        tmuxPlugins.continuum
       ];
       extraConfig = ''
         set-option -sa terminal-overrides ",xterm*:Tc"
@@ -62,18 +60,6 @@ in
         set -agF status-right "#{E:@catppuccin_status_cpu}"
         set -ag status-right "#{E:@catppuccin_status_session}"
         set -ag status-right "#{E:@catppuccin_status_uptime}"
-
-        set -g @resurrect-save 'S'
-        set -g @resurrect-restore 'R'
-        set -g @resurrect-strategy-nvim 'session'
-
-        set -g @continuum-save '15m'      # Auto-save every 15 minutes
-        set -g @continuum-restore 'on'     # Auto-restore on tmux start
-        set -g @continuum-boot 'on'        # Restore on boot/login
-
-        # Manual save/restore with prefix + Ctrl
-        bind C-s run-shell "tmux run '~/.tmux/plugins/tmux-resurrect/scripts/save.sh'"
-        bind C-r run-shell "tmux run '~/.tmux/plugins/tmux-resurrect/scripts/restore.sh'"
 
         # Vim-style copy mode bindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection
@@ -103,5 +89,26 @@ in
         set-hook -g pane-focus-in 'run-shell "tmux rename-session \"#{b:pane_current_path}\""'
       '';
     };
+
+    systemd.user.services.tmux = {
+      Unit = {
+        Description = "tmux default session (detached)";
+        Documentation = "man:tmux(1)";
+      };
+
+      Service = {
+        Type = "forking";
+        Environment = "DISPLAY=:0";
+        ExecStart = "${getExe pkgs.tmux} new-session -d";
+        ExecStop = "${getExe pkgs.tmux} kill-server";
+        KillMode = "none";
+        RestartSec = "2";
+      };
+
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
   };
 }

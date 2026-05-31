@@ -13,15 +13,15 @@ in
 
 {
   options.services.ssh = with types; {
-    enable = mkBoolOpt true "Enable OpenSSH";
+    enable = mkBoolOpt false "Enable OpenSSH";
   };
 
   config = mkIf cfg.enable {
     services.openssh = {
       enable = true;
       settings = {
-        passwordAuthentication = true;
-        permitRootLogin = "no";
+        PasswordAuthentication = true;
+        PermitRootLogin = "no";
       };
     };
   };

@@ -2,7 +2,7 @@
   "name": "memory-db-mcp",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "sql.js": "^1.11.0"
   }

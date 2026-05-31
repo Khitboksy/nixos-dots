@@ -17,24 +17,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.etc."greetd/environments".text = ''
-      sway
-    '';
-
-    services = {
-      greetd = {
-        enable = false;
-        settings = rec {
-          initial_session = {
-            # command = "sway --unsupported-gpu";
-            command = "niri-session";
-            user = "helios";
-          };
-          default_session = initial_session;
-        };
-      };
-    };
-
     services.displayManager.gdm.enable = true;
 
     programs = {
@@ -50,7 +32,10 @@ in
         # __GL_GSYNC_ALLOWED = "0";
         # __GL_VRR_ALLOWED = "0";
         _JAVA_AWT_WM_NONEREPARENTING = "1";
-        SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
+        # SSH agent is handled by gpg-agent (home-manager) — see
+        # services.gpg-agent.enableSshSupport = true in home config.
+        # Setting this here would conflict with gpg-agent's socket.
+        # SSH_AUTH_SOCK = "...";  # ← not needed, gpg-agent manages it
         DISABLE_QT5_COMPAT = "0";
         GDK_BACKEND = "wayland";
         ANKI_WAYLAND = "1";
@@ -69,10 +54,11 @@ in
         CLUTTER_BACKEND = "wayland";
         DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
       };
+      # SSH agent is managed by gpg-agent (home-manager's
+      # services.gpg-agent.enableSshSupport = true).  No need for
+      # gnome-keyring-daemon or a separate ssh-agent here.
       loginShellInit = ''
         dbus-update-activation-environment --systemd DISPLAY
-        eval $(gnome-keyring-daemon --start --components=ssh,secrets)
-        eval $(ssh-agent)
       '';
     };
 

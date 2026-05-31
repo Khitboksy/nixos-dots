@@ -21,16 +21,19 @@ in
     # Add appimage-run so the wrapper can find it
     home.packages = [
       pkgs.appimage-run
-      inputs.t3code-flake.packages.${system}
+      inputs.t3code-flake.packages.${system}.default
     ];
 
     xdg.desktopEntries.t3code = {
       name = "T3 Code";
       genericName = "AI Coding Agent Harness";
       comment = "A minimal web GUI for coding agents";
-      exec = "${inputs.t3code-flake.packages.${system}}/bin/t3code %U";
+      exec = "${inputs.t3code-flake.packages.${system}.default}/bin/t3code %U";
       terminal = false;
-      categories = [ "Development" "IDE" ];
+      categories = [
+        "Development"
+        "IDE"
+      ];
       startupNotify = true;
     };
   };

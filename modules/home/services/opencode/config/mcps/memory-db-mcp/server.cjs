@@ -247,13 +247,13 @@ async function handleRequest(req) {
     send({ jsonrpc: '2.0', id, result: { tools: [
 
       // ========== MEMORIES DATABASE TOOLS ==========
-      { name: 'memories_query', description: 'Execute SQL on memories.db. Writes auto-inject agent column.', inputSchema: { type: 'object', properties: { sql: { type: 'string' }, agent: { type: 'string' } }, required: ['sql'] }},
-      { name: 'memories_schema', description: 'Get memories.db table schema', inputSchema: { type: 'object', properties: {} }},
+      { name: 'memories_query', description: 'Execute SQL on memories.db (SELECT + INSERT/UPDATE/DELETE). Agent column auto-injected from argument — do NOT include agent in SQL.', inputSchema: { type: 'object', properties: { sql: { type: 'string' }, agent: { type: 'string' } }, required: ['sql'] }},
+      { name: 'memories_schema', description: 'Get memories.db column definitions: {table, columns: [{cid,name,type,notnull,default,pk}]}', inputSchema: { type: 'object', properties: {} }},
       { name: 'memories_init', description: 'Initialize/reinitialize memories database', inputSchema: { type: 'object', properties: {} }},
 
       // ========== SESSION DATABASE TOOLS ==========
-      { name: 'session_query', description: 'Execute SQL on opencode-stable.db (READ ONLY). Use target parameter: session, message, session_message, project, workspace, account, event, todo', inputSchema: { type: 'object', properties: { sql: { type: 'string' }, limit: { type: 'number', default: 50 } }, required: ['sql'] }},
-      { name: 'session_schema', description: 'Get opencode-stable.db table schema', inputSchema: { type: 'object', properties: {} }},
+      { name: 'session_query', description: 'Execute SQL on opencode-stable.db (READ ONLY). Returns {columns, values}. Tables: session, message, part, event, workspace, project, account.', inputSchema: { type: 'object', properties: { sql: { type: 'string' }, limit: { type: 'number', default: 50 } }, required: ['sql'] }},
+      { name: 'session_schema', description: 'Get all opencode-stable.db table schemas: [{table, columns: [{name,type,...}]}]', inputSchema: { type: 'object', properties: {} }},
       { name: 'session_list', description: 'List recent sessions with optional search', inputSchema: { type: 'object', properties: { search: { type: 'string' }, limit: { type: 'number', default: 20 } } }},
 
       // ========== UTILITY TOOLS ==========
@@ -291,7 +291,7 @@ async function handleRequest(req) {
     else if (toolName === 'memories_query') {
       const db = openDb('memories');
       if (!db) {
-        sendResult(id, 'Error: Cannot open memories database');
+        sendResult(id, JSON.stringify({ error: 'Cannot open memories database' }));
         return;
       }
       try {
@@ -300,39 +300,53 @@ async function handleRequest(req) {
         const validation = validateSql(sql, true, 'memories');
 
         if (!validation.valid) {
-          sendResult(id, validation.error);
+          sendResult(id, JSON.stringify({ error: validation.error }));
           return;
         }
 
         if (validation.isWrite) {
-          // Auto-inject agent column for writes
-          sql = sql.replace('INSERT INTO memories (', 'INSERT INTO memories (agent, ');
-          sql = sql.replace('VALUES (', `VALUES ('${agentName}', `);
+          // Only auto-inject agent if not already present in the column list
+          var hasAgent = /\(\s*\)/.test(sql) ? false : /\(\s*(?:agent\s*,|.*\bagent\b[^)]*\))/.test(sql);
+          // Simpler check: does the column list contain 'agent'?
+          var colList = sql.match(/INSERT\s+INTO\s+memories\s*\(([^)]+)\)/i);
+          hasAgent = colList ? colList[1].split(',').map(function(c) { return c.trim(); }).indexOf('agent') !== -1 : false;
+
+          if (!hasAgent) {
+            sql = sql.replace(/INSERT\s+INTO\s+memories\s*\(/i, 'INSERT INTO memories (agent, ');
+            sql = sql.replace(/VALUES\s*\(/i, "VALUES ('" + agentName + "', ");
+          }
           db.run(sql);
+          // Capture affected count BEFORE exporting/saving — db.export() resets the counter
+          var affected = db.getRowsModified();
           saveDb('memories');
-          sendResult(id, JSON.stringify({ affected: db.getRowsModified() }));
+          sendResult(id, JSON.stringify({ affected: affected }));
         } else {
           const result = db.exec(sql);
           const text = result.length ? JSON.stringify(result[0]) : '[]';
           sendResult(id, text);
         }
       } catch (e) {
-        sendResult(id, 'Error: ' + e.message);
+        sendResult(id, JSON.stringify({ error: e.message }));
       }
     }
 
     else if (toolName === 'memories_schema') {
       const db = openDb('memories');
       if (!db) {
-        sendResult(id, 'Error: Cannot open memories database');
+        sendResult(id, JSON.stringify({ error: 'Cannot open memories database' }));
         return;
       }
       try {
-        const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
-        const schema = tables.length ? tables[0].values.map(function(row) { return { table: row[0] }; }) : [];
+        const cols = db.exec("PRAGMA table_info(memories)");
+        const schema = cols.length ? {
+          table: 'memories',
+          columns: cols[0].values.map(function(row) {
+            return { cid: row[0], name: row[1], type: row[2], notnull: row[3], default: row[4], pk: row[5] };
+          })
+        } : { table: 'memories', columns: [] };
         sendResult(id, JSON.stringify(schema));
       } catch (e) {
-        sendResult(id, 'Error: ' + e.message);
+        sendResult(id, JSON.stringify({ error: e.message }));
       }
     }
 
@@ -377,15 +391,24 @@ async function handleRequest(req) {
     else if (toolName === 'session_schema') {
       const db = openDb('session');
       if (!db) {
-        sendResult(id, 'Error: Cannot open session database');
+        sendResult(id, JSON.stringify({ error: 'Cannot open session database' }));
         return;
       }
       try {
         const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
-        const schema = tables.length ? tables[0].values.map(function(row) { return { table: row[0] }; }) : [];
-        sendResult(id, JSON.stringify(schema));
+        var tableNames = tables.length ? tables[0].values.map(function(row) { return row[0]; }) : [];
+        var allSchemas = tableNames.map(function(tname) {
+          var cols = db.exec("PRAGMA table_info(\"" + tname + "\")");
+          return {
+            table: tname,
+            columns: cols.length ? cols[0].values.map(function(row) {
+              return { cid: row[0], name: row[1], type: row[2], notnull: row[3], default: row[4], pk: row[5] };
+            }) : []
+          };
+        });
+        sendResult(id, JSON.stringify(allSchemas));
       } catch (e) {
-        sendResult(id, 'Error: ' + e.message);
+        sendResult(id, JSON.stringify({ error: e.message }));
       }
     }
 
@@ -447,18 +470,30 @@ DATABASES:
 TOOLS:
 
 [Memories Database]
-  memories_query   - Execute SQL on memories.db
-  memories_schema  - Get memories table schema
+  memories_query   - Execute SQL on memories.db (SELECT + INSERT/UPDATE/DELETE)
+  memories_schema  - Get memories table column definitions
   memories_init   - Reinitialize memories.db
 
 [Session Database]
-  session_query   - Execute SQL on opencode-stable.db
-  session_schema  - Get session table schema
+  session_query   - Execute SQL on opencode-stable.db (READ ONLY)
+  session_schema  - Get all table schemas with column definitions
   session_list    - List recent sessions
 
 [Utility]
   list_databases  - Show DB paths and status
   help            - This help message
+
+RESPONSE FORMATS:
+  SELECT: { "columns": ["col1",...], "values": [["val1",...], ...] }
+  Write:  { "affected": N }
+  Error:  { "error": "message" }
+  Schema: { "table": "name", "columns": [{ "name": "...", "type": "...", ... }] }
+
+NOTES:
+  - Agent column is AUTO-INJECTED for writes: do NOT include it in the SQL.
+    Pass the agent name via the "agent" argument instead.
+  - ALWAYS add LIMIT to SELECT queries.
+  - Session DB is READ ONLY.
 
 EXAMPLES:
 
@@ -468,7 +503,7 @@ EXAMPLES:
   "arguments": { "sql": "SELECT * FROM memories WHERE category='bug' LIMIT 50", "agent": "vestal" }
 }
 
-# Write to memories
+# Write to memories (agent auto-injected from argument)
 {
   "name": "memories_query",
   "arguments": { "sql": "INSERT INTO memories (category, content, tags) VALUES ('bug', 'broken', 'test')", "agent": "flavius" }

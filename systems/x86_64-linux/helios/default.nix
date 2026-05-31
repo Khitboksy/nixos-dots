@@ -15,33 +15,14 @@
   ];
 
   # Custom NixOS Modules located in ../../../modules/nixos/*
-  ui.fonts.enable = true;
+  ui = {
+    fonts.enable = true;
+    greetd.enable = true;
+  };
   protocols.wayland.enable = true;
   gaming.enable = true;
 
-  greetd.enable = true;
-
-  # ── Sops secrets ─────────────────────────────────────────────
-  sops = {
-    age.keyFile = "/home/helios/.config/sops/age/keys.txt";
-    secrets = {
-      lastfm = {
-        sopsFile = ../../../secrets/lastfm;
-      };
-      git_mcp_pat = {
-        sopsFile = ../../../secrets/git_mcp_pat;
-        path = "/run/secrets/git_mcp_pat.env";
-      };
-      openrouter = {
-        sopsFile = ../../../secrets/openrouter;
-        path = "/run/secrets/openrouter.env";
-      };
-      git_mcp_cat = {
-        sopsFile = ../../../secrets/git_mcp_cat;
-        path = "/run/secrets/git_mcp_cat.env";
-      };
-    };
-  };
+  security.sops.enable = true;
 
   hardware = {
     audio.enable = true;

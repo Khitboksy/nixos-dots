@@ -52,10 +52,6 @@
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    t3code-flake = {
-      url = "path:/home/helios/repos/t3code";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
