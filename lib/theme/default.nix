@@ -126,111 +126,45 @@ in
     primary = pink;
 
     # Catpuccin-Mocha Colour
-    rosewater = {
-      hex = "#f5e0dc";
-    };
-    flamingo = {
-      hex = "#f2cdcd";
-    };
-    pink = {
-      hex = "#f5c2e7";
-    };
-    mauve = {
-      hex = "#cba6f7";
-    };
-    red = {
-      hex = "#f38ba8";
-    };
-    maroon = {
-      hex = "#eba0ac";
-    };
-    peach = {
-      hex = "#fab387";
-    };
-    yellow = {
-      hex = "#f9e2af";
-    };
-    green = {
-      hex = "#a6e3a1";
-    };
-    teal = {
-      hex = "#94e2d5";
-    };
-    sky = {
-      hex = "#89dceb";
-    };
-    sapphire = {
-      hex = "#74c7ec";
-    };
-    blue = {
-      hex = "#89b4fa";
-    };
-    lavender = {
-      hex = "#b4befe";
-    };
+    rosewater.hex = "#f5e0dc";
+    flamingo.hex = "#f2cdcd";
+    pink.hex = "#f5c2e7";
+    mauve.hex = "#cba6f7";
+    red.hex = "#f38ba8";
+    maroon.hex = "#eba0ac";
+    peach.hex = "#fab387";
+    yellow.hex = "#f9e2af";
+    green.hex = "#a6e3a1";
+    teal.hex = "#94e2d5";
+    sky.hex = "#89dceb";
+    sapphire.hex = "#74c7ec";
+    blue.hex = "#89b4fa";
+    lavender.hex = "#b4befe";
 
     # Catpuccin Greyscale
-    text = {
-      hex = "#cdd6f4";
-    };
-    subtext1 = {
-      hex = "#bac2de";
-    };
-    subtext0 = {
-      hex = "#a6adc8";
-    };
-    overlay2 = {
-      hex = "#9399b2";
-    };
-    overlay1 = {
-      hex = "#7f849c";
-    };
-    overlay0 = {
-      hex = "#6c7086";
-    };
-    surface2 = {
-      hex = "#585b70";
-    };
-    surface1 = {
-      hex = "#45475a";
-    };
-    surface0 = {
-      hex = "#313244";
-    };
-    base = {
-      hex = "#1e1e2e";
-    };
-    mantle = {
-      hex = "#181825";
-    };
-    crust = {
-      hex = "#11111b";
-    };
+    text.hex = "#cdd6f4";
+    subtext1.hex = "#bac2de";
+    subtext0.hex = "#a6adc8";
+    overlay2.hex = "#9399b2";
+    overlay1.hex = "#7f849c";
+    overlay0.hex = "#6c7086";
+    surface2.hex = "#585b70";
+    surface1.hex = "#45475a";
+    surface0.hex = "#313244";
+    base.hex = "#1e1e2e";
+    mantle.hex = "#181825";
+    crust.hex = "#11111b";
 
     # SHES TRANS???
-    tblue = {
-      hex = "#5BCEFA";
-    };
-    tpink = {
-      hex = "#F5A9B8";
-    };
+    tblue.hex = "#5BCEFA";
+    tpink.hex = "#F5A9B8";
 
     # Saturated
-    white = {
-      hex = "#ffffff";
-    };
-    black = {
-      hex = "#000000";
-    };
-    rgb-blue = {
-      hex = "#0000ff";
-    };
-    rgb-red = {
-      hex = "#ff0000";
-    };
-    rgb-green = {
-      hex = "#00ff00";
-    };
+    white.hex = "#ffffff";
+    black.hex = "#000000";
+    rgb-blue.hex = "#0000ff";
+    rgb-red.hex = "#ff0000";
+    rgb-green.hex = "#00ff00";
   };
 
   wallpaper = ./wall4.jpg;
