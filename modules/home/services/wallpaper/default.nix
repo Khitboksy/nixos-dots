@@ -9,11 +9,6 @@ with lib.custom;
 let
   cfg = config.services.wallpaper;
   theme = import ../../../../lib/theme/default.nix { inherit lib; };
-  mkService = recursiveUpdate {
-    Unit.PartOf = [ "graphical-session.target" ];
-    Unit.After = [ "graphical-session.target" ];
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
 in
 {
   options.services.wallpaper = with types; {
@@ -22,7 +17,7 @@ in
 
   config = mkIf cfg.enable {
     systemd.user.services = {
-      swaybg = mkService {
+      swaybg = mkGraphicalService {
         Unit.Description = "Wallpaper Chooser";
         Service = {
           ExecStart = "${getExe pkgs.swaybg} -i ${theme.wallpaper}";

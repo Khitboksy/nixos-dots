@@ -68,10 +68,12 @@ in
   # Standard home.nix configuration stuff
 
   catppuccin = {
+    enable = true;
     flavor = "mocha";
     accent = "mauve";
     btop.enable = true;
     fzf.enable = true;
+    autoEnable = false;
   };
 
   programs = {

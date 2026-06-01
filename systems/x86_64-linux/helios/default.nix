@@ -39,6 +39,11 @@
     tails.enable = true;
   };
 
+  catppuccin = {
+    enable = true;
+    autoEnable = false;
+  };
+
   # Standard configuration.nix configuration stuff
   programs = {
 

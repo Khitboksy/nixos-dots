@@ -27,4 +27,12 @@ rec {
   };
 
   isDarwin = pkgs: pkgs.stdenv.isDarwin;
+
+  # Base graphical-session service unit. Apply with:
+  #   systemd.user.services.<name> = mkGraphicalService { Unit.Description = "..."; Service.ExecStart = "..."; };
+  mkGraphicalService = recursiveUpdate {
+    Unit.PartOf = [ "graphical-session.target" ];
+    Unit.After = [ "graphical-session.target" ];
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 }

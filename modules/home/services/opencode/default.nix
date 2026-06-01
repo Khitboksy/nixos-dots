@@ -12,11 +12,6 @@ let
   system = pkgs.stdenv.hostPlatform.system;
   agents = "file:./agents";
   model = "opencode/deepseek-v4-flash-free";
-  mkService = recursiveUpdate {
-    Unit.PartOf = [ "graphical-session.target" ];
-    Unit.After = [ "graphical-session.target" ];
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
 in
 {
   options.services.opencode = with types; {
@@ -61,7 +56,7 @@ in
       };
     };
 
-    systemd.user.services.jupiter = mkService {
+    systemd.user.services.jupiter = mkGraphicalService {
       Unit.Description = "OpenCode Server";
       #serves a listening server at locahost:4096
       Service = {

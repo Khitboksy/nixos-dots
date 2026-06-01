@@ -16,18 +16,10 @@ in
     enable = mkBoolOpt false "Enable GTK Customization";
   };
 
-  options.custom = {
-    colors = mkOption {
-      type = types.attrsOf types.attrs;
-      internal = true;
-      description = "Theme color definitions";
-    };
-  };
-
   config = mkIf cfg.enable {
-    catppuccin.cursors.enable = true;
-
     home.pointerCursor = {
+      name = "catppuccin-mocha-mauve-cursors";
+      package = pkgs.catppuccin-cursors.mochaMauve;
       gtk.enable = true;
       x11.enable = true;
     };
