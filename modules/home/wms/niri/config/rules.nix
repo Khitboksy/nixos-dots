@@ -4,6 +4,7 @@
     {
       match = [
         { _props.app-id = "^Bitwarden$"; }
+        { _props.title = "^Extension:.*Bitwarden.*Zen Browser$"; }
         { _props.app-id = "^signal$"; }
         { _props.app-id = "^vesktop$"; }
       ];
@@ -24,17 +25,10 @@
       draw-border-with-background = false;
     }
     {
-      match = [
-        { _props.app-id = "^Bitwarden$"; }
-        { _props.app-id = "^signal$"; }
-        { _props.app-id = "^vesktop$"; }
-      ];
-      block-out-from = [ "screen-capture" ];
-    }
-    {
       match._props.app-id = "^steam$";
       exclude._props.title = "^Steam$";
       open-focused = false;
+      open-floating = true;
       default-floating-position._props = {
         relative-to = "bottom-right";
         x = 16;
@@ -42,8 +36,9 @@
       };
     }
     {
-      match._props.app-id = "^steam$";
+      match._props.title = "^Steam$";
       open-floating = true;
+      open-focused = true;
     }
 
     {
@@ -59,12 +54,17 @@
       open-maximized = true;
     }
     {
-      match = [
-        { _props.app-id = "^zen$"; }
-        { _props.at-startup = true; }
-      ];
+      match._props = {
+        app-id = "^zen$";
+        at-startup = true;
+      };
       open-on-workspace = "browser";
       open-focused = false;
+    }
+    {
+      match._props.title = "^Extension:.*Bitwarden.*Zen Browser$";
+      open-floating = true;
+      open-focused = true;
     }
 
     {
@@ -75,7 +75,7 @@
     }
 
     {
-      match._props.app-id = "^vesktop$";
+      match._props.app-id = "^vesktop";
       open-on-workspace = "chat";
       open-maximized = true;
       open-focused = false;
@@ -84,17 +84,21 @@
       match._props.app-id = "^kitty$";
       opacity = 1.0;
       open-focused = true;
+      open-maximized = true;
+    }
+    {
+      match._props.app-id = "^kitty-float$";
+      opacity = 1.0;
+      open-focused = true;
       open-floating = true;
     }
     {
-      match = [
-        { _props.app-id = "^kitty$"; }
-        { _props.at-startup = true; }
-      ];
+      match._props = {
+        app-id = "^kitty$";
+        at-startup = true;
+      };
       opacity = 1.0;
       open-on-workspace = "code";
-      open-floating = false;
-      open-maximized = true;
     }
   ];
 

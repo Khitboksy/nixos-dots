@@ -46,12 +46,6 @@ in
             command sudo -p "$prompt_color sudo > $reset" $argv
           end
         end
-
-        if not set -q TMUX
-          # Start tmux, try to restore from continuum
-          # Continuum restores highest available slot (prefer your hard saves over auto-saves)
-          exec tmux -u new -s main
-        end
       '';
       functions = import ../functions.nix { inherit pkgs lib config; } // {
         fish_prompt = {

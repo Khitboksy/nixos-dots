@@ -46,7 +46,7 @@
   # Spawn at startup
   spawn-at-startup = [
     [ "vesktop" ]
-    [ "kitty" ]
+    [ "kitty-launcher" ]
     [ "zen" ]
   ];
 

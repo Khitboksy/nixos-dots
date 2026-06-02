@@ -1,7 +1,7 @@
 {
 
   "Mod+Return" = {
-    spawn = "kitty";
+    spawn = "kitty-launcher";
   };
   "Mod+D" = {
     spawn = [

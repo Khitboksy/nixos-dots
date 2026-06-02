@@ -16,6 +16,24 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      (writeShellScriptBin "kitty-launcher" ''
+        MARKER="''${XDG_RUNTIME_DIR}/kitty-tmux-active"
+
+        if [ -f "$MARKER" ]; then
+            KITTY_FLOAT=1 kitty --class kitty-float "$@" &
+            KITTY_PID=$!
+            sleep 0.05
+            ${pkgs.niri}/bin/niri msg action center-window
+            ${pkgs.niri}/bin/niri msg action move-floating-window --x +0 --y -100
+            # Force resize via kitty remote control
+            ${pkgs.kitty}/bin/kitten @ resize-window --width 30c --height 14c 2>/dev/null || true
+            wait $KITTY_PID
+        else
+            touch "$MARKER"
+            trap 'rm -f "$MARKER"' EXIT INT TERM
+            kitty -e tmux -u new -A -s main
+        fi
+      '')
       iosevka
       jetbrains-mono
       noto-fonts-color-emoji
@@ -29,6 +47,7 @@ in
 
       extraConfig = ''
         cursor_trail_decay 0.1 0.4
+        allow_remote_control socket
       '';
 
       settings = {
@@ -57,6 +76,10 @@ in
         repaint_delay = 10;
         input_delay = 3;
         sync_to_cursor = "no";
+
+        remember_window_size = false;
+        initial_window_width = 240;
+        initial_window_height = 250;
 
         scrollback_lines = 10000;
 
@@ -108,6 +131,15 @@ in
         color7 = "${colors.subtext1.hex}";
         color15 = "${colors.subtext0.hex}";
       };
+    };
+
+    # Override system desktop entry so rofi launches kitty-launcher instead of bare kitty
+    xdg.desktopEntries."kitty" = {
+      name = "Kitty";
+      exec = "kitty-launcher";
+      terminal = false;
+      categories = [ "System" "TerminalEmulator" ];
+      mimeType = [ "text/plain" "x-scheme-handler/terminal" ];
     };
   };
 }
