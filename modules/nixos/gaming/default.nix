@@ -16,7 +16,20 @@ with lib.custom;
 
   config = mkIf config.gaming.enable {
 
-    gaming.apps.steam.enable = true;
+    gaming = {
+      minecraft = {
+        enable = true;
+        servers = {
+          tekkit2 = {
+            enable = true;
+            levelType = "REALISTIC";
+            memory = "6G";
+          };
+        };
+      };
+
+      apps.steam.enable = true;
+    };
     programs.gamemode.enable = true;
 
     environment.systemPackages = with pkgs; [
