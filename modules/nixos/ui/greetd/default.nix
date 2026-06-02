@@ -16,8 +16,18 @@ let
   sessionBin = "${inputs.niri-src.packages.${system}.niri}/bin/niri-session";
   greeterBin = "${pkgs.tuigreet}/bin/tuigreet";
 
+  theme = "action=grey;border=magenta;button=yellow;input=white;prompt=green;text=cyan;time=yellow";
+
   command = pkgs.writeShellScript "greetd-session" ''
     exec ${greeterBin} \
+      --greeting "Welcome back, Taylor" \
+      --time \
+      --time-format '%a, %b %d • %H:%M' \
+      --asterisks \
+      --remember \
+      --window-padding 2 \
+      --container-padding 2 \
+      --theme '${theme}' \
       --cmd '${sessionBin}'
   '';
 in
@@ -29,10 +39,8 @@ in
 
   config = mkIf cfg.enable {
 
-    # ── Disable GDM ──────────────────────────────────────────
     services.displayManager.gdm.enable = lib.mkForce false;
 
-    # ── Enable greetd + tuigreet ─────────────────────────────
     services.greetd = {
       enable = true;
 
@@ -44,7 +52,6 @@ in
       };
     };
 
-    # ── Text greeter mode ────────────────────────────────────
     services.greetd.useTextGreeter = true;
 
   };
