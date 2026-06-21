@@ -8,12 +8,11 @@
 with lib;
 with lib.custom;
 let
-  cfg = config.apps.tools.t3code;
+  cfg = config.apps.ai.t3code;
   system = pkgs.stdenv.hostPlatform.system;
 in
-
 {
-  options.apps.tools.t3code = with types; {
+  options.apps.ai.t3code = with types; {
     enable = mkBoolOpt false "Enable T3 Code desktop application";
   };
 

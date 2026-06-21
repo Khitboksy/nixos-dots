@@ -56,6 +56,13 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    odysseus = {
+      url = "github:pewdiepie-archdaemon/odysseus";
+      flake = false;
+    };
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
   };
   outputs =
     inputs:
@@ -69,6 +76,10 @@
           });
         })
       ];
+
+      outputs-builder = channels: {
+        formatter = channels.nixpkgs.nixfmt;
+      };
       snowfall = {
         namespace = "custom";
       };

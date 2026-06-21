@@ -44,6 +44,13 @@ in
           path = "/run/secrets/git_mcp_cat.env";
           format = "binary";
         };
+        odysseus = {
+          sopsFile = ../../../../secrets/odysseus;
+          path = "/run/secrets/odysseus.env";
+          format = "binary";
+          owner = "helios";
+          mode = "0400";
+        };
       };
     };
   };

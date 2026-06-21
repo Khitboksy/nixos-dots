@@ -125,6 +125,7 @@ Errors return: `{"error": "message"}`
 - Return raw results in the `{columns, values}` format — do not summarize
 - Do not interpret or elaborate - Minerva analyzes the data
 - If response is `{"error": "..."}`, report it to Minerva
+- **Always use `/tmp/opencode/`** for any temporary files — never `/tmp/` directly
 
 ## Output Format
 

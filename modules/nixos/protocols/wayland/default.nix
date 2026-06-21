@@ -23,6 +23,7 @@ in
       uwsm.enable = true;
       niri = {
         enable = true;
+        withUWSM = true;
         package = inputs.niri-src.packages.${system}.niri;
       };
     };

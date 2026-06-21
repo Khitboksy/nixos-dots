@@ -89,7 +89,12 @@ in
     };
 
     difficulty = mkOption {
-      type = types.enum [ 0 1 2 3 ];
+      type = types.enum [
+        0
+        1
+        2
+        3
+      ];
       default = 2;
       description = "Game difficulty: 0=Peaceful, 1=Easy, 2=Normal, 3=Hard.";
     };
@@ -135,32 +140,35 @@ in
       after = [ "network.target" ];
       # wantedBy deliberately omitted — start manually via aliases or systemctl
 
-      preStart = let
-        setupScript = pkgs.writeShellScript "minecraft-${srvName}-setup" ''
-          set -euo pipefail
-          SRC="${cfg.serverSource}"
-          DEST="${stateDir}"
+      preStart =
+        let
+          setupScript = pkgs.writeShellScript "minecraft-${srvName}-setup" ''
+            set -euo pipefail
+            SRC="${cfg.serverSource}"
+            DEST="${stateDir}"
 
-          # Copy server files on first run
-          if [ ! -d "$DEST" ] || [ -z "$(ls -A "$DEST" 2>/dev/null)" ]; then
-              echo "Minecraft[${srvName}]: Copying server files from $SRC..."
-              mkdir -p "$DEST"
-              cp -r "$SRC/"* "$DEST/"
-              chmod -R u+w "$DEST/"
-          fi
+            # Copy server files on first run
+            if [ ! -d "$DEST" ] || [ -z "$(ls -A "$DEST" 2>/dev/null)" ]; then
+                echo "Minecraft[${srvName}]: Copying server files from $SRC..."
+                mkdir -p "$DEST"
+                cp -r "$SRC/"* "$DEST/"
+                chmod -R u+w "$DEST/"
+            fi
 
-          # Accept EULA
-          if [ ! -f "$DEST/eula.txt" ]; then
-              echo "Minecraft[${srvName}]: Accepting EULA..."
-              { echo "eula=true"; } > "$DEST/eula.txt"
-          fi
+            # Accept EULA
+            if [ ! -f "$DEST/eula.txt" ]; then
+                echo "Minecraft[${srvName}]: Accepting EULA..."
+                { echo "eula=true"; } > "$DEST/eula.txt"
+            fi
 
-          chown -R "minecraft-${srvName}:minecraft-${srvName}" "$DEST"
-        '';
-      in "${setupScript}";
+            chown -R "minecraft-${srvName}:minecraft-${srvName}" "$DEST"
+          '';
+        in
+        "${setupScript}";
 
       serviceConfig = {
-        ExecStart = let
+        ExecStart =
+          let
             wrapper = pkgs.writeShellScript "minecraft-${srvName}-wrapper" ''
               set -euo pipefail
               WORK_DIR="${stateDir}"
@@ -176,22 +184,24 @@ in
               mkfifo "$FIFO"
               chmod o+w "$FIFO"
 
-              # Keep FIFO open for writing so cat never gets EOF
-              exec 3>"$FIFO"
-
-              # Pipe FIFO content into Java's stdin
+              # Start the pipeline FIRST (cat blocks on open-for-read).
+              # Then we open the FIFO for writing below, which unblocks cat.
               cat "$FIFO" | $JAVA $JAVA_OPTS -jar "$JAR" nogui &
               PID=$!
 
+              # Now open the FIFO for writing — cat is already waiting to read.
+              # FD 3 stays open so cat never sees EOF.
+              exec 3>"$FIFO"
+
               shutdown() {
                   echo "stop" > "$FIFO" 2>/dev/null || true
-                  for i in $(seq 1 30); do
-                      kill -0 $PID 2>/dev/null || break
+                  # Wait as long as Java needs — never force-kill (world corruption risk)
+                  while kill -0 $PID 2>/dev/null; do
                       sleep 1
                   done
-                  kill $PID 2>/dev/null || true
                   exec 3>&-
                   rm -f "$FIFO"
+                  exit 0
               }
               trap shutdown SIGTERM SIGINT
 
@@ -201,12 +211,13 @@ in
               rm -f "$FIFO"
               exit $EXIT_CODE
             '';
-        in "${wrapper}";
+          in
+          "${wrapper}";
 
         User = "minecraft-${srvName}";
         Group = "minecraft-${srvName}";
         Type = "simple";
-        TimeoutStopSec = 35;
+        TimeoutStopSec = "infinity";
         Restart = "on-failure";
         RestartSec = "5s";
         WorkingDirectory = stateDir;

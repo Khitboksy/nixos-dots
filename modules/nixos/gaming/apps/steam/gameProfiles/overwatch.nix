@@ -4,25 +4,23 @@
 }:
 
 {
+  overwatch = {
+    id = 2357570;
+    compatTool = "GE-Proton10-29";
+    launchOptions = {
 
-  id = 2357570;
-  compatTool = "GE-Proton10-29";
+      env = {
+        SDL_VIDEODRIVER = "x11";
+        PROTON_USE_NTSYNC = true;
+      };
 
-  launchOptions = {
+      wrappers = [
+        pkgs.gamemode
+        pkgs.mangohud
+        "gamescope -r 165 -w 1366 -h 768 --force-grab-cursor --"
+      ];
 
-    env = {
-      SDL_VIDEODRIVER = "x11";
-      PROTON_USE_NTSYNC = true;
+      args = [ ];
     };
-
-    wrappers = [
-      pkgs.gamemode
-      pkgs.mangohud
-      "gamescope -r 165 -w 1366 -h 768 --force-grab-cursor --"
-    ];
-
-    args = [ "" ];
-
   };
-
 }

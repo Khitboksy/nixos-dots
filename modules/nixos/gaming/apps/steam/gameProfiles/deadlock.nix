@@ -1,35 +1,32 @@
 {
   pkgs,
-  lib,
   ...
 }:
 
 {
+  deadlock = {
+    id = 1422450;
+    compatTool = "GE-Proton10-29";
+    launchOptions = {
 
-  id = 1422450;
-  compatTool = "GE-Proton10-29";
+      env = {
+        PROTON_USE_NTSYNC = true;
+        DXVK_STATE_CACHE = "1";
+      };
 
-  launchOptions = {
+      wrappers = [
+        #"/home/helios/.local/bin/mangohud-def"
+        pkgs.mangohud
+        pkgs.gamemode
+      ];
 
-    env = {
-      PROTON_USE_NTSYNC = true;
-      DXVK_ASYNC = "1";
+      args = [
+        "-novid"
+        "-nojoy"
+        "-novsync"
+        "+exec autoexec.cfg"
+        "-no_prewarm_map"
+      ];
     };
-
-    args = [
-      "-novid"
-      "-nojoy"
-      "-novsync"
-      "+exec autoexec.cfg"
-      "-no_prewarm_map"
-    ];
-
-    wrappers = [
-      #"/home/helios/.local/bin/mangohud-def"
-      pkgs.mangohud
-      (lib.getExe pkgs.gamemode)
-    ];
-
   };
-
 }

@@ -24,6 +24,7 @@ with lib.custom;
             enable = true;
             levelType = "REALISTIC";
             memory = "6G";
+            viewDistance = 16;
           };
         };
       };

@@ -44,9 +44,8 @@ in
             set -g @resurrect-strategy-vim 'session'
             set -g @resurrect-strategy-nvim 'session'
             set -g @resurrect-capture-pane-contents 'on'
-            resurrect_dir="$XDG_CACHE_HOME/.tmux/resurrect"
-            set -g @resurrect-dir $resurrect_dir
-            set -g @resurrect-hook-post-save-all 'target=$(readlink -f $resurrect_dir/last); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/home/$USER/.nix-profile/bin/||g" $target | sponge $target'
+            set -g @resurrect-dir "$XDG_CACHE_HOME/.tmux/resurrect"
+            set -g @resurrect-hook-post-save-all 'target=$(readlink -f "$XDG_CACHE_HOME/.tmux/resurrect/last"); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/home/$USER/.nix-profile/bin/||g" "$target" | sponge "$target"'
           '';
         }
         {
@@ -69,8 +68,8 @@ in
         set-window-option -g pane-base-index 1
         set-option -g renumber-windows on
 
-        set -g default-terminal "$TERM"
-        set -ag terminal-overrides ",$TERM:Tc"
+        set -g default-terminal "tmux-256color"
+        set -ag terminal-overrides ",tmux-256color:Tc"
         set -g allow-passthrough on
 
         # Vim-style copy mode bindings
@@ -99,10 +98,18 @@ in
         set -ag status-right "#{E:@catppuccin_status_session}"
         set -ag status-right "#{E:@catppuccin_status_uptime}"
 
-        set-hook -g after-new-session 'run-shell "tmux rename-session \"#{b:pane_current_path}\""'
-        set-hook -g after-new-window 'run-shell "tmux rename-session \"#{b:pane_current_path}\""'
-        set-hook -g after-kill-pane 'run-shell "tmux rename-session \"#{b:pane_current_path}\""'
-        set-hook -g pane-focus-in 'run-shell "tmux rename-session \"#{b:pane_current_path}\""'
+        # Propagate Wayland env from attaching client into session (e.g. kitty)
+        set -ag update-environment WAYLAND_DISPLAY
+        set -ag update-environment XDG_RUNTIME_DIR
+        set -ag update-environment GDK_BACKEND
+        set -ag update-environment NIRI_SOCKET
+
+        # Rename session to current directory basename. The `|| true` suppresses
+        # the popup that would otherwise appear if the session name is already taken.
+        set-hook -g after-new-session 'run-shell "tmux rename-session \"#{b:pane_current_path}\" 2>/dev/null || true"'
+        set-hook -g after-new-window 'run-shell "tmux rename-session \"#{b:pane_current_path}\" 2>/dev/null || true"'
+        set-hook -g after-kill-pane 'run-shell "tmux rename-session \"#{b:pane_current_path}\" 2>/dev/null || true"'
+        set-hook -g pane-focus-in 'run-shell "tmux rename-session \"#{b:pane_current_path}\" 2>/dev/null || true"'
       '';
     };
 
@@ -110,11 +117,18 @@ in
       Unit = {
         Description = "tmux default session (detached)";
         Documentation = "man:tmux(1)";
+        # Wait for the Wayland session (and its env vars) to be ready
+        After = [ "graphical-session.target" ];
       };
 
       Service = {
         Type = "forking";
-        Environment = "DISPLAY=:0";
+        Environment = [
+          "DISPLAY=:0"
+          "WAYLAND_DISPLAY=wayland-1"
+          "XDG_RUNTIME_DIR=%t"
+          "GDK_BACKEND=wayland"
+        ];
         ExecStart = "${getExe pkgs.tmux} new-session -d";
         ExecStop = "${getExe pkgs.tmux} kill-server";
         KillMode = "none";

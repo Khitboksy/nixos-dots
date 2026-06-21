@@ -14,9 +14,13 @@ rec {
 
   mkStringOpt = mkOpt types.str;
 
+  mkStringListOpt = mkOpt (types.listOf types.str);
+
   mkBoolOpt' = mkOpt' types.bool;
 
   mkPathOpt = mkOpt types.path;
+
+  mkEnumOpt = mkOpt types.enum;
 
   enabled = {
     enable = true;
@@ -35,4 +39,20 @@ rec {
     Unit.After = [ "graphical-session.target" ];
     Install.WantedBy = [ "graphical-session.target" ];
   };
+
+  # Import all .nix files from a directory (excluding default.nix) and merge into one attrset.
+  # If a file is a function, it's called with { lib } merged with extraArgs.
+  # If it's a plain set, it's used as-is.
+  importDir =
+    dir: extraArgs:
+    builtins.foldl' (
+      acc: f:
+      if f == "default.nix" || !strings.hasSuffix ".nix" f then
+        acc
+      else
+        let
+          imported = import (dir + "/${f}");
+        in
+        acc // (if builtins.isFunction imported then imported ({ inherit lib; } // extraArgs) else imported)
+    ) { } (builtins.attrNames (builtins.readDir dir));
 }

@@ -10,6 +10,7 @@ with lib.custom;
 
 let
   cfg = config.gaming.apps.steam;
+  wrappers = importDir ./wrappers { inherit pkgs; };
 in
 
 {
@@ -31,13 +32,7 @@ in
         enable = true;
         defaultCompatTool = "Proton-Experimental";
         closeSteam = true;
-        apps = {
-
-          deadlock = (import ./gameProfiles/deadlock.nix) { inherit pkgs lib; };
-          overwatch = (import ./gameProfiles/overwatch.nix) { inherit pkgs lib; };
-          kerbal = (import ./gameProfiles/kerbal.nix) { inherit pkgs lib; };
-
-        };
+        apps = importDir ./gameProfiles { inherit pkgs lib wrappers; };
       };
     };
 

@@ -319,6 +319,22 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1767983141,
+        "narHash": "sha256-7ZCulYUD9RmJIDULTRkGLSW1faMpDlPKcbWJLYHoXcs=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "440818969ac2cbd77bfe025e884d0aa528991374",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "ref": "v0.7.0",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -431,6 +447,22 @@
         "type": "github"
       }
     },
+    "odysseus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780704511,
+        "narHash": "sha256-u3HyzjZXb7np34K9kuWKpVm2neDrJLvicF+J9+D41RU=",
+        "owner": "pewdiepie-archdaemon",
+        "repo": "odysseus",
+        "rev": "463713c2c6a15e7d020997826bd97e71fac25138",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pewdiepie-archdaemon",
+        "repo": "odysseus",
+        "type": "github"
+      }
+    },
     "rmpc": {
       "inputs": {
         "crane": "crane",
@@ -461,9 +493,11 @@
         "mcp-nixos": "mcp-nixos",
         "niri-nix": "niri-nix",
         "niri-src": "niri-src",
+        "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-stable": "nixpkgs-stable",
+        "odysseus": "odysseus",
         "rmpc": "rmpc",
         "snowfall-lib": "snowfall-lib",
         "sops-nix": "sops-nix",

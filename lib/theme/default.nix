@@ -103,7 +103,7 @@ let
 
   hexToHsl = hex: hexToRgb <| rgbToHsl <| hex;
 
-  lerpColorFunc =
+  lerpColor =
     color1Hex: color2Hex: t:
     let
       rgb1 = hexToRgb color1Hex;
@@ -120,11 +120,7 @@ let
 
 in
 {
-  colors = rec {
-    bg = crust;
-    fg = text;
-    primary = pink;
-
+  colors = {
     # Catpuccin-Mocha Colour
     rosewater.hex = "#f5e0dc";
     flamingo.hex = "#f2cdcd";
@@ -168,7 +164,14 @@ in
   };
 
   wallpaper = ./wall4.jpg;
-  inherit hexToRgb;
-  inherit hexToHsl;
-  lerpColor = lerpColorFunc;
+  inherit hexToRgb hexToHsl lerpColor;
+
+  hexToAnsi =
+    hex:
+    let
+      c = hexToRgb hex;
+    in
+    "\\033[38;2;${toString c.r};${toString c.g};${toString c.b}m";
+
+  ansiReset = "\\033[0m";
 }

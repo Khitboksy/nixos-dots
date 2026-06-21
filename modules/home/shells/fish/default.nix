@@ -47,7 +47,7 @@ in
           end
         end
       '';
-      functions = import ../functions.nix { inherit pkgs lib config; } // {
+      functions = import ../functions/functions.nix { inherit pkgs lib config; } // {
         fish_prompt = {
           body = ''
             # Capture exit status FIRST, before any other commands
@@ -88,7 +88,8 @@ in
           '';
         };
       };
-      shellAliases = import ../shellAliases.nix { inherit pkgs lib config; };
+      shellAliases = import ../shellAliases.nix { inherit pkgs lib; };
+      shellAbbrs = import ../shellAbbrs.nix;
     };
     home.packages = with pkgs; [
       gnumake

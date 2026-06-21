@@ -5,20 +5,20 @@
   pkgs,
   ...
 }:
+with lib;
+with lib.custom;
 let
   system = pkgs.stdenv.hostPlatform.system;
 in
 {
-  config = lib.mkIf config.wayland.windowManager.niri.enable {
+  config = mkIf config.wayland.windowManager.niri.enable {
+
     wayland.windowManager.niri = {
-      package = lib.mkDefault inputs.niri-src.packages.${system}.niri;
-      settings =
-        (import ./config/io.nix)
-        // (import ./config/layout.nix { inherit lib; })
-        // (import ./config/rules.nix)
-        // {
-          binds = import ./config/binds.nix;
-        };
+
+      package = mkDefault inputs.niri-src.packages.${system}.niri;
+
+      settings = importDir ./config { inherit lib; };
+
     };
 
     apps.tools.dms.enable = true;

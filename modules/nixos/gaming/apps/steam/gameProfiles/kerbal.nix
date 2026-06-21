@@ -4,25 +4,23 @@
 }:
 
 {
+  kerbal = {
+    id = 220200;
+    compatTool = "Proton-Experimental";
+    launchOptions = {
 
-  id = 220200;
-  compatTool = "Proton-Experimental";
+      env = {
+        PROTON_USE_NTSYNC = true;
+        DXVK_STATE_CACHE = "1";
+      };
 
-  launchOptions = {
+      wrappers = [
+        pkgs.gamemode
+        pkgs.mangohud
+        "gamescope -W 1366 -H 768 -w 1366 -h 768 -r 60 -f --rt --expose-wayland --adaptive-sync --force-grab-cursor --"
+      ];
 
-    env = {
-      PROTON_USE_NTSYNC = true;
-      DXVK_ASYNC = "1";
+      args = [ ];
     };
-
-    wrappers = [
-      pkgs.gamemode
-      pkgs.mangohud
-      "gamescope -W 1366 -H 768 -w 1366 -h 768 -r 60 -f --rt --expose-wayland --adaptive-sync --force-grab-cursor --"
-    ];
-
-    args = [ "" ];
-
   };
-
 }

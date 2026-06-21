@@ -13,10 +13,11 @@ let
   cfg = config.ui.greetd;
   system = pkgs.stdenv.hostPlatform.system;
 
-  sessionBin = "${inputs.niri-src.packages.${system}.niri}/bin/niri-session";
   greeterBin = "${pkgs.tuigreet}/bin/tuigreet";
 
   theme = "action=grey;border=magenta;button=yellow;input=white;prompt=green;text=cyan;time=yellow";
+
+  niriBin = "${inputs.niri-src.packages.${system}.niri}/bin/niri";
 
   command = pkgs.writeShellScript "greetd-session" ''
     exec ${greeterBin} \
@@ -28,7 +29,7 @@ let
       --window-padding 2 \
       --container-padding 2 \
       --theme '${theme}' \
-      --cmd '${sessionBin}'
+      --cmd '${pkgs.uwsm}/bin/uwsm start -F -- ${niriBin} --session'
   '';
 in
 

@@ -51,7 +51,6 @@
       match._props.app-id = "^zen$";
       draw-border-with-background = false;
       open-focused = true;
-      open-maximized = true;
     }
     {
       match._props = {

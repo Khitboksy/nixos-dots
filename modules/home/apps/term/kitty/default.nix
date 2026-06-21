@@ -26,7 +26,7 @@ in
             ${pkgs.niri}/bin/niri msg action center-window
             ${pkgs.niri}/bin/niri msg action move-floating-window --x +0 --y -100
             # Force resize via kitty remote control
-            ${pkgs.kitty}/bin/kitten @ resize-window --width 30c --height 14c 2>/dev/null || true
+            ${pkgs.kitty}/bin/kitten @ resize-window --width 50c --height 14c 2>/dev/null || true
             wait $KITTY_PID
         else
             touch "$MARKER"
@@ -48,6 +48,7 @@ in
       extraConfig = ''
         cursor_trail_decay 0.1 0.4
         allow_remote_control socket
+        clipboard_control write-clipboard write-primary read-clipboard read-primary
       '';
 
       settings = {
@@ -138,8 +139,14 @@ in
       name = "Kitty";
       exec = "kitty-launcher";
       terminal = false;
-      categories = [ "System" "TerminalEmulator" ];
-      mimeType = [ "text/plain" "x-scheme-handler/terminal" ];
+      categories = [
+        "System"
+        "TerminalEmulator"
+      ];
+      mimeType = [
+        "text/plain"
+        "x-scheme-handler/terminal"
+      ];
     };
   };
 }

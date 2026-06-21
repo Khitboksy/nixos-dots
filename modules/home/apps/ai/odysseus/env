@@ -1,0 +1,20 @@
+# LLM Configuration
+# LLM_HOST=localhost
+
+# Embedding
+#EMBEDDING_URL=http://localhost:11434/v1/embeddings
+#EMBEDDING_MODEL=all-minilm:l6-v2
+#FASTEMBED_MODEL=sentence-transformers/all-MiniLM-L6-v2
+
+# Search
+SEARXNG_INSTANCE=https://search.tezzzzaa.com
+
+# Auth & Security
+AUTH_ENABLED=true
+ODYSSEUS_ADMIN_USER=helios
+ALLOWED_ORIGINS=http://localhost:7000,http://localhost:8000
+SECURE_COOKIES=true
+
+# ChromaDB
+CHROMADB_HOST=localhost
+CHROMADB_PORT=8100

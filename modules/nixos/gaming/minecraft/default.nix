@@ -20,16 +20,11 @@ in
   ];
 
   options.gaming.minecraft = with types; {
-    enable = mkBoolOpt false ''
-      Enable Minecraft server infrastructure. Installs Java (JDK 8),
-      which is required by most modded Minecraft servers (Forge 1.12.2,
-      Tekkit, etc.). Enable individual server instances with:
-      `gaming.minecraft.servers.<name>.enable = true`
-    '';
+    enable = mkBoolOpt false "Enable Vanilla and Modded Minecraft server infrastructure.";
   };
 
   config = mkIf cfg.enable {
-    # Java 8 — baseline for modded MC; specific servers may add their own
+    # Server deps
     environment.systemPackages = [ pkgs.jdk8 ];
   };
 }

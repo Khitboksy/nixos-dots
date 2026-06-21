@@ -3,8 +3,11 @@
   lib,
   ...
 }:
+
 with lib;
+with lib.custom;
 with pkgs;
+
 {
   pf = ''
     fzf --bind ctrl-y:preview-up,ctrl-e:preview-down \
@@ -137,8 +140,6 @@ with pkgs;
   jupiter = ''
     opencode attach "http://localhost:4096" $argv
   '';
-
-  # ── Nix build commands ────────────────────────────────────
   ns = ''
     nh os switch -- --cores 8 --max-jobs 1 $argv
     and echo "✓ switch complete"
@@ -169,85 +170,5 @@ with pkgs;
       echo "✓ all checks passed"
     end
   '';
-  mc-start = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-start <server-name>"
-      return 1
-    end
-    sudo systemctl start "minecraft-$argv[1]"
-  '';
-
-  mc-stop = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-stop <server-name>"
-      return 1
-    end
-    sudo systemctl stop "minecraft-$argv[1]" &
-    echo "→ Stopping $argv[1] in background (may take a moment to save)..."
-  '';
-
-  mc-restart = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-restart <server-name>"
-      return 1
-    end
-    sudo systemctl restart "minecraft-$argv[1]" &
-    echo "→ Restarting $argv[1] in background..."
-  '';
-
-  mc-status = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-status <server-name>"
-      return 1
-    end
-    systemctl status "minecraft-$argv[1]"
-  '';
-
-  mc-logs = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-logs <server-name>"
-      return 1
-    end
-    journalctl -u "minecraft-$argv[1]" -f
-  '';
-
-  mc-cmd = ''
-    if test (count $argv) -lt 2
-      echo "Usage: mc-cmd <server-name> <command...>"
-      echo "  e.g. mc-cmd tekkit2 op friendname"
-      echo "       mc-cmd tekkit2 say Restarting in 5 minutes"
-      return 1
-    end
-    set server $argv[1]
-    set cmd $argv[2..-1]
-    set fifo "/var/lib/minecraft-$server/.stdin-fifo"
-    if not test -p "$fifo"
-      echo "Error: Server '$server' is not running (FIFO not found)"
-      return 1
-    end
-    echo "$cmd" > "$fifo"
-  '';
-
-  mc-console = ''
-    if test (count $argv) -eq 0
-      echo "Usage: mc-console <server-name>"
-      return 1
-    end
-    set server $argv[1]
-    set fifo "/var/lib/minecraft-$server/.stdin-fifo"
-    if not test -p "$fifo"
-      echo "Error: Server '$server' is not running (start it with mc-start $server)"
-      return 1
-    end
-    echo "⚡ Console for '$server'. Commands sent to server. Type 'exit' to quit."
-    echo "   (Open another terminal and run 'mc-logs $server' to see output live.)"
-    while true
-      read -P "$server> " cmd
-      if test "$cmd" = "exit"
-        echo "Console closed."
-        break
-      end
-      echo "$cmd" > "$fifo"
-    end
-  '';
 }
+// importDir ./mc-server { inherit pkgs lib; }

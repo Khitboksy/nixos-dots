@@ -49,6 +49,5 @@ in
       pkgs.pwvucontrol
     ];
 
-    
   };
 }

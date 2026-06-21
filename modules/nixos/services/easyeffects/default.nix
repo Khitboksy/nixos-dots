@@ -30,7 +30,7 @@ in
             input = {
               blocklist = [ ];
 
-plugins_order = [
+              plugins_order = [
                 "rnnoise#0"
                 "compressor#0"
                 "gate#0"
@@ -79,24 +79,24 @@ plugins_order = [
                 wet = 0.0;
               };
 
-"gate#0" = {
-              attack = 5.0;
-              bypass = false;
-              "curve-threshold" = -40.0;
-              "curve-zone" = -2.0;
-              dry = -80.01;
-              "hpf-frequency" = 10.0;
-              "hpf-mode" = "Off";
-              hysteresis = true;
-              "hysteresis-threshold" = -3.0;
-              "hysteresis-zone" = -1.0;
-              "input-gain" = 0.0;
-              "lpf-frequency" = 20000.0;
-              "lpf-mode" = "Off";
-              makeup = 1.0;
-              "output-gain" = 0.0;
-              reduction = -12.0;
-              release = 250.0;
+              "gate#0" = {
+                attack = 5.0;
+                bypass = false;
+                "curve-threshold" = -40.0;
+                "curve-zone" = -2.0;
+                dry = -80.01;
+                "hpf-frequency" = 10.0;
+                "hpf-mode" = "Off";
+                hysteresis = true;
+                "hysteresis-threshold" = -3.0;
+                "hysteresis-zone" = -1.0;
+                "input-gain" = 0.0;
+                "lpf-frequency" = 20000.0;
+                "lpf-mode" = "Off";
+                makeup = 1.0;
+                "output-gain" = 0.0;
+                reduction = -12.0;
+                release = 250.0;
                 sidechain = {
                   lookahead = 0.0;
                   mode = "RMS";
@@ -134,14 +134,15 @@ plugins_order = [
           };
         };
 
-        "easyeffects/autoload/input/alsa_input.usb-HP__Inc_HyperX_SoloCast_2_1H55410MMH-00.analog-stereo:Analog_Stereo_Input.json" = {
-          source = jsonFormat.generate "easyeffects-autoload-solo-cast-2.json" {
-            device = "alsa_input.usb-HP__Inc_HyperX_SoloCast_2_1H55410MMH-00.analog-stereo";
-            "device-description" = "HyperX SoloCast 2";
-            "device-profile" = "Analog Stereo Input";
-            "preset-name" = "helios-mic";
+        "easyeffects/autoload/input/alsa_input.usb-HP__Inc_HyperX_SoloCast_2_1H55410MMH-00.analog-stereo:Analog_Stereo_Input.json" =
+          {
+            source = jsonFormat.generate "easyeffects-autoload-solo-cast-2.json" {
+              device = "alsa_input.usb-HP__Inc_HyperX_SoloCast_2_1H55410MMH-00.analog-stereo";
+              "device-description" = "HyperX SoloCast 2";
+              "device-profile" = "Analog Stereo Input";
+              "preset-name" = "helios-mic";
+            };
           };
-        };
       };
     };
   };

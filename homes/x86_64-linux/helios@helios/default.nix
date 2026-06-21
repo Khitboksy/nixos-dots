@@ -11,10 +11,11 @@ in
   # Custom Home-Manager Modules located in ../../../modules/home/*
   apps = {
 
+    ai.enable = true;
+
     tools = {
       neovim.enable = true;
       macchina.enable = true;
-      t3code.enable = false;
     };
 
     term = {
@@ -50,7 +51,6 @@ in
   services = {
 
     wallpaper.enable = true;
-    opencode.enable = true;
     musicPlayerDaemon.enable = true;
 
     gpg-agent = {

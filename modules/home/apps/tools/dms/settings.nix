@@ -1,5 +1,4 @@
-colors:
-{
+colors: {
   # Fonts - using Iosevka typespace
   fontFamily = "Iosevka";
   monoFontFamily = "Iosevka";

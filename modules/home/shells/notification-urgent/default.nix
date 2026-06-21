@@ -6,9 +6,11 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.shells.notification-urgent;
-in {
+in
+{
   options.shells.notification-urgent = with types; {
     enable = mkBoolOpt false "Enable Notification & Urgent helper";
 
