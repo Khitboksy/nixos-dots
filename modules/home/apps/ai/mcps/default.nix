@@ -52,6 +52,7 @@ in
           "/home/helios/shared"
           "/home/helios/.config"
           "/home/helios/repos"
+          "/home/helios/notes"
         ];
       };
 

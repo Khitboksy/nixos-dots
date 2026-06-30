@@ -44,8 +44,10 @@ in
             set -g @resurrect-strategy-vim 'session'
             set -g @resurrect-strategy-nvim 'session'
             set -g @resurrect-capture-pane-contents 'on'
-            set -g @resurrect-dir "$XDG_CACHE_HOME/.tmux/resurrect"
-            set -g @resurrect-hook-post-save-all 'target=$(readlink -f "$XDG_CACHE_HOME/.tmux/resurrect/last"); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/home/$USER/.nix-profile/bin/||g" "$target" | sponge "$target"'
+            set -g @resurrect-dir "~/.cache/.tmux/resurrect/"
+            set -g @resurrect-save-command-strategy 'linux_procfs'
+            set -g @resurrect-processes 'yazi jupiter'
+            set -g @resurrect-hook-post-save-all 'target=$(readlink -f "$HOME/.cache/.tmux/resurrect/last"); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/home/$USER/.nix-profile/bin/||g" "$target" | sponge "$target"'
           '';
         }
         {
@@ -123,12 +125,6 @@ in
 
       Service = {
         Type = "forking";
-        Environment = [
-          "DISPLAY=:0"
-          "WAYLAND_DISPLAY=wayland-1"
-          "XDG_RUNTIME_DIR=%t"
-          "GDK_BACKEND=wayland"
-        ];
         ExecStart = "${getExe pkgs.tmux} new-session -d";
         ExecStop = "${getExe pkgs.tmux} kill-server";
         KillMode = "none";

@@ -29,7 +29,7 @@ let
       --window-padding 2 \
       --container-padding 2 \
       --theme '${theme}' \
-      --cmd '${pkgs.uwsm}/bin/uwsm start -F -- ${niriBin} --session'
+      --cmd '${getExe inputs.niri-src.packages.${system}.niri} "niri-session"'
   '';
 in
 

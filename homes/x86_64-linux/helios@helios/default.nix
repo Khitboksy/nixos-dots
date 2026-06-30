@@ -136,7 +136,7 @@ in
     btop
     ttfautohint
     nodejs
-    bitwarden-desktop
+    bitwarden-cli
     nh
     obsidian
 

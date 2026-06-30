@@ -36,7 +36,7 @@ with lib.custom;
     environment.systemPackages = with pkgs; [
       (lutris.override {
         extraLibraries = pkgs: [
-          libsForQt5.qt5.qtwayland
+          qt5.qtwayland
           wayland
         ];
       })
