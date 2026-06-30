@@ -17,7 +17,7 @@ let
 
   theme = "action=grey;border=magenta;button=yellow;input=white;prompt=green;text=cyan;time=yellow";
 
-  niriBin = "${inputs.niri-src.packages.${system}.niri}/bin/niri";
+  niriSession = "${inputs.niri-src.packages.${system}.niri}/bin/niri-session";
 
   command = pkgs.writeShellScript "greetd-session" ''
     exec ${greeterBin} \
@@ -29,7 +29,7 @@ let
       --window-padding 2 \
       --container-padding 2 \
       --theme '${theme}' \
-      --cmd '${getExe inputs.niri-src.packages.${system}.niri} "niri-session"'
+      --cmd '${niriSession}'
   '';
 in
 

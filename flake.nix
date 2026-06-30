@@ -18,13 +18,8 @@
       url = "github:AndyFilter/YeetMouse?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    /*
-      TODO: niri-src pinned to avoid VRAM/RAM regression on NVIDIA.
-            issue: niri-wm/niri#4113
-            remove pin once a fix lands on main.
-    */
     niri-src = {
-      url = "github:YaLTeR/niri/4294948cf1c70c50e938383c2c865d7ca455ac7e";
+      url = "github:niri-wm/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri-nix = {
@@ -62,7 +57,17 @@
       flake = false;
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      # Don't follow nixpkgs — needed for binary cache
+    };
   };
   outputs =
     inputs:
@@ -89,6 +94,7 @@
       homes.modules = with inputs; [
         catppuccin.homeModules.catppuccin
         dms.homeModules.dank-material-shell
+        noctalia.homeModules.default
         niri-nix.homeModules.default
       ];
       systems.modules.nixos = with inputs; [
@@ -99,6 +105,7 @@
         nix-index-database.nixosModules.default
         steam-config-nix.nixosModules.default
         sops-nix.nixosModules.sops
+        disko.nixosModules.disko
       ];
     };
 }

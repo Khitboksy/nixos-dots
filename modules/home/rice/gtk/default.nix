@@ -40,10 +40,12 @@ in
 
       iconTheme = {
         name = "Papirus-Dark";
-        package = pkgs.catppuccin-papirus-folders.override {
-          accent = ctp.accent;
-          flavor = ctp.flavor;
-        };
+        package = mkDefault (
+          pkgs.catppuccin-papirus-folders.override {
+            accent = ctp.accent;
+            flavor = ctp.flavor;
+          }
+        );
       };
 
       gtk3.extraConfig = {

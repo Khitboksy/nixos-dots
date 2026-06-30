@@ -10,16 +10,9 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ./bootnet-configuration.nix
-    ./disk-configuration.nix
+    ./bootnet.nix
+    ./disk.nix
   ];
-
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50;
-    algorithm = "zstd";
-    priority = 100;
-  };
 
   # HIBERNATION SETUP (suspend-to-disk via /swapfile)
   #
@@ -75,11 +68,23 @@
   protocols.wayland.enable = true;
   gaming.enable = true;
   security.sops.enable = true;
+
+  sops.secrets.nixos-cache = {
+    sopsFile = ../../../secrets/nixos-cache;
+    path = "/run/secrets/nixos-cache.sec";
+    format = "binary";
+    owner = "root";
+    mode = "0400";
+  };
   virt.vms.enable = false; # SHELVED TILL I GET ANOTHER GPU
 
   hardware = {
     audio.enable = true;
-    xpus.enable = true;
+    systems = {
+      shared.enable = true;
+      helios.enable = true;
+    };
+    swap.enable = true;
   };
 
   services = {
@@ -90,6 +95,29 @@
     vpn.enable = true;
     ssh.enable = true;
     tails.enable = true;
+
+    easyeffects.enable = true;
+
+    printing.enable = true;
+    logrotate.checkConfig = false;
+    udisks2.enable = true;
+
+    xserver = {
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+      enable = true;
+    };
+
+    udev.packages = [ pkgs.libratbag ];
+    gvfs.enable = true;
+    usbmuxd.enable = true;
+
+    rpcbind.enable = true;
+
+    nix-index-cache.useTerra = true;
+
   };
 
   catppuccin = {
@@ -98,7 +126,7 @@
   };
 
   virt.vms.tiny10 = {
-    enable = true;
+    enable = false;
     iso = "/mnt/nix-data/VMs/isos/tiny10-23h2/tiny10-x64-23h2.iso";
     virtioIso = "/mnt/nix-data/VMs/isos/virtio-win-0.1.285.iso";
     memory = 16384;
@@ -118,29 +146,10 @@
 
     direnv = {
       enable = true;
-      enableBashIntegration = true;
-    };
-  };
-
-  services = {
-    printing.enable = true;
-    logrotate.checkConfig = false;
-    udisks2.enable = true;
-
-    xserver = {
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-      enable = true;
-      wacom.enable = true;
+      enableFishIntegration = true;
     };
 
-    udev.packages = [ pkgs.libratbag ];
-    gvfs.enable = true;
-    usbmuxd.enable = true;
-
-    rpcbind.enable = true;
+    nix-index.enable = true;
   };
 
   time = {
@@ -224,7 +233,14 @@
         "flakes"
         "pipe-operators"
       ];
+      secret-key-files = [ "/run/secrets/nixos-cache.sec" ];
     };
+  };
+
+  # Nix daemon needs sops-nix to have decrypted the signing key before starting
+  systemd.services.nix-daemon = {
+    after = [ "sops-nix.service" ];
+    wants = [ "sops-nix.service" ];
   };
 
   home-manager.backupFileExtension = "bk";

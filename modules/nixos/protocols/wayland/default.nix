@@ -53,7 +53,6 @@ in
         SDL_VIDEODRIVER = "wayland,x11";
         XDG_CACHE_HOME = "/home/helios/.cache";
         CLUTTER_BACKEND = "wayland";
-        DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
       };
       # SSH agent is managed by gpg-agent (home-manager's
       # services.gpg-agent.enableSshSupport = true).  No need for

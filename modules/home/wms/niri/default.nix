@@ -21,8 +21,6 @@ in
 
     };
 
-    apps.tools.dms.enable = true;
-
     services.wallpaper.enable = true;
   };
 }

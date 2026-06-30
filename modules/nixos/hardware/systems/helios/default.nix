@@ -8,12 +8,12 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.hardware.xpus;
+  cfg = config.hardware.systems.helios;
 in
 
 {
-  options.hardware.xpus = with types; {
-    enable = mkBoolOpt false "Enable GPU/CPU Modules";
+  options.hardware.systems.helios = with types; {
+    enable = mkBoolOpt false "Enable Helios Hardware Modules";
   };
 
   config = mkIf cfg.enable {

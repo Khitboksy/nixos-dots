@@ -17,18 +17,6 @@ with lib.custom;
   config = mkIf config.gaming.enable {
 
     gaming = {
-      minecraft = {
-        enable = true;
-        servers = {
-          tekkit2 = {
-            enable = true;
-            levelType = "REALISTIC";
-            memory = "6G";
-            viewDistance = 16;
-          };
-        };
-      };
-
       apps.steam.enable = true;
     };
     programs.gamemode.enable = true;

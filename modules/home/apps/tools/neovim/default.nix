@@ -13,6 +13,7 @@ let
   cfg = config.apps.tools.neovim;
 
   lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
+    # unchanged
     name = "lazy-nix-helper.nvim";
     src = pkgs.fetchFromGitHub {
       owner = "b-src";
@@ -31,11 +32,17 @@ let
     in
     result;
 
+  neovimPluginList = with pkgs.vimPlugins; [
+    lazy-nix-helper-nvim
+    lazy-nvim
+  ];
+
   pluginList =
     plugins:
     strings.concatMapStrings (
       plugin: "  [\"${sanitizePluginName plugin.name}\"] = \"${plugin.outPath}\",\n"
     ) plugins;
+
 in
 {
   options.apps.tools.neovim = with types; {
@@ -44,6 +51,7 @@ in
 
   config = mkIf cfg.enable {
     programs.neovim = {
+      plugins = neovimPluginList;
       enable = true;
       defaultEditor = true;
       withRuby = true;
@@ -73,14 +81,10 @@ in
         vscode-extensions.vadimcn.vscode-lldb.adapter
         tree-sitter
       ];
-      plugins = with pkgs.vimPlugins; [
-        lazy-nix-helper-nvim
-        lazy-nvim
-      ];
       initLua = ''
         local plugins = {
-        	${pluginList config.programs.neovim.plugins}
-        }
+          ${pluginList neovimPluginList}
+        }        
         local lazy_nix_helper_path = "${lazy-nix-helper-nvim}"
         if not vim.loop.fs_stat(lazy_nix_helper_path) then
         	lazy_nix_helper_path = vim.fn.stdpath("data") .. "/lazy_nix_helper/lazy_nix_helper.nvim"

@@ -16,6 +16,7 @@ in
     tools = {
       neovim.enable = true;
       macchina.enable = true;
+      dms.enable = true;
     };
 
     term = {
@@ -79,6 +80,20 @@ in
   programs = {
     gpg.enable = true;
     fzf.enable = true;
+
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings = {
+        "terra" = {
+          hostname = "terra";
+          user = "helios";
+          identityFile = "~/.ssh/id_ed25519_terra";
+        };
+      };
+    };
+
+
 
     btop = {
       enable = true;

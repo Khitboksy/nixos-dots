@@ -95,6 +95,8 @@ in
       gnumake
       # Runs programs without installing them
       comma
+      # nix-index database and command-not-found integration
+      nix-index
 
       # grep replacement
       ripgrep

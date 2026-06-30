@@ -16,7 +16,7 @@ with pkgs;
   #du = getExe du-dust;
   #ps = getExe procs;
   #lb = "pw-loopback -C \"alsa_input.pci-0000_0d_00.4.analog-stereo\" -P \"Scarlett Solo (3rd Gen.) Headphones / Line 1-2\"";
-  #deploy = "nixos-rebuild switch --flake ~/nixos#pluto --target-host zoeys.computer --use-remote-sudo";
+  terra-depl = "nixos-rebuild switch --flake ~/builds#terra --target-host terra.local --use-remote-sudo";
   m = "mkdir -p";
   fcd = "cd $(find -type d | fzf)";
   sc = "sudo systemctl";

@@ -108,9 +108,9 @@
       match._props.namespace = "notifications";
       block-out-from = [ "screen-capture" ];
     }
-    # Wallpaper
+    # Wallpaper — matches swaybg's hardcoded namespace
     {
-      match._props.namespace = "^wallpaper&";
+      match._props.namespace = "^wallpaper$";
       place-within-backdrop = true;
     }
   ];

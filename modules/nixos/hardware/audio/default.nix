@@ -15,7 +15,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.easyeffects.enable = true;
 
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;
