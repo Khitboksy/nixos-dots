@@ -12,25 +12,23 @@ rec {
 
   mkBoolOpt = mkOpt types.bool;
 
+  mkBoolOpt' = mkOpt' types.bool;
+
   mkStringOpt = mkOpt types.str;
 
   mkStringOpt' = mkOpt' types.str;
 
   mkStringListOpt = mkOpt (types.listOf types.str);
 
-  mkBoolOpt' = mkOpt' types.bool;
-
   mkPathOpt = mkOpt types.path;
 
-  mkEnumOpt' = values: default: mkOpt' (types.enum values) default;
+  mkPathOpt' = mkOpt' types.path;
 
-  enabled = {
-    enable = true;
-  };
+  mkEnumOpt =
+    values: default: description:
+    mkOpt (types.enum values) default description;
 
-  disabled = {
-    enable = false;
-  };
+  mkEnumOpt' = values: default: mkEnumOpt values default null;
 
   isDarwin = pkgs: pkgs.stdenv.isDarwin;
 

@@ -12,7 +12,7 @@ in
 {
   options.services.wallpaper = with types; {
     enable = mkBoolOpt false "Enable Wallpaper via Niri";
-    path = mkPathOpt wallpapers.wall4 "Set Default Wallpaper";
+    paper = mkPathOpt wallpapers.wall4 "Set Default Wallpaper";
   };
 
   config = mkIf cfg.enable {
@@ -24,7 +24,7 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart = "${getExe pkgs.swaybg} -i ${cfg.path}";
+        ExecStart = "${getExe pkgs.swaybg} -i ${cfg.paper}";
         Restart = "on-failure";
         RestartSec = 1;
       };

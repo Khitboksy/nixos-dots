@@ -55,7 +55,7 @@ in
 
   services = {
 
-    wallpaper.path = lib.custom.wallpapers."tftf-11";
+    wallpaper.paper = lib.custom.wallpapers.tftl-23;
 
     musicPlayerDaemon.enable = true;
 
