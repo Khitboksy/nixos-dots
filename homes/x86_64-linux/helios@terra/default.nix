@@ -10,7 +10,10 @@
     tools = {
       neovim.enable = true;
       macchina.enable = true;
-      noctalia.enable = true;
+      noctalia = {
+        enable = true;
+        bar = "terra";
+      };
     };
 
     term = {

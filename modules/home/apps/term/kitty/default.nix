@@ -88,7 +88,7 @@ in
         startup_session = "none";
 
         foreground = "${colors.text.hex}";
-        background = "${colors.black.hex}";
+        background = "${colors.mantle.hex}";
         selection_foreground = "${colors.base.hex}";
         selection_background = "${colors.rosewater.hex}";
         cursor = "${colors.rosewater.hex}";

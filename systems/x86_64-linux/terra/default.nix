@@ -32,7 +32,12 @@
 
   services = {
     ssh.enable = true;
-    tails.enable = true;
+    tails = {
+      enable = true;
+      authKeyFile = "/run/secrets/tailscale-authkey";
+    };
+
+    music.enable = true;
 
     xserver = {
       xkb = {

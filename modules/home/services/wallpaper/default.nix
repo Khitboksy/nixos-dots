@@ -11,16 +11,24 @@ let
 in
 {
   options.services.wallpaper = with types; {
-    enable = mkBoolOpt false "Enable wallpaper with swaybg via niri spawn-at-startup";
+    enable = mkBoolOpt false "Enable Wallpaper via Niri";
+    path = mkPathOpt wallpapers.wall4 "Set Default Wallpaper";
   };
 
   config = mkIf cfg.enable {
-    wayland.windowManager.niri.settings.spawn-at-startup = [
-      [
-        "${getExe pkgs.swaybg}"
-        "-i"
-        "${wallpaper}"
-      ]
-    ];
+    systemd.user.services.swaybg = {
+      Unit = {
+        Description = "Wallpaper Daemon";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${getExe pkgs.swaybg} -i ${cfg.path}";
+        Restart = "on-failure";
+        RestartSec = 1;
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
   };
 }

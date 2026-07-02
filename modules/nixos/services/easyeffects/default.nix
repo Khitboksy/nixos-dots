@@ -22,8 +22,44 @@ in
 
     environment.systemPackages = [ pkgs.easyeffects ];
 
-    # Use home-manager to place preset files in the user's XDG data dir.
+    # Use home-manager to place preset files in the user's XDG data dir,
+    # and deploy a clean config that disables the output processing chain.
     home-manager.users.helios = {
+      # Deploy a clean config without [StreamOutputs] so EE only processes mic input.
+      home.file.".config/easyeffects/db/easyeffectsrc" = {
+        force = true;
+        text = ''
+          [EffectsPipelines]
+          inactivityTimerEnable=false
+          processAllOutputs=false
+
+          [Presets]
+          lastLoadedInputPreset=helios-mic
+
+          [Spectrum]
+          spectrumShape=area
+
+          [StreamInputs]
+          inputDevice=alsa_input.usb-HP__Inc_HyperX_SoloCast_2_1H55410MMH-00.analog-stereo
+          mostUsedPresets=helios-mic
+          plugins=rnnoise#0,compressor#0,gate#0,limiter#0
+          usedPresets=helios-mic:9
+          visiblePage=pluginsPage
+          visiblePlugin=compressor#0
+
+          [Style]
+          forceBreezeTheme=false
+
+          [Window]
+          autostartOnLogin=true
+          height=748
+          showTrayIcon=false
+          visiblePage=inputPage
+          visiblePipeWirePage=testSignalsPage
+          width=667
+        '';
+      };
+
       xdg.dataFile = {
         "easyeffects/input/helios-mic.json" = {
           source = jsonFormat.generate "easyeffects-input-helios-mic.json" {

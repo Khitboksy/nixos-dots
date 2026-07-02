@@ -92,13 +92,12 @@
     io.enable = true;
     nfs.enable = true;
     openrgb.enable = true;
-    vpn.enable = true;
+    vpn.enable = false;
     ssh.enable = true;
     tails.enable = true;
 
     easyeffects.enable = true;
 
-    printing.enable = true;
     logrotate.checkConfig = false;
     udisks2.enable = true;
 

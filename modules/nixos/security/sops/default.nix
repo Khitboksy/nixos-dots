@@ -51,6 +51,13 @@ in
           owner = "helios";
           mode = "0400";
         };
+        tailscale-authkey = {
+          sopsFile = ../../../../secrets/tailscale-authkey;
+          path = "/run/secrets/tailscale-authkey";
+          format = "binary";
+          owner = "root";
+          mode = "0400";
+        };
       };
     };
   };

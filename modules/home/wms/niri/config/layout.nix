@@ -14,7 +14,7 @@ with lib.custom;
 
   layout = {
     gaps = 8;
-    background-color = "${colors.mantle.hex}";
+    background-color = "transparent";
     center-focused-column = "never";
     preset-column-widths._children = [
       { proportion = 0.33333; }
@@ -32,6 +32,12 @@ with lib.custom;
       active-color = "${colors.surface0.hex}";
       inactive-color = "${colors.sapphire.hex}";
       width = 2;
+    };
+  };
+
+  overview = {
+    workspace-shadow = {
+      off = [ ];
     };
   };
 

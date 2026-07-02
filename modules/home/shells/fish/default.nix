@@ -47,7 +47,9 @@ in
           end
         end
       '';
-      functions = import ../functions/functions.nix { inherit pkgs lib config; } // {
+      functions = import ../functions/functions.nix { inherit pkgs lib config; }
+        // import ../functions/git-shorthands.nix
+        // {
         fish_prompt = {
           body = ''
             # Capture exit status FIRST, before any other commands

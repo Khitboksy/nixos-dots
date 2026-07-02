@@ -23,5 +23,8 @@ in
       enableAudioWavelength = true;
       settings = (import ./settings.nix) { inherit colors; };
     };
+    wayland.windowManager.niri.settings = {
+      binds = import ./binds.nix;
+    };
   };
 }

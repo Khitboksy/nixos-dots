@@ -16,7 +16,11 @@ in
     tools = {
       neovim.enable = true;
       macchina.enable = true;
-      dms.enable = true;
+      dms.enable = false;
+      noctalia = {
+        enable = true;
+        bar = "helios";
+      };
     };
 
     term = {
@@ -51,7 +55,8 @@ in
 
   services = {
 
-    wallpaper.enable = true;
+    wallpaper.path = lib.custom.wallpapers."tftf-11";
+
     musicPlayerDaemon.enable = true;
 
     gpg-agent = {
@@ -92,8 +97,6 @@ in
         };
       };
     };
-
-
 
     btop = {
       enable = true;

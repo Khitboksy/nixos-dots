@@ -35,7 +35,11 @@ let
   intCompToHex =
     intComp:
     let
-      clampedInt = (lib.max 0) <| (lib.min 255) <| builtins.floor <| (intComp + 0.5);
+      clampedInt =
+        (lib.max 0)
+        <| (lib.min 255)
+        <| builtins.floor
+        <| (intComp + 0.5);
       hexString = lib.trivial.toHexString clampedInt;
     in
     lib.strings.fixedWidthString 2 "0" hexString;
@@ -44,7 +48,12 @@ let
     hexColor:
     let
       stripHash = lib.strings.removePrefix "#";
-      getPart = start: len: hexCompToInt <| lib.strings.substring start len <| stripHash <| hexColor;
+      getPart =
+        start: len:
+        hexCompToInt
+        <| lib.strings.substring start len
+        <| stripHash
+        <| hexColor;
     in
     {
       r = getPart 0 2;
@@ -118,8 +127,26 @@ let
       b = lerpedB;
     };
 
+  hexToAnsi =
+    hex:
+    let
+      c = hexToRgb hex;
+    in
+    "\\033[38;2;${toString c.r};${toString c.g};${toString c.b}m";
+
+  ansiReset = "\\033[0m";
+
 in
 {
+
+  inherit
+    hexToRgb
+    hexToHsl
+    lerpColor
+    hexToAnsi
+    ansiReset
+    ;
+
   colors = {
     # Catpuccin-Mocha Colour
     rosewater.hex = "#f5e0dc";
@@ -163,15 +190,37 @@ in
     rgb-green.hex = "#00ff00";
   };
 
-  wallpaper = ./wall4.jpg;
-  inherit hexToRgb hexToHsl lerpColor;
-
-  hexToAnsi =
-    hex:
+  # Auto-import all image files from ./wallpapers/ as wallpapers.<name>
+  wallpapers =
     let
-      c = hexToRgb hex;
+      inherit (builtins)
+        readDir
+        match
+        attrNames
+        foldl'
+        ;
+      imageExts = [
+        ".jpg"
+        ".jpeg"
+        ".png"
+        ".gif"
+        ".webp"
+        ".bmp"
+        ".svg"
+      ];
+      dirContents = readDir ./wallpapers;
+      imageFiles = lib.filterAttrs (
+        name: type: type == "regular" && builtins.any (ext: lib.strings.hasSuffix ext name) imageExts
+      ) dirContents;
+      stripExt =
+        name:
+        let
+          m = match "(.*)\\.(jpg|jpeg|png|gif|webp|bmp|svg)" name;
+        in
+        if m == null then name else builtins.head m;
     in
-    "\\033[38;2;${toString c.r};${toString c.g};${toString c.b}m";
+    foldl' (acc: name: acc // { "${stripExt name}" = ./wallpapers + "/${name}"; }) { } (
+      attrNames imageFiles
+    );
 
-  ansiReset = "\\033[0m";
 }

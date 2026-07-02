@@ -58,6 +58,7 @@
         at-startup = true;
       };
       open-on-workspace = "browser";
+      open-maximized = true;
       open-focused = false;
     }
     {
@@ -112,6 +113,12 @@
     {
       match._props.namespace = "^wallpaper$";
       place-within-backdrop = true;
+    }
+    {
+      match._props.namespace = "^noctalia-(background|bar|launcher-overlay|dock)-.*$";
+      background-effect = {
+        xray = false;
+      };
     }
   ];
 }

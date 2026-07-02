@@ -19,7 +19,23 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [ mpd ];
+    home.packages = with pkgs; [
+      mpd
+      mpd-mpris
+    ];
+
+    systemd.user.services.mpd-mpris = {
+      Unit = {
+        Description = "MPRIS bridge for MPD";
+        After = [ "mpd.service" ];
+        PartOf = [ "mpd.service" ];
+      };
+      Service = {
+        ExecStart = "${getExe pkgs.mpd-mpris} mpd";
+        Restart = "on-failure";
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
 
     services = {
 
