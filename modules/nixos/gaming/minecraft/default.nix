@@ -25,6 +25,9 @@ in
 
   config = mkIf cfg.enable {
     # Server deps
-    environment.systemPackages = [ pkgs.jdk8 ];
+    environment.systemPackages = with pkgs; [
+      jdk8
+      prismlauncher
+    ];
   };
 }

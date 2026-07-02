@@ -143,40 +143,19 @@ in
   options.gaming.minecraft.servers.${srvName} = with types; {
     enable = mkBoolOpt false "Enable the Tekkit 2 Minecraft server (MC 1.12.2 / Forge).";
 
-    serverSource = mkOption {
-      type = str;
-      default = "/mnt/nix-data/Games/minecraft/servers/tekkit2";
-      example = "/mnt/nix-data/Games/minecraft/servers/tekkit2";
-      description = ''
-        Absolute path to the extracted Tekkit 2 server files directory.
-        Must contain forge-1.12.2-14.23.5.2860.jar, mods/, config/, etc.
-      '';
-    };
+    serverSource = mkStringOpt' "/mnt/nix-data/Games/minecraft/servers/tekkit2";
 
-    memory = mkOption {
-      type = str;
-      default = "3G";
-      example = "4G";
-      description = "Maximum heap memory (e.g. 2G, 4G, 6G).";
-    };
+    memory = mkStringOpt "3G" "Maximum Heap";
 
     port = mkOption {
       type = port;
       default = 25565;
-      description = "Server port for Minecraft connections.";
+      description = "Server port";
     };
 
-    openFirewall = mkOption {
-      type = bool;
-      default = true;
-      description = "Open the server port in the NixOS firewall.";
-    };
+    openFirewall = mkBoolOpt' true;
 
-    motd = mkOption {
-      type = str;
-      default = "Tekkit 2 Server";
-      description = "Message of the day shown in the server list.";
-    };
+    motd = mkStringOpt' "Tekkit 2 Server";
 
     maxPlayers = mkOption {
       type = ints.positive;
@@ -184,72 +163,23 @@ in
       description = "Maximum number of players.";
     };
 
-    difficulty = mkOption {
-      type = types.enum [
-        0
-        1
-        2
-        3
-      ];
-      default = 2;
-      description = "Game difficulty: 0=Peaceful, 1=Easy, 2=Normal, 3=Hard.";
-    };
+    difficulty = mkEnumOpt' [ 0 1 2 3 ] 2;
 
-    gamemode = mkOption {
-      type = types.enum [
-        0
-        1
-        2
-        3
-      ];
-      default = 0;
-      description = "Default gamemode: 0=Survival, 1=Creative, 2=Adventure, 3=Spectator.";
-    };
+    gamemode = mkEnumOpt' [ 0 1 2 3 ] 0;
 
-    onlineMode = mkOption {
-      type = bool;
-      default = false;
-      description = ''
-        Verify Mojang accounts. Set to false for LAN play so your friend
-        can join without a premium Minecraft account.
-      '';
-    };
+    onlineMode = mkBoolOpt' false;
 
-    whitelist = mkOption {
-      type = bool;
-      default = false;
-      description = "Enable whitelist. Only whitelisted players can join.";
-    };
+    whitelist = mkBoolOpt' false;
 
-    pvp = mkOption {
-      type = bool;
-      default = true;
-      description = "Enable player-vs-player combat.";
-    };
+    pvp = mkBoolOpt' true;
 
-    allowFlight = mkOption {
-      type = bool;
-      default = true;
-      description = "Allow flight (needed for IC2 jetpacks, etc.).";
-    };
+    allowFlight = mkBoolOpt' true;
 
-    seed = mkOption {
-      type = str;
-      default = "";
-      description = "World seed. Empty = random.";
-    };
+    seed = mkStringOpt "" "Empty = Ramdom";
 
-    worldName = mkOption {
-      type = str;
-      default = "world";
-      description = "Name of the world folder.";
-    };
+    worldName = mkStringOpt' "world";
 
-    levelType = mkOption {
-      type = str;
-      default = "DEFAULT";
-      description = "World type: DEFAULT, FLAT, LARGEBIOMES, AMPLIFIED, CUSTOMIZED.";
-    };
+    levelType = mkStringOpt' "DEFAULT";
 
     viewDistance = mkOption {
       type = ints.between 3 32;

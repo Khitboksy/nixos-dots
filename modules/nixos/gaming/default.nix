@@ -32,7 +32,6 @@ with lib.custom;
       protonup-qt
       r2modman
       clonehero
-      prismlauncher
       ckan
     ];
 

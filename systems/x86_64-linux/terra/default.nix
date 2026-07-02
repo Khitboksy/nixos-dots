@@ -28,7 +28,11 @@
     swap.enable = true;
   };
 
-  gaming.minecraft.enable = false;
+  gaming.minecraft.servers = {
+    tekkit2 = {
+      enable = false;
+    };
+  };
 
   services = {
     ssh.enable = true;
