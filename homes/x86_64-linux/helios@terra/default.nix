@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 
@@ -60,6 +61,8 @@
       };
     };
   };
+
+  services.wallpaper.paper = lib.custom.wallpapers.tftf-11;
 
   home.packages = with pkgs; [
     wl-clipboard-rs
