@@ -11,14 +11,11 @@ in
 {
   options.apps.tools.noctalia = with types; {
     enable = mkBoolOpt false "Enable Noctalia Shell";
-    bar = mkOption {
-      type = types.enum [
-        "helios"
-        "terra"
-      ];
-      default = "helios";
-      description = "Which bar layout to use. 'helios' for the desktop, 'terra' for the laptop.";
-    };
+    bar = mkEnumOpt' [
+      # Pick One
+      "helios"
+      "terra"
+    ] "helios";
   };
 
   config = mkIf cfg.enable {
