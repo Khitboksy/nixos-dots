@@ -14,13 +14,15 @@ rec {
 
   mkStringOpt = mkOpt types.str;
 
+  mkStringOpt' = mkOpt' types.str;
+
   mkStringListOpt = mkOpt (types.listOf types.str);
 
   mkBoolOpt' = mkOpt' types.bool;
 
   mkPathOpt = mkOpt types.path;
 
-  mkEnumOpt = mkOpt types.enum;
+  mkEnumOpt' = values: default: mkOpt' (types.enum values) default;
 
   enabled = {
     enable = true;
