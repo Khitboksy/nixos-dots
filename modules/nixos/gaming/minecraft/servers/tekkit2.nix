@@ -145,23 +145,15 @@ in
 
     serverSource = mkStringOpt' "/mnt/nix-data/Games/minecraft/servers/tekkit2";
 
-    memory = mkStringOpt "3G" "Maximum Heap";
+    memory = mkStringOpt' "3G";
 
-    port = mkOption {
-      type = port;
-      default = 25565;
-      description = "Server port";
-    };
+    port = mkOpt' port 25565;
 
     openFirewall = mkBoolOpt' true;
 
     motd = mkStringOpt' "Tekkit 2 Server";
 
-    maxPlayers = mkOption {
-      type = ints.positive;
-      default = 16;
-      description = "Maximum number of players.";
-    };
+    maxPlayers = mkOpt' ints.positive 16;
 
     difficulty = mkEnumOpt' [ 0 1 2 3 ] 2;
 
@@ -175,17 +167,13 @@ in
 
     allowFlight = mkBoolOpt' true;
 
-    seed = mkStringOpt "" "Empty = Ramdom";
+    seed = mkStringOpt "" "Leave blank for random";
 
     worldName = mkStringOpt' "world";
 
     levelType = mkStringOpt' "DEFAULT";
 
-    viewDistance = mkOption {
-      type = ints.between 3 32;
-      default = 10;
-      description = "Client view distance in chunks.";
-    };
+    viewDistance = mkOpt' (ints.between 3 32) 10;
   };
 
   config = mkIf (config.gaming.minecraft.enable && cfg.enable) {
