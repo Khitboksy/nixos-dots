@@ -14,7 +14,7 @@ in
 {
   options = {
 
-    apps.ai.enable = mkBoolOpt false "Master switch for all AI apps (opencode, odysseus, mcps, t3code)";
+    apps.ai.enable = mkBoolOpt false "Master switch for all AI apps (opencode, odysseus, mcps)";
 
     apps.ai.providers = mkStringListOpt [
       "opencode"
@@ -34,7 +34,6 @@ in
 
     apps.ai.opencode.enable = true;
     apps.ai.odysseus.enable = true;
-    apps.ai.t3code.enable = false;
 
   };
 }
