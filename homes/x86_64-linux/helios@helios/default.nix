@@ -154,7 +154,6 @@ in
     vesktop
     inputs.zen-browser.packages."${system}".default
     git
-    btop
     ttfautohint
     nodejs
     bitwarden-cli

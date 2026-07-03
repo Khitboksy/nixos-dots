@@ -67,7 +67,6 @@
   home.packages = with pkgs; [
     wl-clipboard-rs
     git
-    btop
     bitwarden-cli
     firefox
     vesktop
