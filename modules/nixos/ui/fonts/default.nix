@@ -17,7 +17,9 @@ in
   config = mkIf cfg.enable {
     fonts = {
       packages = with pkgs; [
-        noto-fonts-color-emoji
+        noto-fonts               # Broad script coverage (Arabic, Hebrew, Devanagari, etc.)
+        noto-fonts-cjk-sans      # Chinese / Japanese / Korean
+        noto-fonts-color-emoji   # Emoji
         iosevka
         jetbrains-mono
       ];
@@ -29,16 +31,19 @@ in
           monospace = [
             "Iosevka"
             "JetBrains Mono"
+            "Noto Sans Mono CJK SC"
             "Noto Color Emoji"
           ];
           sansSerif = [
             "Iosevka"
             "JetBrains Mono"
+            "Noto Sans CJK SC"
             "Noto Color Emoji"
           ];
           serif = [
             "Iosevka"
             "JetBrains Mono"
+            "Noto Serif CJK SC"
             "Noto Color Emoji"
           ];
           emoji = [ "Noto Color Emoji" ];
