@@ -72,13 +72,6 @@
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
       src = ./.;
-      overlays = [
-        (final: prev: {
-          openldap = prev.openldap.overrideAttrs (old: {
-            doCheck = false;
-          });
-        })
-      ];
 
       outputs-builder = channels: {
         formatter = channels.nixpkgs.nixfmt;
