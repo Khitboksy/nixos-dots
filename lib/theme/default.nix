@@ -44,10 +44,11 @@ let
     in
     lib.strings.fixedWidthString 2 "0" hexString;
 
+  stripHash = lib.strings.removePrefix "#";
+
   hexToRgb =
     hexColor:
     let
-      stripHash = lib.strings.removePrefix "#";
       getPart =
         start: len:
         hexCompToInt
@@ -215,6 +216,7 @@ in
   inherit
     hexToRgb
     hexToHsl
+    stripHash
     lerpColor
     hexToAnsi
     ansiReset

@@ -11,7 +11,7 @@ with lib.custom;
 let
 
   cfg = config.apps.games.mangohud;
-  stripHash = hex: hex |> (x: builtins.substring 1 (builtins.stringLength x - 1) x);
+  #stripHash = hex: hex |> (x: builtins.substring 1 (builtins.stringLength x - 1) x);
 
 in
 

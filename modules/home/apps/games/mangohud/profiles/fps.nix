@@ -1,7 +1,6 @@
 # FPS-only minimal profile
 {
   lib,
-  config,
   stripHash,
   ...
 }:

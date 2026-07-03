@@ -1,7 +1,6 @@
 # Testing profile - comprehensive stats for debugging
 {
   lib,
-  config,
   stripHash,
   ...
 }:

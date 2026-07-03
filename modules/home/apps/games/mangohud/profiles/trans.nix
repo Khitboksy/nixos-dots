@@ -1,7 +1,6 @@
 # Default profile - full stats display
 {
   lib,
-  config,
   stripHash,
   ...
 }:
