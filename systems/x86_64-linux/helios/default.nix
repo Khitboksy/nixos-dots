@@ -115,7 +115,7 @@
 
     rpcbind.enable = true;
 
-    nix-index-cache.useTerra = true;
+    # nix-index-cache.useTerra = true;
 
   };
 
@@ -148,7 +148,10 @@
       enableFishIntegration = true;
     };
 
-    nix-index.enable = true;
+    nix-index = {
+      enable = true;
+      useTerra = true;
+    };
   };
 
   time = {

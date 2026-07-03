@@ -9,11 +9,11 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.services.nix-index-cache;
+  cfg = config.programs.nix-index;
 in
 
 {
-  options.services.nix-index-cache = with types; {
+  options.programs.nix-index = with types; {
     useTerra = mkBoolOpt false "Sync nix-index database from terra at boot via rsync";
   };
 
