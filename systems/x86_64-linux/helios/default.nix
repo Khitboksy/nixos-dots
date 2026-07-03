@@ -89,7 +89,7 @@
       bluetooth.enable = true;
       ssh.enable = true;
       tailscale.enable = true;
-      vpn.enable = true;
+      vpn.enable = false;
     };
     ui = {
       fonts.enable = true;
