@@ -7,10 +7,10 @@
 with lib;
 with lib.custom;
 let
-  cfg = config.hardware.systems.shared;
+  cfg = config.shared.hardware;
 in
 {
-  options.hardware.systems.shared = with types; {
+  options.shared.hardware = with types; {
     enable = mkBoolOpt false "Enable Shared Hardware Modules";
   };
 
@@ -33,7 +33,7 @@ in
     hardware.enableRedistributableFirmware = true;
     services.avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
       publish = {
         enable = true;
         addresses = true;

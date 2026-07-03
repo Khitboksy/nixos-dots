@@ -22,7 +22,7 @@ in
 
     hardware = {
 
-      cpu.amd.updateMicrocode = lib.mkDefault true;
+      cpu.amd.updateMicrocode = mkDefault true;
 
       nvidia = {
         modesetting.enable = true;

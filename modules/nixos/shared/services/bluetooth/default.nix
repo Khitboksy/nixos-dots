@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -9,11 +8,11 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.services.bluetooth;
+  cfg = config.shared.services.bluetooth;
 in
 
 {
-  options.services.bluetooth = with types; {
+  options.shared.services.bluetooth = with types; {
     enable = mkBoolOpt false "Enable Bluetooth";
   };
 

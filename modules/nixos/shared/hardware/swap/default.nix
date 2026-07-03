@@ -8,12 +8,12 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.hardware.swap;
+  cfg = config.shared.hardware.swap;
 in
 
 {
 
-  options.hardware.swap = with types; {
+  options.shared.hardware.swap = with types; {
     enable = mkBoolOpt false "Enable Swap";
   };
 

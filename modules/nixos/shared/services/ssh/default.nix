@@ -8,11 +8,11 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.services.ssh;
+  cfg = config.shared.services.ssh;
 in
 
 {
-  options.services.ssh = with types; {
+  options.shared.services.ssh = with types; {
     enable = mkBoolOpt false "Enable OpenSSH";
   };
 

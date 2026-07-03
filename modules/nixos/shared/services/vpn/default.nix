@@ -9,12 +9,12 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.services.vpn;
+  cfg = config.shared.services.vpn;
 in
 
 {
 
-  options.services.vpn = with types; {
+  options.shared.services.vpn = with types; {
     enable = mkBoolOpt false "Enable Mullvad-VPN";
   };
 

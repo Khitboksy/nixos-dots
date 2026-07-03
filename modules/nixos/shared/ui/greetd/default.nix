@@ -10,7 +10,7 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.ui.greetd;
+  cfg = config.shared.ui.greetd;
   system = pkgs.stdenv.hostPlatform.system;
 
   greeterBin = "${pkgs.tuigreet}/bin/tuigreet";
@@ -34,7 +34,7 @@ let
 in
 
 {
-  options.ui.greetd = with types; {
+  options.shared.ui.greetd = with types; {
     enable = mkBoolOpt false "Enable greetd + tuigreet TUI login manager";
   };
 

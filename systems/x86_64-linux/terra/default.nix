@@ -12,20 +12,10 @@
     ./bootnet.nix
   ];
 
-  ui = {
-    greetd.enable = true;
-    fonts.enable = true;
-  };
-  protocols.wayland.enable = true;
   security.sops.enable = true;
 
   hardware = {
-    audio.enable = true;
-    systems = {
-      shared.enable = true;
-      terra.enable = true;
-    };
-    swap.enable = true;
+    systems.terra.enable = true;
   };
 
   gaming.minecraft.servers = {
@@ -35,12 +25,6 @@
   };
 
   services = {
-    ssh.enable = true;
-    tails = {
-      enable = true;
-      authKeyFile = "/run/secrets/tailscale-authkey";
-    };
-
     music.enable = true;
 
     xserver = {
@@ -49,6 +33,29 @@
         variant = "";
       };
       enable = false;
+    };
+  };
+
+  shared = {
+    locale.defaultLocale = "en_US.UTF-8";
+    hardware = {
+      enable = true;
+      audio.enable = true;
+      swap.enable = true;
+    };
+    protocols.wayland.enable = true;
+    services = {
+      bluetooth.enable = true;
+      ssh.enable = true;
+      tailscale = {
+        enable = true;
+        authKeyFile = "/run/secrets/tailscale-authkey";
+      };
+      vpn.enable = true;
+    };
+    ui = {
+      fonts.enable = true;
+      greetd.enable = true;
     };
   };
 
@@ -71,21 +78,6 @@
 
   time = {
     timeZone = "America/Chicago";
-  };
-
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
   };
 
   users = {

@@ -8,11 +8,11 @@
 with lib;
 with lib.custom;
 let
-  cfg = config.protocols.wayland;
+  cfg = config.shared.protocols.wayland;
   system = pkgs.stdenv.hostPlatform.system;
 in
 {
-  options.protocols.wayland = with types; {
+  options.shared.protocols.wayland = with types; {
     enable = mkBoolOpt false "Enable Wayland Protocol";
   };
 

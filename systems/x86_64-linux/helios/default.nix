@@ -61,11 +61,6 @@
   };
 
   # Custom NixOS Modules located in ../../../modules/nixos/*
-  ui = {
-    fonts.enable = true;
-    greetd.enable = true;
-  };
-  protocols.wayland.enable = true;
   gaming.enable = true;
   security.sops.enable = true;
 
@@ -79,22 +74,33 @@
   virt.vms.enable = false; # SHELVED TILL I GET ANOTHER GPU
 
   hardware = {
-    audio.enable = true;
-    systems = {
-      shared.enable = true;
-      helios.enable = true;
+    systems.helios.enable = true;
+  };
+
+  shared = {
+    locale.defaultLocale = "en_US.UTF-8";
+    hardware = {
+      enable = true;
+      audio.enable = true;
+      swap.enable = true;
     };
-    swap.enable = true;
+    protocols.wayland.enable = true;
+    services = {
+      bluetooth.enable = true;
+      ssh.enable = true;
+      tailscale.enable = true;
+      vpn.enable = true;
+    };
+    ui = {
+      fonts.enable = true;
+      greetd.enable = true;
+    };
   };
 
   services = {
-    bluetooth.enable = true;
     io.enable = true;
     nfs.enable = true;
     openrgb.enable = true;
-    vpn.enable = false;
-    ssh.enable = true;
-    tails.enable = true;
 
     easyeffects.enable = true;
 
@@ -156,21 +162,6 @@
 
   time = {
     timeZone = "America/Chicago";
-  };
-
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
   };
 
   security.rtkit.enable = true;

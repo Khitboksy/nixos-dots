@@ -7,10 +7,10 @@
 with lib;
 with lib.custom;
 let
-  cfg = config.hardware.audio;
+  cfg = config.shared.hardware.audio;
 in
 {
-  options.hardware.audio = with types; {
+  options.shared.hardware.audio = with types; {
     enable = mkBoolOpt false "Enable Audio";
   };
 

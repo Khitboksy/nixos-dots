@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -9,11 +8,11 @@ with lib;
 with lib.custom;
 
 let
-  cfg = config.services.tails;
+  cfg = config.shared.services.tailscale;
 in
 
 {
-  options.services.tails = with types; {
+  options.shared.services.tailscale = with types; {
     enable = mkBoolOpt false "Enable Tailscale";
 
     authKeyFile = mkOption {
