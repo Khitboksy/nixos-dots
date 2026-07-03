@@ -8,13 +8,17 @@
 with lib;
 with lib.custom;
 
+let
+  cfg = config.gaming;
+in
+
 {
 
   options.gaming = with types; {
     enable = mkBoolOpt false "Enable Gaming Module";
   };
 
-  config = mkIf config.gaming.enable {
+  config = mkIf cfg.enable {
 
     gaming = {
       apps.steam.enable = true;
