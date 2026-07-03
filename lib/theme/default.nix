@@ -110,7 +110,7 @@ let
     in
     "hsl(${toString hDeg}, ${toString sPct}%, ${toString lPct}%)";
 
-  hexToHsl = hex: hexToRgb <| rgbToHsl <| hex;
+  hexToHsl = hex: rgbToHsl <| hexToRgb <| hex;
 
   lerpColor =
     color1Hex: color2Hex: t:
