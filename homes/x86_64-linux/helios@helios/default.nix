@@ -69,7 +69,10 @@ in
     };
   };
 
-  rice.gtk.enable = true;
+  rice = {
+    gtk.enable = true;
+    fonts = [ "Helios" ];
+  };
 
   # Standard home.nix configuration stuff
 

@@ -136,6 +136,79 @@ let
 
   ansiReset = "\\033[0m";
 
+  # ── CSS generation helpers ──────────────────────────────────────────
+
+  # Expand compact font-face variant tuples into full attrsets.
+  #   variants: [ [ weight stretch style fileSuffix ] ... ]
+  #   Optional: dirWoff2 and dirTtf override the base dir for each format.
+  mkFontFaces =
+    {
+      family,
+      display ? "swap",
+      dir ? "",
+      dirWoff2 ? null,
+      dirTtf ? null,
+      prefix,
+      variants,
+    }:
+    map (
+      v:
+      {
+        inherit family display dir;
+        weight = builtins.elemAt v 0;
+        stretch = builtins.elemAt v 1;
+        style = builtins.elemAt v 2;
+        file = "${prefix}-${builtins.elemAt v 3}";
+      }
+      // (if dirWoff2 != null then { dirWoff2 = "${dirWoff2}"; } else { })
+      // (if dirTtf != null then { dirTtf = "${dirTtf}"; } else { })
+    ) variants;
+
+  # Render a single @font-face block to CSS text.
+  # Supports separate directories for woff2 and ttf via dirWoff2/dirTtf
+  # (falls back to `dir` for either, then to "").
+  renderFontFace =
+    f:
+    let
+      d = f.dir or "";
+      woff2Dir =
+        if f ? dirWoff2 then
+          f.dirWoff2
+        else if f ? dir then
+          "${f.dir}WOFF2/"
+        else
+          "";
+      ttfDir =
+        if f ? dirTtf then
+          f.dirTtf
+        else if f ? dir then
+          "${f.dir}TTF/"
+        else
+          "";
+    in
+    ''
+      @font-face {
+      	font-family: '${f.family}';
+      	font-display: ${f.display or "swap"};
+      	font-weight: ${toString f.weight};
+      	font-stretch: ${f.stretch};
+      	font-style: ${f.style};
+      	src: url('${woff2Dir}${f.file}.woff2') format('woff2'), url('${ttfDir}${f.file}.ttf') format('truetype');
+      }'';
+
+  # Generic CSS renderer. Supports fontFaces now; rules/keyframes etc. can be added.
+  toCSS =
+    {
+      fontFaces ? [ ],
+      ...
+    }:
+    lib.strings.concatStringsSep "\n\n" (map renderFontFace fontFaces);
+
+  # High-level shorthand: takes compact font-face data, expands it, renders to CSS.
+  #   Input: { family, display, dir, dirWoff2, dirTtf, prefix, variants }
+  #   Output: CSS text string (all @font-face blocks joined)
+  fontFacesToCSS = data: toCSS { fontFaces = mkFontFaces data; };
+
 in
 {
 
@@ -145,6 +218,10 @@ in
     lerpColor
     hexToAnsi
     ansiReset
+    mkFontFaces
+    renderFontFace
+    toCSS
+    fontFacesToCSS
     ;
 
   colors = {
