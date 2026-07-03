@@ -62,8 +62,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
-
     noctalia = {
       url = "github:noctalia-dev/noctalia";
       # Don't follow nixpkgs — needed for binary cache
