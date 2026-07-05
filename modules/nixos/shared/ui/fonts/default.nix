@@ -18,6 +18,8 @@ in
     fonts = {
       packages = with pkgs; [
         noto-fonts # Broad script coverage (Arabic, Hebrew, Devanagari, etc.)
+        nerd-fonts.iosevka-term
+        nerd-fonts.iosevka-term-slab
         noto-fonts-cjk-sans # Chinese / Japanese / Korean
         noto-fonts-color-emoji # Emoji
         iosevka
@@ -34,12 +36,12 @@ in
             "Noto Sans Mono CJK SC"
           ];
           sansSerif = [
-            "Iosevka"
+            "Iosevka Term Slab"
             "JetBrains Mono"
             "Noto Sans CJK SC"
           ];
           serif = [
-            "Iosevka"
+            "Iosevka Term Slab"
             "JetBrains Mono"
             "Noto Serif CJK SC"
           ];

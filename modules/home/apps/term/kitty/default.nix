@@ -38,6 +38,7 @@ in
       jetbrains-mono
       noto-fonts-color-emoji
       nerd-fonts.iosevka-term
+      nerd-fonts.iosevka-term-slab
       nerd-fonts.jetbrains-mono
     ];
 
@@ -52,11 +53,11 @@ in
       '';
 
       settings = {
-        font_family = "Iosevka Term Nerd Font";
+        font_family = "Iosevka Term Slab Nerd Font";
         font_size = 12;
-        bold_font = "Iosevka Term Nerd Font Bold";
-        italic_font = "Iosevka Term Nerd Font Italic";
-        bold_italic_font = "Iosevka Term Nerd Font Bold Italic";
+        bold_font = "Iosevka Term Slab Nerd Font Bold";
+        italic_font = "Iosevka Term Slab Nerd Font Italic";
+        bold_italic_font = "Iosevka Term Slab Nerd Font Bold Italic";
 
         font_features = "+Iosevka";
 
