@@ -27,7 +27,7 @@ in
       font = "Iosevka Bold 16";
 
       extraConfig = {
-        show-icons = false;
+        show-icons = true;
         drun-display-format = "{name}";
 
         modi = "drun";
