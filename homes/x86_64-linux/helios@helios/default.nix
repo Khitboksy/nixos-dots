@@ -159,6 +159,7 @@ in
     bitwarden-cli
     nh
     obsidian
+    pulseaudio
 
   ];
 
