@@ -24,6 +24,13 @@
     };
   };
 
+  vaultwarden = {
+    enable = true;
+    adminTokenFile = "/run/secrets/vaultwarden-admin-token";
+    signupsAllowed = false;
+    invitationsAllowed = true;
+  };
+
   services = {
     music.enable = true;
     upower.enable = true;

@@ -58,6 +58,13 @@ in
           owner = "root";
           mode = "0400";
         };
+        vaultwarden-admin-token = {
+          sopsFile = ../../../../secrets/vaultwarden-admin-token;
+          path = "/run/secrets/vaultwarden-admin-token";
+          format = "binary";
+          owner = "root";
+          mode = "0400";
+        };
       };
     };
   };
