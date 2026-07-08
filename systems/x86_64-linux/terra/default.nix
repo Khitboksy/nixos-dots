@@ -26,6 +26,7 @@
 
   services = {
     music.enable = true;
+    upower.enable = true;
 
     xserver = {
       xkb = {
