@@ -21,6 +21,32 @@ in
     apps.term.tuis.mpv.enable = true;
 
     xdg.configFile = {
+      "yazi/init.lua".text = ''
+        -- SSH host indicator for Yazi — shows "ssh@hostname" in the header
+        -- when connected via SSH. Managed by Nix.
+
+        Header:children_add(function()
+            if ya.target_family() ~= "unix" then
+                return ""
+            end
+
+            local ssh = os.getenv("SSH_CONNECTION")
+            if not ssh then
+                return ""
+            end
+
+            local host = ya.host_name()
+            if host == "" then
+                return ""
+            end
+
+            return ui.Line {
+                ui.Span("ssh@"):fg("${colors.yellow.hex}"),
+                ui.Span(host):fg("${colors.sapphire.hex}"),
+                ui.Span(" "),
+            }
+        end, 500, Header.LEFT)
+      '';
       "yazi/theme.toml".text = (import ./config/themes/helios-yaziTheme.nix) { inherit lib; };
       "yazi/helios.tmTheme".text = (import ./config/themes/helios-yaziTM.nix) { inherit lib; };
       "ytfzf/conf.sh".text = ''
