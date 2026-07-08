@@ -16,7 +16,7 @@ with pkgs;
   #du = getExe du-dust;
   #ps = getExe procs;
   #lb = "pw-loopback -C \"alsa_input.pci-0000_0d_00.4.analog-stereo\" -P \"Scarlett Solo (3rd Gen.) Headphones / Line 1-2\"";
-  terra-depl = "nh os switch -H terra --target-host helios@terra";
+  terra-depl = "SSH_AUTH_SOCK= nh os switch -H terra --target-host helios@terra";
   m = "mkdir -p";
   fcd = "cd $(find -type d | fzf)";
   sc = "sudo systemctl";
