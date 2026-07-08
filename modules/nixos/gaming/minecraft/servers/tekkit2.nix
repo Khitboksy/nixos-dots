@@ -195,9 +195,8 @@ in
       after = [ "network.target" ];
       # wantedBy deliberately omitted — user starts manually via aliases
 
-      preStart = "${setupScript}";
-
       serviceConfig = {
+        ExecStartPre = [ "+${setupScript}" ];
         ExecStart = "${wrapperScript}";
         User = "minecraft-${srvName}";
         Group = "minecraft-${srvName}";
