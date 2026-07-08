@@ -27,6 +27,29 @@
   services = {
     music.enable = true;
     upower.enable = true;
+    logind.settings.Login = {
+      HandleLidSwitch = "suspend"; # battery → sleep
+      HandleLidSwitchExternalPower = "ignore"; # AC → don't sleep
+    };
+    acpid = {
+      enable = true;
+      lidEventCommands = ''
+        vals=($1)
+        case "''${vals[2]}" in
+          00000080)
+            # Lid closed
+            if grep -q "1" /sys/class/power_supply/*/online 2>/dev/null; then
+              # On AC power — turn screen off, do NOT sleep
+              USER="helios"
+              USER_UID=$(id -u "$USER" 2>/dev/null || echo 1000)
+              export XDG_RUNTIME_DIR="/run/user/$USER_UID"
+              runuser -u "$USER" -- niri msg action power-off-monitors 2>/dev/null || true
+            fi
+            # On battery: logind handles suspend via HandleLidSwitch=suspend
+            ;;
+        esac
+      '';
+    };
 
     xserver = {
       xkb = {
