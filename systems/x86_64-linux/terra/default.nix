@@ -20,7 +20,7 @@
 
   gaming.minecraft.servers = {
     tekkit2 = {
-      enable = false;
+      enable = true;
     };
   };
 
