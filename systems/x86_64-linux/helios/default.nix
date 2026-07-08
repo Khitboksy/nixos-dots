@@ -61,7 +61,10 @@
   };
 
   # Custom NixOS Modules located in ../../../modules/nixos/*
-  gaming.enable = true;
+  gaming = {
+    enable = true;
+    minecraft.enable = true;
+  };
   security.sops.enable = true;
 
   sops.secrets.nixos-cache = {
