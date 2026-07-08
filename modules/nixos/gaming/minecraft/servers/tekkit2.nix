@@ -176,7 +176,7 @@ in
     viewDistance = mkOpt' (ints.between 3 32) 10;
   };
 
-  config = mkIf (config.gaming.minecraft.enable && cfg.enable) {
+  config = mkIf cfg.enable {
 
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
