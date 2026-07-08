@@ -14,14 +14,14 @@ with pkgs;
 
     # ── Check if already running ──────────────────────────────────────
     if systemctl is-active --quiet "minecraft-$server"
-      printf "${hexToAnsi colors.yellow.hex}$server is already running.${ansiReset}\n"
+      printf "${colors.yellow.ansi}$server is already running.${ansiReset}\n"
       return 0
     end
 
     set -l start_ts (date +%s)
 
     # ── Stage 1: Start and wait for properties ────────────────────────
-    printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Starting${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+    printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Starting${ansiReset} ${colors.blue.ansi}$server${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
     sudo systemctl start "minecraft-$server"
 
     set -l waited 0
@@ -32,14 +32,14 @@ with pkgs;
         break
       end
       if not systemctl is-active --quiet "minecraft-$server"
-        printf "${hexToAnsi colors.red.hex}$server failed to start!${ansiReset}\n"
+        printf "${colors.red.ansi}$server failed to start!${ansiReset}\n"
         journalctl -u "minecraft-$server" -n 20 --no-pager 2>/dev/null
         return 1
       end
     end
 
     # ── Stage 2: Wait for startup tick ────────────────────────────────
-    printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Waiting for startup to complete${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+    printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Waiting for startup to complete${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
     set -l timeout 180
     set -l waited 0
 
@@ -48,18 +48,18 @@ with pkgs;
       set waited (math $waited + 2)
 
       if journalctl -u "minecraft-$server" --since=@"$start_ts" --no-pager 2>/dev/null | grep -q "Hello from the async scope|Hello from the server tick"
-        printf "${hexToAnsi colors.green.hex}$server started successfully!${ansiReset}\n"
+        printf "${colors.green.ansi}$server started successfully!${ansiReset}\n"
         return 0
       end
 
       if not systemctl is-active --quiet "minecraft-$server"
-        printf "${hexToAnsi colors.red.hex}$server failed to start!${ansiReset}\n"
+        printf "${colors.red.ansi}$server failed to start!${ansiReset}\n"
         journalctl -u "minecraft-$server" -n 20 --no-pager 2>/dev/null
         return 1
       end
     end
 
-    printf "${hexToAnsi colors.red.hex}⚠ Timed out waiting for $server to start ($timeout seconds)${ansiReset}\n"
+    printf "${colors.red.ansi}⚠ Timed out waiting for $server to start ($timeout seconds)${ansiReset}\n"
     return 1
   '';
 }

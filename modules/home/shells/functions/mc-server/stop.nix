@@ -14,7 +14,7 @@ with pkgs;
 
     # ── Check if already stopped ──────────────────────────────────────
     if not systemctl is-active --quiet "minecraft-$server"
-      printf "${hexToAnsi colors.yellow.hex}$server is already stopped.${ansiReset}\n"
+      printf "${colors.yellow.ansi}$server is already stopped.${ansiReset}\n"
       return 0
     end
 
@@ -28,7 +28,7 @@ with pkgs;
       sleep 1
       set waited (math $waited + 1)
       if journalctl -u "minecraft-$server" --since=@"$stop_ts" --no-pager 2>/dev/null | grep -q "Stopping server"
-        printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Stopping${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+        printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Stopping${ansiReset} ${colors.blue.ansi}$server${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
         break
       end
       # Already stopped before we saw the message
@@ -47,7 +47,7 @@ with pkgs;
       if journalctl -u "minecraft-$server" --since=@"$stop_ts" --no-pager 2>/dev/null | grep -q "Saving players|Saving worlds|Saving chunks"
         set save_time (date +%s)
         if test $save_printed -eq 0
-          printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Saving Level${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+          printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Saving Level${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
           set save_printed 1
         end
       end
@@ -62,9 +62,9 @@ with pkgs;
     end
 
     # ── Stage 3: Wait for stop to fully complete ──────────────────────
-    printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Waiting for server${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+    printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Waiting for server${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
     wait $stop_pid 2>/dev/null
 
-    printf "${hexToAnsi colors.green.hex}$server Stopped.${ansiReset}\n"
+    printf "${colors.green.ansi}$server Stopped.${ansiReset}\n"
   '';
 }

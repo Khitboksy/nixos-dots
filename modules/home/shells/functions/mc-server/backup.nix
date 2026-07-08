@@ -7,7 +7,7 @@ with pkgs;
 {
   mc-backup = ''
     if test (count $argv) -lt 2
-      printf "Usage: mc-backup ${hexToAnsi colors.blue.hex}<server>${ansiReset} {${hexToAnsi colors.green.hex}list${ansiReset}|${hexToAnsi colors.green.hex}run${ansiReset}|${hexToAnsi colors.green.hex}restore${ansiReset}}\n"
+      printf "Usage: mc-backup ${colors.blue.ansi}<server>${ansiReset} {${colors.green.ansi}list${ansiReset}|${colors.green.ansi}run${ansiReset}|${colors.green.ansi}restore${ansiReset}}\n"
       return 1
     end
     set -l server $argv[1]
@@ -25,15 +25,15 @@ with pkgs;
         if systemctl is-active --quiet "minecraft-$server"
           set was_running 1
           if test -p "$fifo"
-            printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Freezing world${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+            printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Freezing world${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
             echo "save-off" > "$fifo"
             sleep 1
-            printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Flushing chunks to disk${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+            printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Flushing chunks to disk${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
             echo "save-all" > "$fifo"
             # Give it time to finish flushing
             sleep 5
           else
-            printf "${hexToAnsi colors.yellow.hex}Warning:${ansiReset} ${hexToAnsi colors.text.hex}Server running but FIFO not found — backing up without save-off/save-all.${ansiReset}\n"
+            printf "${colors.yellow.ansi}Warning:${ansiReset} ${colors.text.ansi}Server running but FIFO not found — backing up without save-off/save-all.${ansiReset}\n"
           end
         end
 
@@ -46,7 +46,7 @@ with pkgs;
         end
         set -l archive "$backup_dir/$server-$count-$timestamp.tar.gz"
 
-        printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Backing up${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+        printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Backing up${ansiReset} ${colors.blue.ansi}$server${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
 
         sudo tar -czf "$archive" \
           --exclude='.stdin-fifo' \
@@ -54,48 +54,48 @@ with pkgs;
 
         # Re-enable saving if we froze it
         if test "$was_running" -eq 1; and test -p "$fifo"
-          printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Unfreezing world${ansiReset} ${hexToAnsi colors.text.hex}...${ansiReset}\n"
+          printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Unfreezing world${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
           echo "save-on" > "$fifo"
         end
 
         set -l size (du -h "$archive" | cut -f1)
-        printf "${hexToAnsi colors.green.hex}✓${ansiReset} ${hexToAnsi colors.text.hex}Backup saved:${ansiReset} ${hexToAnsi colors.blue.hex}%s${ansiReset} ${hexToAnsi colors.text.hex}(%s)${ansiReset}\n" (basename "$archive") "$size"
+        printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Backup saved:${ansiReset} ${colors.blue.ansi}%s${ansiReset} ${colors.text.ansi}(%s)${ansiReset}\n" (basename "$archive") "$size"
 
       case restore
         if test (count $argv) -lt 3
-          printf "${hexToAnsi colors.red.hex}Error:${ansiReset} ${hexToAnsi colors.text.hex}Specify an archive name to restore. Use${ansiReset}\n"
-          printf "  ${hexToAnsi colors.green.hex}mc-backup $server list${ansiReset} ${hexToAnsi colors.text.hex}to see available backups.${ansiReset}\n"
+          printf "${colors.red.ansi}Error:${ansiReset} ${colors.text.ansi}Specify an archive name to restore. Use${ansiReset}\n"
+          printf "  ${colors.green.ansi}mc-backup $server list${ansiReset} ${colors.text.ansi}to see available backups.${ansiReset}\n"
           return 1
         end
         set -l restore_from $argv[3]
         set -l restore_path "$backup_dir/$restore_from"
 
         if not test -f "$restore_path"
-          printf "${hexToAnsi colors.red.hex}Error:${ansiReset} ${hexToAnsi colors.text.hex}Archive${ansiReset} ${hexToAnsi colors.blue.hex}$restore_from${ansiReset} ${hexToAnsi colors.text.hex}not found in${ansiReset}\n"
-          printf "  ${hexToAnsi colors.peach.hex}$backup_dir${ansiReset}\n"
+          printf "${colors.red.ansi}Error:${ansiReset} ${colors.text.ansi}Archive${ansiReset} ${colors.blue.ansi}$restore_from${ansiReset} ${colors.text.ansi}not found in${ansiReset}\n"
+          printf "  ${colors.peach.ansi}$backup_dir${ansiReset}\n"
           return 1
         end
 
         # Server must be stopped for restore
         if systemctl is-active --quiet "minecraft-$server"
-          printf "${hexToAnsi colors.red.hex}Error:${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset} ${hexToAnsi colors.text.hex}is running. Stop it first:${ansiReset}\n"
-          printf "  ${hexToAnsi colors.green.hex}mc-stop $server${ansiReset}\n"
+          printf "${colors.red.ansi}Error:${ansiReset} ${colors.blue.ansi}$server${ansiReset} ${colors.text.ansi}is running. Stop it first:${ansiReset}\n"
+          printf "  ${colors.green.ansi}mc-stop $server${ansiReset}\n"
           return 1
         end
 
         # Confirm — destructive operation
-        printf "${hexToAnsi colors.yellow.hex}⚠ Warning:${ansiReset} ${hexToAnsi colors.text.hex}This will overwrite ALL data for${ansiReset}\n"
-        printf "  ${hexToAnsi colors.blue.hex}$server${ansiReset}\n"
-        printf "${hexToAnsi colors.text.hex}with the contents of:${ansiReset}\n"
-        printf "  ${hexToAnsi colors.blue.hex}$restore_from${ansiReset}\n"
-        printf "${hexToAnsi colors.text.hex}Proceed?${ansiReset} ${hexToAnsi colors.peach.hex}[y/N]${ansiReset} "
+        printf "${colors.yellow.ansi}⚠ Warning:${ansiReset} ${colors.text.ansi}This will overwrite ALL data for${ansiReset}\n"
+        printf "  ${colors.blue.ansi}$server${ansiReset}\n"
+        printf "${colors.text.ansi}with the contents of:${ansiReset}\n"
+        printf "  ${colors.blue.ansi}$restore_from${ansiReset}\n"
+        printf "${colors.text.ansi}Proceed?${ansiReset} ${colors.peach.ansi}[y/N]${ansiReset} "
         read -l confirm
         if test "$confirm" != "y" -a "$confirm" != "Y"
-          printf "${hexToAnsi colors.text.hex}Restore cancelled.${ansiReset}\n"
+          printf "${colors.text.ansi}Restore cancelled.${ansiReset}\n"
           return 0
         end
 
-        printf "${hexToAnsi colors.green.hex}->${ansiReset} ${hexToAnsi colors.peach.hex}Restoring${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset} ${hexToAnsi colors.text.hex}from backup...${ansiReset}\n"
+        printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Restoring${ansiReset} ${colors.blue.ansi}$server${ansiReset} ${colors.text.ansi}from backup...${ansiReset}\n"
 
         # Ensure runtime dir exists, then wipe everything except the FIFO
         sudo mkdir -p "$src_dir"
@@ -107,12 +107,12 @@ with pkgs;
         # Fix ownership
         sudo chown -R "minecraft-$server:minecraft-$server" "$src_dir"
 
-        printf "${hexToAnsi colors.green.hex}✓${ansiReset} ${hexToAnsi colors.text.hex}Restore complete. Start the server:${ansiReset}\n"
-        printf "  ${hexToAnsi colors.green.hex}mc-start $server${ansiReset}\n"
+        printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Restore complete. Start the server:${ansiReset}\n"
+        printf "  ${colors.green.ansi}mc-start $server${ansiReset}\n"
 
       case '*'
-        printf "${hexToAnsi colors.red.hex}Error:${ansiReset} ${hexToAnsi colors.text.hex}Unknown flag '${ansiReset}${hexToAnsi colors.peach.hex}$flag${ansiReset}${hexToAnsi colors.text.hex}'. Use${ansiReset}\n"
-        printf "  ${hexToAnsi colors.green.hex}mc-backup $server {list|run|restore}${ansiReset}\n"
+        printf "${colors.red.ansi}Error:${ansiReset} ${colors.text.ansi}Unknown flag '${ansiReset}${colors.peach.ansi}$flag${ansiReset}${colors.text.ansi}'. Use${ansiReset}\n"
+        printf "  ${colors.green.ansi}mc-backup $server {list|run|restore}${ansiReset}\n"
         return 1
     end
   '';

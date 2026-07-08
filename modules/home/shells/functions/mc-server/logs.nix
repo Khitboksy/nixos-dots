@@ -12,12 +12,12 @@ with pkgs;
     end
     journalctl -u "minecraft-$argv[1]" -f --no-hostname | awk '
       BEGIN {
-        b = "${hexToAnsi colors.blue.hex}"
-        y = "${hexToAnsi colors.yellow.hex}"
-        p = "${hexToAnsi colors.peach.hex}"
-        r = "${hexToAnsi colors.red.hex}"
-        g = "${hexToAnsi colors.green.hex}"
-        w = "${hexToAnsi colors.text.hex}"
+        b = "${colors.blue.ansi}"
+        y = "${colors.yellow.ansi}"
+        p = "${colors.peach.ansi}"
+        r = "${colors.red.ansi}"
+        g = "${colors.green.ansi}"
+        w = "${colors.text.ansi}"
         n = "${ansiReset}"
       }
       {
@@ -59,14 +59,14 @@ with pkgs;
 
   mc-status = ''
     if test (count $argv) -eq 0
-      printf "Usage: mc-status ${hexToAnsi colors.blue.hex}<server-name>${ansiReset}\n"
+      printf "Usage: mc-status ${colors.blue.ansi}<server-name>${ansiReset}\n"
       return 1
     end
     set server $argv[1]
     if systemctl is-active --quiet "minecraft-$server"
-      printf "${hexToAnsi colors.green.hex}$server is running.${ansiReset}\n"
+      printf "${colors.green.ansi}$server is running.${ansiReset}\n"
     else
-      printf "${hexToAnsi colors.yellow.hex}$server is stopped.${ansiReset}\n"
+      printf "${colors.yellow.ansi}$server is stopped.${ansiReset}\n"
     end
     systemctl status --no-pager "minecraft-$server"
   '';

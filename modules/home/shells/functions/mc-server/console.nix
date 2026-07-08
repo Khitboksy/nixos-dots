@@ -7,23 +7,23 @@ with pkgs;
 {
   mc-console = ''
     if test (count $argv) -eq 0
-      printf "Usage: mc-console ${hexToAnsi colors.blue.hex}<server-name>${ansiReset}\n"
+      printf "Usage: mc-console ${colors.blue.ansi}<server-name>${ansiReset}\n"
       return 1
     end
     set server $argv[1]
     set fifo "/var/lib/minecraft-$server/.stdin-fifo"
     if not test -p "$fifo"
-      printf "${hexToAnsi colors.red.hex}Error:${ansiReset} Server ${hexToAnsi colors.blue.hex}$server${ansiReset} is not running ${hexToAnsi colors.text.hex}(start it with${ansiReset} ${hexToAnsi colors.green.hex}mc-start $server${ansiReset}${hexToAnsi colors.text.hex})${ansiReset}\n"
+      printf "${colors.red.ansi}Error:${ansiReset} Server ${colors.blue.ansi}$server${ansiReset} is not running ${colors.text.ansi}(start it with${ansiReset} ${colors.green.ansi}mc-start $server${ansiReset}${colors.text.ansi})${ansiReset}\n"
       return 1
     end
-    printf "${hexToAnsi colors.text.hex}Console for${ansiReset} ${hexToAnsi colors.blue.hex}$server${ansiReset}${hexToAnsi colors.text.hex}. Type${ansiReset} ${hexToAnsi colors.peach.hex}exit${ansiReset}${hexToAnsi colors.text.hex} to quit.${ansiReset}\n"
-    printf "${hexToAnsi colors.text.hex}(Run${ansiReset} ${hexToAnsi colors.green.hex}mc-logs $server${ansiReset}${hexToAnsi colors.text.hex} to see output live.)${ansiReset}\n"
+    printf "${colors.text.ansi}Console for${ansiReset} ${colors.blue.ansi}$server${ansiReset}${colors.text.ansi}. Type${ansiReset} ${colors.peach.ansi}exit${ansiReset}${colors.text.ansi} to quit.${ansiReset}\n"
+    printf "${colors.text.ansi}(Run${ansiReset} ${colors.green.ansi}mc-logs $server${ansiReset}${colors.text.ansi} to see output live.)${ansiReset}\n"
     while true
-      printf "${hexToAnsi colors.blue.hex}%s${ansiReset} ${hexToAnsi colors.green.hex}>${ansiReset} ${hexToAnsi colors.sapphire.hex}" "$server"
+      printf "${colors.blue.ansi}%s${ansiReset} ${colors.green.ansi}>${ansiReset} ${colors.sapphire.ansi}" "$server"
       read cmd
       printf "${ansiReset}"
       if test "$cmd" = "exit"
-        printf "${hexToAnsi colors.text.hex}Console closed.${ansiReset}\n"
+        printf "${colors.text.ansi}Console closed.${ansiReset}\n"
         break
       end
       echo "$cmd" > "$fifo"
