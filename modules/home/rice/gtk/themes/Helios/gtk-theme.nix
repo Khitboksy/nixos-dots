@@ -77,9 +77,9 @@ in
   * {
     background-color: ${bg};
     color: ${fg};
-    border-color: ${surfaceBorder};
+    border-color: ${accent};
     border-style: solid;
-    outline-color: ${accent};
+    outline-color: ${surfaceBorder};
     -gtk-outline-radius: 4px;
   }
 
@@ -163,12 +163,13 @@ in
   button {
     background-color: ${buttonBg};
     color: ${buttonFg};
-    border: 1px solid ${surfaceBorder};
+    border: 3px solid ${accent};
     border-radius: 6px;
-    padding: 4px 8px;
+    padding: 0px;
     transition: all 100ms ease;
     min-height: 24px;
   }
+
 
   button:hover {
     background-color: ${buttonHoverBg};
@@ -209,7 +210,7 @@ in
   }
 
   button.flat:hover {
-    background-color: ${surfaceHover};
+    background-color: ${accentAlt};
   }
 
   button.flat:checked {
@@ -237,8 +238,31 @@ in
   }
 
   button.suggested-action:hover {
-    background-color: ${colors.mauve.hex};
-    border-color: ${colors.mauve.hex};
+    background-color: ${bg};
+    border-color: ${accent};
+  }
+
+  /* ── 5a. Button children ──────────────────────────────────────── */
+
+  /* Prevent inner boxes/labels from showing squared dark backgrounds
+     inside the button's rounded corners. */
+  button > *,
+  button > box,
+  button > label,
+  button > image,
+  button > box > *,
+  button box,
+  button box * {
+    background-color: ${buttonBg};
+  }
+
+  headerbar button > *,
+  headerbar button box,
+  headerbar button label,
+  sidebar button > *,
+  sidebar button box,
+  sidebar button label {
+    background-color: ${buttonBg};
   }
 
   /* ── 6. Selection ──────────────────────────────────────────────── */
@@ -318,6 +342,24 @@ in
     opacity: ${backdropOpacity};
   }
 
+  /* CSD window decoration handle — covers apps that don't use bare headerbar */
+  windowhandle,
+  windowhandle box,
+  window.csd .titlebar,
+  window.solid-csd .titlebar {
+    background-color: ${headerBg};
+  }
+
+  windowhandle:backdrop {
+    opacity: ${backdropOpacity};
+  }
+
+  /* Default background for CSD windows (catches anything not explicitly styled) */
+  window.csd,
+  window.solid-csd {
+    background-color: ${bg};
+  }
+
   /* ── 8. Menus ──────────────────────────────────────────────────── */
 
   menu {
@@ -387,14 +429,33 @@ in
     background-color: ${accent};
   }
 
+  /* ── 9a. Overscroll / Underscroll ─────────────────────────────── */
+
+  /* Eliminates the big colored box that appears when scrolling past
+     the content boundary in lists / menus / treeviews. */
+  overshoot,
+  undershoot {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Remove gradient artifacts Adwaita draws at scroll edges */
+  overshoot:top,
+  overshoot:bottom,
+  overshoot:left,
+  overshoot:right {
+    background: transparent;
+    box-shadow: none;
+  }
+
   /* ── 10. Tooltips ──────────────────────────────────────────────── */
 
   tooltip {
     background-color: ${tooltipBg};
     color: ${tooltipFg};
-    border: 1px solid ${surfaceBorder};
+    border: 3px solid ${accent};
     border-radius: 6px;
-    padding: 6px 10px;
+    padding: 4px;
   }
 
   tooltip.background {
@@ -578,16 +639,17 @@ in
   /* ── 15. Switches / Toggles ────────────────────────────────────── */
 
   switch {
-    background-color: ${surface};
-    border: 1px solid ${surfaceBorder};
-    border-radius: 12px;
-    min-height: 20px;
-    min-width: 36px;
+    background-color: ${surfaceBorder};
+    border: 2px solid ${surfaceBorder};
+    border-radius: 14px;
+    min-height: 22px;
+    min-width: 44px;
     padding: 0;
   }
 
   switch:hover {
     background-color: ${surfaceHover};
+    border-color: ${surfaceHover};
   }
 
   switch:checked {
@@ -596,16 +658,16 @@ in
   }
 
   switch slider {
-    background-color: ${fgAlt};
+    background-color: ${fg};
     border: none;
     border-radius: 50%;
     min-height: 16px;
     min-width: 16px;
-    margin: 2px;
+    margin: 3px;
   }
 
   switch:checked slider {
-    background-color: ${selectionFg};
+    background-color: ${bg};
   }
 
   /* ── 16. Spin Buttons ──────────────────────────────────────────── */
