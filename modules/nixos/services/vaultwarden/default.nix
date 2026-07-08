@@ -16,7 +16,7 @@ in
   options.vaultwarden = with types; {
     enable = mkBoolOpt false "Enable Vaultwarden (Bitwarden-compatible password manager)";
 
-    domain = mkStringOpt "http://terra:8222" "The URL clients use to reach the server";
+    domain = mkStringOpt "https://terra.tailnet-name.ts.net" "HTTPS URL clients use to reach the server. Update this to your actual tailnet name after running 'tailscale serve'";
 
     backupDir = mkOpt (nullOr types.str) null "Directory for automated database backups (SQLite only)";
 
@@ -35,7 +35,7 @@ in
       dbBackend = "sqlite";
       backupDir = cfg.backupDir;
       config = {
-        ROCKET_ADDRESS = "0.0.0.0";
+        ROCKET_ADDRESS = "127.0.0.1";
         ROCKET_PORT = 8222;
         DOMAIN = cfg.domain;
         ENABLE_WEBSOCKET = true;
@@ -44,7 +44,5 @@ in
       };
       environmentFile = lib.optional (cfg.adminTokenFile != null) cfg.adminTokenFile;
     };
-
-    networking.firewall.allowedTCPPorts = [ 8222 ];
   };
 }
