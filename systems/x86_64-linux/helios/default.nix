@@ -124,8 +124,6 @@
 
     rpcbind.enable = true;
 
-    # nix-index-cache.useTerra = true;
-
   };
 
   catppuccin = {
