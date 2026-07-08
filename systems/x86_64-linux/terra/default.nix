@@ -26,6 +26,7 @@
 
   vaultwarden = {
     enable = true;
+    domain = "https://terra.tail9a2d08.ts.net";
     adminTokenFile = "/run/secrets/vaultwarden-admin-token";
     signupsAllowed = false;
     invitationsAllowed = true;
