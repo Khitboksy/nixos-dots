@@ -41,7 +41,7 @@
     enable = true;
     flavor = "mocha";
     accent = "mauve";
-    autoEnable = true;
+    autoEnable = false;
   };
 
   programs = {
