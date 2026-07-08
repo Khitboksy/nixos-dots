@@ -1,5 +1,5 @@
 {
-  auto_hide = false;
+  auto_hide = true;
   background_opacity = 0.3;
   border = "outline";
   border_width = 0.0;
@@ -61,6 +61,7 @@
       foreground = "primary";
       id = "g2";
       members = [
+        "bluetooth"
         "volume"
         "battery"
         "power_profile"
