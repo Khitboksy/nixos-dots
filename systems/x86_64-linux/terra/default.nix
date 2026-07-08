@@ -52,7 +52,7 @@
         enable = true;
         authKeyFile = "/run/secrets/tailscale-authkey";
       };
-      vpn.enable = true;
+      vpn.enable = false;
     };
     ui = {
       fonts.enable = true;
