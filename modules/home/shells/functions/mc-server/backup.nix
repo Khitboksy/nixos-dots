@@ -58,6 +58,22 @@ with pkgs;
           echo "save-on" > "$fifo"
         end
 
+        # Push off-machine backup to helios
+        if test (hostname) = "terra"
+          set -l remote_user "helios"
+          set -l remote_host "helios"
+          set -l remote_backup_dir "/mnt/nix-data/Games/minecraft/backups/$server/"
+          set -l ssh_key "$HOME/.ssh/id_ed25519_terra_exit"
+
+          printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Pushing backup to${ansiReset} ${colors.blue.ansi}%s${ansiReset} ${colors.text.ansi}...${ansiReset}\n" "$remote_host"
+          rsync -az -e "${pkgs.openssh}/bin/ssh -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
+          if test $status -eq 0
+            printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Off-machine backup complete.${ansiReset}\n"
+          else
+            printf "${colors.yellow.ansi}⚠ Warning:${ansiReset} ${colors.text.ansi}Could not push backup to $remote_host. Local backup still exists.${ansiReset}\n"
+          end
+        end
+
         set -l size (du -h "$archive" | cut -f1)
         printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Backup saved:${ansiReset} ${colors.blue.ansi}%s${ansiReset} ${colors.text.ansi}(%s)${ansiReset}\n" (basename "$archive") "$size"
 
