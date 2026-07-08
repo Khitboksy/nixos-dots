@@ -31,14 +31,5 @@ in
       loader.efi.canTouchEfiVariables = true;
     };
     hardware.enableRedistributableFirmware = true;
-    services.avahi = {
-      enable = true;
-      nssmdns4 = true;
-      publish = {
-        enable = true;
-        addresses = true;
-        workstation = true;
-      };
-    };
   };
 }
