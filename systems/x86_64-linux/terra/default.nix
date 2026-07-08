@@ -91,6 +91,7 @@
         "networkmanager"
         "plugdev"
         "uinput"
+        "wheel"
       ];
       shell = pkgs.fish;
     };
