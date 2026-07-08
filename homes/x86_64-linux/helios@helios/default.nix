@@ -97,6 +97,7 @@ in
           hostname = "terra";
           user = "helios";
           identityFile = "~/.ssh/id_ed25519_terra";
+          identitiesOnly = true;
         };
       };
     };
