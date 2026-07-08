@@ -2,7 +2,11 @@
 
 with lib;
 with lib.custom;
-with pkgs;
+
+let
+  openssh = getExe pkgs.openssh;
+  rsync = getExe pkgs.rsync;
+in
 
 {
   mc-backup = ''
@@ -13,12 +17,20 @@ with pkgs;
     set -l server $argv[1]
     set -l flag $argv[2]
     set -l src_dir "/var/lib/minecraft-$server"
-    set -l backup_dir "/mnt/nix-data/Games/minecraft/backups/$server"
+    set -l backup_dir "/home/helios/minecraft/backups/$server"
     set -l fifo "$src_dir/.stdin-fifo"
+    set -l remote_user "helios"
+    set -l remote_host "helios"
+    set -l remote_backup_dir "/mnt/nix-data/Games/minecraft/backups/$server/"
+    set -l ssh_key "$HOME/.ssh/id_ed25519_terra_exit"
 
     switch "$flag"
       case list
-        ls "$backup_dir"
+        ${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "ls -1 $remote_backup_dir" 2>/dev/null
+        if test $status -ne 0
+          printf "${colors.yellow.ansi}⚠${ansiReset} ${colors.text.ansi}Could not reach $remote_host. Checking local backups...${ansiReset}\n"
+          ls "$backup_dir" 2>/dev/null; or printf "${colors.text.ansi}No backups found.${ansiReset}\n"
+        end
 
       case run
         set -l was_running 0
@@ -59,19 +71,12 @@ with pkgs;
         end
 
         # Push off-machine backup to helios
-        if test (hostname) = "terra"
-          set -l remote_user "helios"
-          set -l remote_host "helios"
-          set -l remote_backup_dir "/mnt/nix-data/Games/minecraft/backups/$server/"
-          set -l ssh_key "$HOME/.ssh/id_ed25519_terra_exit"
-
-          printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Pushing backup to${ansiReset} ${colors.blue.ansi}%s${ansiReset} ${colors.text.ansi}...${ansiReset}\n" "$remote_host"
-          rsync -az -e "${pkgs.openssh}/bin/ssh -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
-          if test $status -eq 0
-            printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Off-machine backup complete.${ansiReset}\n"
-          else
-            printf "${colors.yellow.ansi}⚠ Warning:${ansiReset} ${colors.text.ansi}Could not push backup to $remote_host. Local backup still exists.${ansiReset}\n"
-          end
+        printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Pushing backup to${ansiReset} ${colors.blue.ansi}%s${ansiReset} ${colors.text.ansi}...${ansiReset}\n" "$remote_host"
+        ${rsync} -az -e "${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
+        if test $status -eq 0
+          printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Off-machine backup complete.${ansiReset}\n"
+        else
+          printf "${colors.yellow.ansi}⚠ Warning:${ansiReset} ${colors.text.ansi}Could not push backup to $remote_host. Local backup still exists.${ansiReset}\n"
         end
 
         set -l size (du -h "$archive" | cut -f1)
@@ -84,12 +89,21 @@ with pkgs;
           return 1
         end
         set -l restore_from $argv[3]
-        set -l restore_path "$backup_dir/$restore_from"
+        set -l restore_path "/tmp/$restore_from"
+        set -l restored_remote 0
 
-        if not test -f "$restore_path"
-          printf "${colors.red.ansi}Error:${ansiReset} ${colors.text.ansi}Archive${ansiReset} ${colors.blue.ansi}$restore_from${ansiReset} ${colors.text.ansi}not found in${ansiReset}\n"
-          printf "  ${colors.peach.ansi}$backup_dir${ansiReset}\n"
-          return 1
+        # Try to pull from helios first
+        printf "${colors.green.ansi}->${ansiReset} ${colors.peach.ansi}Fetching backup from${ansiReset} ${colors.blue.ansi}$remote_host${ansiReset} ${colors.text.ansi}...${ansiReset}\n"
+        ${rsync} -az -e "${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$remote_user@$remote_host:$remote_backup_dir$restore_from" "$restore_path"
+        if test $status -eq 0
+          set restored_remote 1
+        else
+          # Fall back to local copy
+          set restore_path "$backup_dir/$restore_from"
+          if not test -f "$restore_path"
+            printf "${colors.red.ansi}Error:${ansiReset} ${colors.text.ansi}Archive${ansiReset} ${colors.blue.ansi}$restore_from${ansiReset} ${colors.text.ansi}not found on $remote_host or locally.${ansiReset}\n"
+            return 1
+          end
         end
 
         # Server must be stopped for restore
@@ -122,6 +136,11 @@ with pkgs;
 
         # Fix ownership
         sudo chown -R "minecraft-$server:minecraft-$server" "$src_dir"
+
+        # Clean up temp file if we pulled from remote
+        if test "$restored_remote" -eq 1
+          rm -f "/tmp/$restore_from"
+        end
 
         printf "${colors.green.ansi}✓${ansiReset} ${colors.text.ansi}Restore complete. Start the server:${ansiReset}\n"
         printf "  ${colors.green.ansi}mc-start $server${ansiReset}\n"
