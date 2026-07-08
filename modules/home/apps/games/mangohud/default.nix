@@ -11,7 +11,6 @@ with lib.custom;
 let
 
   cfg = config.apps.games.mangohud;
-  #stripHash = hex: hex |> (x: builtins.substring 1 (builtins.stringLength x - 1) x);
 
 in
 
@@ -30,15 +29,15 @@ in
     xdg.configFile = {
 
       "MangoHud/MangoHud.conf" = {
-        text = (import ./profiles/trans.nix) { inherit lib config stripHash; };
+        text = (import ./profiles/trans.nix) { inherit lib config; };
       };
 
       "MangoHud/fps.conf" = {
-        text = (import ./profiles/fps.nix) { inherit lib config stripHash; };
+        text = (import ./profiles/fps.nix) { inherit lib config; };
       };
 
       "MangoHud/testing.conf" = {
-        text = (import ./profiles/testing.nix) { inherit lib config stripHash; };
+        text = (import ./profiles/testing.nix) { inherit lib config; };
       };
     };
   };
