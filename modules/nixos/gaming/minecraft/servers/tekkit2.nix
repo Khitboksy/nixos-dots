@@ -143,7 +143,7 @@ in
   options.gaming.minecraft.servers.${srvName} = with types; {
     enable = mkBoolOpt false "Enable the Tekkit 2 Minecraft server (MC 1.12.2 / Forge).";
 
-    serverSource = mkStringOpt' "/mnt/nix-data/Games/minecraft/servers/tekkit2";
+    serverSource = mkStringOpt' "/home/helios/minecraft/servers/tekkit2";
 
     memory = mkStringOpt' "3G";
 
