@@ -47,49 +47,62 @@ in
           end
         end
       '';
-      functions = import ../functions/functions.nix { inherit pkgs lib config; }
+      functions =
+        import ../functions/functions.nix { inherit pkgs lib config; }
         // import ../functions/git-shorthands.nix
         // {
-        fish_prompt = {
-          body = ''
-            # Capture exit status FIRST, before any other commands
-            set -l last_status $status
+          fish_prompt = {
+            body = ''
+              # Capture exit status FIRST, before any other commands
+              set -l last_status $status
 
-            # Colors from lib.custom.colors
-            set -l c_dir (set_color "${colors.mauve.hex}")
-            set -l c_clean (set_color "${colors.green.hex}")
-            set -l c_dirty (set_color "${colors.yellow.hex}")
-            set -l c_err (set_color "${colors.red.hex}")
-            set -l c_reset (set_color normal)
+              # Colors from lib.custom.colors
+              set -l c_dir (set_color "${colors.mauve.hex}")
+              set -l c_clean (set_color "${colors.green.hex}")
+              set -l c_dirty (set_color "${colors.yellow.hex}")
+              set -l c_err (set_color "${colors.red.hex}")
+              set -l c_host (set_color "${colors.sapphire.hex}")
+              set -l c_reset (set_color normal)
 
-            # Current directory (condensed with ~)
-            set -l prompt_dir (prompt_pwd)
+              # SSH host detection — prepend "ssh@hostname" when connected remotely
+              set -l ssh_prefix ""
+              if set -q SSH_CONNECTION
+                  set -l ssh_host (hostname -s 2>/dev/null)
+                  if test -n "$ssh_host"
+                      set ssh_prefix "$c_dirty"ssh@"$c_reset$c_host$ssh_host$c_reset "
+                  else
+                      set ssh_prefix "$c_clean"ssh"$c_reset "
+                  end
+              end
 
-            # Git status
-            set -l git_status ""
-            if type -q git
-                set -l git_branch (git symbolic-ref --short HEAD 2>/dev/null)
-                if test -n "$git_branch"
-                    set -l dirty (git status --porcelain 2>/dev/null | wc -l)
-                    if test "$dirty" -gt "0"
-                        set git_status " $c_dirty$git_branch$c_reset"
-                    else
-                        set git_status " $c_clean$git_branch$c_reset"
-                    end
-                end
-            end
+              # Current directory (condensed with ~)
+              set -l prompt_dir (prompt_pwd)
 
-            # Error status
-            set -l status_text ""
-            if test $last_status -ne 0
-                set status_text " $c_err$last_status$c_reset"
-            end
+              # Git status
+              set -l git_status ""
+              if type -q git
+                  set -l git_branch (git symbolic-ref --short HEAD 2>/dev/null)
+                  if test -n "$git_branch"
+                      set -l dirty (git status --porcelain 2>/dev/null | wc -l)
+                      if test "$dirty" -gt "0"
+                          set git_status " $c_dirty$git_branch$c_reset"
+                      else
+                          set git_status " $c_clean$git_branch$c_reset"
+                      end
+                  end
+              end
 
-            # Output prompt without newline
-            printf "%s%s%s%s%s%s$c_clean ->$c_reset " "$c_reset" "$c_dir" "$prompt_dir" "$c_reset" "$git_status" "$status_text"
-          '';
+              # Error status
+              set -l status_text ""
+              if test $last_status -ne 0
+                  set status_text " $c_err$last_status$c_reset"
+              end
+
+              # Output prompt without newline
+              printf "%s%s%s%s%s%s%s$c_clean ->$c_reset " "$c_reset" "$ssh_prefix" "$c_dir" "$prompt_dir" "$c_reset" "$git_status" "$status_text"
+            '';
+          };
         };
-      };
       shellAliases = import ../shellAliases.nix { inherit pkgs lib; };
       shellAbbrs = import ../shellAbbrs.nix;
     };
