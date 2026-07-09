@@ -32,6 +32,8 @@
     invitationsAllowed = true;
   };
 
+  adguardhome.enable = true;
+
   services = {
     music.enable = true;
     upower.enable = true;
