@@ -95,6 +95,11 @@
     direnv = {
       enable = true;
       enableFishIntegration = true;
+      settings = {
+        global = {
+          hide_env_diff = true;
+        };
+      };
     };
 
     nix-index.enable = true;
