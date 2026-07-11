@@ -259,6 +259,26 @@
         "type": "github"
       }
     },
+    "img2key": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783785177,
+        "narHash": "sha256-kwD1CBN6oU78v9NNV81e4fkeZKPxX7pX/b1dIW5+87E=",
+        "owner": "khitboksy",
+        "repo": "img2key",
+        "rev": "37fe37415efd66e587f2a0cf3c31fe304af315b4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "khitboksy",
+        "repo": "img2key",
+        "type": "github"
+      }
+    },
     "mcp-nixos": {
       "inputs": {
         "devshell": "devshell",
@@ -524,6 +544,7 @@
         "disko": "disko",
         "dms": "dms",
         "home-manager": "home-manager",
+        "img2key": "img2key",
         "mcp-nixos": "mcp-nixos",
         "niri-nix": "niri-nix",
         "niri-src": "niri-src",

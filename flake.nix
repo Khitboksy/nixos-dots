@@ -66,6 +66,12 @@
       url = "github:noctalia-dev/noctalia";
       # Don't follow nixpkgs — needed for binary cache
     };
+
+    img2key = {
+      url = "github:khitboksy/img2key";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     inputs:

@@ -3,9 +3,12 @@
   pkgs,
   lib,
   modulesPath,
+  inputs,
   ...
 }:
-
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 {
 
   imports = [
@@ -216,6 +219,7 @@
       swaybg
       xwayland-satellite
       python3Packages.youtube-transcript-api
+      inputs.img2key.packages."${system}".default
     ];
   };
 
