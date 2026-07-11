@@ -141,6 +141,16 @@
       fsType = "ext4";
     };
 
+    "/mnt/nix-data/media/music" = {
+      device = "100.119.96.108:/srv/music";
+      fsType = "nfs";
+      options = [
+        "x-systemd.automount"
+        "noauto"
+        "noatime"
+      ];
+    };
+
   };
 
   # === SWAP STRATEGY ===

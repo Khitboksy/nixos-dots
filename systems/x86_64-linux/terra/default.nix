@@ -35,7 +35,16 @@
   adguardhome.enable = true;
 
   services = {
-    music.enable = true;
+    music = {
+      enable = true;
+      musicDirectory = "/srv/music";
+    };
+    nfs = {
+      enable = true;
+      exports = [
+        "/srv/music 100.122.255.2(rw,sync,no_subtree_check,no_root_squash)"
+      ];
+    };
     upower.enable = true;
     logind.settings.Login = {
       HandleLidSwitch = "ignore";
@@ -91,6 +100,8 @@
     nix-index.enable = true;
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   time = {
     timeZone = "America/Chicago";
   };
@@ -131,6 +142,7 @@
   };
 
   nix.settings = {
+    trusted-users = [ "helios" ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nixos-cache:f5fzlUbraSMLYr+VMIqrvihrGxl3uerbkei7dzTAnD0="

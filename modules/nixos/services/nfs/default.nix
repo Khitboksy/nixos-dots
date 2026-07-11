@@ -13,17 +13,20 @@ let
 in
 
 {
-  options.services.nfs = with types; {
+  options.services.nfs = {
     enable = mkBoolOpt false "Enable NFS Server";
+
+    exports = mkStringListOpt [ ] ''
+      List of NFS export entries. Each entry is a complete export line
+      as it would appear in /etc/exports, e.g.:
+        "/path/to/dir 10.0.0.1(rw,sync,no_subtree_check)"
+    '';
   };
 
   config = mkIf cfg.enable {
     services.nfs.server = {
       enable = true;
-      exports = ''
-        /home/helios/shared/opencode
-        192.168.1.218(rw,sync,no_subtree_check,no_root_squash)
-      '';
+      exports = lib.concatStringsSep "\n" cfg.exports;
     };
   };
 }
