@@ -17,6 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
+
     services.openssh = {
       enable = true;
       settings = {
@@ -24,5 +25,8 @@ in
         PermitRootLogin = "no";
       };
     };
+
+    networking.firewall.allowedTCPPorts = [ 22 ];
+
   };
 }

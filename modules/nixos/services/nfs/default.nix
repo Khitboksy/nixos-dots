@@ -24,9 +24,16 @@ in
   };
 
   config = mkIf cfg.enable {
+
     services.nfs.server = {
       enable = true;
       exports = lib.concatStringsSep "\n" cfg.exports;
     };
+
+    networking.firewall.allowedTCPPorts = [
+      111
+      2049
+    ];
+
   };
 }

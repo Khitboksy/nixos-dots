@@ -16,13 +16,11 @@ in
 
   config = mkIf cfg.enable {
     systemd.services = {
-      NetworkManager-wait-online.enable = lib.mkForce false;
+      NetworkManager-wait-online.enable = mkForce false;
     };
     networking = {
-      firewall.allowedTCPPorts = [
-        22
-      ];
-      useDHCP = lib.mkDefault true;
+      firewall.allowedTCPPorts = [ 4096 ];
+      useDHCP = mkDefault true;
       networkmanager.enable = true;
     };
     boot = {

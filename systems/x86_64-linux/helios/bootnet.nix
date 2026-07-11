@@ -17,16 +17,6 @@
 
   };
 
-  networking = {
-
-    hostName = "helios";
-
-    firewall.allowedTCPPorts = [
-      111
-      2049
-      4096
-    ];
-
-  };
+  networking.hostName = "helios";
 
 }
