@@ -49,7 +49,7 @@ in
       '';
       functions =
         import ../functions/functions.nix { inherit pkgs lib config; }
-        // import ../functions/git-shorthands.nix
+        # // import ../functions/git-shorthands.nix
         // {
           fish_prompt = {
             body = ''

@@ -170,5 +170,101 @@ with pkgs;
       echo "✓ all checks passed"
     end
   '';
+  __fish_git_abbr_expand = ''
+    set -l tokens (commandline -op)
+    set -l subcmd ""
+    if test (count $tokens) -ge 2
+      set subcmd $tokens[2]
+    end
+
+    switch "$subcmd"
+      case add
+        switch $argv[1]
+          case a
+            echo -A
+          case '*'
+            echo $argv[1]
+        end
+      case commit
+        switch $argv[1]
+          case a
+            echo --amend
+          case an
+            echo --amend --no-edit
+          case m
+            echo -m
+          case '*'
+            echo $argv[1]
+        end
+      case push
+        switch $argv[1]
+          case m
+            echo main
+          case o
+            echo origin
+          case f
+            echo --force-with-lease
+          case ff
+            echo --force
+          case '*'
+            echo $argv[1]
+        end
+      case pull
+        switch $argv[1]
+          case o
+            echo origin
+          case r
+            echo --rebase
+          case ff
+            echo --ff-only
+          case '*'
+            echo $argv[1]
+        end
+      case rebase
+        switch $argv[1]
+          case i
+            echo -i
+          case c
+            echo --continue
+          case s
+            echo --skip
+          case a
+            echo --abort
+          case '*'
+            echo $argv[1]
+        end
+      case switch
+        switch $argv[1]
+          case c
+            echo -c
+          case '*'
+            echo $argv[1]
+        end
+      case branch
+        switch $argv[1]
+          case d
+            echo --delete
+          case D
+            echo --delete --force
+          case m
+            echo --move
+          case a
+            echo --all
+          case '*'
+            echo $argv[1]
+        end
+      case checkout
+        switch $argv[1]
+          case b
+            echo -b
+          case B
+            echo -B
+          case '*'
+            echo $argv[1]
+        end
+      case '*'
+        echo $argv[1]
+    end
+  '';
 }
 // importDir ./mc-server { inherit pkgs lib; }

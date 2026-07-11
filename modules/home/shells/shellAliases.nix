@@ -19,8 +19,6 @@ with pkgs;
   terra-depl = "SSH_AUTH_SOCK= nh os switch -H terra --target-host helios@terra";
   m = "mkdir -p";
   fcd = "cd $(find -type d | fzf)";
-  sc = "sudo systemctl";
-  scu = "systemctl --user ";
   l = "${getExe eza} -lF --time-style=long-iso --icons";
   la = "${getExe eza} -lah --tree";
   ls = "${getExe eza} -h --git --icons --color=auto --group-directories-first -s extension";
