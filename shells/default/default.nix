@@ -2,7 +2,7 @@
 pkgs.mkShellNoCC {
   packages = with pkgs; [
     nixfmt
-    nil
+    nixd
     statix
     deadnix
     nixos-rebuild
