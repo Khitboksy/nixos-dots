@@ -14,8 +14,8 @@ pkgs.mkShellNoCC {
   shellHook = ''
     echo "builds dev environment"
     echo "  formatter: nixfmt"
-    echo "  lsp: nil"
-    echo "  linters: statix, deadnix"
-    echo "  build: nh os switch"
+    echo "  lsp: nixd"
+    echo "  build Helios: ns"
+    echo "  build Terra: terra-depl"
   '';
 }
