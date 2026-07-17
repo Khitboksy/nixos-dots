@@ -47,6 +47,14 @@ in
           ];
           emoji = [ "Noto Color Emoji" ];
         };
+        # Workaround for fontconfig 2.18 genericfamily feature
+        # which auto-classifies fonts and breaks font fallback order.
+        # See: https://github.com/NixOS/nixpkgs/issues/541553
+        localConf = ''
+          <match target="pattern">
+            <edit name="genericfamily" mode="delete"/>
+          </match>
+        '';
       };
     };
   };
