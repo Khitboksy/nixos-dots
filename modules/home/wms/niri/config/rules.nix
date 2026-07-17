@@ -85,20 +85,19 @@
       opacity = 1.0;
       open-focused = true;
       open-maximized = true;
+      open-on-workspace = "code";
     }
     {
       match._props.app-id = "^kitty-float$";
       opacity = 1.0;
       open-focused = true;
       open-floating = true;
-    }
-    {
-      match._props = {
-        app-id = "^kitty$";
-        at-startup = true;
+      default-column-width = {
+        proportion = 0.4;
       };
-      opacity = 1.0;
-      open-on-workspace = "code";
+      default-window-height = {
+        proportion = 0.3;
+      };
     }
   ];
 

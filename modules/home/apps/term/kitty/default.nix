@@ -25,8 +25,6 @@ in
             sleep 0.05
             ${pkgs.niri}/bin/niri msg action center-window
             ${pkgs.niri}/bin/niri msg action move-floating-window --x +0 --y -100
-            # Force resize via kitty remote control
-            ${pkgs.kitty}/bin/kitten @ resize-window --width 50c --height 14c 2>/dev/null || true
             wait $KITTY_PID
         else
             touch "$MARKER"

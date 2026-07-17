@@ -22,5 +22,7 @@ in
     };
 
     services.wallpaper.enable = true;
+
+    home.packages = builtins.attrValues (importDir ./scripts { inherit pkgs; });
   };
 }
