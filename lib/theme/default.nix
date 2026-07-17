@@ -222,14 +222,19 @@ in
     fontFacesToCSS
     ;
 
-  colors = (import ./colors.nix) {
-    inherit
-      hexToAnsi
-      hexToRgb
-      hexToHsl
-      stripHash
-      ;
-  };
+  colors =
+    let
+      raw = builtins.fromJSON (builtins.readFile ./colors/palette.json);
+      mkColor = hex: {
+        inherit hex;
+        hex' = stripHash hex;
+        rgb = hexToRgb hex;
+        hsl = hexToHsl hex;
+        ansi = hexToAnsi hex;
+      };
+    in
+    builtins.mapAttrs (_: mkColor) raw;
+
   # Auto-import all image files from ./wallpapers/ as wallpapers.<name>
   wallpapers =
     let

@@ -171,41 +171,41 @@ with pkgs;
     end
   '';
   give-terra = ''
-    set -l usage "Usage: give-terra <source> <destination> [rsync flags...]
+        set -l usage "Usage: give-terra <source> <destination> [rsync flags...]
 
-Copy files from this machine to terra via rsync over SSH.
-Destination is relative to helios's home on terra unless absolute.
+    Copy files from this machine to terra via rsync over SSH.
+    Destination is relative to helios's home on terra unless absolute.
 
-Examples:
-  give-terra ./Artist /srv/music/
-  give-terra ~/videos/clip.mp4 /home/helios/videos/
-  give-terra ./stuff /tmp/ -P --dry-run"
+    Examples:
+      give-terra ./Artist /srv/music/
+      give-terra ~/videos/clip.mp4 /home/helios/videos/
+      give-terra ./stuff /tmp/ -P --dry-run"
 
-    if test (count $argv) -lt 2
-        echo $usage
-        return 1
-    end
+        if test (count $argv) -lt 2
+            echo $usage
+            return 1
+        end
 
-    set -l src $argv[1]
-    set -l dst $argv[2]
-    set -l opts $argv[3..-1]
+        set -l src $argv[1]
+        set -l dst $argv[2]
+        set -l opts $argv[3..-1]
 
-    set -l abs_src (realpath $src 2>/dev/null; or echo $src)
-    set -l rsync_opts -avz --progress --partial --human-readable
+        set -l abs_src (realpath $src 2>/dev/null; or echo $src)
+        set -l rsync_opts -avz --progress --partial --human-readable
 
-    if test (count $opts) -gt 0
-        set rsync_opts $rsync_opts $opts
-    end
+        if test (count $opts) -gt 0
+            set rsync_opts $rsync_opts $opts
+        end
 
-    echo "helios -> terra: $abs_src -> $dst"
-    rsync $rsync_opts "$abs_src" "helios@terra:$dst"
+        echo "helios -> terra: $abs_src -> $dst"
+        rsync $rsync_opts "$abs_src" "helios@terra:$dst"
 
-    if test $status -eq 0
-        echo "Transfer complete."
-    else
-        echo "Transfer failed."
-        return 1
-    end
+        if test $status -eq 0
+            echo "Transfer complete."
+        else
+            echo "Transfer failed."
+            return 1
+        end
   '';
 
   __fish_git_abbr_expand = ''
@@ -304,5 +304,6 @@ Examples:
         echo $argv[1]
     end
   '';
+  palette = import ./palette.nix;
 }
 // importDir ./mc-server { inherit pkgs lib; }
