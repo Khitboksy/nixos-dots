@@ -27,7 +27,7 @@ in
 
     services.nfs.server = {
       enable = true;
-      exports = lib.concatStringsSep "\n" cfg.exports;
+      exports = concatStringsSep "\n" cfg.exports;
     };
 
     networking.firewall.allowedTCPPorts = [
