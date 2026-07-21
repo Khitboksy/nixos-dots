@@ -26,6 +26,7 @@ in
     home.packages = [
       pkgs.bun
       inputs.mcp-nixos.packages.${system}.default
+      pkgs.firefox
     ];
 
     programs.opencode = {

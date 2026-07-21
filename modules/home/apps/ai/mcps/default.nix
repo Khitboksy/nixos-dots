@@ -105,6 +105,14 @@ in
         };
       };
 
+      firefox = {
+        type = "local";
+        comamnd = [
+          "npx"
+          "@mozilla/firefox-devtools-mcp@latest"
+        ];
+      };
+
     };
 
     odysseus = [
