@@ -141,7 +141,11 @@
       quit = [ ];
     };
     "Mod+Shift+L" = {
-      spawn = ["swaylock" "--grace" "0"];
+      spawn = [
+        "swaylock"
+        "--grace"
+        "0"
+      ];
     };
     "Mod+Shift+Slash" = {
       show-hotkey-overlay = [ ];
@@ -267,31 +271,66 @@
       expand-column-to-available-width = [ ];
     };
     "Mod+Ctrl+Equal" = {
-      spawn = ["niri-resize-float" "grow"];
+      spawn = [
+        "niri-resize-float"
+        "grow"
+      ];
     };
     "Mod+Ctrl+Minus" = {
-      spawn = ["niri-resize-float" "shrink"];
+      spawn = [
+        "niri-resize-float"
+        "shrink"
+      ];
     };
     "Mod+Ctrl+Shift+Equal" = {
-      spawn = ["niri-resize-float" "taller"];
+      spawn = [
+        "niri-resize-float"
+        "taller"
+      ];
     };
     "Mod+Ctrl+Shift+Minus" = {
-      spawn = ["niri-resize-float" "shorter"];
+      spawn = [
+        "niri-resize-float"
+        "shorter"
+      ];
     };
     "Mod+Ctrl+Period" = {
-      spawn = ["niri-resize-float" "wider"];
+      spawn = [
+        "niri-resize-float"
+        "wider"
+      ];
     };
     "Mod+Ctrl+Comma" = {
-      spawn = ["niri-resize-float" "narrower"];
+      spawn = [
+        "niri-resize-float"
+        "narrower"
+      ];
     };
     "Mod+Ctrl+C" = {
-      spawn = ["niri-resize-float" "center"];
+      spawn = [
+        "niri-resize-float"
+        "center"
+      ];
     };
     "Ctrl+Alt+Delete" = {
       quit = [ ];
     };
     "Mod+Shift+End" = {
       power-off-monitors = [ ];
+    };
+
+    "Mod+P" = {
+      spawn = [
+        "kitty"
+        "--class"
+        "kitty-palette"
+        "--title"
+        "palette"
+        "-e"
+        "sh"
+        "-c"
+        "tmux kill-session -t palette 2>/dev/null; exec tmux new-session -s palette fish -c palette"
+      ];
     };
   };
 }

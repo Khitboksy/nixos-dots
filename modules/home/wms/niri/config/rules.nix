@@ -99,6 +99,18 @@
         proportion = 0.3;
       };
     }
+    {
+      match._props.app-id = "^kitty-palette$";
+      opacity = 1.0;
+      open-focused = true;
+      open-floating = true;
+      default-column-width = {
+        proportion = 0.7;
+      };
+      default-window-height = {
+        proportion = 0.90;
+      };
+    }
   ];
 
   # Layer rules

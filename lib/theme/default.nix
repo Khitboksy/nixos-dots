@@ -211,7 +211,7 @@ let
   fontFacesToCSS = data: toCSS { fontFaces = mkFontFaces data; };
 
 in
-{
+rec {
 
   inherit
     lerpColor
@@ -222,19 +222,22 @@ in
     fontFacesToCSS
     ;
 
-  colors =
-    let
-      raw = builtins.fromJSON (builtins.readFile ./colors/palette.json);
-      mkColor = hex: {
-        inherit hex;
-        hex' = stripHash hex;
-        rgb = hexToRgb hex;
-        hsl = hexToHsl hex;
-        ansi = hexToAnsi hex;
-      };
-    in
-    builtins.mapAttrs (_: mkColor) raw;
+  rawColors = builtins.fromJSON (builtins.readFile ./colors/palette.json);
 
+  mkColor = hex: {
+    inherit hex;
+    hex' = stripHash hex;
+    rgb = hexToRgb hex;
+    hsl = hexToHsl hex;
+    ansi = hexToAnsi hex;
+  };
+
+  colors = builtins.listToAttrs (
+    map (pair: {
+      name = builtins.head pair;
+      value = mkColor (builtins.elemAt pair 1);
+    }) rawColors
+  );
   # Auto-import all image files from ./wallpapers/ as wallpapers.<name>
   wallpapers =
     let

@@ -49,21 +49,8 @@ with pkgs;
   '';
 
   ytbulk = ''
-    echo "What type of download?"
-    echo "1) music"
-    echo "2) video"
-    read -P "Enter choice (music/video): " media_type
 
-    if test "$media_type" = "music"
-        set BASE_DIR /mnt/nix-data/media/music
-        set DOWNLOAD_CMD ytmp3
-    else if test "$media_type" = "video"
-        set BASE_DIR /mnt/nix-data/media/video
-        set DOWNLOAD_CMD ytv
-    else
-        echo "Invalid choice. Please enter 'music' or 'video'."
-        return 1
-    end
+    set BASE_DIR /mnt/nix-data/media/music
 
     read -P "How many directories would you like to create? " dir_count
 
@@ -127,7 +114,7 @@ with pkgs;
             continue
         end
 
-        $DOWNLOAD_CMD $link
+        ytmp3 $link
 
         if test $status -ne 0
           echo "Warning: Some items failed in $link - ignored"
@@ -304,6 +291,6 @@ with pkgs;
         echo $argv[1]
     end
   '';
-  palette = import ./palette.nix;
 }
 // importDir ./mc-server { inherit pkgs lib; }
+// import ./palette/_.nix { inherit pkgs lib; }
