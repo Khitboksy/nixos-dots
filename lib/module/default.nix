@@ -18,6 +18,10 @@ rec {
 
   mkStringOpt' = mkOpt' types.str;
 
+  mkIntOpt = mkOpt types.int;
+
+  mkIntOpt' = mkOpt' types.int;
+
   mkStringListOpt = mkOpt (types.listOf types.str);
 
   mkPathOpt = mkOpt types.path;
