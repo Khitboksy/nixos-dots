@@ -25,6 +25,8 @@ in
 
   config = mkIf cfg.enable {
 
+    services.rpcbind.enable = true;
+
     services.nfs.server = {
       enable = true;
       exports = concatStringsSep "\n" cfg.exports;

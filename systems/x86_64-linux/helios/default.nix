@@ -109,6 +109,7 @@ in
       enable = true;
       exports = [
         "/home/helios/shared/opencode 100.119.96.108(rw,sync,no_subtree_check,no_root_squash)"
+        "/home/helios/shared/notes/helios 100.119.96.108(rw,sync,no_subtree_check,no_root_squash)"
       ];
     };
     openrgb.enable = true;
@@ -129,8 +130,6 @@ in
     udev.packages = [ pkgs.libratbag ];
     gvfs.enable = true;
     usbmuxd.enable = true;
-
-    rpcbind.enable = true;
 
   };
 

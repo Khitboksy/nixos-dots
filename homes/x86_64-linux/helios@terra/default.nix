@@ -70,6 +70,7 @@
     bitwarden-cli
     firefox
     vesktop
+    obsidian
   ];
 
   home.stateVersion = "26.05";

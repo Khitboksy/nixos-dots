@@ -34,6 +34,32 @@
 
   adguardhome.enable = true;
 
+  virt.vms = {
+    enable = true;
+    enableGpuPassthrough = false; # Terra has no dGPU
+
+    csp-win = {
+      enable = true;
+      memory = 12288; # 12 GB
+      vcpu = 4;
+      diskSize = "50G";
+    };
+  };
+
+  services.cockpit = {
+    enable = true;
+    port = 9090;
+    openFirewall = false; # Exposed via Tailscale Serve
+    plugins = with pkgs; [
+      cockpit-machines
+    ];
+    settings = {
+      WebService = {
+        AllowUnencrypted = true;
+      };
+    };
+  };
+
   services = {
     music = {
       enable = true;
