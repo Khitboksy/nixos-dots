@@ -89,14 +89,21 @@ in
   # Each file declares options.virt.vms.<name> independently
   imports = [
     ./vms/tiny10.nix
+    ./vms/csp-win.nix
   ];
 
   options.virt.vms = with types; {
     enable = mkBoolOpt false ''
       Enable hypervisor infrastructure + declarative VM management.
-      Enables libvirtd, IOMMU/VFIO, virt-manager, and GPU passthrough hooks.
+      Enables libvirtd, virt-manager, and VM definitions.
       Add individual VM definitions under `virt.vms.<name>.enable = true`
       (each VM is its own module in virtualization/vms/*.nix).
+    '';
+
+    enableGpuPassthrough = mkBoolOpt false ''
+      Enable IOMMU/VFIO and GPU passthrough hooks.
+      When false, only libvirtd and KVM are enabled (no IOMMU, no VFIO).
+      Set true if any VM requires PCI passthrough (GPU, USB controller, etc.).
     '';
 
     _gpuDomains = mkOption {
@@ -122,25 +129,31 @@ in
 
   config = mkIf cfg.enable {
 
-    # IOMMU + VFIO kernel config
-    boot = {
-      kernelParams = [
-        (if pkgs.stdenv.hostPlatform.isx86_64 then "amd_iommu=on" else "intel_iommu=on")
-        "iommu=pt"
-        "kvm.ignore_msrs=1"
-      ];
-      kernelModules = [
-        # KVM virtualization (modprobe skips non-existent modules silently)
-        "kvm"
-        "kvm_amd"
-        "kvm_intel"
-        # VFIO for PCI passthrough (late-bind via hooks)
-        "vfio"
-        "vfio_iommu_type1"
-        "vfio_pci"
-        "vfio_virqfd"
-      ];
-    };
+    # KVM virtualization + optional GPU passthrough
+    boot = mkMerge [
+      {
+        # Always needed: KVM modules
+        kernelModules = [
+          "kvm"
+          "kvm_amd"
+          "kvm_intel"
+        ];
+      }
+      (mkIf cfg.enableGpuPassthrough {
+        # Only when GPU passthrough is enabled
+        kernelParams = [
+          (if pkgs.stdenv.hostPlatform.isx86_64 then "amd_iommu=on" else "intel_iommu=on")
+          "iommu=pt"
+          "kvm.ignore_msrs=1"
+        ];
+        kernelModules = [
+          "vfio"
+          "vfio_iommu_type1"
+          "vfio_pci"
+          "vfio_virqfd"
+        ];
+      })
+    ];
 
     # Libvirtd
     virtualisation.libvirtd = {
@@ -170,8 +183,8 @@ in
       qemu_kvm
     ];
 
-    # Libvirt QEMU hook
-    virtualisation.libvirtd.hooks.qemu = {
+    # Libvirt QEMU hook (only when GPU passthrough is enabled)
+    virtualisation.libvirtd.hooks.qemu = mkIf cfg.enableGpuPassthrough {
       qemu = hookScript;
     };
 
