@@ -66,7 +66,7 @@ in
     # ------------------------------------------------------------------
     services.cockpit = {
       enable = true;
-      port = 9090;
+      port = lib.mkDefault 9090;
       openFirewall = false; # Exposed via Tailscale Serve
       plugins = with pkgs; [
         cockpit-machines

@@ -6,6 +6,7 @@
 }:
 
 with lib;
+with lib.custom;
 
 let
   cfg = config.services.redirect;
@@ -61,6 +62,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services = mkMerge (mapAttrsToList mkRedirectService cfg.rules);
+    systemd.services = listToAttrs (mapAttrsToList mkRedirectService cfg.rules);
   };
 }

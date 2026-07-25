@@ -30,6 +30,8 @@
     adminTokenFile = "/run/secrets/vaultwarden-admin-token";
     signupsAllowed = false;
     invitationsAllowed = true;
+    tlsCertFile = "/var/lib/vaultwarden/tls/fullchain.pem";
+    tlsKeyFile = "/var/lib/vaultwarden/tls/privkey.pem";
   };
 
   adguardhome.enable = true;
@@ -49,54 +51,35 @@
     };
   };
 
-  # Tiny HTTP redirect services — tailscale serve proxies to these,
-  # which 302 the browser to the direct port URL.
-  systemd.services.redirect-cockpit = {
-    description = "HTTP 302 redirect: /cockpit → :9090";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = let
-        script = pkgs.writeScript "redirect-cockpit" ''
-          #!${pkgs.python3}/bin/python3
-          from http.server import HTTPServer, BaseHTTPRequestHandler
-          class H(BaseHTTPRequestHandler):
-              def do_GET(self):
-                  self.send_response(302)
-                  self.send_header("Location", "https://terra.tail9a2d08.ts.net:9090")
-                  self.end_headers()
-          HTTPServer(("127.0.0.1", 18090), H).serve_forever()
-        '';
-      in script;
-    };
-  };
-
-  systemd.services.redirect-navidrome = {
-    description = "HTTP 302 redirect: /navidrome → :4533";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = let
-        script = pkgs.writeScript "redirect-navidrome" ''
-          #!${pkgs.python3}/bin/python3
-          from http.server import HTTPServer, BaseHTTPRequestHandler
-          class H(BaseHTTPRequestHandler):
-              def do_GET(self):
-                  self.send_response(302)
-                  self.send_header("Location", "https://terra.tail9a2d08.ts.net:4533")
-                  self.end_headers()
-          HTTPServer(("127.0.0.1", 18053), H).serve_forever()
-        '';
-      in script;
+  # 302 redirect services — tailscale serve proxies to these,
+  # which bounce the browser to the direct port URL.
+  services.redirect = {
+    enable = true;
+    rules = {
+      cockpit = {
+        port = 18090;
+        target = "https://terra.tail9a2d08.ts.net:9090";
+      };
+      navidrome = {
+        port = 18053;
+        target = "https://terra.tail9a2d08.ts.net:4533";
+      };
+      vaultwarden = {
+        port = 18222;
+        target = "https://terra.tail9a2d08.ts.net:8222";
+      };
     };
   };
 
   # Persistent tailscale serve routes for path-based service access
   systemd.services.tailscale-serve-routes = {
     description = "Set up tailscale serve routes for services";
-    after = [ "tailscaled.service" "redirect-cockpit.service" "redirect-navidrome.service" ];
+    after = [
+      "tailscaled.service"
+      "redirect-cockpit.service"
+      "redirect-navidrome.service"
+      "redirect-vaultwarden.service"
+    ];
     requires = [ "tailscaled.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -109,10 +92,60 @@
       in
       ''
         ${lib.getExe pkgs.tailscale} serve reset || true
-        ${tailscaleDomains} /vault http://127.0.0.1:8222
+        ${tailscaleDomains} /vault http://127.0.0.1:18222
         ${tailscaleDomains} /cockpit http://127.0.0.1:18090
         ${tailscaleDomains} /navidrome http://127.0.0.1:18053
       '';
+  };
+
+  # Tailscale TLS cert provisioning.
+  # Runs on boot and daily; copies certs to locations needed by
+  # Vaultwarden, nginx (Cockpit proxy), and Navidrome.
+  systemd.services.tailscale-cert = {
+    description = "Provision Tailscale TLS certificates";
+    after = [ "tailscaled.service" ];
+    requires = [ "tailscaled.service" ];
+    before = [ "vaultwarden.service" "nginx.service" "navidrome.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      TS_CERT_DIR="/var/lib/tailscale/certs"
+      HOSTNAME="terra.tail9a2d08.ts.net"
+
+      # Provision certs if missing
+      if [ ! -f "$TS_CERT_DIR/$HOSTNAME.crt" ] || [ ! -f "$TS_CERT_DIR/$HOSTNAME.key" ]; then
+        ${lib.getExe pkgs.tailscale} cert "$HOSTNAME" || true
+      fi
+
+      if [ -f "$TS_CERT_DIR/$HOSTNAME.crt" ] && [ -f "$TS_CERT_DIR/$HOSTNAME.key" ]; then
+        # Vaultwarden (its own directory, owned by vaultwarden)
+        mkdir -p /var/lib/vaultwarden/tls
+        cp "$TS_CERT_DIR/$HOSTNAME.crt" /var/lib/vaultwarden/tls/fullchain.pem
+        cp "$TS_CERT_DIR/$HOSTNAME.key" /var/lib/vaultwarden/tls/privkey.pem
+        chown vaultwarden:vaultwarden /var/lib/vaultwarden/tls/*.pem
+        chmod 600 /var/lib/vaultwarden/tls/privkey.pem
+
+        # Shared location for nginx and Navidrome (world-readable cert, restricted key)
+        mkdir -p /etc/tailscale-certs
+        cp "$TS_CERT_DIR/$HOSTNAME.crt" /etc/tailscale-certs/fullchain.pem
+        cp "$TS_CERT_DIR/$HOSTNAME.key" /etc/tailscale-certs/privkey.pem
+        chmod 644 /etc/tailscale-certs/fullchain.pem
+        chmod 640 /etc/tailscale-certs/privkey.pem
+        chown root:nginx /etc/tailscale-certs/privkey.pem
+      fi
+    '';
+  };
+
+  systemd.timers.tailscale-cert = {
+    description = "Renew Tailscale TLS certificates daily";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "5min";
+      OnUnitActiveSec = "24h";
+    };
   };
 
   services = {
@@ -139,6 +172,42 @@
       };
       enable = false;
     };
+  };
+
+  # Cockpit: move to backend port, nginx terminates TLS on 9090
+  services.cockpit.port = 9091;
+
+  # Nginx: TLS termination for Cockpit
+  services.nginx = {
+    enable = true;
+    virtualHosts."terra.tail9a2d08.ts.net" = {
+      listen = [
+        {
+          addr = "0.0.0.0";
+          port = 9090;
+          ssl = true;
+        }
+      ];
+      sslCertificate = "/etc/tailscale-certs/fullchain.pem";
+      sslCertificateKey = "/etc/tailscale-certs/privkey.pem";
+      forceSSL = false; # We ARE the TLS endpoint
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:9091";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        '';
+      };
+    };
+  };
+
+  # Navidrome: enable TLS with Tailscale certs
+  services.navidrome.settings = {
+    TLSCertFile = "/etc/tailscale-certs/fullchain.pem";
+    TLSKeyFile = "/etc/tailscale-certs/privkey.pem";
   };
 
   shared = {
