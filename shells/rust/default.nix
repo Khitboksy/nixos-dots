@@ -8,9 +8,7 @@ pkgs.mkShellNoCC {
     cargo-watch
     cargo-insta
   ];
-  shell = pkgs.fish;
   shellHook = ''
-    fish
     echo "rust dev environment"
     echo "  version: rustc --version"
     echo "  check: cargo check"

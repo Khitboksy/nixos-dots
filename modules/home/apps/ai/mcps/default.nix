@@ -31,117 +31,149 @@ in
       description = "MCP server definitions shared across AI apps (opencode + odysseus formats)";
     };
 
-  config.apps.ai.mcps = {
+  config = {
+    apps.ai.mcps = {
 
-    opencode = {
-      nixos = {
-        type = "local";
-        command = [ "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" ];
+      opencode = {
+        nixos = {
+          type = "local";
+          command = [ "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" ];
+        };
+
+        context7 = {
+          type = "remote";
+          url = "https://mcp.context7.com/mcp";
+        };
+
+        filesystem = {
+          type = "local";
+          command = [
+            "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem"
+            "/home/helios/builds"
+            "/home/helios/shared"
+            "/home/helios/.config"
+            "/home/helios/repos"
+            "/home/helios/notes"
+            "/tmp/opencode"
+          ];
+        };
+
+        github = {
+          type = "local";
+          command = [
+            "${pkgs.github-mcp-server}/bin/github-mcp-server"
+            "stdio"
+            "--read-only"
+          ];
+        };
+
+        sequential-thinking = {
+          type = "local";
+          command = [ "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking" ];
+        };
+
+        web-search = {
+          type = "local";
+          command = [
+            "npx"
+            "-y"
+            "@zhafron/mcp-web-search"
+          ];
+          enabled = true;
+          environment = {
+            DEFAULT_SEARCH_PROVIDER = "searxng";
+            SEARXNG_URL = "https://search.tezzzzaa.com/search";
+          };
+        };
+
+        memory-db = {
+          type = "local";
+          command = [
+            "bash"
+            "-c"
+            "cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp && node server.cjs"
+          ];
+        };
+
+        bun = {
+          type = "local";
+          command = [
+            "bunx"
+            "--bun"
+            "mcp-bun@latest"
+          ];
+          environment = {
+            DISABLE_NOTIFICATIONS = "true";
+          };
+        };
+
+        firefox-devtools = {
+          type = "local";
+          command = [
+            "npx"
+            "-y"
+            "@mozilla/firefox-devtools-mcp@latest"
+            # Headless by default. Remove "--headless" to see the browser window.
+            "--headless"
+            "--firefox-path"
+            "${lib.getExe pkgs.firefox}"
+            "--profile-path"
+            "${config.home.homeDirectory}/.mozilla/firefox/mcp-agent"
+          ];
+        };
+
       };
 
-      context7 = {
-        type = "remote";
-        url = "https://mcp.context7.com/mcp";
-      };
+      odysseus = [
+        (mkStdio "nixos" "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" [ ] { })
 
-      filesystem = {
-        type = "local";
-        command = [
-          "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem"
+        # context7 is remote (SSE/HTTP) — handled via odysseus UI
+
+        (mkStdio "filesystem" "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem" [
           "/home/helios/builds"
           "/home/helios/shared"
           "/home/helios/.config"
           "/home/helios/repos"
-          "/home/helios/notes"
-        ];
-      };
+          "/tmp/opencode"
+        ] { })
 
-      github = {
-        type = "local";
-        command = [
-          "${pkgs.github-mcp-server}/bin/github-mcp-server"
-          "stdio"
-          "--read-only"
-        ];
-      };
+        (mkStdio "github" "${pkgs.github-mcp-server}/bin/github-mcp-server" [ "stdio" "--read-only" ] { })
 
-      sequential-thinking = {
-        type = "local";
-        command = [ "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking" ];
-      };
+        (mkStdio "sequential-thinking"
+          "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking"
+          [ ]
+          { }
+        )
 
-      web-search = {
-        type = "local";
-        command = [
-          "npx"
-          "-y"
-          "@zhafron/mcp-web-search"
-        ];
-        enabled = true;
-        environment = {
+        (mkStdio "web-search" "npx" [ "-y" "@zhafron/mcp-web-search" ] {
           DEFAULT_SEARCH_PROVIDER = "searxng";
           SEARXNG_URL = "https://search.tezzzzaa.com/search";
-        };
-      };
+        })
 
-      memory-db = {
-        type = "local";
-        command = [
-          "bash"
+        (mkStdio "memory-db" "bash" [
           "-c"
           "cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp && node server.cjs"
-        ];
-      };
+        ] { })
 
-      bun = {
-        type = "local";
-        command = [
-          "bunx"
-          "--bun"
-          "mcp-bun@latest"
-        ];
-        environment = {
+        (mkStdio "bun" "bunx" [ "--bun" "mcp-bun@latest" ] {
           DISABLE_NOTIFICATIONS = "true";
-        };
-      };
-
+        })
+      ];
     };
 
-    odysseus = [
-      (mkStdio "nixos" "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" [ ] { })
-
-      # context7 is remote (SSE/HTTP) — handled via odysseus UI
-
-      (mkStdio "filesystem" "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem" [
-        "/home/helios/builds"
-        "/home/helios/shared"
-        "/home/helios/.config"
-        "/home/helios/repos"
-        "/tmp/opencode"
-      ] { })
-
-      (mkStdio "github" "${pkgs.github-mcp-server}/bin/github-mcp-server" [ "stdio" "--read-only" ] { })
-
-      (mkStdio "sequential-thinking"
-        "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking"
-        [ ]
-        { }
-      )
-
-      (mkStdio "web-search" "npx" [ "-y" "@zhafron/mcp-web-search" ] {
-        DEFAULT_SEARCH_PROVIDER = "searxng";
-        SEARXNG_URL = "https://search.tezzzzaa.com/search";
-      })
-
-      (mkStdio "memory-db" "bash" [
-        "-c"
-        "cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp && node server.cjs"
-      ] { })
-
-      (mkStdio "bun" "bunx" [ "--bun" "mcp-bun@latest" ] {
-        DISABLE_NOTIFICATIONS = "true";
-      })
-    ];
-
+    # Dedicated Firefox profile for the MCP agent.
+    # Isolated from my real browsing data.
+    home.file = {
+      ".mozilla/firefox/mcp-agent/user.js".text = ''
+        user_pref("browser.shell.checkDefaultBrowser", false);
+        user_pref("browser.download.folderList", 2);
+        user_pref("browser.download.manager.showWhenStarting", false);
+        user_pref("dom.webnotifications.enabled", false);
+        user_pref("signon.rememberSignons", false);
+        user_pref("media.autoplay.default", 5);
+        user_pref("browser.formfill.enable", false);
+      '';
+      ".mozilla/firefox/mcp-agent/.keep".text = "";
+    };
   };
 }
