@@ -35,7 +35,7 @@ in
       dbBackend = "sqlite";
       backupDir = cfg.backupDir;
       config = {
-        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_ADDRESS = "0.0.0.0";
         ROCKET_PORT = 8222;
         DOMAIN = cfg.domain;
         ENABLE_WEBSOCKET = true;
