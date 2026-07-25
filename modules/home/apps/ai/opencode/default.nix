@@ -51,6 +51,25 @@ in
           "@mohak34/opencode-notifier@latest"
         ];
 
+        references = {
+          builds = {
+            path = "/home/helios/builds";
+            description = "NixOS flake configuration";
+          };
+          repos = {
+            path = "/home/helios/repos";
+            description = "Git repos for personal projects";
+          };
+          notes = {
+            path = "/home/helios/notes/helios";
+            description = "Obsidian vault for notes and documentation";
+          };
+          src = {
+            path = "/home/helios/src";
+            description = "Repos that dont belong to us, organized as 'username/repo'";
+          };
+        };
+
       }
 
       // importDir ./config { inherit config inputs pkgs; };
