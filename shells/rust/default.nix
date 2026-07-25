@@ -7,6 +7,7 @@ pkgs.mkShellNoCC {
     rustfmt
     cargo-watch
     cargo-insta
+    gcc
   ];
   shellHook = ''
     echo "rust dev environment"
