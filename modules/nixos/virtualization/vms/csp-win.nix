@@ -36,13 +36,13 @@ in
 
     enable = mkBoolOpt false "Enable the ${vmName} virtual machine (Clip Studio Paint on Windows).";
 
-    iso = mkOpt (nullOr path) null ''
-      Path to the Windows installation ISO.
+    iso = mkOpt (nullOr str) null ''
+      Path to the Windows installation ISO on disk (e.g. "/var/lib/libvirt/images/tiny10.iso").
       Set to null after install to boot from disk.
     '';
 
-    virtioIso = mkOpt (nullOr path) null ''
-      Path to virtio-win.iso — provides VirtIO disk/network drivers
+    virtioIso = mkOpt (nullOr str) null ''
+      Path to virtio-win.iso on disk — provides VirtIO disk/network drivers
       for Windows during installation.
     '';
 
@@ -60,6 +60,55 @@ in
   };
 
   config = mkIf (config.virt.vms.enable && cfg.enable) {
+
+    # ------------------------------------------------------------------
+    # Cockpit web UI — access via Tailscale Serve on terra
+    # ------------------------------------------------------------------
+    services.cockpit = {
+      enable = true;
+      port = 9090;
+      openFirewall = false; # Exposed via Tailscale Serve
+      plugins = with pkgs; [
+        cockpit-machines
+      ];
+      allowed-origins = [
+        "https://terra.tail9a2d08.ts.net"
+        "https://localhost"
+        "http://localhost"
+      ];
+      settings = {
+        WebService = {
+          AllowUnencrypted = true;
+          ProtocolHeader = "X-Forwarded-Proto";
+        };
+      };
+    };
+
+    # ------------------------------------------------------------------
+    # Libvirt-D-Bus bridge — cockpit-machines talks to libvirtd via D-Bus
+    # ------------------------------------------------------------------
+    services.dbus.packages = [ pkgs.libvirt-dbus ];
+
+    users.users.libvirtdbus = {
+      isSystemUser = true;
+      group = "libvirtdbus";
+      extraGroups = [ "libvirtd" ];
+    };
+    users.groups.libvirtdbus = {};
+
+    systemd.services.libvirt-dbus = {
+      description = "Libvirt D-Bus bridge";
+      after = [ "libvirtd.service" ];
+      requires = [ "libvirtd.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "dbus";
+        BusName = "org.libvirt";
+        User = "libvirtdbus";
+        Group = "libvirtdbus";
+        ExecStart = "${pkgs.libvirt-dbus}/bin/libvirt-dbus --system";
+      };
+    };
 
     # ------------------------------------------------------------------
     # Activation — creates disk image on every rebuild/boot
