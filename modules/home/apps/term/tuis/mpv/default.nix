@@ -20,9 +20,9 @@ in
       osd-level = 1
       osd-font = 'Iosevka Slab Term'
       osd-font-size = 14
-      osd-color = '${colors.mauve.hex}'
-      osd-border-color = '${colors.surface1.hex}'
-      osd-shadow-color = '${colors.mantle.hex}'
+      osd-color = '${colors.helios.mauve.hex}'
+      osd-border-color = '${colors.helios.surface1.hex}'
+      osd-shadow-color = '${colors.helios.mantle.hex}'
       osd-bar-align-y = 0.95
       keep-open = yes
       idle = yes

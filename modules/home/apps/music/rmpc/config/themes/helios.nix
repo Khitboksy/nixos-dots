@@ -16,7 +16,7 @@ in
 
   (
 
-    text_color: ${q colors.text.hex},
+    text_color: ${q colors.helios.text.hex},
     background_color: None,
     header_background_color: None,
     modal_background_color: None,
@@ -24,14 +24,14 @@ in
 
     preview_label_style:
     (
-      fg: ${q colors.yellow.hex},
+      fg: ${q colors.helios.yellow.hex},
       bg: None
     ),
 
     
     preview_metadata_group_style:
     (
-      fg: ${q colors.yellow.hex},
+      fg: ${q colors.helios.yellow.hex},
       bg: None,
       modifiers: "Bold"
     ),
@@ -39,7 +39,7 @@ in
     
     highlighted_item_style:
     (
-      fg: ${q colors.mauve.hex},
+      fg: ${q colors.helios.mauve.hex},
       bg: None,
       modifiers: "Bold"
     ),
@@ -47,22 +47,22 @@ in
 
     current_item_style:
     (
-      fg: ${q colors.mauve.hex},
-      bg: ${q colors.surface1.hex},
+      fg: ${q colors.helios.mauve.hex},
+      bg: ${q colors.helios.surface1.hex},
       modifiers: "Bold"
     ),
 
 
     borders_style: 
     (
-      fg: ${q colors.overlay2.hex},
+      fg: ${q colors.helios.overlay2.hex},
       bg: None
     ),
 
 
     highlight_border_style:
     (
-      fg: ${q colors.text.hex},
+      fg: ${q colors.helios.text.hex},
       bg: None
     ),
 
@@ -71,14 +71,14 @@ in
 
       active_style: 
       (
-        fg: ${q colors.base.hex},
-        bg: ${q colors.mauve.hex},
+        fg: ${q colors.helios.base.hex},
+        bg: ${q colors.helios.mauve.hex},
         modifiers: "Bold"
       ),
 
       inactive_style:
       (
-        fg: ${q colors.text.hex},
+        fg: ${q colors.helios.text.hex},
         bg: None
       ),
     ),
@@ -88,32 +88,32 @@ in
 
       info:
       (
-        fg: ${q colors.mauve.hex},
-        bg: ${q colors.base.hex}
+        fg: ${q colors.helios.mauve.hex},
+        bg: ${q colors.helios.base.hex}
       ),
 
       warn:
       (
-        fg: ${q colors.yellow.hex},
-        bg: ${q colors.base.hex}
+        fg: ${q colors.helios.yellow.hex},
+        bg: ${q colors.helios.base.hex}
       ),
       
       error:
       (
-        fg: ${q colors.red.hex},
-        bg: ${q colors.base.hex}
+        fg: ${q colors.helios.red.hex},
+        bg: ${q colors.helios.base.hex}
       ),
       
       debug:
       (
-        fg: ${q colors.green.hex},
-        bg: ${q colors.base.hex}
+        fg: ${q colors.helios.green.hex},
+        bg: ${q colors.helios.base.hex}
       ),
       
       trace:
       (
-        fg: ${q colors.lavender.hex}, 
-        bg: ${q colors.base.hex}
+        fg: ${q colors.helios.lavender.hex}, 
+        bg: ${q colors.helios.base.hex}
       ),
     ),
 
@@ -145,18 +145,18 @@ in
 
       track_style:
       (
-        fg: ${q colors.mantle.hex}
+        fg: ${q colors.helios.mantle.hex}
       ),
 
       elapsed_style:
       (
-        fg: ${q colors.mauve.hex}
+        fg: ${q colors.helios.mauve.hex}
       ),
 
       thumb_style:
       (
-        fg: ${q colors.mauve.hex},
-        bg: ${q colors.mantle.hex}
+        fg: ${q colors.helios.mauve.hex},
+        bg: ${q colors.helios.mantle.hex}
       ),
 
 
@@ -165,7 +165,7 @@ in
         kind: Property(Artist), 
           style:
           (
-            fg: ${q colors.rosewater.hex},
+            fg: ${q colors.helios.rosewater.hex},
             modifiers: "Bold")
           ),
 
@@ -173,7 +173,7 @@ in
             kind: Text(" - "), 
               style:
               (
-                fg: ${q colors.rosewater.hex}
+                fg: ${q colors.helios.rosewater.hex}
               )
           ),
 
@@ -181,7 +181,7 @@ in
             kind: Property(Title),
               style:
               (
-                fg: ${q colors.rosewater.hex},
+                fg: ${q colors.helios.rosewater.hex},
                 modifiers: "Bold"
               )
           ),
@@ -195,10 +195,10 @@ in
         (
           prop: (
             kind: Sticker("playCount"),
-            style: (fg: ${q colors.peach.hex}),
+            style: (fg: ${q colors.helios.peach.hex}),
             default: (
               kind: Text("0"),
-              style: (fg: ${q colors.peach.hex})
+              style: (fg: ${q colors.helios.peach.hex})
             )
           ),
           width: "4",
@@ -209,10 +209,10 @@ in
         (
           prop: (
             kind: Property(Artist),
-            style: (fg: ${q colors.mauve.hex}, modifiers: "Bold"),
+            style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold"),
             default: (
               kind: Text("Unknown"),
-              style: (fg: ${q colors.mauve.hex}, modifiers: "Bold")
+              style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold")
             )
           ),
           width: "35%",
@@ -222,7 +222,7 @@ in
         (
           prop: (
             kind: Text("-"),
-            style: (fg: ${q colors.text.hex}),
+            style: (fg: ${q colors.helios.text.hex}),
             default: (
               kind: Text("Unknown")
             )
@@ -234,12 +234,12 @@ in
         (
           prop: (
             kind: Property(Title),
-            style: (fg: ${q colors.blue.hex}),
-            current_style: (fg: ${q colors.mauve.hex}, modifiers: "Bold"),
+            style: (fg: ${q colors.helios.blue.hex}),
+            current_style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold"),
             default: (
               kind: Text("Unknown"),
-              style: (fg: ${q colors.blue.hex}),
-              current_style: (fg: ${q colors.mauve.hex}, modifiers: "Bold")
+              style: (fg: ${q colors.helios.blue.hex}),
+              current_style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold")
             )
           ),
           width: "65%",
@@ -306,13 +306,13 @@ in
         orientation: Horizontal,
 
         bar_color: Gradient({
-          12: ${q colors.mauve.hex},
-          22: ${q colors.lavender.hex},
-          36: ${q colors.blue.hex},
-          50: ${q colors.sapphire.hex},
-          66: ${q colors.sky.hex},
-          82: ${q colors.teal.hex},
-          100: ${q colors.green.hex}
+          12: ${q colors.helios.mauve.hex},
+          22: ${q colors.helios.lavender.hex},
+          36: ${q colors.helios.blue.hex},
+          50: ${q colors.helios.sapphire.hex},
+          66: ${q colors.helios.sky.hex},
+          82: ${q colors.helios.teal.hex},
+          100: ${q colors.helios.green.hex}
         }),
 
       ),

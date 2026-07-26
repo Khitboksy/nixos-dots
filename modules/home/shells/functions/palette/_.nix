@@ -5,7 +5,7 @@ let
   cb_fzf = "${lib.getExe pkgs.fzf}";
   cb_jq = "${lib.getExe pkgs.jq}";
   cb_wl_copy = "${lib.getExe' pkgs.wl-clipboard-rs "wl-copy"}";
-  cb_color_file = "$HOME/builds/lib/theme/colors/palette.json";
+  cb_color_file = "$HOME/builds/lib/theme/colors/helios.json";
 
   # Inline script for the preview/command pane.
   _cb_inline_mod = import ./cb_inline.nix { inherit pkgs lib; };

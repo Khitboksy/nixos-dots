@@ -41,8 +41,8 @@ in
             end
 
             return ui.Line {
-                ui.Span("ssh@"):fg("${colors.yellow.hex}"),
-                ui.Span(host):fg("${colors.sapphire.hex}"),
+                ui.Span("ssh@"):fg("${colors.helios.yellow.hex}"),
+                ui.Span(host):fg("${colors.helios.sapphire.hex}"),
                 ui.Span(" "),
             }
         end, 500, Header.LEFT)

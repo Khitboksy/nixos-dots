@@ -4,13 +4,13 @@ with lib.custom;
 rec {
 
   nixos_small = ''
-    ${colors.tblue.hex}  \  \ //
-    ${colors.tpink.hex} ==${colors.tblue.hex}\__${colors.tpink.hex}\/ ${colors.tblue.hex}//
-    ${colors.tpink.hex}   //   \\//
-    ${colors.tpink.hex}==${colors.tblue.hex}//     //==
-     ${colors.tpink.hex} //${colors.tblue.hex}\___//
-    ${colors.tpink.hex}// /\ ${colors.tpink.hex}\  \\==
-      ${colors.tblue.hex}// \\  \\
+    ${colors.helios.tblue.hex}  \  \ //
+    ${colors.helios.tpink.hex} ==${colors.helios.tblue.hex}\__${colors.helios.tpink.hex}\/ ${colors.helios.tblue.hex}//
+    ${colors.helios.tpink.hex}   //   \\//
+    ${colors.helios.tpink.hex}==${colors.helios.tblue.hex}//     //==
+     ${colors.helios.tpink.hex} //${colors.helios.tblue.hex}\___//
+    ${colors.helios.tpink.hex}// /\ ${colors.helios.tpink.hex}\  \\==
+      ${colors.helios.tblue.hex}// \\  \\
   '';
 
 }

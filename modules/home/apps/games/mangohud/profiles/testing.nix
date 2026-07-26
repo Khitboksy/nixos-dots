@@ -13,31 +13,31 @@ with lib.custom;
   font_face=Iosevka
   transparent_background
   frame_timing=0
-  text_color=${colors.text.hex'}
+  text_color=${colors.helios.text.hex'}
 
   fps_text=FPS
   fps_color_change
   fps_value=30,120,165
-  fps_color=${colors.red.hex'},${colors.yellow.hex'},${colors.sapphire.hex'}
-  engine_color=${colors.pink.hex'}
-  frametime_color=${colors.green.hex'}
+  fps_color=${colors.helios.red.hex'},${colors.helios.yellow.hex'},${colors.helios.sapphire.hex'}
+  engine_color=${colors.helios.pink.hex'}
+  frametime_color=${colors.helios.green.hex'}
 
   cpu_text=R7 5800x
   cpu_load_change
   cpu_load_value=30,60,90
-  cpu_load_color=${colors.sapphire.hex'},${colors.yellow.hex'},${colors.red.hex'}
-  cpu_color=${colors.pink.hex'}
-  ram_color=${colors.pink.hex'}
+  cpu_load_color=${colors.helios.sapphire.hex'},${colors.helios.yellow.hex'},${colors.helios.red.hex'}
+  cpu_color=${colors.helios.pink.hex'}
+  ram_color=${colors.helios.pink.hex'}
 
   gpu_text=RTX 2080
   gpu_load_change
   gpu_load_value=30,60,90
-  gpu_load_color=${colors.sapphire.hex'},${colors.yellow.hex'},${colors.red.hex'}
-  gpu_color=${colors.pink.hex'}
-  vram_color=${colors.pink.hex'}
+  gpu_load_color=${colors.helios.sapphire.hex'},${colors.helios.yellow.hex'},${colors.helios.red.hex'}
+  gpu_color=${colors.helios.pink.hex'}
+  vram_color=${colors.helios.pink.hex'}
 
   winesync
-  wine_color=${colors.pink.hex'}
+  wine_color=${colors.helios.pink.hex'}
 
   fps
   frametime

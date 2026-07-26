@@ -57,11 +57,11 @@ in
               set -l last_status $status
 
               # Colors from lib.custom.colors
-              set -l c_dir (set_color "${colors.mauve.hex}")
-              set -l c_clean (set_color "${colors.green.hex}")
-              set -l c_dirty (set_color "${colors.yellow.hex}")
-              set -l c_err (set_color "${colors.red.hex}")
-              set -l c_host (set_color "${colors.sapphire.hex}")
+              set -l c_dir (set_color "${colors.helios.mauve.hex}")
+              set -l c_clean (set_color "${colors.helios.green.hex}")
+              set -l c_dirty (set_color "${colors.helios.yellow.hex}")
+              set -l c_err (set_color "${colors.helios.red.hex}")
+              set -l c_host (set_color "${colors.helios.sapphire.hex}")
               set -l c_reset (set_color normal)
 
               # SSH host detection — prepend "ssh@hostname" when connected remotely

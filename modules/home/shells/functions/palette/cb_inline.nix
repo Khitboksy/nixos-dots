@@ -3,7 +3,7 @@
   pcb_jq         = "${lib.getExe pkgs.jq}";
   pcb_fzf        = "${lib.getExe pkgs.fzf}";
   pcb_wl_copy    = "${lib.getExe' pkgs.wl-clipboard-rs "wl-copy"}";
-  pcb_color_file = "$HOME/builds/lib/theme/colors/palette.json";
+  pcb_color_file = "$HOME/builds/lib/theme/colors/helios.json";
 in rec {
   # Standalone script for the top-right preview/command/edit pane.
   cb_inline_script_file = pkgs.writeScript "palette-inline.fish" _cb_inline_script;

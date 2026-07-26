@@ -58,24 +58,25 @@ in
       settings = {
 
         # we exposed the ${colors} attrset with `with lib.custom;`
-        # earlier in the module, so all we need to do is pick one of
-        # the colours with ${colors.<color>.hex}
-        color0 = "${colors.surface1.hex}";
-        color8 = "${colors.surface2.hex}";
-        color1 = "${colors.red.hex}";
-        color9 = "${colors.red.hex}";
-        color2 = "${colors.green.hex}";
-        color10 = "${colors.green.hex}";
-        color3 = "${colors.yellow.hex}";
-        color11 = "${colors.yellow.hex}";
-        color4 = "${colors.blue.hex}";
-        color12 = "${colors.blue.hex}";
-        color5 = "${colors.pink.hex}";
-        color13 = "${colors.pink.hex}";
-        color6 = "${colors.teal.hex}";
-        color14 = "${colors.teal.hex}";
-        color7 = "${colors.subtext1.hex}";
-        color15 = "${colors.subtext0.hex}";
+        # earlier in the module. colors is now a nested attrset of palettes:
+        #   colors.<palette>.<color>.<type>
+        # e.g. ${colors.helios.<color>.hex} or ${colors.gruvbox-dark.<color>.hex}
+        color0 = "${colors.helios.surface1.hex}";
+        color8 = "${colors.helios.surface2.hex}";
+        color1 = "${colors.helios.red.hex}";
+        color9 = "${colors.helios.red.hex}";
+        color2 = "${colors.helios.green.hex}";
+        color10 = "${colors.helios.green.hex}";
+        color3 = "${colors.helios.yellow.hex}";
+        color11 = "${colors.helios.yellow.hex}";
+        color4 = "${colors.helios.blue.hex}";
+        color12 = "${colors.helios.blue.hex}";
+        color5 = "${colors.helios.pink.hex}";
+        color13 = "${colors.helios.pink.hex}";
+        color6 = "${colors.helios.teal.hex}";
+        color14 = "${colors.helios.teal.hex}";
+        color7 = "${colors.helios.subtext1.hex}";
+        color15 = "${colors.helios.subtext0.hex}";
 
         # if importing from elsewhere in the config
         # `(import ./lib-theme-import-example.nix) { inherit lib; };`

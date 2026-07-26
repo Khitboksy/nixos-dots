@@ -23,14 +23,14 @@ with lib.custom;
     ];
     focus-ring = {
       on = [ ];
-      active-color = "${colors.mauve.hex}";
-      inactive-color = "${colors.sapphire.hex}";
+      active-color = "${colors.helios.mauve.hex}";
+      inactive-color = "${colors.helios.sapphire.hex}";
       width = 4;
     };
     border = {
       on = [ ];
-      active-color = "${colors.surface0.hex}";
-      inactive-color = "${colors.sapphire.hex}";
+      active-color = "${colors.helios.surface0.hex}";
+      inactive-color = "${colors.helios.sapphire.hex}";
       width = 2;
     };
   };

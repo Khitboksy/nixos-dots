@@ -7,23 +7,23 @@ with pkgs;
 {
   mc-console = ''
     if test (count $argv) -eq 0
-      printf "Usage: mc-console ${colors.blue.ansi}<server-name>${ansiReset}\n"
+      printf "Usage: mc-console ${colors.helios.blue.ansi}<server-name>${ansiReset}\n"
       return 1
     end
     set server $argv[1]
     set fifo "/var/lib/minecraft-$server/.stdin-fifo"
     if not test -p "$fifo"
-      printf "${colors.red.ansi}Error:${ansiReset} Server ${colors.blue.ansi}$server${ansiReset} is not running ${colors.text.ansi}(start it with${ansiReset} ${colors.green.ansi}mc-start $server${ansiReset}${colors.text.ansi})${ansiReset}\n"
+      printf "${colors.helios.red.ansi}Error:${ansiReset} Server ${colors.helios.blue.ansi}$server${ansiReset} is not running ${colors.helios.text.ansi}(start it with${ansiReset} ${colors.helios.green.ansi}mc-start $server${ansiReset}${colors.helios.text.ansi})${ansiReset}\n"
       return 1
     end
-    printf "${colors.text.ansi}Console for${ansiReset} ${colors.blue.ansi}$server${ansiReset}${colors.text.ansi}. Type${ansiReset} ${colors.peach.ansi}exit${ansiReset}${colors.text.ansi} to quit.${ansiReset}\n"
-    printf "${colors.text.ansi}(Run${ansiReset} ${colors.green.ansi}mc-logs $server${ansiReset}${colors.text.ansi} to see output live.)${ansiReset}\n"
+    printf "${colors.helios.text.ansi}Console for${ansiReset} ${colors.helios.blue.ansi}$server${ansiReset}${colors.helios.text.ansi}. Type${ansiReset} ${colors.helios.peach.ansi}exit${ansiReset}${colors.helios.text.ansi} to quit.${ansiReset}\n"
+    printf "${colors.helios.text.ansi}(Run${ansiReset} ${colors.helios.green.ansi}mc-logs $server${ansiReset}${colors.helios.text.ansi} to see output live.)${ansiReset}\n"
     while true
-      printf "${colors.blue.ansi}%s${ansiReset} ${colors.green.ansi}>${ansiReset} ${colors.sapphire.ansi}" "$server"
+      printf "${colors.helios.blue.ansi}%s${ansiReset} ${colors.helios.green.ansi}>${ansiReset} ${colors.helios.sapphire.ansi}" "$server"
       read cmd
       printf "${ansiReset}"
       if test "$cmd" = "exit"
-        printf "${colors.text.ansi}Console closed.${ansiReset}\n"
+        printf "${colors.helios.text.ansi}Console closed.${ansiReset}\n"
         break
       end
       echo "$cmd" > "$fifo"

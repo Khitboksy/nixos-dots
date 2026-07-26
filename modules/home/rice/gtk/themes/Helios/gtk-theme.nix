@@ -8,26 +8,26 @@ let
   # ── Semantic color mappings ──────────────────────────────────────
   # Edit these to globally tweak the theme's relationship to the palette.
 
-  bg = colors.base.hex;
-  bgAlt = colors.mantle.hex;
-  bgDark = colors.crust.hex;
-  surface = colors.surface0.hex;
-  surfaceHover = colors.surface1.hex;
-  surfaceBorder = colors.surface2.hex;
+  bg = colors.helios.base.hex;
+  bgAlt = colors.helios.mantle.hex;
+  bgDark = colors.helios.crust.hex;
+  surface = colors.helios.surface0.hex;
+  surfaceHover = colors.helios.surface1.hex;
+  surfaceBorder = colors.helios.surface2.hex;
 
-  fg = colors.text.hex;
-  fgAlt = colors.subtext1.hex;
-  fgMuted = colors.subtext0.hex;
-  fgOverlay = colors.overlay0.hex;
+  fg = colors.helios.text.hex;
+  fgAlt = colors.helios.subtext1.hex;
+  fgMuted = colors.helios.subtext0.hex;
+  fgOverlay = colors.helios.overlay0.hex;
 
-  accent = colors.mauve.hex;
-  accentAlt = colors.lavender.hex;
-  accentSec = colors.blue.hex;
+  accent = colors.helios.mauve.hex;
+  accentAlt = colors.helios.lavender.hex;
+  accentSec = colors.helios.blue.hex;
 
-  red = colors.red.hex;
-  green = colors.green.hex;
-  yellow = colors.yellow.hex;
-  peach = colors.peach.hex;
+  red = colors.helios.red.hex;
+  green = colors.helios.green.hex;
+  yellow = colors.helios.yellow.hex;
+  peach = colors.helios.peach.hex;
 
   selectionBg = accent;
   selectionFg = bg;
@@ -227,8 +227,8 @@ in
   }
 
   button.destructive-action:hover {
-    background-color: ${colors.maroon.hex};
-    border-color: ${colors.maroon.hex};
+    background-color: ${colors.helios.maroon.hex};
+    border-color: ${colors.helios.maroon.hex};
   }
 
   button.suggested-action {
@@ -749,7 +749,7 @@ in
   }
 
   link:hover {
-    color: ${colors.sapphire.hex};
+    color: ${colors.helios.sapphire.hex};
   }
 
   link:visited {
@@ -819,7 +819,7 @@ in
   }
 
   infobar.info {
-    background-color: ${colors.sky.hex};
+    background-color: ${colors.helios.sky.hex};
     color: ${bgDark};
   }
 

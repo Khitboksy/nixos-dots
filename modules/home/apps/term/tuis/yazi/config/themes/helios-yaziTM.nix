@@ -24,25 +24,25 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>background</key>
-            <string>${colors.base.hex}</string>
+            <string>${colors.helios.base.hex}</string>
             <key>foreground</key>
-            <string>${colors.text.hex}</string>
+            <string>${colors.helios.text.hex}</string>
             <key>caret</key>
-            <string>${colors.rosewater.hex}</string>
+            <string>${colors.helios.rosewater.hex}</string>
             <key>lineHighlight</key>
-            <string>${colors.surface0.hex}</string>
+            <string>${colors.helios.surface0.hex}</string>
             <key>misspelling</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
             <key>accent</key>
-            <string>${colors.mauve.hex}</string>
+            <string>${colors.helios.mauve.hex}</string>
             <key>selection</key>
-            <string>${colors.overlay2.hex}40</string>
+            <string>${colors.helios.overlay2.hex}40</string>
             <key>activeGuide</key>
-            <string>${colors.surface1.hex}</string>
+            <string>${colors.helios.surface1.hex}</string>
             <key>findHighlight</key>
-            <string>${colors.surface2.hex}</string>
+            <string>${colors.helios.surface2.hex}</string>
             <key>gutterForeground</key>
-            <string>${colors.overlay1.hex}</string>
+            <string>${colors.helios.overlay1.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -53,7 +53,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.text.hex}</string>
+            <string>${colors.helios.text.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -64,7 +64,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.overlay2.hex}</string>
+            <string>${colors.helios.overlay2.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -75,7 +75,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.green.hex}</string>
+            <string>${colors.helios.green.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -84,7 +84,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.pink.hex}</string>
+            <string>${colors.helios.pink.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -95,7 +95,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.peach.hex}</string>
+            <string>${colors.helios.peach.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -104,7 +104,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.mauve.hex}</string>
+            <string>${colors.helios.mauve.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -113,7 +113,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -126,7 +126,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.yellow.hex}</string>
+            <string>${colors.helios.yellow.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -139,7 +139,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.yellow.hex}</string>
+            <string>${colors.helios.yellow.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -152,7 +152,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.text.hex}</string>
+            <string>${colors.helios.text.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -163,7 +163,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.maroon.hex}</string>
+            <string>${colors.helios.maroon.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -176,7 +176,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -185,7 +185,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.overlay2.hex}</string>
+            <string>${colors.helios.overlay2.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -196,7 +196,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.teal.hex}</string>
+            <string>${colors.helios.teal.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -207,7 +207,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -218,7 +218,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
             <key>fontStyle</key>
             <string>bold</string>
           </dict>
@@ -231,7 +231,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
             <key>fontStyle</key>
             <string>bold</string>
           </dict>
@@ -244,7 +244,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -257,7 +257,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -268,7 +268,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.green.hex}</string>
+            <string>${colors.helios.green.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -279,7 +279,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.green.hex}</string>
+            <string>${colors.helios.green.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -290,7 +290,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -301,7 +301,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -312,7 +312,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -323,7 +323,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.yellow.hex}</string>
+            <string>${colors.helios.yellow.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -334,7 +334,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -345,7 +345,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.green.hex}</string>
+            <string>${colors.helios.green.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -356,7 +356,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.peach.hex}</string>
+            <string>${colors.helios.peach.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -369,7 +369,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
             <key>fontStyle</key>
             <string>italic</string>
           </dict>
@@ -382,7 +382,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.peach.hex}</string>
+            <string>${colors.helios.peach.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -393,7 +393,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.pink.hex}</string>
+            <string>${colors.helios.pink.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -404,7 +404,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -415,7 +415,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.blue.hex}</string>
+            <string>${colors.helios.blue.hex}</string>
           </dict>
         </dict>
         <dict>
@@ -426,7 +426,7 @@ with lib.custom;
           <key>settings</key>
           <dict>
             <key>foreground</key>
-            <string>${colors.red.hex}</string>
+            <string>${colors.helios.red.hex}</string>
           </dict>
         </dict>
       </array>

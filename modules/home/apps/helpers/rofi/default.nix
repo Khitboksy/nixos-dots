@@ -46,9 +46,9 @@ in
         {
 
           "*" = {
-            background-color = mkLiteral (colors.mantle.hex + "cc");
-            foreground-color = mkLiteral colors.blue.hex;
-            border-color = mkLiteral colors.mauve.hex;
+            background-color = mkLiteral (colors.helios.mantle.hex + "cc");
+            foreground-color = mkLiteral colors.helios.blue.hex;
+            border-color = mkLiteral colors.helios.mauve.hex;
             spacing = 2;
           };
 
@@ -75,13 +75,13 @@ in
           };
 
           entry = {
-            "text-color" = mkLiteral colors.mauve.hex;
-            "placeholder-color" = mkLiteral colors.yellow.hex;
+            "text-color" = mkLiteral colors.helios.mauve.hex;
+            "placeholder-color" = mkLiteral colors.helios.yellow.hex;
             margin = mkLiteral "0px 90px 5px 90px";
             padding = mkLiteral "2px 8px 2px 8px";
             border = mkLiteral "0px 2px 2px 2px";
             "border-radius" = mkLiteral "2px 2px 8px 8px";
-            "border-color" = mkLiteral colors.mauve.hex;
+            "border-color" = mkLiteral colors.helios.mauve.hex;
           };
 
           listview = {
@@ -96,23 +96,23 @@ in
           };
 
           "element selected.normal" = {
-            "text-color" = mkLiteral colors.mauve.hex;
+            "text-color" = mkLiteral colors.helios.mauve.hex;
             "background-color" = "transparent";
           };
 
           "element selected.active" = {
-            "text-color" = mkLiteral colors.mauve.hex;
+            "text-color" = mkLiteral colors.helios.mauve.hex;
             "background-color" = "transparent";
           };
 
           "element normal.normal" = {
-            "text-color" = mkLiteral colors.blue.hex;
+            "text-color" = mkLiteral colors.helios.blue.hex;
             "background-color" = "transparent";
           };
 
           "element-text" = {
-            "text-color" = mkLiteral colors.blue.hex;
-            highlight = mkLiteral colors.green.hex;
+            "text-color" = mkLiteral colors.helios.blue.hex;
+            highlight = mkLiteral colors.helios.green.hex;
           };
 
         };

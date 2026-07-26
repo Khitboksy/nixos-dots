@@ -222,8 +222,6 @@ rec {
     fontFacesToCSS
     ;
 
-  rawColors = builtins.fromJSON (builtins.readFile ./colors/palette.json);
-
   mkColor = hex: {
     inherit hex;
     hex' = stripHash hex;
@@ -232,12 +230,36 @@ rec {
     ansi = hexToAnsi hex;
   };
 
-  colors = builtins.listToAttrs (
-    map (pair: {
-      name = builtins.head pair;
-      value = mkColor (builtins.elemAt pair 1);
-    }) rawColors
-  );
+  # Auto-discover all palette JSON files in ./colors/ and build nested attrset.
+  # Each file becomes colors.<filename-without-ext>.<color-name>.<type>
+  # e.g. colors.helios.red.hex, colors.gruvbox-dark.redDark.hex
+  colors =
+    let
+      inherit (builtins) readDir match attrNames foldl' fromJSON readFile;
+      dirContents = readDir ./colors;
+      jsonFiles = lib.filterAttrs (
+        name: type: type == "regular" && lib.strings.hasSuffix ".json" name
+      ) dirContents;
+      stripExt =
+        name:
+        let
+          m = match "(.*)\\.json" name;
+        in
+        if m == null then name else builtins.head m;
+      processPalette = name: rawPairs: {
+        inherit name;
+        value = builtins.listToAttrs (
+          map (pair: {
+            name = builtins.head pair;
+            value = mkColor (builtins.elemAt pair 1);
+          }) rawPairs
+        );
+      };
+      paletteEntries = map (
+        name: processPalette (stripExt name) (fromJSON (readFile (./colors + "/${name}")))
+      ) (attrNames jsonFiles);
+    in
+    builtins.listToAttrs paletteEntries;
   # Auto-import all image files from ./wallpapers/ as wallpapers.<name>
   wallpapers =
     let

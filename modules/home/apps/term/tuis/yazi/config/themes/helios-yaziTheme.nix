@@ -15,238 +15,238 @@ with lib.custom;
   dim = false
 
   [manager.file_style.cursor]
-  fg = "${colors.mauve.hex}"
+  fg = "${colors.helios.mauve.hex}"
   bold = true
   italic = false
 
   [manager.file_style.cwd]
-  fg = "${colors.mauve.hex}"
+  fg = "${colors.helios.mauve.hex}"
   bold = true
   italic = false
 
   [manager.file_style.marked]
-  fg = "${colors.yellow.hex}"
+  fg = "${colors.helios.yellow.hex}"
   bold = false
   italic = false
 
   [mgr]
-  cwd = { fg = "${colors.mauve.hex}" }
+  cwd = { fg = "${colors.helios.mauve.hex}" }
 
-  find_keyword  = { fg = "${colors.yellow.hex}", italic = true }
-  find_position = { fg = "${colors.pink.hex}", bg = "reset", italic = true }
+  find_keyword  = { fg = "${colors.helios.yellow.hex}", italic = true }
+  find_position = { fg = "${colors.helios.pink.hex}", bg = "reset", italic = true }
 
-  marker_copied   = { fg = "${colors.green.hex}", bg = "${colors.green.hex}" }
-  marker_cut      = { fg = "${colors.red.hex}", bg = "${colors.red.hex}" }
-  marker_marked   = { fg = "${colors.teal.hex}", bg = "${colors.teal.hex}" }
-  marker_selected = { fg = "${colors.mauve.hex}", bg = "${colors.mauve.hex}" }
+  marker_copied   = { fg = "${colors.helios.green.hex}", bg = "${colors.helios.green.hex}" }
+  marker_cut      = { fg = "${colors.helios.red.hex}", bg = "${colors.helios.red.hex}" }
+  marker_marked   = { fg = "${colors.helios.teal.hex}", bg = "${colors.helios.teal.hex}" }
+  marker_selected = { fg = "${colors.helios.mauve.hex}", bg = "${colors.helios.mauve.hex}" }
 
-  count_copied   = { fg = "${colors.base.hex}", bg = "${colors.green.hex}" }
-  count_cut      = { fg = "${colors.base.hex}", bg = "${colors.red.hex}" }
-  count_selected = { fg = "${colors.base.hex}", bg = "${colors.mauve.hex}" }
+  count_copied   = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.green.hex}" }
+  count_cut      = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.red.hex}" }
+  count_selected = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.mauve.hex}" }
 
   border_symbol = "│"
-  border_style  = { fg = "${colors.overlay1.hex}" }
+  border_style  = { fg = "${colors.helios.overlay1.hex}" }
 
   syntect_theme = "~/.config/yazi/helios.tmTheme"
 
   [tabs]
-  active   = { fg = "${colors.base.hex}", bg = "${colors.text.hex}", bold = true }
-  inactive = { fg = "${colors.text.hex}", bg = "${colors.surface1.hex}" }
+  active   = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.text.hex}", bold = true }
+  inactive = { fg = "${colors.helios.text.hex}", bg = "${colors.helios.surface1.hex}" }
 
   [mode]
-  normal_main = { fg = "${colors.base.hex}", bg = "${colors.mauve.hex}", bold = true }
-  normal_alt  = { fg = "${colors.mauve.hex}", bg = "${colors.surface0.hex}" }
+  normal_main = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.mauve.hex}", bold = true }
+  normal_alt  = { fg = "${colors.helios.mauve.hex}", bg = "${colors.helios.surface0.hex}" }
 
-  select_main = { fg = "${colors.base.hex}", bg = "${colors.green.hex}", bold = true }
-  select_alt  = { fg = "${colors.green.hex}", bg = "${colors.surface0.hex}" }
+  select_main = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.green.hex}", bold = true }
+  select_alt  = { fg = "${colors.helios.green.hex}", bg = "${colors.helios.surface0.hex}" }
 
-  unset_main  = { fg = "${colors.base.hex}", bg = "${colors.flamingo.hex}", bold = true }
-  unset_alt   = { fg = "${colors.flamingo.hex}", bg = "${colors.surface0.hex}" }
+  unset_main  = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.flamingo.hex}", bold = true }
+  unset_alt   = { fg = "${colors.helios.flamingo.hex}", bg = "${colors.helios.surface0.hex}" }
 
   [indicator]
-  parent = { fg = "${colors.base.hex}", bg = "${colors.mauve.hex}" }
-  current = { fg = "${colors.base.hex}", bg = "${colors.mauve.hex}" }
-  preview = { fg = "${colors.base.hex}", bg = "${colors.mauve.hex}" }
+  parent = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.mauve.hex}" }
+  current = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.mauve.hex}" }
+  preview = { fg = "${colors.helios.base.hex}", bg = "${colors.helios.mauve.hex}" }
 
   [status]
   sep_left  = { open = "", close = "" }
   sep_right = { open = "", close = "" }
 
-  progress_label  = { fg = "${colors.mauve.hex}", bold = true }
-  progress_normal = { fg = "${colors.green.hex}", bg = "${colors.surface1.hex}" }
-  progress_error  = { fg = "${colors.yellow.hex}", bg = "${colors.red.hex}" }
+  progress_label  = { fg = "${colors.helios.mauve.hex}", bold = true }
+  progress_normal = { fg = "${colors.helios.green.hex}", bg = "${colors.helios.surface1.hex}" }
+  progress_error  = { fg = "${colors.helios.yellow.hex}", bg = "${colors.helios.red.hex}" }
 
-  perm_type  = { fg = "${colors.blue.hex}" }
-  perm_read  = { fg = "${colors.yellow.hex}" }
-  perm_write = { fg = "${colors.red.hex}" }
-  perm_exec  = { fg = "${colors.green.hex}" }
-  perm_sep   = { fg = "${colors.overlay1.hex}" }
+  perm_type  = { fg = "${colors.helios.blue.hex}" }
+  perm_read  = { fg = "${colors.helios.yellow.hex}" }
+  perm_write = { fg = "${colors.helios.red.hex}" }
+  perm_exec  = { fg = "${colors.helios.green.hex}" }
+  perm_sep   = { fg = "${colors.helios.overlay1.hex}" }
 
   [input]
-  border   = { fg = "${colors.mauve.hex}" }
+  border   = { fg = "${colors.helios.mauve.hex}" }
   title    = {}
   value    = {}
   selected = { reversed = true }
 
   [pick]
-  border   = { fg = "${colors.mauve.hex}" }
-  active   = { fg = "${colors.pink.hex}" }
+  border   = { fg = "${colors.helios.mauve.hex}" }
+  active   = { fg = "${colors.helios.pink.hex}" }
   inactive = {}
 
   [confirm]
-  border     = { fg = "${colors.mauve.hex}" }
-  title      = { fg = "${colors.mauve.hex}" }
+  border     = { fg = "${colors.helios.mauve.hex}" }
+  title      = { fg = "${colors.helios.mauve.hex}" }
   body       = {}
   list       = {}
   btn_yes    = { reversed = true }
   btn_no     = {}
 
   [cmp]
-  border = { fg = "${colors.mauve.hex}" }
+  border = { fg = "${colors.helios.mauve.hex}" }
 
   [tasks]
-  border  = { fg = "${colors.mauve.hex}" }
+  border  = { fg = "${colors.helios.mauve.hex}" }
   title   = {}
-  hovered = { fg = "${colors.pink.hex}", bold = true }
+  hovered = { fg = "${colors.helios.pink.hex}", bold = true }
 
   [which]
-  mask            = { bg = "${colors.surface0.hex}" }
-  cand            = { fg = "${colors.teal.hex}" }
-  rest            = { fg = "${colors.overlay2.hex}" }
-  desc            = { fg = "${colors.pink.hex}" }
+  mask            = { bg = "${colors.helios.surface0.hex}" }
+  cand            = { fg = "${colors.helios.teal.hex}" }
+  rest            = { fg = "${colors.helios.overlay2.hex}" }
+  desc            = { fg = "${colors.helios.pink.hex}" }
   separator       = "  "
-  separator_style = { fg = "${colors.surface2.hex}" }
+  separator_style = { fg = "${colors.helios.surface2.hex}" }
 
   [help]
-  on      = { fg = "${colors.teal.hex}" }
-  run     = { fg = "${colors.pink.hex}" }
-  desc    = { fg = "${colors.overlay2.hex}" }
-  hovered = { bg = "${colors.surface2.hex}", bold = true }
-  footer  = { fg = "${colors.text.hex}", bg = "${colors.surface1.hex}" }
+  on      = { fg = "${colors.helios.teal.hex}" }
+  run     = { fg = "${colors.helios.pink.hex}" }
+  desc    = { fg = "${colors.helios.overlay2.hex}" }
+  hovered = { bg = "${colors.helios.surface2.hex}", bold = true }
+  footer  = { fg = "${colors.helios.text.hex}", bg = "${colors.helios.surface1.hex}" }
 
   [notify]
-  title_info  = { fg = "${colors.teal.hex}" }
-  title_warn  = { fg = "${colors.yellow.hex}" }
-  title_error = { fg = "${colors.red.hex}" }
+  title_info  = { fg = "${colors.helios.teal.hex}" }
+  title_warn  = { fg = "${colors.helios.yellow.hex}" }
+  title_error = { fg = "${colors.helios.red.hex}" }
 
   [filetype]
   rules = [
-    { url = "*/", fg = "${colors.mauve.hex}", bold = true },
-    { url = "*", is = "link", fg = "${colors.sky.hex}", italic = true },
-    { url = "*", is = "exec", fg = "${colors.green.hex}", bold = true },
-    { mime = "image/*", fg = "${colors.peach.hex}" },
-    { mime = "video/*", fg = "${colors.red.hex}" },
-    { mime = "audio/*", fg = "${colors.yellow.hex}" },
-    { url = "*.{zip,tar,tar.gz,rar,7z}", fg = "${colors.maroon.hex}" },
-    { url = "*.{pdf,doc,docx,txt,md,rtf}", fg = "${colors.text.hex}" },
-    { url = "*.{rs,java,js,ts,jsx,tsx,py,go,nix,lock,lua,toml,json,jsonc,c,h,cpp,hpp}", fg = "${colors.sapphire.hex}" },
+    { url = "*/", fg = "${colors.helios.mauve.hex}", bold = true },
+    { url = "*", is = "link", fg = "${colors.helios.sky.hex}", italic = true },
+    { url = "*", is = "exec", fg = "${colors.helios.green.hex}", bold = true },
+    { mime = "image/*", fg = "${colors.helios.peach.hex}" },
+    { mime = "video/*", fg = "${colors.helios.red.hex}" },
+    { mime = "audio/*", fg = "${colors.helios.yellow.hex}" },
+    { url = "*.{zip,tar,tar.gz,rar,7z}", fg = "${colors.helios.maroon.hex}" },
+    { url = "*.{pdf,doc,docx,txt,md,rtf}", fg = "${colors.helios.text.hex}" },
+    { url = "*.{rs,java,js,ts,jsx,tsx,py,go,nix,lock,lua,toml,json,jsonc,c,h,cpp,hpp}", fg = "${colors.helios.sapphire.hex}" },
   ]
 
   [spot]
-  border = { fg = "${colors.mauve.hex}" }
-  title  = { fg = "${colors.mauve.hex}" }
-  tbl_cell = { fg = "${colors.mauve.hex}", reversed = true }
+  border = { fg = "${colors.helios.mauve.hex}" }
+  title  = { fg = "${colors.helios.mauve.hex}" }
+  tbl_cell = { fg = "${colors.helios.mauve.hex}", reversed = true }
   tbl_col = { bold = true }
 
   [icon]
   files = [
-    { name = "dockerfile", text = "󰡨", fg = "${colors.blue.hex}" },
-    { name = ".gitignore", text = "", fg = "${colors.peach.hex}" },
-    { name = ".gitconfig", text = "", fg = "${colors.peach.hex}" },
-    { name = "package.json", text = "", fg = "${colors.red.hex}" },
-    { name = "Cargo.toml", text = "", fg = "${colors.peach.hex}" },
-    { name = "go.mod", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "makefile", text = "", fg = "${colors.overlay1.hex}" },
-    { name = "Dockerfile", text = "󰡨", fg = "${colors.blue.hex}" },
-    { name = ".dockerignore", text = "󰡨", fg = "${colors.blue.hex}" },
-    { name = ".env", text = "", fg = "${colors.yellow.hex}" },
-    { name = ".zshrc", text = "", fg = "${colors.green.hex}" },
-    { name = ".bashrc", text = "💠", fg = "${colors.green.hex}" },
-    { name = "readme.md", text = "󰂺", fg = "${colors.rosewater.hex}" },
-    { name = "license.md", text = "", fg = "${colors.yellow.hex}" },
-    { name = "license", text = "", fg = "${colors.yellow.hex}" },
+    { name = "dockerfile", text = "󰡨", fg = "${colors.helios.blue.hex}" },
+    { name = ".gitignore", text = "", fg = "${colors.helios.peach.hex}" },
+    { name = ".gitconfig", text = "", fg = "${colors.helios.peach.hex}" },
+    { name = "package.json", text = "", fg = "${colors.helios.red.hex}" },
+    { name = "Cargo.toml", text = "", fg = "${colors.helios.peach.hex}" },
+    { name = "go.mod", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "makefile", text = "", fg = "${colors.helios.overlay1.hex}" },
+    { name = "Dockerfile", text = "󰡨", fg = "${colors.helios.blue.hex}" },
+    { name = ".dockerignore", text = "󰡨", fg = "${colors.helios.blue.hex}" },
+    { name = ".env", text = "", fg = "${colors.helios.yellow.hex}" },
+    { name = ".zshrc", text = "", fg = "${colors.helios.green.hex}" },
+    { name = ".bashrc", text = "💠", fg = "${colors.helios.green.hex}" },
+    { name = "readme.md", text = "󰂺", fg = "${colors.helios.rosewater.hex}" },
+    { name = "license.md", text = "", fg = "${colors.helios.yellow.hex}" },
+    { name = "license", text = "", fg = "${colors.helios.yellow.hex}" },
       ]
 
   exts = [
 
-    { name = "rs", text = "", fg = "${colors.peach.hex}" },
-    { name = "go", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "nix", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "lua", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "py", text = "", fg = "${colors.yellow.hex}" },
-    { name = "toml", text = "", fg = "${colors.surface2.hex}" },
-    { name = "java", text = "", fg = "${colors.red.hex}" },
-    { name = "md", text = "", fg = "${colors.text.hex}" },
+    { name = "rs", text = "", fg = "${colors.helios.peach.hex}" },
+    { name = "go", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "nix", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "lua", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "py", text = "", fg = "${colors.helios.yellow.hex}" },
+    { name = "toml", text = "", fg = "${colors.helios.surface2.hex}" },
+    { name = "java", text = "", fg = "${colors.helios.red.hex}" },
+    { name = "md", text = "", fg = "${colors.helios.text.hex}" },
 
-    { name = "js", text = "", fg = "${colors.yellow.hex}" },
-    { name = "ts", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "jsx", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "tsx", text = "", fg = "${colors.surface2.hex}" },
+    { name = "js", text = "", fg = "${colors.helios.yellow.hex}" },
+    { name = "ts", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "jsx", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "tsx", text = "", fg = "${colors.helios.surface2.hex}" },
 
-    { name = "json", text = "", fg = "${colors.yellow.hex}" },
-    { name = "jsonc", text = "", fg = "${colors.yellow.hex}" },
+    { name = "json", text = "", fg = "${colors.helios.yellow.hex}" },
+    { name = "jsonc", text = "", fg = "${colors.helios.yellow.hex}" },
     
-    { name = "c", text = "", fg = "${colors.blue.hex}" },
-    { name = "cpp", text = "", fg = "${colors.sapphire.hex}" },
-    { name = "h", text = "", fg = "${colors.overlay1.hex}" },
-    { name = "hpp", text = "", fg = "${colors.overlay1.hex}" },
+    { name = "c", text = "", fg = "${colors.helios.blue.hex}" },
+    { name = "cpp", text = "", fg = "${colors.helios.sapphire.hex}" },
+    { name = "h", text = "", fg = "${colors.helios.overlay1.hex}" },
+    { name = "hpp", text = "", fg = "${colors.helios.overlay1.hex}" },
     
-    { name = "txt", text = "󰈙", fg = "${colors.green.hex}" },
-    { name = "pdf", text = "󰈛", fg = "${colors.surface2.hex}" },
-    { name = "doc", text = "󰈙", fg = "${colors.surface2.hex}" },
-    { name = "docx", text = "󰈙", fg = "${colors.surface2.hex}" },
+    { name = "txt", text = "󰈙", fg = "${colors.helios.green.hex}" },
+    { name = "pdf", text = "󰈛", fg = "${colors.helios.surface2.hex}" },
+    { name = "doc", text = "󰈙", fg = "${colors.helios.surface2.hex}" },
+    { name = "docx", text = "󰈙", fg = "${colors.helios.surface2.hex}" },
 
-    { name = "zip", text = "󰗄", fg = "${colors.peach.hex}" },
-    { name = "tar", text = "󰗄", fg = "${colors.peach.hex}" },
-    { name = "gz", text = "󰗄", fg = "${colors.peach.hex}" },
-    { name = "rar", text = "󰗄", fg = "${colors.peach.hex}" },
-    { name = "7z", text = "󰗄", fg = "${colors.peach.hex}" },
+    { name = "zip", text = "󰗄", fg = "${colors.helios.peach.hex}" },
+    { name = "tar", text = "󰗄", fg = "${colors.helios.peach.hex}" },
+    { name = "gz", text = "󰗄", fg = "${colors.helios.peach.hex}" },
+    { name = "rar", text = "󰗄", fg = "${colors.helios.peach.hex}" },
+    { name = "7z", text = "󰗄", fg = "${colors.helios.peach.hex}" },
 
-    { name = "png", text = "", fg = "${colors.overlay1.hex}" },
-    { name = "jpg", text = "", fg = "${colors.overlay1.hex}" },
-    { name = "jpeg", text = "", fg = "${colors.overlay1.hex}" },
-    { name = "gif", text = "", fg = "${colors.overlay1.hex}" },
+    { name = "png", text = "", fg = "${colors.helios.overlay1.hex}" },
+    { name = "jpg", text = "", fg = "${colors.helios.overlay1.hex}" },
+    { name = "jpeg", text = "", fg = "${colors.helios.overlay1.hex}" },
+    { name = "gif", text = "", fg = "${colors.helios.overlay1.hex}" },
 
-    { name = "mp3", text = "󰎙", fg = "${colors.sapphire.hex}" },
-    { name = "wav", text = "󰎙", fg = "${colors.sapphire.hex}" },
-    { name = "flac", text = "󰎙", fg = "${colors.overlay0.hex}" },
+    { name = "mp3", text = "󰎙", fg = "${colors.helios.sapphire.hex}" },
+    { name = "wav", text = "󰎙", fg = "${colors.helios.sapphire.hex}" },
+    { name = "flac", text = "󰎙", fg = "${colors.helios.overlay0.hex}" },
 
-    { name = "svg", text = "󰜡", fg = "${colors.peach.hex}" },
-    { name = "mp4", text = "󰕧", fg = "${colors.peach.hex}" },
-    { name = "mkv", text = "󰕧", fg = "${colors.peach.hex}" },
-    { name = "avi", text = "󰕧", fg = "${colors.peach.hex}" },
-    { name = "html", text = "󰌝", fg = "${colors.peach.hex}" },
+    { name = "svg", text = "󰜡", fg = "${colors.helios.peach.hex}" },
+    { name = "mp4", text = "󰕧", fg = "${colors.helios.peach.hex}" },
+    { name = "mkv", text = "󰕧", fg = "${colors.helios.peach.hex}" },
+    { name = "avi", text = "󰕧", fg = "${colors.helios.peach.hex}" },
+    { name = "html", text = "󰌝", fg = "${colors.helios.peach.hex}" },
 
-    { name = "css", text = "󰌟", fg = "${colors.blue.hex}" },
-    { name = "scss", text = "󰟬", fg = "${colors.red.hex}" },
-    { name = "sass", text = "󰟬", fg = "${colors.red.hex}" },
+    { name = "css", text = "󰌟", fg = "${colors.helios.blue.hex}" },
+    { name = "scss", text = "󰟬", fg = "${colors.helios.red.hex}" },
+    { name = "sass", text = "󰟬", fg = "${colors.helios.red.hex}" },
 
-    { name = "yaml", text = "󰈙", fg = "${colors.overlay1.hex}" },
-    { name = "yml", text = "󰈙", fg = "${colors.overlay1.hex}" },
-    { name = "xml", text = "󰗀", fg = "${colors.peach.hex}" },
+    { name = "yaml", text = "󰈙", fg = "${colors.helios.overlay1.hex}" },
+    { name = "yml", text = "󰈙", fg = "${colors.helios.overlay1.hex}" },
+    { name = "xml", text = "󰗀", fg = "${colors.helios.peach.hex}" },
 
-    { name = "sh", text = "󰨊", fg = "${colors.surface2.hex}" },
-    { name = "bash", text = "󰨊", fg = "${colors.green.hex}" },
-    { name = "zsh", text = "󰨊", fg = "${colors.green.hex}" },
-    { name = "fish", text = "󰈙", fg = "${colors.surface2.hex}" },
+    { name = "sh", text = "󰨊", fg = "${colors.helios.surface2.hex}" },
+    { name = "bash", text = "󰨊", fg = "${colors.helios.green.hex}" },
+    { name = "zsh", text = "󰨊", fg = "${colors.helios.green.hex}" },
+    { name = "fish", text = "󰈙", fg = "${colors.helios.surface2.hex}" },
 
-    { name = "rb", text = "󰴭", fg = "${colors.surface0.hex}" },
-    { name = "php", text = "󰌟", fg = "${colors.overlay1.hex}" },
-    { name = "swift", text = "󰛦", fg = "${colors.peach.hex}" },
-    { name = "kt", text = "󱈙", fg = "${colors.overlay0.hex}" },
-    { name = "scala", text = "󰘧", fg = "${colors.red.hex}" },
-    { name = "vue", text = "󰡄", fg = "${colors.green.hex}" },
-    { name = "svelte", text = "󰗄", fg = "${colors.peach.hex}" },
-    { name = "astro", text = "󰌎", fg = "${colors.red.hex}" },
-    { name = "zig", text = "󰡪", fg = "${colors.peach.hex}" },
+    { name = "rb", text = "󰴭", fg = "${colors.helios.surface0.hex}" },
+    { name = "php", text = "󰌟", fg = "${colors.helios.overlay1.hex}" },
+    { name = "swift", text = "󰛦", fg = "${colors.helios.peach.hex}" },
+    { name = "kt", text = "󱈙", fg = "${colors.helios.overlay0.hex}" },
+    { name = "scala", text = "󰘧", fg = "${colors.helios.red.hex}" },
+    { name = "vue", text = "󰡄", fg = "${colors.helios.green.hex}" },
+    { name = "svelte", text = "󰗄", fg = "${colors.helios.peach.hex}" },
+    { name = "astro", text = "󰌎", fg = "${colors.helios.red.hex}" },
+    { name = "zig", text = "󰡪", fg = "${colors.helios.peach.hex}" },
 
-    { name = "sql", text = "󰆄", fg = "${colors.rosewater.hex}" },
-    { name = "db", text = "󰆄", fg = "${colors.rosewater.hex}" },
-    { name = "sqlite", text = "󰆄", fg = "${colors.rosewater.hex}" },
+    { name = "sql", text = "󰆄", fg = "${colors.helios.rosewater.hex}" },
+    { name = "db", text = "󰆄", fg = "${colors.helios.rosewater.hex}" },
+    { name = "sqlite", text = "󰆄", fg = "${colors.helios.rosewater.hex}" },
 
-    { name = "r", text = "󰟔", fg = "${colors.overlay0.hex}" },
-    { name = "rproj", text = "󰗆", fg = "${colors.green.hex}" },
-    { name = "lock", text = "󰌾", fg = "${colors.peach.hex}" },
+    { name = "r", text = "󰟔", fg = "${colors.helios.overlay0.hex}" },
+    { name = "rproj", text = "󰗆", fg = "${colors.helios.green.hex}" },
+    { name = "lock", text = "󰌾", fg = "${colors.helios.peach.hex}" },
   ]
 
   [syntax]
