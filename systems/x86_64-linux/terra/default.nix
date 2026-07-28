@@ -190,7 +190,7 @@
       ];
       sslCertificate = "/etc/tailscale-certs/fullchain.pem";
       sslCertificateKey = "/etc/tailscale-certs/privkey.pem";
-      forceSSL = false; # We ARE the TLS endpoint
+      forceSSL = false;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9091";
         proxyWebsockets = true;
@@ -201,8 +201,20 @@
           proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
+      extraConfig = ''
+        ssl_certificate /etc/tailscale-certs/fullchain.pem;
+        ssl_certificate_key /etc/tailscale-certs/privkey.pem;
+      '';
     };
   };
+
+  # Ensure nginx log files are owned by the nginx user.
+  # LogsDirectory=nginx creates the directory correctly, but files inside
+  # can end up owned by root from prior runs. This fixes them before
+  # nginx drops privileges.
+  systemd.services.nginx.preStart = lib.mkAfter ''
+    chown nginx:nginx /var/log/nginx/access.log 2>/dev/null || true
+  '';
 
   # Navidrome: enable TLS with Tailscale certs
   services.navidrome.settings = {
