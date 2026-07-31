@@ -1,110 +1,29 @@
-[
-  [
-    "redDark",
-    "#cc241d"
-  ],
-  [
-    "redLight",
-    "#fb4934"
-  ],
-  [
-    "orangeDark",
-    "#d65d0e"
-  ],
-  [
-    "orangeLight",
-    "#fe8019"
-  ],
-  [
-    "yellowDark",
-    "#d79921"
-  ],
-  [
-    "yellowLight",
-    "#fabd2f"
-  ],
-  [
-    "greenDark",
-    "#98971a"
-  ],
-  [
-    "greenLight",
-    "#b8bb26"
-  ],
-  [
-    "aquaDark",
-    "#689d6a"
-  ],
-  [
-    "aquaLight",
-    "#8ec07c"
-  ],
-  [
-    "blueDark",
-    "#458588"
-  ],
-  [
-    "blueLight",
-    "#83a598"
-  ],
-  [
-    "purpleDark",
-    "#b16286"
-  ],
-  [
-    "purpleLight",
-    "#d3869b"
-  ],
-  [
-    "background0_h",
-    "#1d2021"
-  ],
-  [
-    "background0",
-    "#282828"
-  ],
-  [
-    "background0_s",
-    "#32302f"
-  ],
-  [
-    "background1",
-    "#3c3836"
-  ],
-  [
-    "background2",
-    "#504945"
-  ],
-  [
-    "background3",
-    "#665c54"
-  ],
-  [
-    "background4",
-    "#7c6f64"
-  ],
-  [
-    "gray",
-    "#928374"
-  ],
-  [
-    "foreground4",
-    "#a89984"
-  ],
-  [
-    "foreground3",
-    "#bdae93"
-  ],
-  [
-    "foreground2",
-    "#d5c4a1"
-  ],
-  [
-    "foreground1",
-    "#ebdbb2"
-  ],
-  [
-    "foreground0",
-    "#fbf1c7"
-  ]
-]
+{
+  "redDark":        { "hex": "#cc241d" },
+  "redLight":       { "hex": "#fb4934" },
+  "orangeDark":     { "hex": "#d65d0e" },
+  "orangeLight":    { "hex": "#fe8019" },
+  "yellowDark":     { "hex": "#d79921" },
+  "yellowLight":    { "hex": "#fabd2f" },
+  "greenDark":      { "hex": "#98971a" },
+  "greenLight":     { "hex": "#b8bb26" },
+  "aquaDark":       { "hex": "#689d6a" },
+  "aquaLight":      { "hex": "#8ec07c" },
+  "blueDark":       { "hex": "#458588" },
+  "blueLight":      { "hex": "#83a598" },
+  "purpleDark":     { "hex": "#b16286" },
+  "purpleLight":    { "hex": "#d3869b" },
+  "background0_h":  { "hex": "#1d2021" },
+  "background0":    { "hex": "#282828" },
+  "background0_s":  { "hex": "#32302f" },
+  "background1":    { "hex": "#3c3836" },
+  "background2":    { "hex": "#504945" },
+  "background3":    { "hex": "#665c54" },
+  "background4":    { "hex": "#7c6f64" },
+  "gray":           { "hex": "#928374" },
+  "foreground4":    { "hex": "#a89984" },
+  "foreground3":    { "hex": "#bdae93" },
+  "foreground2":    { "hex": "#d5c4a1" },
+  "foreground1":    { "hex": "#ebdbb2" },
+  "foreground0":    { "hex": "#fbf1c7" }
+}
