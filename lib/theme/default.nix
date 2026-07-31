@@ -171,7 +171,6 @@ let
   renderFontFace =
     f:
     let
-      d = f.dir or "";
       woff2Dir =
         if f ? dirWoff2 then
           f.dirWoff2
@@ -235,7 +234,12 @@ rec {
   # e.g. colors.helios.red.hex, colors.gruvbox-dark.redDark.hex
   colors =
     let
-      inherit (builtins) readDir match attrNames foldl' fromJSON readFile;
+      inherit (builtins)
+        readDir
+        match
+        fromJSON
+        readFile
+        ;
       dirContents = readDir ./colors;
       jsonFiles = lib.filterAttrs (
         name: type: type == "regular" && lib.strings.hasSuffix ".json" name
@@ -246,20 +250,19 @@ rec {
           m = match "(.*)\\.json" name;
         in
         if m == null then name else builtins.head m;
-      processPalette = name: rawPairs: {
-        inherit name;
-        value = builtins.listToAttrs (
-          map (pair: {
-            name = builtins.head pair;
-            value = mkColor (builtins.elemAt pair 1);
-          }) rawPairs
-        );
-      };
-      paletteEntries = map (
-        name: processPalette (stripExt name) (fromJSON (readFile (./colors + "/${name}")))
-      ) (attrNames jsonFiles);
+      processPalette = colorSet: builtins.mapAttrs (colorName: colorData: mkColor colorData.hex) colorSet;
     in
-    builtins.listToAttrs paletteEntries;
+    lib.mapAttrs' (
+      name: _:
+      let
+        palette = stripExt name;
+      in
+      {
+        name = palette;
+        value = processPalette (fromJSON (readFile (./colors + "/${name}")));
+      }
+    ) jsonFiles;
+
   # Auto-import all image files from ./wallpapers/ as wallpapers.<name>
   wallpapers =
     let
@@ -292,5 +295,4 @@ rec {
     foldl' (acc: name: acc // { "${stripExt name}" = ./wallpapers + "/${name}"; }) { } (
       attrNames imageFiles
     );
-
 }
