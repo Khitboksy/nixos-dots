@@ -14,21 +14,28 @@ let
   fontCss = config.rice._fontsCss;
 
   # Theme CSS -- load only the single selected theme
-  themeCss = (import ./themes/generate.nix) { inherit lib; theme = cfg.theme; };
+  themeCss = (import ./themes/generate.nix) {
+    inherit lib;
+    theme = cfg.theme;
+  };
 
   # Combined CSS string injected into both GTK3 and GTK4
   gtkCss = lib.strings.concatStringsSep "\n\n" (
-    builtins.filter (s: s != "") [ fontCss themeCss ]
+    builtins.filter (s: s != "") [
+      fontCss
+      themeCss
+    ]
   );
 in
 {
   options.rice.gtk = with types; {
     enable = mkBoolOpt false "Enable GTK Customization";
-    theme  = mkStringOpt "Helios" "GTK theme name (selects from ./themes/)";
+    theme = mkStringOpt "Helios" "GTK theme name (selects from ./themes/)";
   };
 
   config = mkIf cfg.enable {
     home.pointerCursor = {
+      enable = true;
       name = "catppuccin-mocha-mauve-cursors";
       package = pkgs.catppuccin-cursors.mochaMauve;
       gtk.enable = true;
