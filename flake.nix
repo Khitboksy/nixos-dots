@@ -72,6 +72,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    palette = {
+      url = "path:/home/helios/repos/palette-tui";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     inputs:

@@ -2,10 +2,12 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
+  home = config.home.homeDirectory;
 in
 {
   # Custom Home-Manager Modules located in ../../../modules/home/*
@@ -29,6 +31,16 @@ in
         tmux.enable = true;
         yazi.enable = true;
         cava.enable = true;
+        palette = {
+          enable = true;
+          defaultDir = "${home}/builds/lib/theme/colors";
+          extraDirs = [
+            "${home}/repos/palette-tui/palettes"
+          ];
+          dirFormats = {
+            "${home}/builds/lib/theme/colors" = [ "hex" ];
+          };
+        };
       };
     };
 

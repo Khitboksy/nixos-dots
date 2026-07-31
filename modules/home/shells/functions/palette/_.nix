@@ -83,7 +83,7 @@ in
   '';
 
   # ── Tmux three-pane layout ──
-  palette = ''
+  _backup-palette = ''
     # If not in tmux, spawn a dedicated tmux session
     if not set -q TMUX
       set -l pal_src (status filename 2>/dev/null)

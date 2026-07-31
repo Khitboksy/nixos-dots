@@ -11,22 +11,21 @@ rec {
   mkOpt' = type: default: mkOpt type default null;
 
   mkBoolOpt = mkOpt types.bool;
-
   mkBoolOpt' = mkOpt' types.bool;
 
   mkStringOpt = mkOpt types.str;
-
   mkStringOpt' = mkOpt' types.str;
 
   mkIntOpt = mkOpt types.int;
-
   mkIntOpt' = mkOpt' types.int;
 
   mkStringListOpt = mkOpt (types.listOf types.str);
 
   mkPathOpt = mkOpt types.path;
-
   mkPathOpt' = mkOpt' types.path;
+
+  mkAttrOpt = mkOpt types.attrs;
+  mkAttrOpt' = mkOpt' types.attrs;
 
   mkEnumOpt =
     values: default: description:
