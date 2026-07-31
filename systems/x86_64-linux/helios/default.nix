@@ -218,6 +218,7 @@ in
       swaybg
       xwayland-satellite
       python3Packages.youtube-transcript-api
+      proton-vpn
       inputs.img2key.packages."${system}".default
     ];
   };
