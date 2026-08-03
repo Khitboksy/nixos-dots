@@ -56,18 +56,6 @@ to be held on to, instead of logging it you can add it here.
 **Directory Tree Rules**: You should adhere some form of directory tree based
 organization for this directory
 
-`./scripts`:
-**Uses**: If you ever need to to create a script, always place it here.
-**Directory Tree Rules**: You should adhere to some form of directory tree based
-organization for this directory, so important/generalized scripts are easier to find,
-and niche/oneoff scripts are still easy to find, but out of the way.
-
-`./tmp`:
-**Uses**: Its your own `/tmp` and you should treat it as such.
-**Directory Tree Rules**: Anything you would have put in `/tmp/` needs to go here instead.
-
-**Always follow this order:**
-
 ### IMPORTANT
 
 - Agents have "ask only" permissions outside the filesystem tool's "allowed directories":
