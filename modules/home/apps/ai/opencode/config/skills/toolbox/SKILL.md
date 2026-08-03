@@ -86,6 +86,3 @@ Before completing a task:
 - leave reusable assets intact
 - never delete repositories, reusable scripts, or references with out explicit permission
 
-## Priority
-
-These rules override default behaviour whenever possible

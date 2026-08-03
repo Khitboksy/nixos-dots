@@ -23,39 +23,6 @@ permission:
 
 ## Workflow
 
-### Toolbox
-
-`/var/opencode` contains what i would call your "toolbox".
-It's a persistent directory outside of userspace that you can use to
-to do anything youd need to do in `/tmp/`. It has a pre-defined organizational structure:
-
-`./clones/`:
-**Uses**: If you ever need to clone a repo, always use this directory.
-**Directory Tree Rules**:
-
-- codeberg/
-  - codebergUsername/
-    - repoName/*
-- forgejo/
-  - forgejoUsername/
-    - repoName/*
-- github/
-  - githubUsername/
-    - repoName/*
-
-*Always* adhere to this structure of `site/user/repo/*`
-
-`./logs/`:
-*Uses*: If you ever need something to output logs, this is the directory you do it in to avoid
-polutting the userspace `/tmp` with junk.
-**Directory Tree Rules**: You can organize this however you please.
-
-`./references`:
-**Uses**: If you ever find something important important in the moment that needs
-to be held on to, instead of logging it you can add it here.
-**Directory Tree Rules**: You should adhere some form of directory tree based
-organization for this directory
-
 ### IMPORTANT
 
 - Agents have "ask only" permissions outside the filesystem tool's "allowed directories":
