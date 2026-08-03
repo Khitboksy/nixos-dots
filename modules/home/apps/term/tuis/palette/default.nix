@@ -1,7 +1,5 @@
 {
-  pkgs,
   lib,
-  inputs,
   config,
   ...
 }:
@@ -15,7 +13,7 @@ in
 
 {
   options.apps.term.tuis.palette = with types; {
-    enable = mkBoolOpt' true;
+    enable = mkBoolOpt' false;
 
     defaultDir = mkPathOpt null "Pick the default palette to open";
     themeFile = mkStringOpt "theme.json" ''
@@ -36,5 +34,19 @@ in
       dirFormats = cfg.dirFormats;
     };
 
+    # Add mod+p to niri binds to spawn palette
+    wayland.windowManager.niri.settings.binds = {
+      "Mod+P" = {
+        spawn = [
+          "kitty"
+          "--class"
+          "kitty-palette"
+          "--title"
+          "palette"
+          "-e"
+          "palette"
+        ];
+      };
+    };
   };
 }

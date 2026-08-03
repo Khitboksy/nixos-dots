@@ -20,6 +20,16 @@ in
 
   config = mkIf cfg.enable {
 
+    wayland.windowManager.niri.settings.binds = {
+      "Mod+D" = {
+        spawn = [
+          "fish"
+          "-c"
+          "rofi -show drun"
+        ];
+      };
+    };
+
     programs.rofi = {
       enable = true;
       package = pkgs.rofi;

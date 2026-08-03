@@ -1,16 +1,6 @@
 {
 
   binds = {
-    "Mod+Return" = {
-      spawn = "kitty-launcher";
-    };
-    "Mod+D" = {
-      spawn = [
-        "fish"
-        "-c"
-        "rofi -show drun"
-      ];
-    };
     "Mod+Z" = {
       spawn = "zen";
     };
@@ -317,18 +307,6 @@
     };
     "Mod+Shift+End" = {
       power-off-monitors = [ ];
-    };
-
-    "Mod+P" = {
-      spawn = [
-        "kitty"
-        "--class"
-        "kitty-palette"
-        "--title"
-        "palette"
-        "-e"
-        "palette"
-      ];
     };
   };
 }

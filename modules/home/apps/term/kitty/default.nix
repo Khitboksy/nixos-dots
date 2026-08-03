@@ -147,5 +147,12 @@ in
         "x-scheme-handler/terminal"
       ];
     };
+
+    # Add mod+return to niri binds to spawn the kitty launcher
+    wayland.windowManager.niri.settings.binds = {
+      "Mod+Return" = {
+        spawn = "kitty-launcher";
+      };
+    };
   };
 }
