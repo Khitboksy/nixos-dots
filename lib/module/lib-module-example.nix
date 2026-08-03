@@ -3,7 +3,10 @@
 # This example is purely documentation,
 # and is not referenced anywhere in the configuration.
 #
-# ALL /path/to/flake/modules/**/*.nix files are automatically
+# This is NOT a tutorial on how to use Snowfall-Lib. This is just a rundown of my rough styleguide
+# when creating modules.
+#
+# ALL /path/to/flake/modules/**/default.nix files are automatically
 # discovered and exposed to the flake via;
 #
 #     inputs.snowfall-lib.mkFlake {
@@ -12,16 +15,22 @@
 #
 #   - modules/nixos/**/default.nix for system modules.
 #   - modules/home/**/default.nix for home-manager modules.
-#   - modules/**/*.nix for in-module imports, like themes, or scripts.
+#
+#   - Files NOT named `default.nix` must be manually imported.
 #
 # ANY files untracked by the repo associated with this config, are *invisible*
-# to snowfall-lib, and will never be discovered. you need to `git add /path/to/file(s)/(changed|added|removed)`
+# to snowfall-lib, and will never be discovered. You need to st *laest* stage new files with git add
 
 {
   config,
   lib,
   pkgs,
-  # inputs, only needed for flake related modules
+  # inputs,  only needed for flake related modules
+  /*
+    you can also omit `pkgs` and add individual pkgs like:
+    cowsay,
+    kitty,
+  */
   ...
 }:
 
@@ -42,33 +51,14 @@ in
 {
 
   # Module options.
-  #   The only thing you should have to set in your config, is
-  #   `<module>.enable = true;`
-  #   All configuration is handled in the `config` block below, rather
-  #   than scattered across (possibly multiple) modules and config files.
   options.apps.term.cowsay = with types; {
-    # this could be;
-    #   inside ~/builds/homes/x86_64-linux/helios@helios/default.nix
-    #     options.apps.term.<programName>
-    #     options.apps.helpers.<programName>
-    #     options.services.<programName>
-    #
-    #   inside ~/builds/systems/x86_64-linux/helios/default.nix
-    #     options.protocols.wayland
-    #     options.services.<serviceName>
-    #       Note: Not all modules can be declared with the current convention
-    #       - Services like `greetd` run under a bare `config.greetd.enable=true`
-    #       instead of `config.services.greetd.enable=true` because they provide something
-    #       that conflicts with the intended name.
-    #       - greetd provides a `services.greetd`, so we cant name the module that, even though
-    #       we want the module inside /path/to/flake/modules/nixos/services/greetd.
-
     # Force the default boolean to be false.
     enable = mkBoolOpt false "Enable Cowsay";
     # Enable with <module>.enable=true; inside the respective
     # configuration file (systems/**/*.nix, or homes/**/*.nix)
     #
-    # - `string = mkStringOpt 10 "Whats the number for";`
+    #    value    option      default     description
+    # - `string = mkStringOpt "10" "Whats the number for";`
     # - `path = mkPathOpt /path/to/thing "Whats the path for";`
   };
 

@@ -33,8 +33,6 @@ rec {
 
   mkEnumOpt' = values: default: mkEnumOpt values default null;
 
-  isDarwin = pkgs: pkgs.stdenv.isDarwin;
-
   # Base graphical-session service unit. Apply with:
   #   systemd.user.services.<name> = mkGraphicalService { Unit.Description = "..."; Service.ExecStart = "..."; };
   mkGraphicalService = recursiveUpdate {
