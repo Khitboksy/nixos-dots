@@ -231,6 +231,8 @@ with pkgs;
             echo --force-with-lease
           case ff
             echo --force
+          case t
+            echo --tags
           case '*'
             echo $argv[1]
         end

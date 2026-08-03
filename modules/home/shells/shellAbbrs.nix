@@ -6,7 +6,7 @@
 
   git_abbr = {
     command = "git";
-    regex = "(a|m|o|f{1,2}|c|i|s|d|D|r|b|B|n|p|an)";
+    regex = "(a|m|o|f{1,2}|c|i|s|d|D|r|b|B|n|p|an|t)";
     function = "__fish_git_abbr_expand";
   };
 
@@ -23,6 +23,10 @@
 
   gc = {
     expansion = "git commit";
+  };
+
+  gt = {
+    expansion = "git tag";
   };
 
   gb = {
