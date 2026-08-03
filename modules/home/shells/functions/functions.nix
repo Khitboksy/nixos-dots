@@ -293,4 +293,3 @@ with pkgs;
   '';
 }
 // importDir ./mc-server { inherit pkgs lib; }
-// import ./palette/_.nix { inherit pkgs lib; }
