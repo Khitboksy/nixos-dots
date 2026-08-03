@@ -51,22 +51,51 @@ in
           "@mohak34/opencode-notifier@latest"
         ];
 
+        skills = {
+          toolbox = ./config/skills/toolbox;
+          repo-management = ./config/skills/repo-management;
+        };
+
         references = {
           builds = {
             path = "/home/helios/builds";
-            description = "NixOS flake configuration";
+            description = ''
+              NixOS flake configuration:
+              Contains the home/system config and modules for
+              uers and hosts, terra and helios
+            '';
           };
           repos = {
             path = "/home/helios/repos";
-            description = "Git repos for personal projects";
+            description = ''
+              Git repos for personal projects:
+              Git rules apply, like no staging with-out permission,
+              no creating comits, and asking to create branches before
+              doing so.
+            '';
           };
           notes = {
-            path = "/home/helios/notes/helios";
-            description = "Obsidian vault for notes and documentation";
+            path = "/home/helios/shared/notes/helios";
+            description = ''
+              Obsidian vault for notes and documentation:
+              Sorted by <group>/<item>.md
+            '';
           };
           src = {
             path = "/home/helios/src";
-            description = "Repos that dont belong to us, organized as 'username/repo'";
+            description = ''
+              Repos that dont belong to us, organized as 'username/repo'
+              Git rules are even more strict, with git commands completely banned
+              unless requested
+            '';
+          };
+          toolbox = {
+            path = "/tmp/opencode";
+            description = ''
+              This is your personal toolbox.
+              It follows a semi-strict organizational structure to keep objects sepperated
+              Scripts, logging, git clones, and /tmp/ usage is done here instead
+            '';
           };
         };
 
