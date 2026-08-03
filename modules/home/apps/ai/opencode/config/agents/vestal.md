@@ -125,7 +125,7 @@ Returns: `{"table": "memories", "columns": [{"name": "id", "type": "INTEGER", ..
 - Return all matching results in the `{columns, values}` format
 - Do not filter or interpret — Minerva decides what's relevant
 - If the response is `{"error": "..."}`, report it to Minerva
-- **Always use `/tmp/opencode/`** for any temporary files (if you need them) — never `/tmp/` directly
+- **Always use `/var/opencode/tmp`** for any temporary files (if you need them) — never `/tmp/` directly
 
 ## Output Format
 
@@ -144,4 +144,3 @@ not just who did the work, as the log could be `minerva logged: user made X`.
 - If the `agent` column is `user`, say "user reported: ..." or "user did: ..."
 - If the `agent` column is `minerva`, say "minerva logged: ..." or "minerva created: ..."
 - For any other agent value, attribute to that agent by name.
-

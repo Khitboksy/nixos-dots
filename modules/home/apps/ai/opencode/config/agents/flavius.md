@@ -64,20 +64,20 @@ case "$POSITION" in
 esac
 
 # 2. Write entry to temp file
-cat > /tmp/opencode/entry.txt << 'ENDOFFILE'
+cat > /var/opencode/tmp/entry.txt << 'ENDOFFILE'
 ### YYYY-MM-DD HH:MM | CATEGORY | TAGS
 Content here...
 ENDOFFILE
 
 # 3. Insert after the section marker using awk
-tmp=$(mktemp /tmp/opencode/entry-XXXXXX)
-awk -v marker="$MARKER" -v entry="$(cat /tmp/opencode/entry.txt)" '
+tmp=$(mktemp /var/opencode/tmp/entry-XXXXXX)
+awk -v marker="$MARKER" -v entry="$(cat /var/opencode/tmp/entry.txt)" '
   $0 ~ marker { print; print ""; print entry; next }
   { print }
 ' /home/helios/shared/opencode/log/master.log > "$tmp" && mv "$tmp" /home/helios/shared/opencode/log/master.log
 
 # 4. Clean up
-rm -f /tmp/opencode/entry.txt
+rm -f /var/opencode/tmp/entry.txt
 ```
 
 ## Database
@@ -222,8 +222,8 @@ Response: `{"columns": ["id", "content", "created"], "values": [[1, "text", "202
 ## Important
 
 - **NEVER include `agent` in the SQL** — it is auto-injected from the `agent` parameter
-- **Always use `/tmp/opencode/` for temporary files** — never write to `/tmp/`
-  directly. /tmp/opencode is in the allowed directories; `/tmp/` is not.
+- **Always use `/var/opencode/tmp` for temporary files** — never write to `/tmp/`
+  directly. `/var/opencode` is in the allowed directories; `/tmp/` is not.
   The insertion scripts in this prompt already follow this rule — maintain it.
 - Always write to BOTH master log AND memory DB (same data, different format)
 - Check for duplicates before writing
@@ -248,4 +248,3 @@ When done, return:
 - **Master log**: position where written (TOP/MID/BOTTOM)
 - **DB**: category and response status
 - **Summary**: brief one-line of what was logged
-

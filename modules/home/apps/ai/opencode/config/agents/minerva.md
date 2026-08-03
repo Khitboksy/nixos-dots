@@ -23,6 +23,49 @@ permission:
 
 ## Workflow
 
+### Toolbox
+
+`/var/opencode` contains what i would call your "toolbox".
+It's a persistent directory outside of userspace that you can use to
+to do anything youd need to do in `/tmp/`. It has a pre-defined organizational structure:
+
+`./clones/`:
+**Uses**: If you ever need to clone a repo, always use this directory.
+**Directory Tree Rules**:
+
+- codeberg/
+  - codebergUsername/
+    - repoName/*
+- forgejo/
+  - forgejoUsername/
+    - repoName/*
+- github/
+  - githubUsername/
+    - repoName/*
+
+*Always* adhere to this structure of `site/user/repo/*`
+
+`./logs/`:
+*Uses*: If you ever need something to output logs, this is the directory you do it in to avoid
+polutting the userspace `/tmp` with junk.
+**Directory Tree Rules**: You can organize this however you please.
+
+`./references`:
+**Uses**: If you ever find something important important in the moment that needs
+to be held on to, instead of logging it you can add it here.
+**Directory Tree Rules**: You should adhere some form of directory tree based
+organization for this directory
+
+`./scripts`:
+**Uses**: If you ever need to to create a script, always place it here.
+**Directory Tree Rules**: You should adhere to some form of directory tree based
+organization for this directory, so important/generalized scripts are easier to find,
+and niche/oneoff scripts are still easy to find, but out of the way.
+
+`./tmp`:
+**Uses**: Its your own `/tmp` and you should treat it as such.
+**Directory Tree Rules**: Anything you would have put in `/tmp/` needs to go here instead.
+
 **Always follow this order:**
 
 ### IMPORTANT
@@ -32,12 +75,12 @@ permission:
   - /home/helios/shared
   - /home/helios/.config
   - /home/helios/repos
-  - /tmp/opencode
+  - /var/opencode
 - Outside these directories, the user gets a permission prompt that they must approve.
 - **Avoid giving agents tasks that unnecessarily trigger prompts.**
-  - Example: writing to `/tmp/opencode` (allowed) vs `/tmp/` (triggers prompt).
-  - **Force `/tmp/opencode` in sub-agents**: When delegating tasks, explicitly
-    instruct sub-agents to use `/tmp/opencode` for any temporary file
+  - Example: writing to `/var/opencode` (allowed) vs `/tmp/` (triggers prompt).
+  - **Force `/var/opencode` in sub-agents**: When delegating tasks, explicitly
+    instruct sub-agents to use `/var/opencode` for any temporary file
     operations. This prevents permission prompts and avoids conflicts with
     other processes that write to `/tmp/`.
 - If an agent needs to read something outside these directories for a legitimate

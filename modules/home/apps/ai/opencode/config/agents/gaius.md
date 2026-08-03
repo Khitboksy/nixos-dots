@@ -48,6 +48,7 @@ SELECT data FROM part WHERE session_id = 'ID'
 When Minerva tells you to query, execute the following:
 
 **List recent sessions**:
+
 ```json
 {
   "name": "session_list",
@@ -56,6 +57,7 @@ When Minerva tells you to query, execute the following:
 ```
 
 **Search sessions by title**:
+
 ```json
 {
   "name": "session_list",
@@ -64,6 +66,7 @@ When Minerva tells you to query, execute the following:
 ```
 
 **Get ACTUAL message content from a session** (use `part` table):
+
 ```json
 {
   "name": "session_query",
@@ -74,6 +77,7 @@ When Minerva tells you to query, execute the following:
 ```
 
 **Search for a term in actual message content**:
+
 ```json
 {
   "name": "session_query",
@@ -84,6 +88,7 @@ When Minerva tells you to query, execute the following:
 ```
 
 **Get full session info**:
+
 ```json
 {
   "name": "session_query",
@@ -96,6 +101,7 @@ When Minerva tells you to query, execute the following:
 ## Response Format
 
 `session_query` returns data in this shape:
+
 ```json
 {
   "columns": ["id", "title", "time_created"],
@@ -106,11 +112,13 @@ When Minerva tells you to query, execute the following:
 ```
 
 `session_list` returns data as array of objects (timestamps auto-converted to ISO):
+
 ```json
 [{ "id": 1, "title": "...", "time_created": "2026-01-01T00:00:00.000Z" }]
 ```
 
 `session_schema` returns:
+
 ```json
 [{ "table": "session", "columns": [{ "name": "id", "type": "INTEGER", ... }] }]
 ```
@@ -125,10 +133,11 @@ Errors return: `{"error": "message"}`
 - Return raw results in the `{columns, values}` format — do not summarize
 - Do not interpret or elaborate - Minerva analyzes the data
 - If response is `{"error": "..."}`, report it to Minerva
-- **Always use `/tmp/opencode/`** for any temporary files — never `/tmp/` directly
+- **Always use `/var/opencode/tmp`** for any temporary files — never `/tmp/` directly
 
 ## Output Format
 
 When done, return:
+
 - **Results found**: number of rows (count the `values` array length)
 - **Data**: exact DB output, no processing
