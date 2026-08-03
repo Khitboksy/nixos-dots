@@ -327,9 +327,7 @@
         "--title"
         "palette"
         "-e"
-        "sh"
-        "-c"
-        "tmux kill-session -t palette 2>/dev/null; exec tmux new-session -s palette fish -c palette"
+        "palette"
       ];
     };
   };
