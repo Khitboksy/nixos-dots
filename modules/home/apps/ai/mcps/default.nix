@@ -54,7 +54,7 @@ in
             "/home/helios/.config"
             "/home/helios/repos"
             "/home/helios/notes"
-            "/tmp/opencode"
+            "/var/opencode"
           ];
         };
 
@@ -134,7 +134,7 @@ in
           "/home/helios/shared"
           "/home/helios/.config"
           "/home/helios/repos"
-          "/tmp/opencode"
+          "/var/opencode"
         ] { })
 
         (mkStdio "github" "${pkgs.github-mcp-server}/bin/github-mcp-server" [ "stdio" "--read-only" ] { })
