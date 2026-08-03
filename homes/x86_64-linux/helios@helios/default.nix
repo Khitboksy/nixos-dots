@@ -35,7 +35,7 @@ in
           enable = true;
           defaultDir = "${home}/builds/lib/theme/colors";
           extraDirs = [
-            "${home}/repos/palette-tui/palettes"
+            # "${home}/repos/palette-tui/palettes"
           ];
           dirFormats = {
             "${home}/builds/lib/theme/colors" = [ "hex" ];

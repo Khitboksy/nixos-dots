@@ -98,6 +98,7 @@
         dms.homeModules.dank-material-shell
         noctalia.homeModules.default
         niri-nix.homeModules.default
+        palette.homeModules.default
       ];
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager

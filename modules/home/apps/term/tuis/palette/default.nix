@@ -11,15 +11,6 @@ with lib.custom;
 
 let
   cfg = config.apps.term.tuis.palette;
-  system = pkgs.stdenv.hostPlatform.system;
-  tomlFormat = pkgs.formats.toml { };
-  configValue = {
-    default_dir = cfg.defaultDir;
-    theme_palette = cfg.themeFile;
-    extra_dirs = cfg.extraDirs;
-    dir_formats = cfg.dirFormats;
-  };
-  tomlFile = tomlFormat.generate "palette-config.toml" configValue;
 in
 
 {
@@ -37,10 +28,13 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = [
-      inputs.palette.packages."${system}".default
-    ];
+    programs.palette = {
+      enable = true;
+      defaultDir = cfg.defaultDir;
+      themeFile = cfg.themeFile;
+      extraDirs = cfg.extraDirs;
+      dirFormats = cfg.dirFormats;
+    };
 
-    xdg.configFile."palette/config.toml".source = tomlFile;
   };
 }
