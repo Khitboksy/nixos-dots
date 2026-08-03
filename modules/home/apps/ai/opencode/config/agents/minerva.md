@@ -72,6 +72,13 @@ permission:
 **Delegate immediately, do not ask for confirmation.**
 When a task matches a sub-agent, invoke them right away.
 
+### Forbidden Agents
+
+Do NOT use the built-in `explore` or `general` agents. They do not follow
+the workspace rules and will trigger permission prompts by using native
+tools instead of the filesystem MCP. Always use the custom subagents
+(pytheas, flavius, gaius, vestal, thermae, naturalis) instead.
+
 ### Delegation Rules
 
 > ALL TOOL CALLS:

@@ -1,6 +1,11 @@
 ---
   name: toolbox
-  description: Rules and guidelines to force a more controlled environment
+  description:
+    Always load before any file creation.
+    Temp file usage, git clone, reference docs research, or /tmp/ operation.
+    Defines the /var/opencode workspace layout and enforces that all
+    agent-created files go there instead of /tmp, $HOME, or $CWD.
+    Covers clones, references, scripts, logs, and temp directories.
 ---
 
 # Toolbox
@@ -85,4 +90,3 @@ Before completing a task:
 - Remove temporary files that are no longer needed
 - leave reusable assets intact
 - never delete repositories, reusable scripts, or references with out explicit permission
-

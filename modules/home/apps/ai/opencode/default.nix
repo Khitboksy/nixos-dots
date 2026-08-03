@@ -51,11 +51,6 @@ in
           "@mohak34/opencode-notifier@latest"
         ];
 
-        skills = {
-          toolbox = ./config/skills/toolbox;
-          repo-management = ./config/skills/repo-management;
-        };
-
         references = {
           builds = {
             path = "/home/helios/builds";
@@ -140,6 +135,11 @@ in
 
       "opencode/plugins" = {
         source = ./config/plugins;
+        recursive = true;
+      };
+
+      "opencode/skills" = {
+        source = ./config/skills;
         recursive = true;
       };
 

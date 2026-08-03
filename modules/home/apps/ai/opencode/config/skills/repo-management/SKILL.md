@@ -1,6 +1,8 @@
 ---
   name: repo-management
-  description: Consistent management of cloned repositories
+  description: Always load before any git operation.
+    Clone, fetch, reset, or repository reuse.
+    Enforces /var/opencode/clones/host/owner/repo layout and prevents duplicate clones.
 ---
 
 # Repo-Management
