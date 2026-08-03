@@ -33,7 +33,10 @@ in
         cava.enable = true;
         palette = {
           enable = true;
-          defaultDir = "${home}/builds/lib/theme/colors";
+          default = {
+            dir = "${home}/builds/lib/theme/colors";
+            palette = "helios";
+          };
           extraDirs = [
             # "${home}/repos/palette-tui/palettes"
           ];

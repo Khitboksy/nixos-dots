@@ -15,7 +15,10 @@ in
   options.apps.term.tuis.palette = with types; {
     enable = mkBoolOpt' false;
 
-    defaultDir = mkPathOpt null "Pick the default palette to open";
+    default = {
+      dir = mkStringOpt null "Default palette directory to open on launch";
+      palette = mkStringOpt null "Optional default palette to open on launch";
+    };
     themeFile = mkStringOpt "theme.json" ''
       Can be either a file name (local to ~/.config/palette/themes)
       or absolute /home/helios/palette/test.json)
@@ -28,7 +31,10 @@ in
 
     programs.palette-tui = {
       enable = true;
-      defaultDir = cfg.defaultDir;
+      default = {
+        dir = cfg.default.dir;
+        palette = cfg.default.palette;
+      };
       themeFile = cfg.themeFile;
       extraDirs = cfg.extraDirs;
       dirFormats = cfg.dirFormats;

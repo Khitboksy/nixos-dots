@@ -540,11 +540,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785772616,
-        "narHash": "sha256-yW/HLo06g7w9KD3TCvOfxxWSuBTze5QTwzUaUbFa/gs=",
+        "lastModified": 1785794283,
+        "narHash": "sha256-UDrOt8sT0E2qP3vghQ5pH/2rgJ5F/TQS8rSGl8FSUt4=",
         "owner": "khitboksy",
         "repo": "palette-tui",
-        "rev": "f3a26a1ea27ec4209b80048fc6d3eb68811f3ac6",
+        "rev": "f08f87ba47de8bf29a3ef2f73c8fb14acc44a871",
         "type": "github"
       },
       "original": {
