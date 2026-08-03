@@ -73,7 +73,7 @@
     };
 
     palette = {
-      url = "path:/home/helios/repos/palette-tui";
+      url = "github:khitboksy/palette-tui";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

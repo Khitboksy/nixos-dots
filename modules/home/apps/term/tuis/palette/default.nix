@@ -26,7 +26,7 @@ in
 
   config = mkIf cfg.enable {
 
-    programs.palette = {
+    programs.palette-tui = {
       enable = true;
       defaultDir = cfg.defaultDir;
       themeFile = cfg.themeFile;

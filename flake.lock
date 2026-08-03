@@ -283,11 +283,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784107331,
-        "narHash": "sha256-10JcOKqkEAoICQMypwyZvOhL0gxxd+OVgOKgnfOGVCo=",
+        "lastModified": 1785289438,
+        "narHash": "sha256-D00eDU32/W3uE7SU3ASowZvtm52jS14+Rjd46GwyLHk=",
         "owner": "khitboksy",
         "repo": "img2key",
-        "rev": "60dcab6b347da060a97a90b144ddc63a1f9c3780",
+        "rev": "3e30d7d6ec28544bbb6feecb1287e2d3c67c0754",
         "type": "github"
       },
       "original": {
@@ -533,6 +533,26 @@
         "type": "github"
       }
     },
+    "palette": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785772616,
+        "narHash": "sha256-yW/HLo06g7w9KD3TCvOfxxWSuBTze5QTwzUaUbFa/gs=",
+        "owner": "khitboksy",
+        "repo": "palette-tui",
+        "rev": "f3a26a1ea27ec4209b80048fc6d3eb68811f3ac6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "khitboksy",
+        "repo": "palette-tui",
+        "type": "github"
+      }
+    },
     "rmpc": {
       "inputs": {
         "crane": "crane",
@@ -570,6 +590,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "noctalia": "noctalia",
         "odysseus": "odysseus",
+        "palette": "palette",
         "rmpc": "rmpc",
         "snowfall-lib": "snowfall-lib",
         "sops-nix": "sops-nix",
