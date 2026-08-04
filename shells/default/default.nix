@@ -1,11 +1,22 @@
 { pkgs, ... }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
-    nixfmt
+    # Nix
+    nixfmt-tree
     nixd
     statix
     deadnix
-    nixos-rebuild
+
+    # Lua
+    stylua
+    lua-language-server
+
+    # Web / config
+    prettierd
+    taplo
+    nodejs
+
+    # Build / deploy
     nh
     git
   ];
@@ -13,8 +24,9 @@ pkgs.mkShellNoCC {
   NH_FLAKE = "/home/helios/builds";
   shellHook = ''
     echo "builds dev environment"
-    echo "  formatter: nixfmt"
+    echo "  nix fmt: nixfmt-tree"
     echo "  lsp: nixd"
+    echo "  lint: statix, deadnix"
     echo "  build Helios: ns"
     echo "  build Terra: terra-depl"
   '';
