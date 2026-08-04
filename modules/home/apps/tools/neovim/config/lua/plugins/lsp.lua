@@ -1,14 +1,15 @@
 -- LSP configuration: nixd, lua_ls, conform
+-- Language servers and formatters are provided by dev shells, not neovim.
+-- nvim-lspconfig auto-detects servers on PATH, so it only activates
+-- when the relevant dev shell is active.
 return {
-  -- nixd LSP for Nix files
-  -- Minimal config to prevent multiple evaluations
+  -- nixd LSP for Nix files (provided by nix dev shell)
   {
     "neovim/nvim-lspconfig",
     ft = "nix",
     opts = {
       servers = {
         nixd = {
-          cmd = { "nixd" },
           settings = {
             nixd = {
               nixpkgs = {
@@ -57,7 +58,7 @@ return {
     },
   },
 
-  -- conform for formatting
+  -- conform for formatting (formatters provided by dev shells)
   {
     "stevearc/conform.nvim",
     opts = {

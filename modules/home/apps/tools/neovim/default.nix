@@ -68,6 +68,7 @@ in
         tree-sitter
         vscode-extensions.vadimcn.vscode-lldb.adapter
         markdownlint-cli2
+        lua-language-server
       ];
       initLua = ''
         local plugins = {
