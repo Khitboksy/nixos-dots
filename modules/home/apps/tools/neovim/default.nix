@@ -57,29 +57,17 @@ in
       withRuby = true;
       withPython3 = true;
       extraPackages = with pkgs; [
-        alejandra
-        nixfmt
-        prettierd
-        isort
-        stylua
-        rustywind
-        lua-language-server
-        vscode-json-languageserver
-        nixd
-        rust-analyzer
-        taplo
-        markdownlint-cli2
-        sqlfluff
+        # Global tools (always available)
         git
-        html-tidy
         fzf
         gcc
         nodejs
         fswatch
         sqlite
         postgresql
-        vscode-extensions.vadimcn.vscode-lldb.adapter
         tree-sitter
+        vscode-extensions.vadimcn.vscode-lldb.adapter
+        markdownlint-cli2
       ];
       initLua = ''
         local plugins = {
