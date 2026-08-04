@@ -15,9 +15,6 @@ return {
               nixpkgs = {
                 expr = "import <nixpkgs> { }",
               },
-              formatting = {
-                command = { "nixfmt" },
-              },
             },
           },
         },
@@ -63,7 +60,12 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
+        nix = { "nixfmt" },
+        rust = { "rustfmt" },
         lua = { "stylua" },
+        json = { "prettierd" },
+        yaml = { "prettierd" },
+        toml = { "taplo" },
         typescript = { "prettierd" },
         typescriptreact = { "prettierd" },
         javascriptreact = { "prettierd" },
@@ -72,7 +74,7 @@ return {
         css = { "prettierd" },
         scss = { "prettierd" },
         less = { "prettierd" },
-        htmlangular = { "prettierd" },
+        markdown = { "prettierd" },
       },
     },
   },
