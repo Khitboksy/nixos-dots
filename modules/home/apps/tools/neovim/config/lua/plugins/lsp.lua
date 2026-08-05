@@ -4,12 +4,18 @@
 -- when the relevant dev shell is active.
 return {
   -- nixd LSP for Nix files (provided by nix dev shell)
+  -- Formatting is handled by conform.nvim, not nixd
   {
     "neovim/nvim-lspconfig",
     ft = "nix",
     opts = {
       servers = {
+        -- Disable nil_ls (LazyVim default, we use nixd instead)
+        nil_ls = false,
         nixd = {
+          on_init = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+          end,
           settings = {
             nixd = {
               nixpkgs = {
@@ -60,7 +66,7 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        nix = { "nixfmt" },
+        nix = { "treefmt" },
         rust = { "rustfmt" },
         lua = { "stylua" },
         json = { "prettierd" },
