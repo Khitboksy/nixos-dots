@@ -24,6 +24,8 @@ in
         lastfm = {
           sopsFile = ../../../../secrets/lastfm;
           format = "binary";
+          owner = "helios";
+          mode = "0400";
         };
         git_mcp_pat = {
           sopsFile = ../../../../secrets/git_mcp_pat;
