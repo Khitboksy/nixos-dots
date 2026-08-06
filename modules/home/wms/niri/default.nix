@@ -23,7 +23,7 @@ in
 
     services.wallpaper = {
       enable = true;
-      paper = wallpapers.wall4;
+      paper = mkForce wallpapers.wall4;
     };
 
     home.packages = builtins.attrValues (importDir ./scripts { inherit pkgs; });
