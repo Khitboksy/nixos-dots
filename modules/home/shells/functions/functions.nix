@@ -1,12 +1,13 @@
 {
-  pkgs,
   lib,
+  yt-dlp,
+  ffmpeg,
+  openssh,
+  rsync,
   ...
 }:
 
 with lib;
-with lib.custom;
-with pkgs;
 
 {
   pf = ''
@@ -48,82 +49,6 @@ with pkgs;
         $argv
   '';
 
-  ytbulk = ''
-
-    set BASE_DIR /mnt/nix-data/media/music
-
-    read -P "How many directories would you like to create? " dir_count
-
-    if not string match -rq '^[0-9]+$' -- $dir_count
-        echo "Please enter a valid number."
-        return 1
-    end
-
-    set dirs
-    set links
-
-    for i in (seq 1 $dir_count)
-        read -P "Name/path for directory $i (relative to $BASE_DIR): " dir_name
-        set dirs $dirs $dir_name
-    end
-
-    for dir in $dirs
-        read -P "Enter YouTube link for $dir: " link
-        set links $links $link
-    end
-
-    echo ""
-    echo "========== CONFIRMATION =========="
-    echo "Media Type: $media_type"
-    echo "Base Directory: $BASE_DIR"
-    echo ""
-
-    for i in (seq 1 (count $dirs))
-        echo "Directory: $BASE_DIR/$dirs[$i]"
-        echo "Link:      $links[$i]"
-        echo ""
-    end
-
-    read -P "Proceed? (y/n): " confirm
-    if test "$confirm" != "y"
-        echo "Aborted."
-        return 0
-    end
-
-    # Ensure base directory exists
-    if not test -d "$BASE_DIR"
-        echo "Base directory $BASE_DIR does not exist."
-        return 1
-    end
-
-    for dir in $dirs
-        mkdir -p "$BASE_DIR/$dir"; or begin
-            echo "Failed creating $BASE_DIR/$dir"
-            return 1
-        end
-    end
-
-    for i in (seq 1 (count $dirs))
-        set target_dir "$BASE_DIR/$dirs[$i]"
-        set link "$links[$i]"
-
-        echo "Downloading into $target_dir..."
-
-        cd "$target_dir"; or begin
-            echo "Failed to enter $target_dir - skipping"
-            continue
-        end
-
-        ytmp3 $link
-
-        if test $status -ne 0
-          echo "Warning: Some items failed in $link - ignored"
-        end
-    end
-
-    echo ""
-    echo "All downloads complete."
-  '';
   jupiter = ''
     opencode attach "http://localhost:4096" $argv
   '';
@@ -157,6 +82,15 @@ with pkgs;
       echo "✓ all checks passed"
     end
   '';
+
+  nixdv = ''
+    nix develop $argv --command $SHELL
+  '';
+
+  nixsh = ''
+    nix shell $argv
+  '';
+
   give-terra = ''
         set -l usage "Usage: give-terra <source> <destination> [rsync flags...]
 
@@ -185,7 +119,7 @@ with pkgs;
         end
 
         echo "helios -> terra: $abs_src -> $dst"
-        rsync $rsync_opts "$abs_src" "helios@terra:$dst"
+        ${getExe rsync} $rsync_opts "$abs_src" "helios@terra:$dst"
 
         if test $status -eq 0
             echo "Transfer complete."
@@ -293,5 +227,15 @@ with pkgs;
         echo $argv[1]
     end
   '';
+
+  rmpc = with lib.custom; ''
+    timeout -k 1 3 stat /mnt/nix-data/media/music/.__rmpc_probe_(random) >/dev/null 2>&1
+    if test $status -eq 124
+      printf "${colors.helios.red.ansi}connection to mount failed: did you check tailscale?${ansiReset}\n"
+      return 1
+    end
+    command rmpc $argv
+  '';
 }
-// importDir ./mc-server { inherit pkgs lib; }
+// custom.importDir ./music { inherit ffmpeg yt-dlp; }
+// custom.importDir ./mc-server { inherit openssh rsync lib; }
