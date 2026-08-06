@@ -33,13 +33,13 @@ let
     existing=$(
       curl -sf http://127.0.0.1:7000/api/mcp/servers \
         2>/dev/null \
-      | ${pkgs.jq}/bin/jq -r '.[].name' 2>/dev/null \
+      | ${lib.getExe pkgs.jq} -r '.[].name' 2>/dev/null \
       || echo ""
     )
 
     echo "Odysseus MCP Setup: registering MCP servers..."
-    ${pkgs.jq}/bin/jq -c '.[]' ${mcpServerList} | while read -r server; do
-      name=$(echo "$server" | ${pkgs.jq}/bin/jq -r '.name // empty')
+    ${lib.getExe pkgs.jq} -c '.[]' ${mcpServerList} | while read -r server; do
+      name=$(echo "$server" | ${lib.getExe pkgs.jq} -r '.name // empty')
       [ -z "$name" ] && continue
 
       if echo "$existing" | grep -qxF "$name"; then
@@ -47,10 +47,10 @@ let
         continue
       fi
 
-      transport=$(echo "$server" | ${pkgs.jq}/bin/jq -r '.transport // "stdio"')
-      command=$(echo "$server" | ${pkgs.jq}/bin/jq -r '.command // empty')
-      args=$(echo "$server" | ${pkgs.jq}/bin/jq -c '.args // "[]"')
-      env=$(echo "$server" | ${pkgs.jq}/bin/jq -c '.env // "{}"')
+      transport=$(echo "$server" | ${lib.getExe pkgs.jq} -r '.transport // "stdio"')
+      command=$(echo "$server" | ${lib.getExe pkgs.jq} -r '.command // empty')
+      args=$(echo "$server" | ${lib.getExe pkgs.jq} -c '.args // "[]"')
+      env=$(echo "$server" | ${lib.getExe pkgs.jq} -c '.env // "{}"')
 
       echo "  registering ''${name}..."
       curl -sf -X POST http://127.0.0.1:7000/api/mcp/servers \
@@ -85,7 +85,7 @@ in
 
         Service = {
           Type = "simple";
-          ExecStart = "${odysseusPkg}/bin/odysseus";
+          ExecStart = "${lib.getExe odysseusPkg}";
           Restart = "on-failure";
           RestartSec = 5;
 
