@@ -1,8 +1,10 @@
-{ pkgs, lib }:
+{
+  lib,
+  ...
+}:
 
 with lib;
 with lib.custom;
-with pkgs;
 
 {
   mc-console = ''

@@ -1,12 +1,12 @@
-{ pkgs, lib }:
+{
+  openssh,
+  rsync,
+  lib,
+  ...
+}:
 
 with lib;
 with lib.custom;
-
-let
-  openssh = getExe pkgs.openssh;
-  rsync = getExe pkgs.rsync;
-in
 
 {
   mc-backup = ''
@@ -26,7 +26,7 @@ in
 
     switch "$flag"
       case list
-        ${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "ls -1 $remote_backup_dir" 2>/dev/null
+        ${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "ls -1 $remote_backup_dir" 2>/dev/null
         if test $status -ne 0
           printf "${colors.helios.yellow.ansi}⚠${ansiReset} ${colors.helios.text.ansi}Could not reach $remote_host. Checking local backups...${ansiReset}\n"
           ls "$backup_dir" 2>/dev/null; or printf "${colors.helios.text.ansi}No backups found.${ansiReset}\n"
@@ -72,7 +72,7 @@ in
 
         # Push off-machine backup to helios
         printf "${colors.helios.green.ansi}->${ansiReset} ${colors.helios.peach.ansi}Pushing backup to${ansiReset} ${colors.helios.blue.ansi}%s${ansiReset} ${colors.helios.text.ansi}...${ansiReset}\n" "$remote_host"
-        ${rsync} -az -e "${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
+        ${getExe rsync} -az -e "${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
         if test $status -eq 0
           printf "${colors.helios.green.ansi}✓${ansiReset} ${colors.helios.text.ansi}Off-machine backup complete.${ansiReset}\n"
         else
@@ -94,7 +94,7 @@ in
 
         # Try to pull from helios first
         printf "${colors.helios.green.ansi}->${ansiReset} ${colors.helios.peach.ansi}Fetching backup from${ansiReset} ${colors.helios.blue.ansi}$remote_host${ansiReset} ${colors.helios.text.ansi}...${ansiReset}\n"
-        ${rsync} -az -e "${openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$remote_user@$remote_host:$remote_backup_dir$restore_from" "$restore_path"
+        ${getExe rsync} -az -e "${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$remote_user@$remote_host:$remote_backup_dir$restore_from" "$restore_path"
         if test $status -eq 0
           set restored_remote 1
         else

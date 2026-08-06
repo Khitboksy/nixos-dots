@@ -1,9 +1,6 @@
-{ pkgs, lib }:
-
-with lib;
-with lib.custom;
-with pkgs;
-
+{
+  ...
+}:
 {
   mc-cmd = ''
     if test (count $argv) -lt 2
