@@ -164,6 +164,7 @@ fetch_for_plain() {
     echo "$lyrics"
   } >"$out_lrc"
   echo "v Saved lyrics: $(basename "$out_lrc")"
+  link_navidrome_symlink "$out_lrc"
 }
 
 # Output .lrc path for a music file: mirrors its path under MUSIC_ROOT into LYRICS_ROOT.
@@ -172,6 +173,34 @@ mirror_lrc_path() {
   local rel
   rel="${song_path#$MUSIC_ROOT/}"
   echo "$LYRICS_ROOT/${rel%.*}.lrc"
+}
+
+# Create the navidrome sidecar symlink inside the music library so terra's
+# navidrome can serve these lyrics to Substreamer. Navidrome only reads .lrc
+# files co-located with the audio file (same basename, same directory); there
+# is no separate-lyrics-folder option. The real .lrc stays in the LYRICS_ROOT
+# mirror; we drop a RELATIVE symlink next to the song:
+#   /srv/music/Artist/Album/Song.lrc -> ../../../lyrics/Artist/Album/Song.lrc
+# Relative targets resolve from BOTH hosts because music/ and lyrics/ are
+# sibling trees with identical layout:
+#   terra : /srv/{music,lyrics}
+#   helios: /mnt/nix-data/media/{music,lyrics}  (both NFS mounts)
+link_navidrome_symlink() {
+  local lrc_path="$1"
+  [ -f "$lrc_path" ] || return 0
+
+  local rel song_path link_path target
+  rel="${lrc_path#$LYRICS_ROOT/}"            # Artist/Album/Song.lrc
+  song_path="$MUSIC_ROOT/${rel%.*}"          # Artist/Album/Song (ext varies)
+  # Only link songs that exist in the library
+  if [ ! -f "$song_path.mp3" ] && [ ! -f "$song_path.flac" ]; then
+    return 0
+  fi
+
+  link_path="$MUSIC_ROOT/$rel"
+  target="$(realpath --relative-to "$(dirname "$link_path")" "$lrc_path")" || return 0
+  mkdir -p "$(dirname "$link_path")"
+  ln -sfn "$target" "$link_path"
 }
 
 # ---------------------------------------------------------------- main

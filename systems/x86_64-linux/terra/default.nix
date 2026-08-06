@@ -157,6 +157,7 @@
       enable = true;
       exports = [
         "/srv/music 100.122.255.2(rw,sync,no_subtree_check,no_root_squash)"
+        "/srv/lyrics 100.122.255.2(rw,sync,no_subtree_check,no_root_squash)"
       ];
     };
     upower.enable = true;
@@ -172,6 +173,13 @@
       };
       enable = false;
     };
+  };
+
+  # Lyrics mirror: NFS-shared with helios (mounted at /mnt/nix-data/media/lyrics)
+  systemd.tmpfiles.settings."10-srv-lyrics"."/srv/lyrics".d = {
+    user = "helios";
+    group = "users";
+    mode = "0755";
   };
 
   # Cockpit: move to backend port, nginx terminates TLS on 9090

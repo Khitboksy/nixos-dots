@@ -151,6 +151,16 @@
       ];
     };
 
+    "/mnt/nix-data/media/lyrics" = {
+      device = "100.119.96.108:/srv/lyrics";
+      fsType = "nfs";
+      options = [
+        "x-systemd.automount"
+        "noauto"
+        "noatime"
+      ];
+    };
+
   };
 
   # === SWAP STRATEGY ===
