@@ -21,10 +21,7 @@ in
 
     };
 
-    services.wallpaper = {
-      enable = true;
-      paper = mkForce wallpapers.wall4;
-    };
+    services.wallpaper.enable = true;
 
     home.packages = builtins.attrValues (importDir ./scripts { inherit pkgs; });
   };
