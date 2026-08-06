@@ -21,7 +21,10 @@ in
 
     };
 
-    services.wallpaper.enable = true;
+    services.wallpaper = {
+      enable = true;
+      paper = wallpapers.wall4;
+    };
 
     home.packages = builtins.attrValues (importDir ./scripts { inherit pkgs; });
   };
