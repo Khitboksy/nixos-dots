@@ -81,6 +81,10 @@ with lib;
         end
 
         ${getExe yt-dlp} \
+            -q \
+            --no-warnings \
+            --no-progress \
+            --print "before_dl:Downloading %(title)s..." \
             -x \
             --audio-format mp3 \
             --embed-metadata \
@@ -95,6 +99,8 @@ with lib;
             echo "Warning: some items failed in $link - ignored"
         end
 
+        echo "Done!"
+
         # --- rename + tag each downloaded file ---
         set tmp_files
         for f in $tmp_dir/*.mp3 $tmp_dir/*.m4a $tmp_dir/*.flac
@@ -102,6 +108,7 @@ with lib;
         end
         set total (count $tmp_files)
         set track 0
+        echo "Renaming, and moving tracks...."
         for f in $tmp_files
             set track (math $track + 1)
             set tracknum (printf "%02d" $track)
@@ -132,8 +139,6 @@ with lib;
 
             set out_file "$target_dir/$tracknum $filename_title.$ext"
 
-            echo "  tagging -> $artist - $album - $tracknum $filename_title.$ext"
-
             ${getExe ffmpeg} -v error -y -i "$f" \
                 -c copy \
                 -metadata artist="$artist" \
@@ -148,17 +153,17 @@ with lib;
 
             if test $status -eq 0
                 rm -f "$f"
-                echo "    ok: $tracknum $filename_title.$ext"
             else
                 echo "    FAILED: $base_name"
             end
         end
+        echo "Rename and Move completed!"
 
-        # Tidy the temp dir
-        rmdir "$tmp_dir" 2>/dev/null; or echo "  leftover files in $tmp_dir"
+        # Remove the temp download dir (rm -rf clears leftover/partial files too).
+        # Guard: only ever remove paths under BASE_DIR.
+        if string match -q "$BASE_DIR/*" -- "$tmp_dir"
+            rm -rf "$tmp_dir"
+        end
     end
-
-    echo ""
-    echo "All downloads complete."
   '';
 }
