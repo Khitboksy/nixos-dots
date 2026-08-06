@@ -25,7 +25,6 @@ with pkgs;
   tree = "${getExe eza} --tree --icons --tree";
   kys = "shutdown now";
   hy = "clear && macchina";
-  nd = "nix develop --command $SHELL";
   #w = ''| nvim -c "setlocal buftype=nofile bufhidden=wipe" -c "nnoremap <buffer> q :q!<CR>" -'';
   lv = "nvim -c \"normal '\''0\"";
   #pf = ''
