@@ -23,14 +23,14 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = [
-      pkgs.bun
+    home.packages = with pkgs; [
+      bun
       inputs.mcp-nixos.packages.${system}.default
     ];
 
-    programs.opencode = {
+    programs.opencode = with pkgs; {
       enable = true;
-      package = pkgs.opencode;
+      package = opencode;
       settings = {
         default_agent = "minerva";
         mcp = config.apps.ai.mcps.opencode;
@@ -95,8 +95,16 @@ in
         };
 
       }
+      // importDir ./config {
+        inherit
+          config
+          inputs
+          lib
 
-      // importDir ./config { inherit config inputs pkgs; };
+          # pkgs
+          nil
+          ;
+      };
 
     };
 

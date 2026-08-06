@@ -1,5 +1,6 @@
 {
-  pkgs,
+  lib,
+  nil,
   ...
 }:
 
@@ -7,7 +8,7 @@
 
   lsp = {
     nil = {
-      command = [ "${pkgs.nil}/bin/nil" ];
+      command = [ "${lib.getExe nil}" ];
       extensions = [ ".nix" ];
     };
 
