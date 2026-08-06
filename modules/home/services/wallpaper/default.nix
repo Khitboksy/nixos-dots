@@ -12,7 +12,7 @@ in
 {
   options.services.wallpaper = with types; {
     enable = mkBoolOpt false "Enable Wallpaper via Niri";
-    paper = mkPathOpt wallpapers.wall4 "Set Default Wallpaper";
+    paper = mkPathOpt null "Set Default Wallpaper";
   };
 
   config = mkIf cfg.enable {
