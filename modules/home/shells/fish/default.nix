@@ -48,7 +48,18 @@ in
         end
       '';
       functions =
-        import ../functions/functions.nix { inherit pkgs lib config; }
+        with pkgs;
+        import ../functions/functions.nix {
+          inherit
+            lib
+
+            # pkgs
+            ffmpeg
+            yt-dlp
+            openssh
+            rsync
+            ;
+        }
         # // import ../functions/git-shorthands.nix
         // {
           fish_prompt = {
