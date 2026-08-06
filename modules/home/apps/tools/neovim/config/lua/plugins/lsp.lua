@@ -65,8 +65,10 @@ return {
   {
     "stevearc/conform.nvim",
     opts = {
+      log_level = vim.log.levels.WARN,
+      lsp_fallback = false,
       formatters_by_ft = {
-        nix = { "treefmt" },
+        nix = { "nixfmt" },
         rust = { "rustfmt" },
         lua = { "stylua" },
         json = { "prettierd" },

@@ -53,11 +53,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.defer_fn(refresh_neotree_git, 100)
   end,
 })
-
--- Format nix files on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.nix",
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end,
-})
