@@ -20,7 +20,7 @@ let
 
   fetchLyrics =
     builtins.readFile ./config/utils/fetch_album_lyrics.sh
-    |> pkgs.writeShellScriptBin "rmpc-fetch-lyrics";
+    |> pkgs.writeShellScript "rmpc-fetch-lyrics";
 
 in
 {
@@ -56,10 +56,15 @@ in
             cache_dir: None,
 
 
+            // rmpc's on_song_change is a Vec<String>: first element is the
+            // binary, the rest are argv. So chain the hooks through bash -c;
+            // $FILE/$LRC_FILE/$TITLE/... env vars are inherited by the child.
+            // Use ';' not '&&' so lyrics still fetch if playcount hiccups.
             on_song_change: [
-              "${incrementPlayCount}",
-              "${fetchLyrics} --song $FILE"
+              "${pkgs.bash}/bin/bash", "-c",
+              "${incrementPlayCount}; ${fetchLyrics}"
             ],
+            enable_lyrics_hot_reload: true,
 
 
             volume_step: 5,
