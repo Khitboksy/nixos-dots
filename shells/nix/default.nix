@@ -1,6 +1,7 @@
 { pkgs, ... }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
+    nixfmt
     nixfmt-tree
     nixd
     statix
@@ -8,7 +9,7 @@ pkgs.mkShellNoCC {
   ];
   shellHook = ''
     echo "nix dev environment"
-    echo "  nix fmt: nixfmt-tree"
+    echo "  nix fmt: nixfmt"
     echo "  lsp: nixd"
     echo "  lint: statix, deadnix"
   '';

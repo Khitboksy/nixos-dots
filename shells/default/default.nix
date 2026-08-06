@@ -2,6 +2,7 @@
 pkgs.mkShellNoCC {
   packages = with pkgs; [
     # Nix
+    nixfmt
     nixfmt-tree
     nixd
     statix
@@ -24,7 +25,7 @@ pkgs.mkShellNoCC {
   NH_FLAKE = "/home/helios/builds";
   shellHook = ''
     echo "builds dev environment"
-    echo "  nix fmt: nixfmt-tree"
+    echo "  nix fmt: nixfmt"
     echo "  lsp: nixd"
     echo "  lint: statix, deadnix"
     echo "  build Helios: ns"
