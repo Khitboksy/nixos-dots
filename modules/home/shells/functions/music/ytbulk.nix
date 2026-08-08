@@ -12,30 +12,53 @@ with lib;
 
     set BASE_DIR /mnt/nix-data/media/music
 
-    read -P "How many albums would you like to add? " album_count
-
-    if not string match -rq '^[0-9]+$' -- $album_count
-        echo "Please enter a valid number."
-        return 1
-    end
-
+    # --- queue collection: one or more artist batches ---
     set artists
+    set kinds
     set albums
     set links
 
-    for i in (seq 1 $album_count)
-        read -P "Album $i - artist: " artist
-        read -P "Album $i - album name: " album
-        read -P "Album $i - YouTube link (album/playlist): " link
-        set -a artists $artist
-        set -a albums $album
-        set -a links $link
+    set q_done 0
+    # Start of queue loop, only breaks when `q_done = 1`
+    while test $q_done -eq 0
+        # 1. ask once
+        read -P "artist: " artist
+        # 2. set loop count
+        read -P "How many objects to create: " obj_count
+        if not string match -rq '^[0-9]+$' -- $obj_count
+            echo "Please enter a valid number."
+            continue
+        end
+
+        # 3. Loop for N many objects ---
+        for i in (seq 1 $obj_count)
+            read -P "Link for Music: " link
+            read -P "Album or Single? (a/s): " kind
+            set album ""
+            if test "$kind" = "a"; or test "$kind" = "album"
+                read -P "Album Name: " album
+            end
+            set -a artists $artist
+            set -a kinds $kind
+            set -a albums $album
+            set -a links $link
+        end
+
+        # 4. `q_done`, if 0 return to step one, if 1 break for confirmation
+        read -P "Done? (y/n): " done_ans
+        if test "$done_ans" = "y"
+            set q_done 1
+        end
     end
 
     echo ""
     echo "========== CONFIRMATION =========="
     for i in (seq 1 (count $artists))
-        echo "  $BASE_DIR/$artists[$i]/$albums[$i]/"
+        if test "$kinds[$i]" = "a"; or test "$kinds[$i]" = "album"
+            echo "  album : $BASE_DIR/$artists[$i]/$albums[$i]/"
+        else
+            echo "  single: $BASE_DIR/$artists[$i]/"
+        end
         echo "  link: $links[$i]"
         echo ""
     end
@@ -54,9 +77,21 @@ with lib;
 
     for i in (seq 1 (count $artists))
         set artist "$artists[$i]"
+        set kind "$kinds[$i]"
         set album "$albums[$i]"
         set link "$links[$i]"
-        set target_dir "$BASE_DIR/$artist/$album"
+        set is_album 0
+        if test "$kind" = "a"; or test "$kind" = "album"
+            set is_album 1
+        end
+
+        if test $is_album -eq 1
+            set target_dir "$BASE_DIR/$artist/$album"
+            set tmp_dir "$target_dir/.$album.ytmp"
+        else
+            set target_dir "$BASE_DIR/$artist"
+            set tmp_dir "$target_dir/.single.ytmp"
+        end
 
         # Forbid path traversal / absolute sneaking in artist/album names.
         if string match -rq '/|\$|~|\.\.' -- "$artist$album"
@@ -69,15 +104,13 @@ with lib;
             continue
         end
 
-        set tmp_dir "$target_dir/.$album.ytmp"
         mkdir -p "$tmp_dir"
 
         echo ""
-        echo "Downloading: $artist - $album (into $tmp_dir)..."
-
-        cd "$tmp_dir"; or begin
-            echo "Failed to enter $tmp_dir - skipping"
-            continue
+        if test $is_album -eq 1
+            echo "Downloading: $artist - $album (into $tmp_dir)..."
+        else
+            echo "Downloading: $artist (single, into $tmp_dir)..."
         end
 
         ${getExe yt-dlp} \
@@ -92,6 +125,7 @@ with lib;
             --ignore-errors \
             --no-overwrites \
             --concurrent-fragments 8 \
+            -P "$tmp_dir" \
             -o "%(autonumber)03d-%(id)s.%(ext)s" \
             $link
 
@@ -137,19 +171,39 @@ with lib;
                 | string replace -ra '[[:space:]]+' ' ' \
                 | string replace -ra '/' '_')
 
-            set out_file "$target_dir/$tracknum $filename_title.$ext"
+            # Albums: NN Title.ext, full album metadata.
+            # Singles: Title.ext (no track number); if more than one file
+            # slipped in, number them so nothing collides.
+            if test $is_album -eq 1
+                set out_file "$target_dir/$tracknum $filename_title.$ext"
+            else if test $total -gt 1
+                set out_file "$target_dir/$tracknum $filename_title.$ext"
+            else
+                set out_file "$target_dir/$filename_title.$ext"
+            end
 
-            ${getExe ffmpeg} -v error -y -i "$f" \
-                -c copy \
-                -metadata artist="$artist" \
-                -metadata album="$album" \
-                -metadata title="$title_clean" \
-                -metadata track="$track" \
-                -metadata tracktotal="$total" \
-                -metadata description= \
-                -metadata synopsis= \
-                -metadata comment= \
-                "$out_file"
+            if test $is_album -eq 1
+                ${getExe ffmpeg} -v error -y -i "$f" \
+                    -c copy \
+                    -metadata artist="$artist" \
+                    -metadata album="$album" \
+                    -metadata title="$title_clean" \
+                    -metadata track="$track" \
+                    -metadata tracktotal="$total" \
+                    -metadata description= \
+                    -metadata synopsis= \
+                    -metadata comment= \
+                    "$out_file"
+            else
+                ${getExe ffmpeg} -v error -y -i "$f" \
+                    -c copy \
+                    -metadata artist="$artist" \
+                    -metadata title="$title_clean" \
+                    -metadata description= \
+                    -metadata synopsis= \
+                    -metadata comment= \
+                    "$out_file"
+            end
 
             if test $status -eq 0
                 rm -f "$f"
@@ -159,7 +213,7 @@ with lib;
         end
         echo "Rename and Move completed!"
 
-        # Remove the temp download dir (rm -rf clears leftover/partial files too).
+        # Remove the temp download dir
         # Guard: only ever remove paths under BASE_DIR.
         if string match -q "$BASE_DIR/*" -- "$tmp_dir"
             rm -rf "$tmp_dir"

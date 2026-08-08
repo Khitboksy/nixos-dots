@@ -35,7 +35,7 @@ with lib;
       end
     end
 
-    # ---- path section (before --) ----
+    # --- path section (before `--`) ---
     set -l args $pre_args
     while test (count $args) -gt 0
       switch $args[1]
@@ -55,18 +55,22 @@ with lib;
           set dry_run 1
         case '-*'
           echo "unknown path option: $args[1]"
-          echo "usage: retag [--dry-run] --artist <artist> --album <album> [--track <file>] -- [edit options]"
+          echo "usage: retag [--dry-run] --artist <artist> [--album <album>] [--track <file>] -- [edit options]"
           return 1
         case '*'
           echo "unexpected argument before '--': $args[1]"
-          echo "usage: retag [--dry-run] --artist <artist> --album <album> [--track <file>] -- [edit options]"
+          echo "usage: retag [--dry-run] --artist <artist> [--album <album>] [--track <file>] -- [edit options]"
           return 1
       end
       set -e args[1]
     end
 
-    if test -z "$artist"; or test -z "$album"
-      echo "usage: retag [--dry-run] --artist <artist> --album <album> [--track <file>] -- [edit options]"
+    if test -z "$artist"
+      echo "usage: retag [--dry-run] --artist <artist> [--album <album>] [--track <file>] -- [edit options]"
+      return 1
+    end
+    if test -z "$album"; and test -z "$track_file"
+      echo "usage: retag [--dry-run] --artist <artist> [--album <album>] [--track <file>] -- [edit options]"
       return 1
     end
 
@@ -76,9 +80,11 @@ with lib;
       echo "artist not found: $artist"
       echo "candidates under $base:"
       set -l hits
-      for d in (ls "$base" 2>/dev/null)
-        if string match -q "*$artist*" -- "$d"
-          set -a hits "$d"
+      # use native globs, not `ls`: interactive fish aliases ls to eza which
+      # quotes filenames when piped, breaking string match against real names
+      for d in "$base"/*
+        if test -e "$d"; and string match -q "*$artist*" -- (path basename "$d")
+          set -a hits (path basename "$d")
         end
       end
       if test (count $hits) -eq 0
@@ -91,37 +97,57 @@ with lib;
       return 1
     end
 
-    set -l album_dir "$artist_dir/$album"
-    if not test -d "$album_dir"
-      echo "album not found: $album"
-      echo "candidates under $artist_dir:"
-      set -l hits
-      for d in (ls "$artist_dir" 2>/dev/null)
-        if string match -q "*$album*" -- "$d"
-          set -a hits "$d"
+    # Base dir resolution; --album is an optional sub-dir, otherwise look in root/$artist
+    set -l album_dir ""
+    if test -n "$album"
+      set album_dir "$artist_dir/$album"
+      if not test -d "$album_dir"
+        echo "album not found: $album"
+        echo "candidates under $artist_dir:"
+        set -l hits
+        for d in "$artist_dir"/*
+          if test -e "$d"; and string match -q "*$album*" -- (path basename "$d")
+            set -a hits (path basename "$d")
+          end
         end
-      end
-      if test (count $hits) -eq 0
-        echo "  (no matching album dirs)"
-      else
-        for d in $hits
-          echo "  $d"
+        if test (count $hits) -eq 0
+          echo "  (no matching album dirs)"
+        else
+          for d in $hits
+            echo "  $d"
+          end
         end
+        return 1
       end
-      return 1
     end
 
-    # Resolve targets: single --track file, or all audio in the album dir
+    # Resolve targets: single --track file (exact or glob), or all audio in the base dir
     set -l targets
     if test -n "$track_file"
-      set -l f "$album_dir/$track_file"
-      if test -f "$f"
-        set -a targets "$f"
+      set -l base_dir "$artist_dir"
+      if test -n "$album_dir"
+        set base_dir "$album_dir"
+      end
+      # match against the real dir listing
+      set -l matches
+      for e in "$base_dir"/*
+        if test -e "$e"; and string match -q -- "$track_file" (path basename "$e")
+          set -a matches "$e"
+        end
+      end
+      if test (count $matches) -eq 1
+        set -a targets "$matches[1]"
+      else if test (count $matches) -gt 1
+        echo "track pattern matched multiple files: $track_file"
+        for m in $matches
+          echo "  $m"
+        end
+        return 1
       else
         echo "track not found: $track_file"
-        echo "files in $album_dir:"
-        for e in (ls "$album_dir" 2>/dev/null)
-          echo "  $e"
+        echo "files in $base_dir:"
+        for e in "$base_dir"/*
+          test -e "$e"; and echo "  "(path basename "$e")
         end
         return 1
       end
@@ -137,7 +163,7 @@ with lib;
       end
     end
 
-    # ---- edit section (after --) ----
+    # --- edit section (after `--`) ---
     set -l args $edit_args
     while test (count $args) -gt 0
       switch $args[1]
@@ -188,8 +214,14 @@ with lib;
       return 1
     end
 
+    # Display dir
+    set -l show_dir "$artist_dir"
+    if test -n "$album_dir"
+      set show_dir "$album_dir"
+    end
+
     if test $dry_run -eq 1
-      echo "[dry-run] album dir: $album_dir"
+      echo "[dry-run] dir: $show_dir"
       for t in $targets
         echo "[dry-run]   $t"
       end
@@ -197,7 +229,7 @@ with lib;
       return 0
     end
 
-    echo "album: $album_dir"
+    echo "dir: $show_dir"
     for t in $targets
       echo "  $t"
     end
