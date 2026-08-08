@@ -12,7 +12,6 @@ with lib.custom;
 let
 
   cfg = config.apps.ai.opencode;
-  system = pkgs.stdenv.hostPlatform.system;
 
 in
 
@@ -25,7 +24,6 @@ in
 
     home.packages = with pkgs; [
       bun
-      inputs.mcp-nixos.packages.${system}.default
     ];
 
     programs.opencode = with pkgs; {

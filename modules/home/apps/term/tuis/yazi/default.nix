@@ -9,7 +9,6 @@ with lib;
 with lib.custom;
 let
   cfg = config.apps.term.tuis.yazi;
-  system = pkgs.stdenv.hostPlatform.system;
 in
 {
   options.apps.term.tuis.yazi = with types; {
@@ -57,7 +56,7 @@ in
 
     programs.yazi = {
       enable = true;
-      package = inputs.yazi.packages.${system}.yazi;
+      package = pkgs.yazi;
 
       plugins = (import ./config/yazi-plugins.nix) { inherit pkgs; };
       keymap = import ./config/yazi-binds.nix;

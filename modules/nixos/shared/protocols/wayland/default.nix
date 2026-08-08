@@ -24,7 +24,7 @@ in
       niri = {
         enable = true;
         withUWSM = true;
-        package = inputs.niri-src.packages.${system}.niri;
+        package = pkgs.niri;
       };
     };
     environment = {

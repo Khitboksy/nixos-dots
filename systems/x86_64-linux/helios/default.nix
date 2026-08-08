@@ -3,12 +3,9 @@
   pkgs,
   lib,
   modulesPath,
-  inputs,
   ...
 }:
-let
-  system = pkgs.stdenv.hostPlatform.system;
-in
+
 {
 
   imports = [
@@ -219,7 +216,7 @@ in
       xwayland-satellite
       python3Packages.youtube-transcript-api
       proton-vpn
-      inputs.img2key.packages."${system}".default
+      img2key
     ];
   };
 

@@ -37,7 +37,7 @@ in
       opencode = {
         nixos = {
           type = "local";
-          command = [ "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" ];
+          command = [ "${lib.getExe pkgs.mcp-nixos}" ];
         };
 
         context7 = {
@@ -48,7 +48,7 @@ in
         filesystem = {
           type = "local";
           command = [
-            "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem"
+            "${lib.getExe pkgs.mcp-server-filesystem}"
             "/home/helios/builds"
             "/home/helios/shared"
             "/home/helios/.config"
@@ -61,7 +61,7 @@ in
         github = {
           type = "local";
           command = [
-            "${pkgs.github-mcp-server}/bin/github-mcp-server"
+            "${lib.getExe pkgs.github-mcp-server}"
             "stdio"
             "--read-only"
           ];
@@ -69,7 +69,7 @@ in
 
         sequential-thinking = {
           type = "local";
-          command = [ "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking" ];
+          command = [ "${lib.getExe pkgs.mcp-server-sequential-thinking}" ];
         };
 
         web-search = {
@@ -125,11 +125,11 @@ in
       };
 
       odysseus = [
-        (mkStdio "nixos" "${inputs.mcp-nixos.packages.${system}.default}/bin/mcp-nixos" [ ] { })
+        (mkStdio "nixos" "${lib.getExe pkgs.mcp-nixos}" [ ] { })
 
         # context7 is remote (SSE/HTTP) — handled via odysseus UI
 
-        (mkStdio "filesystem" "${pkgs.mcp-server-filesystem}/bin/mcp-server-filesystem" [
+        (mkStdio "filesystem" "${lib.getExe pkgs.mcp-server-filesystem}" [
           "/home/helios/builds"
           "/home/helios/shared"
           "/home/helios/.config"
@@ -137,13 +137,9 @@ in
           "/var/opencode"
         ] { })
 
-        (mkStdio "github" "${pkgs.github-mcp-server}/bin/github-mcp-server" [ "stdio" "--read-only" ] { })
+        (mkStdio "github" "${lib.getExe pkgs.github-mcp-server}" [ "stdio" "--read-only" ] { })
 
-        (mkStdio "sequential-thinking"
-          "${pkgs.mcp-server-sequential-thinking}/bin/mcp-server-sequential-thinking"
-          [ ]
-          { }
-        )
+        (mkStdio "sequential-thinking" "${lib.getExe pkgs.mcp-server-sequential-thinking}" [ ] { })
 
         (mkStdio "web-search" "npx" [ "-y" "@zhafron/mcp-web-search" ] {
           DEFAULT_SEARCH_PROVIDER = "searxng";

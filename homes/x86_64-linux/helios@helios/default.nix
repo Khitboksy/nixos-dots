@@ -1,12 +1,10 @@
 {
   pkgs,
   lib,
-  inputs,
   config,
   ...
 }:
 let
-  system = pkgs.stdenv.hostPlatform.system;
   home = config.home.homeDirectory;
 in
 {
@@ -168,7 +166,7 @@ in
     ifuse
     signal-desktop
     vesktop
-    inputs.zen-browser.packages."${system}".default
+    zen
     git
     ttfautohint
     nodejs

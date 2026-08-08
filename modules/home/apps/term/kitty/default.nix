@@ -23,8 +23,8 @@ in
             KITTY_FLOAT=1 kitty --class kitty-float "$@" &
             KITTY_PID=$!
             sleep 0.05
-            ${pkgs.niri}/bin/niri msg action center-window
-            ${pkgs.niri}/bin/niri msg action move-floating-window --x +0 --y -100
+            ${lib.getExe pkgs.niri} msg action center-window
+            ${lib.getExe pkgs.niri} msg action move-floating-window --x +0 --y -100
             wait $KITTY_PID
         else
             touch "$MARKER"

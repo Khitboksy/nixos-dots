@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -12,15 +11,13 @@ with lib.custom;
 let
 
   cfg = config.apps.music.rmpc;
-  system = pkgs.stdenv.hostPlatform.system;
 
   incrementPlayCount =
     builtins.readFile ./config/utils/incrementPlayCount.sh
     |> pkgs.writeShellScript "rmpc-increment-playcount";
 
   fetchLyrics =
-    builtins.readFile ./config/utils/fetch_album_lyrics.sh
-    |> pkgs.writeShellScript "rmpc-fetch-lyrics";
+    builtins.readFile ./config/utils/fetch_album_lyrics.sh |> pkgs.writeShellScript "rmpc-fetch-lyrics";
 
 in
 {
@@ -38,7 +35,7 @@ in
     };
 
     programs.rmpc = {
-      package = inputs.rmpc.packages.${system}.rmpc;
+      package = pkgs.rmpc;
       enable = true;
 
       config = ''
@@ -61,7 +58,7 @@ in
             // $FILE/$LRC_FILE/$TITLE/... env vars are inherited by the child.
             // Use ';' not '&&' so lyrics still fetch if playcount hiccups.
             on_song_change: [
-              "${pkgs.bash}/bin/bash", "-c",
+              "${lib.getExe pkgs.bash}", "-c",
               "${incrementPlayCount}; ${fetchLyrics}"
             ],
             enable_lyrics_hot_reload: true,

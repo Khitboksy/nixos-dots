@@ -11,13 +11,12 @@ with lib.custom;
 
 let
   cfg = config.shared.ui.greetd;
-  system = pkgs.stdenv.hostPlatform.system;
 
   greeterBin = "${getExe pkgs.tuigreet}";
 
   theme = "action=grey;border=magenta;button=yellow;input=white;prompt=green;text=cyan;time=yellow";
 
-  niriSession = "${getExe' inputs.niri-src.packages.${system}.niri "niri-session"}";
+  niriSession = "${getExe' pkgs.niri "niri-session"}";
 
   command = pkgs.writeShellScript "greetd-session" ''
     exec ${greeterBin} \
