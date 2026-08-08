@@ -85,7 +85,7 @@ in
 
         Service = {
           Type = "simple";
-          ExecStart = "${lib.getExe odysseusPkg}";
+          ExecStart = "${lib.getExe' odysseusPkg "odysseus"}";
           Restart = "on-failure";
           RestartSec = 5;
 
