@@ -31,7 +31,7 @@ in
       config = {
         enable = true;
         defaultCompatTool = "Proton-Experimental";
-        closeSteam = true;
+        onSteamRunning = "close";
         apps = importDir ./gameProfiles { inherit pkgs lib wrappers; };
       };
     };
