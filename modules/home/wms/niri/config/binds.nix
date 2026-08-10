@@ -2,7 +2,7 @@
 
   binds = {
     "Mod+Z" = {
-      spawn = "zen";
+      spawn = "zen-beta";
     };
     "Mod+Q" = {
       close-window = [ ];

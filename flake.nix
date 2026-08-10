@@ -17,7 +17,10 @@
       inputs.flake-utils-plus.url = "path:/home/helios/src/gytis/flake-utils-plus";
     };
     catppuccin.url = "github:catppuccin/nix";
-    zen-browser.url = "github:zackartz/zen-browser-flake";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     yeetmouse = {
       url = "github:AndyFilter/YeetMouse?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";

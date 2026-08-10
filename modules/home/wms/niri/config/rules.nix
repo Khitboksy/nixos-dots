@@ -24,21 +24,55 @@
       clip-to-geometry = true;
       draw-border-with-background = false;
     }
+
+    ## FUCK STEAM FR
+    # Fix steams jank ass id's/titles so things open more naturally
     {
-      match._props.app-id = "^steam$";
-      exclude._props.title = "^Steam$";
+      # Notifications like ur friend playing a game
+      match._props.title = "^notificationtoasts_1_desktop$";
       open-focused = false;
       open-floating = true;
       default-floating-position._props = {
         relative-to = "bottom-right";
-        x = 16;
-        y = 16;
+        x = 12;
+        y = 12;
       };
     }
     {
+      # The steam page itself
       match._props.title = "^Steam$";
+      open-focused = false;
+      open-on-workspace = "games";
+      default-column-width = {
+        proportion = 0.8;
+      };
+    }
+    {
+      # Friends list next to it
+      match._props.title = "^Friends List$";
+      open-focused = false;
+      open-on-workspace = "games";
+      default-column-width = {
+        proportion = 0.2;
+      };
+    }
+    {
+      # Startup/Shutdown
+      match._props.title = "^(Sign in to Steam|Shutdown)$";
+      open-focused = false;
       open-floating = true;
-      open-focused = true;
+      open-on-workspace = "games";
+    }
+    {
+      # The only way i can figure out how to get just chats
+      match._props.app-id = "^steam$";
+      exclude._props.title = "^(Sign in to Steam|Shutdown|Friends List|Steam|notificationtoasts_1_desktop)$";
+      open-focused = false;
+      open-floating = false;
+      open-on-workspace = "chat";
+      default-column-width = {
+        proportion = 0.5;
+      };
     }
 
     {
@@ -48,13 +82,13 @@
       open-focused = true;
     }
     {
-      match._props.app-id = "^zen$";
+      match._props.app-id = "^zen(-beta)?$";
       draw-border-with-background = false;
       open-focused = true;
     }
     {
       match._props = {
-        app-id = "^zen$";
+        app-id = "^zen(-beta)?$";
         at-startup = true;
       };
       open-on-workspace = "browser";

@@ -47,7 +47,7 @@
   spawn-at-startup = [
     [ "vesktop" ]
     [ "kitty-launcher" ]
-    [ "zen" ]
+    [ "zen-beta" ]
   ];
 
   # Other settings
