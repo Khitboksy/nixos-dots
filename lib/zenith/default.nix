@@ -6,7 +6,7 @@
 let
   nixpkgs = inputs.nixpkgs;
 
-  # Create a snowfall-lib-esque custom library. `${lib.custom}`
+  # Assemble lib.custom: merge lib/module + lib/theme into one attrset.
   custom = lib.recursiveUpdate (import ../module { inherit lib; }) (import ../theme { inherit lib; });
 
   # Create the library injected into NixOS module evaluation.
