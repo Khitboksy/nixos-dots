@@ -11,6 +11,10 @@
     snowfall-lib = {
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
+      # TEMPORARY: local patched flake-utils-plus until upstream fixes the
+      # "externally created instance" assertion (flake-utils-plus#162,
+      # snowfallorg/lib#192). Remove this line once fixed upstream.
+      inputs.flake-utils-plus.url = "path:/home/helios/src/gytis/flake-utils-plus";
     };
     catppuccin.url = "github:catppuccin/nix";
     zen-browser.url = "github:zackartz/zen-browser-flake";
@@ -92,6 +96,11 @@
       };
       channels-config = {
         allowUnfree = true;
+        # allowAliases=false: hygiene flag — catches alias/typo usage, speeds
+        # whole-set evals (nix search / repl). No impact on targeted system
+        # eval; checkMeta=false was measured to give zero gain on this
+        # workload, so it stays at its default (meta warning safety net kept).
+        allowAliases = false;
       };
       homes.modules = with inputs; [
         catppuccin.homeModules.catppuccin
