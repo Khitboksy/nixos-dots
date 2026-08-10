@@ -4,31 +4,33 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
+
+    catppuccin = {
+      url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      # TEMPORARY: local patched flake-utils-plus until upstream fixes the
-      # "externally created instance" assertion (flake-utils-plus#162,
-      # snowfallorg/lib#192). Remove this line once fixed upstream.
-      inputs.flake-utils-plus.url = "path:/home/helios/src/gytis/flake-utils-plus";
     };
-    catppuccin.url = "github:catppuccin/nix";
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     yeetmouse = {
       url = "github:AndyFilter/YeetMouse?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     niri-src = {
       url = "github:niri-wm/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     niri-nix = {
       url = "git+https://codeberg.org/BANanaD3V/niri-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,23 +39,29 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     rmpc = {
       url = "github:mierak/rmpc";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     steam-config-nix = {
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     mcp-nixos.url = "github:utensils/mcp-nixos";
+
     yazi = {
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -86,33 +94,20 @@
 
   };
   outputs =
-    inputs:
-    inputs.snowfall-lib.mkFlake {
-      inherit inputs;
-      src = ./.;
+    inputs@{
+      self,
+      nixpkgs,
+      flake-parts,
+      home-manager,
+      ...
+    }:
+    let
+      lib = nixpkgs.lib;
 
-      outputs-builder = channels: {
-        formatter = channels.nixpkgs.nixfmt-tree;
-      };
-      snowfall = {
-        namespace = "custom";
-      };
-      channels-config = {
-        allowUnfree = true;
-        # allowAliases=false: hygiene flag — catches alias/typo usage, speeds
-        # whole-set evals (nix search / repl). No impact on targeted system
-        # eval; checkMeta=false was measured to give zero gain on this
-        # workload, so it stays at its default (meta warning safety net kept).
-        allowAliases = false;
-      };
-      homes.modules = with inputs; [
-        catppuccin.homeModules.catppuccin
-        dms.homeModules.dank-material-shell
-        noctalia.homeModules.default
-        niri-nix.homeModules.default
-        palette.homeModules.default
-      ];
-      systems.modules.nixos = with inputs; [
+      zenith = import ./lib/zenith { inherit inputs lib; };
+
+      # Shared modules
+      nixosModules = with inputs; [
         home-manager.nixosModules.home-manager
         catppuccin.nixosModules.catppuccin
         yeetmouse.nixosModules.default
@@ -122,5 +117,75 @@
         sops-nix.nixosModules.sops
         disko.nixosModules.disko
       ];
+
+      homeModules = with inputs; [
+        catppuccin.homeModules.catppuccin
+        dms.homeModules.dank-material-shell
+        noctalia.homeModules.default
+        niri-nix.homeModules.default
+        palette.homeModules.default
+      ];
+
+      # Overlays and Packages
+      ## Overlays
+      flakePackages = import ./overlays/flake-packages {
+        inherit (inputs)
+          img2key
+          rmpc
+          yazi
+          zen-browser
+          niri-src
+          mcp-nixos
+
+          ;
+      };
+
+      ## Packages
+      userPackages = final: prev: {
+        # add packages inside the `custom`. this is adding to `lib.custom`
+        custom = (prev.custom or { }) // {
+          enc = final.callPackage ./packages/enc { };
+
+        };
+      };
+
+      overlays = [
+        userPackages
+        flakePackages
+
+      ];
+
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+
+      flake.nixosConfigurations = {
+        helios = zenith.mkSystem {
+          host = "helios";
+          homeConfig = "${./.}/homes/x86_64-linux/helios@helios";
+          inherit overlays nixosModules homeModules;
+        };
+        terra = zenith.mkSystem {
+          host = "terra";
+          homeConfig = "${./.}/homes/x86_64-linux/helios@terra";
+          inherit overlays nixosModules homeModules;
+        };
+      };
+
+      perSystem = { pkgs, ... }: {
+        formatter = pkgs.nixfmt-tree;
+
+        packages = { };
+
+        devShells = {
+          default = import ./shells/default { inherit pkgs; };
+          nix = import ./shells/nix { inherit pkgs; };
+          rust = import ./shells/rust { inherit pkgs; };
+        };
+
+        checks = {
+          config-check = import ./checks { inherit pkgs; };
+        };
+      };
     };
 }

@@ -178,6 +178,7 @@
 
   users = {
     users.helios = {
+      isNormalUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxx5CYvx7bbRmrFPE2yliWIgTq3xb6mumF103Dmlaup terra-exit"
       ];
@@ -185,20 +186,13 @@
         "networkmanager"
         "plugdev"
         "uinput"
+        "wheel"
       ];
       shell = pkgs.fish;
     };
 
     groups = {
       libvirtd.members = [ "helios" ];
-    };
-  };
-
-  snowfallorg.users.helios = {
-    create = true;
-    admin = true;
-    home = {
-      enable = true;
     };
   };
 

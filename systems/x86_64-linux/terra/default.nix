@@ -105,7 +105,11 @@
     description = "Provision Tailscale TLS certificates";
     after = [ "tailscaled.service" ];
     requires = [ "tailscaled.service" ];
-    before = [ "vaultwarden.service" "nginx.service" "navidrome.service" ];
+    before = [
+      "vaultwarden.service"
+      "nginx.service"
+      "navidrome.service"
+    ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
@@ -283,6 +287,7 @@
 
   users = {
     users.helios = {
+      isNormalUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdvyTh8FxSq1/QXMDdHnWG19eueLX5ASr3+gjP0McwX"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1sFljQUl5+wVK6lw4c5aGdYTZLl5PY6kONeYgewG/v nix-index-deploy-key"
@@ -295,14 +300,6 @@
         "wheel"
       ];
       shell = pkgs.fish;
-    };
-  };
-
-  snowfallorg.users.helios = {
-    create = true;
-    admin = true;
-    home = {
-      enable = true;
     };
   };
 
