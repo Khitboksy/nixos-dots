@@ -34,8 +34,8 @@ in
   config = mkIf cfg.enable {
     services.adguardhome = {
       enable = true;
-      host = "127.0.0.1";        # Web UI only accessible locally
-      port = cfg.port;            # (use Tailscale Serve to expose it)
+      host = "127.0.0.1"; # Web UI only accessible locally
+      port = cfg.port; # (use Tailscale Serve to expose it)
       mutableSettings = cfg.mutableSettings;
 
       settings = {
@@ -69,12 +69,12 @@ in
             custom_ip = "";
           };
           enable_dnssec = true;
-          cache_size = 4194304;    # 4 MB DNS cache
+          cache_size = 4194304; # 4 MB DNS cache
         };
 
         filtering = {
           querylog_enabled = true;
-          querylog_interval = 7776000;  # 90 days
+          querylog_interval = 7776000; # 90 days
 
           filtering_enabled = true;
           parental_enabled = false;

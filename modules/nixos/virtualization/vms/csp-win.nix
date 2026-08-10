@@ -94,7 +94,7 @@ in
       group = "libvirtdbus";
       extraGroups = [ "libvirtd" ];
     };
-    users.groups.libvirtdbus = {};
+    users.groups.libvirtdbus = { };
 
     systemd.services.libvirt-dbus = {
       description = "Libvirt D-Bus bridge";

@@ -44,18 +44,20 @@ in
     '';
 
     rules = mkOption {
-      type = types.attrsOf (types.submodule {
-        options = {
-          port = mkOption {
-            type = types.int;
-            description = "Localhost port to listen on (tailscale serve targets this)";
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            port = mkOption {
+              type = types.int;
+              description = "Localhost port to listen on (tailscale serve targets this)";
+            };
+            target = mkOption {
+              type = types.str;
+              description = "URL to redirect the browser to (e.g. https://terra.tail9a2d08.ts.net:9090)";
+            };
           };
-          target = mkOption {
-            type = types.str;
-            description = "URL to redirect the browser to (e.g. https://terra.tail9a2d08.ts.net:9090)";
-          };
-        };
-      });
+        }
+      );
       default = { };
       description = "Redirect rules: name -> { port, target }";
     };
