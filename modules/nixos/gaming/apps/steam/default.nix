@@ -27,12 +27,20 @@ in
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       gamescopeSession.enable = true;
+      extraCompatPackages = [ pkgs.proton-cachyos-x86_64-v3 ];
 
       config = {
         enable = true;
         defaultCompatTool = "Proton-Experimental";
         onSteamRunning = "close";
-        apps = importDir ./gameProfiles { inherit pkgs lib wrappers; };
+        apps = importDir ./gameProfiles {
+          inherit
+            gamemode
+            mangohud
+            lib
+            wrappers
+            ;
+        };
       };
     };
 

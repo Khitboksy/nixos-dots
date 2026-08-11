@@ -6,7 +6,7 @@
 {
   overwatch = {
     id = 2357570;
-    compatTool = "GE-Proton10-29";
+    compatTool = "proton-cachyos-x86_64-v3";
 
     env = {
       SDL_VIDEODRIVER = "x11";

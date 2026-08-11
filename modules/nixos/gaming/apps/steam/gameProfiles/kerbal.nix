@@ -6,7 +6,7 @@
 {
   kerbal = {
     id = 220200;
-    compatTool = "Proton-Experimental";
+    compatTool = "proton-cachyos-x86_64-v3";
 
     env = {
       PROTON_USE_NTSYNC = true;

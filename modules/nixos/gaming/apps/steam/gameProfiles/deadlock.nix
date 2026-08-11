@@ -1,12 +1,14 @@
 {
-  pkgs,
+  mangohud,
+  gamemode,
+
   ...
 }:
 
 {
   deadlock = {
     id = 1422450;
-    compatTool = "GE-Proton10-29";
+    compatTool = "proton-cachyos-x86_64-v3";
 
     env = {
       PROTON_USE_NTSYNC = true;
@@ -15,8 +17,8 @@
 
     wrappers = [
       #"/home/helios/.local/bin/mangohud-def"
-      pkgs.mangohud
-      pkgs.gamemode
+      mangohud
+      #gamemode
     ];
 
     args = [
