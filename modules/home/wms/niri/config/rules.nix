@@ -28,9 +28,13 @@
     ## FUCK STEAM FR
     # Fix steams jank ass id's/titles so things open more naturally
     {
-      # Notifications like ur friend playing a game
-      match._props.title = "^notificationtoasts_1_desktop$";
+      # Everything is unfocused by default
+      match._props.app-id = "^steam$";
       open-focused = false;
+    }
+    {
+      # Notifications like ur friend playing a game
+      match._props.title = ''^notificationtoasts_\d+_desktop$'';
       open-floating = true;
       default-floating-position._props = {
         relative-to = "bottom-right";
@@ -41,7 +45,6 @@
     {
       # The steam page itself
       match._props.title = "^Steam$";
-      open-focused = false;
       open-on-workspace = "games";
       default-column-width = {
         proportion = 0.8;
@@ -50,7 +53,6 @@
     {
       # Friends list next to it
       match._props.title = "^Friends List$";
-      open-focused = false;
       open-on-workspace = "games";
       default-column-width = {
         proportion = 0.2;
@@ -59,16 +61,15 @@
     {
       # Startup/Shutdown
       match._props.title = "^(Sign in to Steam|Shutdown)$";
-      open-focused = false;
       open-floating = true;
       open-on-workspace = "games";
     }
     {
       # The only way i can figure out how to get just chats
       match._props.app-id = "^steam$";
-      exclude._props.title = "^(Sign in to Steam|Shutdown|Friends List|Steam|notificationtoasts_1_desktop)$";
-      open-focused = false;
-      open-floating = false;
+      exclude._props.title = ''
+        ^(Sign in to Steam|Shutdown|Friends List|Steam|notificationtoasts_\d+_desktop|Special Offers)$
+      '';
       open-on-workspace = "chat";
       default-column-width = {
         proportion = 0.5;
