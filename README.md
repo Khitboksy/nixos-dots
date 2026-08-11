@@ -17,6 +17,19 @@ Helios has everything i use day to day, and is the canonical configuration point
 most modules. Unless something is unique to terra, it was configured around helios _first_,
 then adapted to fit terra later
 
+## Showcase
+
+- My RMPC config, and macchina
+  ![helios desktop](.assets/helios-rmpc.png)
+
+- My bar+shell
+
+![helios shell](.assets/shell.png)
+
+- My terminal workflow/workspace with neovim, and yazi
+
+![helios terminal](.assets/kitty-neovim-yazi.png)
+
 ## Repository layout
 
 Where everything lives, and why:
@@ -24,7 +37,7 @@ Where everything lives, and why:
 - **`flake.nix`**:
   - Standard `inputs` structure, using `lib/zenith` in `outputs` to construct systems and `lib.custom`, and automatically import home/system modules in `modules/`.
     - Shared modules, overlays, and custom flake packages live in the `let ... in` block before `mkFlake`.
-    - DevShells, and Checks live as imports inside the `mkFlake` block.
+    - DevShells, and Checks live as imports inside the `mkFlake` block.<br>
       path: `(shells|checks)/**/default.nix`
 - **`systems/x86_64-linux/<host>/`**:
   - NixOS config per machine:
@@ -50,7 +63,7 @@ Where everything lives, and why:
   - Part 2: The library
     - `lib/module` has module-writing helpers.
     - `lib/theme` holds colours and wallpapers.
-    - Both are expressed as `lib.custom.<helper>`,
+    - Both are expressed as `lib.custom.<helper>`<br>
       _i.e `lib.custom.colors.helios.mauve.hex`_
 - **`lib/theme/colors/*.json`**:
   - A json mapping of names and hex values, where each mapping contains just a hex value.
@@ -75,9 +88,9 @@ Where everything lives, and why:
   - overlays that surface flake inputs as packages.
 - **`shells/`**:
   - devShells:
-    `default`, specifically for this config
-    `nix`, for any nix adjacent
-    `rust`, for any rust adjacent
+    `default`, specifically for this config<br>
+    `nix`, for any nix adjacent<br>
+    `rust`, for any rust adjacent<br>
   - You can point direnv at these anywhere on your machine with `use flake /path/to/flake#rust`
 - **`checks/`**:
   - flake checks.
@@ -190,20 +203,6 @@ The config itself wires palette-tui straight to the repo:
     ![wallpaper](.assets/wallpaper.png)
 - Supporting cast: kitty, cava, btop, rmpc, rofi, tmux, yazi, and neovim, all reading the
   same palette
-
-## Showcase
-
-![helios desktop](.assets/helios-rmpc.png)
-
-- My RMPC config, and macchina
-
-![helios shell](.assets/shell.png)
-
-- My bar+shell
-
-![helios terminal](.assets/kitty-neovim-yazi.png)
-
-- My terminal workflow/workspace with neovim, and yazi
 
 ## Installing
 
