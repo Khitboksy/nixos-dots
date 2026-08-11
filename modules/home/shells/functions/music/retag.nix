@@ -4,8 +4,6 @@
   ...
 }:
 
-with lib;
-
 {
   retag = ''
     set -l base /mnt/nix-data/media/music
@@ -97,7 +95,7 @@ with lib;
       return 1
     end
 
-    # Base dir resolution; --album is an optional sub-dir, otherwise look in root/$artist
+    # Base dir resolution; --album is an lib.optional sub-dir, otherwise look in root/$artist
     set -l album_dir ""
     if test -n "$album"
       set album_dir "$artist_dir/$album"

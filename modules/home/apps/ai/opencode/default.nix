@@ -3,11 +3,11 @@
   pkgs,
   inputs,
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
 
@@ -16,11 +16,11 @@ let
 in
 
 {
-  options.apps.ai.opencode = with types; {
+  options.apps.ai.opencode = with lib.types; {
     enable = mkBoolOpt false "Enable OpenCode AI coding agent";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home.packages = with pkgs; [
       bun

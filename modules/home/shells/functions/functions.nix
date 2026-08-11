@@ -1,13 +1,12 @@
 {
   lib,
+  zenith,
   yt-dlp,
   ffmpeg,
   openssh,
   rsync,
   ...
 }:
-
-with lib;
 
 {
   pf = ''
@@ -228,7 +227,7 @@ with lib;
     end
   '';
 
-  rmpc = with lib.custom; ''
+  rmpc = with zenith.lib'; ''
     timeout -k 1 3 stat /mnt/nix-data/media/music/.__rmpc_probe_(random) >/dev/null 2>&1
     if test $status -eq 124
       printf "${colors.helios.red.ansi}connection to mount failed: did you check tailscale?${ansiReset}\n"

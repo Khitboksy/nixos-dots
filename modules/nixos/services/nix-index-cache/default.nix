@@ -1,23 +1,23 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.programs.nix-index;
 in
 
 {
-  options.programs.nix-index = with types; {
+  options.programs.nix-index = with lib.types; {
     useTerra = mkBoolOpt false "Sync nix-index database from terra at boot via rsync";
   };
 
-  config = mkIf cfg.useTerra {
+  config = lib.mkIf cfg.useTerra {
     systemd.user.services.nix-index-cache = {
       description = "Sync nix-index database from terra";
       wantedBy = [ "default.target" ];

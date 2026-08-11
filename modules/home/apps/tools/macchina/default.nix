@@ -1,23 +1,23 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.tools.macchina;
 in
 
 {
-  options.apps.tools.macchina = with types; {
+  options.apps.tools.macchina = with lib.types; {
     enable = mkBoolOpt false "Enable Macchina";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.macchina = {
       enable = true;
       package = pkgs.macchina;

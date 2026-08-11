@@ -1,28 +1,28 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.hardware.systems.helios;
 in
 
 {
-  options.hardware.systems.helios = with types; {
+  options.hardware.systems.helios = with lib.types; {
     enable = mkBoolOpt false "Enable Helios Hardware Modules";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware = {
 
-      cpu.amd.updateMicrocode = mkDefault true;
+      cpu.amd.updateMicrocode = lib.mkDefault true;
 
       nvidia = {
         modesetting.enable = true;

@@ -1,11 +1,11 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.ai;
@@ -30,7 +30,7 @@ in
 
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     apps.ai.opencode.enable = true;
     apps.ai.odysseus.enable = true;

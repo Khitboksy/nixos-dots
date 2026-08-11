@@ -1,12 +1,12 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.helpers.rofi;
@@ -14,11 +14,11 @@ in
 
 {
 
-  options.apps.helpers.rofi = with types; {
+  options.apps.helpers.rofi = with lib.types; {
     enable = mkBoolOpt false "Enable Rofi";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     wayland.windowManager.niri.settings.binds = {
       "Mod+D" = {

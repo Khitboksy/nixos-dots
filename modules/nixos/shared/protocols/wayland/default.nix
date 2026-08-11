@@ -1,22 +1,22 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   inputs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shared.protocols.wayland;
   system = pkgs.stdenv.hostPlatform.system;
 in
 {
-  options.shared.protocols.wayland = with types; {
+  options.shared.protocols.wayland = with lib.types; {
     enable = mkBoolOpt false "Enable Wayland Protocol";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.displayManager.gdm.enable = true;
 
     programs = {

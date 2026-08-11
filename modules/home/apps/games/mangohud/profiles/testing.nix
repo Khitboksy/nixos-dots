@@ -1,11 +1,11 @@
 # Testing profile - comprehensive stats for debugging
 {
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 ''
 

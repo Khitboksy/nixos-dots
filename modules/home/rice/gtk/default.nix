@@ -1,11 +1,11 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.rice.gtk;
   ctp = config.catppuccin;
@@ -20,7 +20,7 @@ let
   };
 
   # Combined CSS string injected into both GTK3 and GTK4
-  gtkCss = lib.strings.concatStringsSep "\n\n" (
+  gtkCss = lib.strings.lib.concatStringsSep "\n\n" (
     builtins.filter (s: s != "") [
       fontCss
       themeCss
@@ -28,12 +28,12 @@ let
   );
 in
 {
-  options.rice.gtk = with types; {
+  options.rice.gtk = with lib.types; {
     enable = mkBoolOpt false "Enable GTK Customization";
     theme = mkStringOpt "Helios" "GTK theme name (selects from ./themes/)";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.pointerCursor = {
       enable = true;
       name = "catppuccin-mocha-mauve-cursors";
@@ -58,7 +58,7 @@ in
 
       iconTheme = {
         name = "Papirus-Dark";
-        package = mkDefault (
+        package = lib.mkDefault (
           pkgs.catppuccin-papirus-folders.override {
             accent = ctp.accent;
             flavor = ctp.flavor;

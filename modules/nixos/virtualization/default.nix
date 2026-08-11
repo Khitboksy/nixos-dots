@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.virt.vms;
@@ -22,7 +22,7 @@ let
     OPERATION="$2"
 
     case "$DOMAIN" in
-      ${concatStringsSep "\n  " (
+      ${lib.concatStringsSep "\n  " (
         map (d: ''
           "${d.name}")
             case "$OPERATION" in
@@ -31,20 +31,20 @@ let
                 systemctl stop greetd 2>/dev/null || true
                 sleep 1
 
-                ${optionalString d.nvidiaHack ''
+                ${lib.optionalString d.nvidiaHack ''
                   modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia i2c_nvidia_gpu 2>/dev/null || true
                   sleep 1
                 ''}
 
-                for dev in ${concatStringsSep " " d.pci} ${concatStringsSep " " d.audio} \
-                           ${concatStringsSep " " d.usb} ${concatStringsSep " " d.ucsi}; do
+                for dev in ${lib.concatStringsSep " " d.pci} ${lib.concatStringsSep " " d.audio} \
+                           ${lib.concatStringsSep " " d.usb} ${lib.concatStringsSep " " d.ucsi}; do
                   if [ -e "/sys/bus/pci/devices/$dev/driver" ]; then
                     echo "$dev" > "/sys/bus/pci/devices/$dev/driver/unbind" 2>/dev/null || true
                   fi
                 done
 
-                for dev in ${concatStringsSep " " d.pci} ${concatStringsSep " " d.audio} \
-                           ${concatStringsSep " " d.usb} ${concatStringsSep " " d.ucsi}; do
+                for dev in ${lib.concatStringsSep " " d.pci} ${lib.concatStringsSep " " d.audio} \
+                           ${lib.concatStringsSep " " d.usb} ${lib.concatStringsSep " " d.ucsi}; do
                   echo "vfio-pci" > "/sys/bus/pci/devices/$dev/driver_override" 2>/dev/null || true
                   echo "$dev" > "/sys/bus/pci/drivers/vfio-pci/bind" 2>/dev/null || true
                 done
@@ -55,8 +55,8 @@ let
 
               release)
                 echo "[vm-hook] Releasing ${d.name}: rebinding GPU, restarting DM"
-                for dev in ${concatStringsSep " " d.pci} ${concatStringsSep " " d.audio} \
-                           ${concatStringsSep " " d.usb} ${concatStringsSep " " d.ucsi}; do
+                for dev in ${lib.concatStringsSep " " d.pci} ${lib.concatStringsSep " " d.audio} \
+                           ${lib.concatStringsSep " " d.usb} ${lib.concatStringsSep " " d.ucsi}; do
                   echo "$dev" > "/sys/bus/pci/drivers/vfio-pci/unbind" 2>/dev/null || true
                   echo "" > "/sys/bus/pci/devices/$dev/driver_override" 2>/dev/null || true
                 done
@@ -64,7 +64,7 @@ let
                 echo 1 > /sys/bus/pci/rescan 2>/dev/null || true
                 sleep 2
 
-                ${optionalString d.nvidiaHack ''
+                ${lib.optionalString d.nvidiaHack ''
                   modprobe nvidia_drm nvidia_modeset nvidia_uvm nvidia 2>/dev/null || true
                   sleep 1
                 ''}
@@ -92,7 +92,7 @@ in
     ./vms/csp-win.nix
   ];
 
-  options.virt.vms = with types; {
+  options.virt.vms = with lib.types; {
     enable = mkBoolOpt false ''
       Enable hypervisor infrastructure + declarative VM management.
       Enables libvirtd, virt-manager, and VM definitions.
@@ -106,7 +106,7 @@ in
       Set true if any VM requires PCI passthrough (GPU, USB controller, etc.).
     '';
 
-    _gpuDomains = mkOption {
+    _gpuDomains = lib.mkOption {
       type = listOf (submodule {
         options = {
           name = mkOpt str "vm" "Libvirt domain name.";
@@ -127,10 +127,10 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
-    # KVM virtualization + optional GPU passthrough
-    boot = mkMerge [
+    # KVM virtualization + lib.optional GPU passthrough
+    boot = lib.mkMerge [
       {
         # Always needed: KVM modules
         kernelModules = [
@@ -139,7 +139,7 @@ in
           "kvm_intel"
         ];
       }
-      (mkIf cfg.enableGpuPassthrough {
+      (lib.mkIf cfg.enableGpuPassthrough {
         # Only when GPU passthrough is enabled
         kernelParams = [
           (if pkgs.stdenv.hostPlatform.isx86_64 then "amd_iommu=on" else "intel_iommu=on")
@@ -184,7 +184,7 @@ in
     ];
 
     # Libvirt QEMU hook (only when GPU passthrough is enabled)
-    virtualisation.libvirtd.hooks.qemu = mkIf cfg.enableGpuPassthrough {
+    virtualisation.libvirtd.hooks.qemu = lib.mkIf cfg.enableGpuPassthrough {
       qemu = hookScript;
     };
 

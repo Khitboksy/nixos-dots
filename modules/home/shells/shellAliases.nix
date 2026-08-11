@@ -3,7 +3,6 @@
   lib,
   ...
 }:
-with lib;
 with pkgs;
 {
   vpn = "mullvad";

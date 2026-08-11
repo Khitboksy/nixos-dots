@@ -1,20 +1,20 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shared.ui.fonts;
 in
 {
-  options.shared.ui.fonts = with types; {
+  options.shared.ui.fonts = with lib.types; {
     enable = mkBoolOpt false "Enable Custom Fonts";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     fonts = {
       packages = with pkgs; [
         noto-fonts # Broad script coverage (Arabic, Hebrew, Devanagari, etc.)

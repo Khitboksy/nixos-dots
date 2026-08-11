@@ -1,43 +1,45 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.vaultwarden;
 in
 
 {
-  options.vaultwarden = with types; {
+  options.vaultwarden = with lib.types; {
     enable = mkBoolOpt false "Enable Vaultwarden (Bitwarden-compatible password manager)";
 
     domain = mkStringOpt "https://terra.tailnet-name.ts.net" "HTTPS URL clients use to reach the server. Update this to your actual tailnet name after running 'tailscale serve'";
 
-    backupDir = mkOpt (nullOr types.str) null "Directory for automated database backups (SQLite only)";
+    backupDir =
+      mkOpt (nullOr lib.types.str) null
+        "Directory for automated database backups (SQLite only)";
 
     signupsAllowed = mkBoolOpt false "Allow anyone to register an account";
 
     invitationsAllowed = mkBoolOpt true "Allow existing users to invite new users";
 
     adminTokenFile =
-      mkOpt (nullOr types.str) null
+      mkOpt (nullOr lib.types.str) null
         "Path to file containing ADMIN_TOKEN=<hash> for admin panel access";
 
     tlsCertFile =
-      mkOpt (nullOr types.str) null
+      mkOpt (nullOr lib.types.str) null
         "Path to TLS certificate PEM file (fullchain). Enables HTTPS when both cert and key are set.";
 
     tlsKeyFile =
-      mkOpt (nullOr types.str) null
+      mkOpt (nullOr lib.types.str) null
         "Path to TLS private key PEM file. Enables HTTPS when both cert and key are set.";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.vaultwarden = {
       enable = true;
       dbBackend = "sqlite";

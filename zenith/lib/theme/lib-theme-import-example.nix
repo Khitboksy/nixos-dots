@@ -5,11 +5,11 @@
 
 {
   lib, # `lib` gets passed from ./default.nix
+  zenith,
   ...
 }:
-# Bring lib.custom helpers into scope (specifically we want the `colors.` helper)
-with lib;
-with lib.custom;
+# Bring zenith.lib' helpers into scope (specifically we want the `colors.` helper)
+with zenith.lib';
 {
   color0 = "${colors.helios.surface1.hex}";
   color8 = "${colors.helios.surface2.hex}";

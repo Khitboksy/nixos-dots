@@ -1,10 +1,10 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.rice;
 
@@ -22,7 +22,7 @@ let
     if enabledFonts == [ ] then
       ""
     else
-      lib.strings.concatStringsSep "\n\n" (
+      lib.strings.lib.concatStringsSep "\n\n" (
         map (
           name:
           fontFacesToCSS {
@@ -39,8 +39,8 @@ in
   options.rice.fonts = mkStringListOpt [ ] "Font families to enable for @font-face CSS";
 
   # Internal option consumed by rice/gtk module
-  options.rice._fontsCss = mkOption {
-    type = types.str;
+  options.rice._fontsCss = lib.mkOption {
+    type = lib.types.str;
     internal = true;
     default = "";
     description = "Generated @font-face CSS (internal)";

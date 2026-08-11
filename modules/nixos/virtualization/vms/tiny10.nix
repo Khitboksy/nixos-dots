@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   vmName = "tiny10"; # ← CHANGE THIS when copying
@@ -31,7 +31,7 @@ let
 in
 
 {
-  options.virt.vms.${vmName} = with types; {
+  options.virt.vms.${vmName} = with lib.types; {
 
     enable = mkBoolOpt false ''
       Enable the ${vmName} virtual machine.
@@ -79,9 +79,9 @@ in
 
   };
 
-  config = mkIf (config.virt.vms.enable && cfg.enable) {
+  config = lib.mkIf (config.virt.vms.enable && cfg.enable) {
 
-    virt.vms._gpuDomains = optional cfg.gpuPassthrough {
+    virt.vms._gpuDomains = lib.optional cfg.gpuPassthrough {
       name = vmName;
       pci = cfg.gpu.pci;
       audio = cfg.gpu.audio;
@@ -94,7 +94,7 @@ in
     #  Activation — creates disk image on every rebuild/boot
     #  (runs early, doesn't need libvirtd)
     # ──────────────────────────────────────────────────────────
-    system.activationScripts."disk-${vmName}" = stringAfter [ "var" ] ''
+    system.activationScripts."disk-${vmName}" = lib.stringAfter [ "var" ] ''
       mkdir -p /var/lib/libvirt/images
 
       if [ ! -f "/var/lib/libvirt/images/${vmName}.qcow2" ]; then

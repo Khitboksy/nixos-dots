@@ -1,12 +1,12 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
 
@@ -45,11 +45,11 @@ let
 
 in
 {
-  options.apps.tools.neovim = with types; {
+  options.apps.tools.neovim = with lib.types; {
     enable = mkBoolOpt false "Enable Neovim";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.neovim = {
       plugins = neovimPluginList;
       enable = true;

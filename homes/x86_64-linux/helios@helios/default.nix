@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  zenith,
   config,
   ...
 }:
@@ -32,14 +33,14 @@ in
         palette = {
           enable = true;
           default = {
-            dir = "${home}/builds/lib/theme/colors";
+            dir = "${home}/builds/zenith/lib/theme/colors";
             palette = "helios";
           };
           extraDirs = [
             # "${home}/repos/palette-tui/palettes"
           ];
           dirFormats = {
-            "${home}/builds/lib/theme/colors" = [ "hex" ];
+            "${home}/builds/zenith/lib/theme/colors" = [ "hex" ];
           };
         };
       };
@@ -68,7 +69,7 @@ in
 
   services = {
 
-    wallpaper.paper = lib.custom.wallpapers.tftf-11;
+    wallpaper.paper = zenith.lib'.wallpapers.tftf-11;
 
     musicPlayerDaemon.enable = true;
 

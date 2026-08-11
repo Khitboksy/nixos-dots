@@ -1,19 +1,19 @@
 {
   config,
   lib,
+  zenith,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.term.tuis.cava;
 in
 {
-  options.apps.term.tuis.cava = with types; {
+  options.apps.term.tuis.cava = with lib.types; {
     enable = mkBoolOpt false "Enable Cava Audio Visualizer";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.cava = {
       enable = true;
       settings = {

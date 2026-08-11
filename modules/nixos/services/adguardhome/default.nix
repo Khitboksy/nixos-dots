@@ -1,22 +1,22 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.adguardhome;
 in
 
 {
-  options.adguardhome = with types; {
+  options.adguardhome = with lib.types; {
     enable = mkBoolOpt false "Enable AdGuard Home (network-wide ad blocking DNS server)";
 
-    port = mkOpt types.port 3000 "Port for the AdGuard Home web interface";
+    port = mkOpt lib.types.port 3000 "Port for the AdGuard Home web interface";
 
     mutableSettings = mkBoolOpt false ''
       Allow changes made on the AdGuard Home web interface to persist between
@@ -31,7 +31,7 @@ in
     '';
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.adguardhome = {
       enable = true;
       host = "127.0.0.1"; # Web UI only accessible locally

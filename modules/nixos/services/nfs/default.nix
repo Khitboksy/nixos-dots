@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.nfs;
@@ -23,13 +23,13 @@ in
     '';
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.rpcbind.enable = true;
 
     services.nfs.server = {
       enable = true;
-      exports = concatStringsSep "\n" cfg.exports;
+      exports = lib.concatStringsSep "\n" cfg.exports;
     };
 
     networking.firewall.allowedTCPPorts = [

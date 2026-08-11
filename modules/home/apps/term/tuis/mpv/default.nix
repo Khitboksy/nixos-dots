@@ -2,18 +2,18 @@
   config,
   pkgs,
   lib,
+  zenith,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.term.tuis.mpv;
 in
 {
-  options.apps.term.tuis.mpv = with types; {
+  options.apps.term.tuis.mpv = with lib.types; {
     enable = mkBoolOpt false "Enable MPV";
   };
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     xdg.configFile."mpv/mpv.conf".text = ''
       osc = yes
       keepaspect = yes

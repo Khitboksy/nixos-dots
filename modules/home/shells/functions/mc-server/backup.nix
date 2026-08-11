@@ -2,11 +2,11 @@
   openssh,
   rsync,
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 {
   mc-backup = ''

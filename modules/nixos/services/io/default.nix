@@ -1,23 +1,23 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.io;
 in
 
 {
-  options.services.io = with types; {
+  options.services.io = with lib.types; {
     enable = mkBoolOpt false "Enable YeetMouse Mouse Acceleration";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
       piper

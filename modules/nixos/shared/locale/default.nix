@@ -1,5 +1,6 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
@@ -7,14 +8,13 @@ let
   cfg = config.shared.locale;
 in
 
-with lib;
-with lib.custom;
+with zenith.lib';
 {
-  options.shared.locale = with types; {
+  options.shared.locale = with lib.types; {
     enable = mkBoolOpt false "shared locale settings";
     defaultLocale = mkStringOpt' "en_US.UTF-8";
   };
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     i18n.defaultLocale = cfg.defaultLocale;
     i18n.extraLocaleSettings = {
       LC_ADDRESS = cfg.defaultLocale;

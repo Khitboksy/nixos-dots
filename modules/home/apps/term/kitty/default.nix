@@ -1,20 +1,20 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.term.kitty;
 in
 {
-  options.apps.term.kitty = with types; {
+  options.apps.term.kitty = with lib.types; {
     enable = mkBoolOpt false "Enable Kitty terminal";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       (writeShellScriptBin "kitty-launcher" ''
         MARKER="''${XDG_RUNTIME_DIR}/kitty-tmux-active"

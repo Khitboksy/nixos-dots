@@ -1,11 +1,11 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.hardware.swap;
@@ -13,11 +13,11 @@ in
 
 {
 
-  options.shared.hardware.swap = with types; {
+  options.shared.hardware.swap = with lib.types; {
     enable = mkBoolOpt false "Enable Swap";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     zramSwap = {
       enable = true;
       memoryPercent = 50;

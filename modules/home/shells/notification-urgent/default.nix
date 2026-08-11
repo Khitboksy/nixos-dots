@@ -2,32 +2,32 @@
   options,
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shells.notification-urgent;
 in
 {
-  options.shells.notification-urgent = with types; {
+  options.shells.notification-urgent = with lib.types; {
     enable = mkBoolOpt false "Enable Notification & Urgent helper";
 
     # Icon shown in DMS notification (default: checkmark)
-    icon = mkOpt types.str "checkbox-marked" "Default notification icon";
+    icon = mkOpt lib.types.str "checkbox-marked" "Default notification icon";
 
     # Timeout for DMS notifications in ms
-    timeout = mkOpt types.int 3000 "Notification timeout (ms)";
+    timeout = mkOpt lib.types.int 3000 "Notification timeout (ms)";
 
     # Urgent timeout (longer for hanging agents)
-    urgentTimeout = mkOpt types.int 8000 "Urgent notification timeout (ms)";
+    urgentTimeout = mkOpt lib.types.int 8000 "Urgent notification timeout (ms)";
 
     # Context warning threshold (百分比)
-    contextThreshold = mkOpt types.int 80 "Context warning threshold (%)";
+    contextThreshold = mkOpt lib.types.int 80 "Context warning threshold (%)";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.fish = {
       interactiveShellInit = ''
         # === Helper Functions ===

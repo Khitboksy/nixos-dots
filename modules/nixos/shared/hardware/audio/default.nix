@@ -1,20 +1,20 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shared.hardware.audio;
 in
 {
-  options.shared.hardware.audio = with types; {
+  options.shared.hardware.audio = with lib.types; {
     enable = mkBoolOpt false "Enable Audio";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;

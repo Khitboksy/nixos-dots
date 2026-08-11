@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.music;
@@ -19,7 +19,7 @@ in
     musicDirectory = mkStringOpt "/var/lib/navidrome/music" "Path to the music directory Navidrome serves";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.navidrome = {
       enable = true;
       settings = {

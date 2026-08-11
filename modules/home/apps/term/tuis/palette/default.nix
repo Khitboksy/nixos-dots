@@ -1,18 +1,18 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.term.tuis.palette;
 in
 
 {
-  options.apps.term.tuis.palette = with types; {
+  options.apps.term.tuis.palette = with lib.types; {
     enable = mkBoolOpt' false;
 
     default = {
@@ -27,7 +27,7 @@ in
     dirFormats = mkAttrOpt { } "Per-directory format overrides";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.palette-tui = {
       enable = true;

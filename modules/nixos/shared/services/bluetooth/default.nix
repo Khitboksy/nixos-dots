@@ -1,22 +1,22 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.services.bluetooth;
 in
 
 {
-  options.shared.services.bluetooth = with types; {
+  options.shared.services.bluetooth = with lib.types; {
     enable = mkBoolOpt false "Enable Bluetooth";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.blueman.enable = true;
 

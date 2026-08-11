@@ -1,12 +1,12 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.term.tuis.tmux;
@@ -14,11 +14,11 @@ in
 
 {
 
-  options.apps.term.tuis.tmux = with types; {
+  options.apps.term.tuis.tmux = with lib.types; {
     enable = mkBoolOpt false "Enable Tmux";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.tmux = {
 

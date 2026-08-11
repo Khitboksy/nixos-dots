@@ -1,25 +1,25 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.hardware.systems.terra;
 in
 
 {
-  options.hardware.systems.terra = with types; {
+  options.hardware.systems.terra = with lib.types; {
     enable = mkBoolOpt false "Enable Terra Hardware Modules";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     hardware = {
-      cpu.intel.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
+      cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
       graphics = {
         enable = true;

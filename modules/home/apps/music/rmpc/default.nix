@@ -1,12 +1,12 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
 
@@ -21,11 +21,11 @@ let
 
 in
 {
-  options.apps.music.rmpc = with types; {
+  options.apps.music.rmpc = with lib.types; {
     enable = mkBoolOpt false "Enable RMPC Rust Based CLI Music Player";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     xdg.configFile = {
 

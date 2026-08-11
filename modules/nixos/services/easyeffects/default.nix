@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.easyeffects;
@@ -14,11 +14,11 @@ let
 in
 
 {
-  options.services.easyeffects = with types; {
+  options.services.easyeffects = with lib.types; {
     enable = mkBoolOpt false "Enable EasyEffects audio processing";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     environment.systemPackages = [ pkgs.easyeffects ];
 

@@ -5,8 +5,6 @@
   ...
 }:
 
-with lib;
-
 {
   ytbulk = ''
 

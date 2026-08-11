@@ -1,20 +1,20 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shells.fish;
 in
 {
-  options.shells.fish = with types; {
+  options.shells.fish = with lib.types; {
     enable = mkBoolOpt false "Enable Fish Configuration";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.fish = {
       enable = true;
       generateCompletions = false;
@@ -67,7 +67,7 @@ in
               # Capture exit status FIRST, before any other commands
               set -l last_status $status
 
-              # Colors from lib.custom.colors
+              # Colors from zenith.lib'.colors
               set -l c_dir (set_color "${colors.helios.mauve.hex}")
               set -l c_clean (set_color "${colors.helios.green.hex}")
               set -l c_dirty (set_color "${colors.helios.yellow.hex}")

@@ -1,19 +1,19 @@
 {
   config,
   lib,
+  zenith,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.tools.dms;
 in
 {
-  options.apps.tools.dms = with types; {
+  options.apps.tools.dms = with lib.types; {
     enable = mkBoolOpt false "Enable DMS (DankMaterialShell)";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.dank-material-shell = {
       enable = true;
       systemd.enable = true;

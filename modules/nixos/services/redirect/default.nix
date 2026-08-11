@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.redirect;
@@ -35,7 +35,7 @@ let
 
 in
 {
-  options.services.redirect = with types; {
+  options.services.redirect = with lib.types; {
     enable = mkBoolOpt false ''
       Enable HTTP 302 redirect services for Tailscale Serve path routing.
       Each rule creates a tiny HTTP server on localhost that returns a 302
@@ -43,16 +43,16 @@ in
       to these servers, which bounce the browser to the direct port.
     '';
 
-    rules = mkOption {
-      type = types.attrsOf (
-        types.submodule {
+    rules = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
           options = {
-            port = mkOption {
-              type = types.int;
+            port = lib.mkOption {
+              type = lib.types.int;
               description = "Localhost port to listen on (tailscale serve targets this)";
             };
-            target = mkOption {
-              type = types.str;
+            target = lib.mkOption {
+              type = lib.types.str;
               description = "URL to redirect the browser to (e.g. https://terra.tail9a2d08.ts.net:9090)";
             };
           };
@@ -63,7 +63,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.services = listToAttrs (mapAttrsToList mkRedirectService cfg.rules);
   };
 }

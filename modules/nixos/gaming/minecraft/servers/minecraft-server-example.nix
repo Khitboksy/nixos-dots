@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   # ─────────────────────────────────────────────────────────────────
@@ -21,10 +21,10 @@ let
 in
 
 {
-  options.gaming.minecraft.servers.${srvName} = with types; {
+  options.gaming.minecraft.servers.${srvName} = with lib.types; {
     enable = mkBoolOpt false "Enable the Minecraft server: ${srvName}";
 
-    serverSource = mkOption {
+    serverSource = lib.mkOption {
       type = str;
       default = "/PATH/TO/SERVER/FILES";
       example = "/home/user/minecraft-servers/${srvName}";
@@ -34,46 +34,46 @@ in
       '';
     };
 
-    jarFile = mkOption {
+    jarFile = lib.mkOption {
       type = str;
       default = "server.jar";
       example = "forge-1.12.2-14.23.5.2860.jar";
       description = "JAR filename to run (relative to the state directory).";
     };
 
-    memory = mkOption {
+    memory = lib.mkOption {
       type = str;
       default = "2G";
       example = "4G";
       description = "Maximum heap memory (e.g. 2G, 4G, 6G).";
     };
 
-    port = mkOption {
+    port = lib.mkOption {
       type = port;
       default = 25565;
       description = "Server port for Minecraft connections.";
     };
 
-    openFirewall = mkOption {
+    openFirewall = lib.mkOption {
       type = bool;
       default = true;
       description = "Open the server port in the NixOS firewall.";
     };
 
-    jvmOpts = mkOption {
+    jvmOpts = lib.mkOption {
       type = str;
       default = "";
       example = "-XX:+UseG1GC -XX:MaxGCPauseMillis=50";
       description = "Additional JVM flags beyond -Xmx and -Dfml flags.";
     };
 
-    motd = mkOption {
+    motd = lib.mkOption {
       type = str;
       default = "A Minecraft Server";
       description = "Server message of the day.";
     };
 
-    onlineMode = mkOption {
+    onlineMode = lib.mkOption {
       type = bool;
       default = false;
       description = ''
@@ -82,14 +82,14 @@ in
       '';
     };
 
-    maxPlayers = mkOption {
+    maxPlayers = lib.mkOption {
       type = ints.positive;
       default = 16;
       description = "Maximum number of players.";
     };
 
-    difficulty = mkOption {
-      type = types.enum [
+    difficulty = lib.mkOption {
+      type = lib.types.enum [
         0
         1
         2
@@ -99,29 +99,29 @@ in
       description = "Game difficulty: 0=Peaceful, 1=Easy, 2=Normal, 3=Hard.";
     };
 
-    pvp = mkOption {
+    pvp = lib.mkOption {
       type = bool;
       default = true;
       description = "Enable player-vs-player combat.";
     };
 
-    seed = mkOption {
+    seed = lib.mkOption {
       type = str;
       default = "";
       description = "World seed. Empty = random.";
     };
 
-    whitelist = mkOption {
+    whitelist = lib.mkOption {
       type = bool;
       default = false;
       description = "Enable whitelist.";
     };
   };
 
-  config = mkIf (config.gaming.minecraft.enable && cfg.enable) {
+  config = lib.mkIf (config.gaming.minecraft.enable && cfg.enable) {
 
     # ── Firewall ──────────────────────────────────────────────────
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
     # ── System user ───────────────────────────────────────────────
     users.users."minecraft-${srvName}" = {

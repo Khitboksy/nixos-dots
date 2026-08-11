@@ -1,6 +1,6 @@
-{ lib }:
+{ lib, zenith }:
 let
-  colors = lib.custom.colors;
+  colors = zenith.lib'.colors;
 in
 {
   helios-catppuccin = {

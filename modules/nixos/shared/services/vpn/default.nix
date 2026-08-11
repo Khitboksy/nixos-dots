@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.services.vpn;
@@ -14,11 +14,11 @@ in
 
 {
 
-  options.shared.services.vpn = with types; {
+  options.shared.services.vpn = with lib.types; {
     enable = mkBoolOpt false "Enable Mullvad-VPN";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.mullvad-vpn = {
       enable = true;

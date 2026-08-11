@@ -1,10 +1,10 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   q = s: "\"${s}\"";
 in

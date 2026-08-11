@@ -14,7 +14,7 @@ let
     else
       throw ''
         Theme "${theme}" not found in themes/.
-        Available themes: ${builtins.concatStringsSep ", " themeDirs}
+        Available themes: ${builtins.lib.concatStringsSep ", " themeDirs}
       '';
 in
 themeCss

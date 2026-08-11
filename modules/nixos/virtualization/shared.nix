@@ -1,5 +1,4 @@
 { pkgs, lib }:
-with lib;
 let
   # PCI address parser
   # builtins.split returns interleaved strings + empty-list separators:
@@ -21,7 +20,7 @@ let
       # All PCI devices for this domain
       pciDevs = d.gpu.pci ++ d.gpu.audio ++ d.gpu.usb ++ d.gpu.ucsi;
 
-      hostdevs = concatStringsSep "\n" (
+      hostdevs = lib.concatStringsSep "\n" (
         map (addr: ''
           <hostdev mode='subsystem' type='pci' managed='yes'>
             <source>
@@ -38,7 +37,7 @@ let
           <boot order='1'/>
         </disk>'';
 
-      cdromXML = optionalString (d.iso != null) ''
+      cdromXML = lib.optionalString (d.iso != null) ''
         <disk type='file' device='cdrom'>
           <driver name='qemu' type='raw'/>
           <source file='${d.iso}'/>
@@ -47,7 +46,7 @@ let
           <readonly/>
         </disk>'';
 
-      virtioXML = optionalString (d.virtioIso != null) ''
+      virtioXML = lib.optionalString (d.virtioIso != null) ''
         <disk type='file' device='cdrom'>
           <driver name='qemu' type='raw'/>
           <source file='${d.virtioIso}'/>
@@ -56,12 +55,12 @@ let
         </disk>'';
 
       netXML =
-        optionalString (d.network.type == "bridge") ''
+        lib.optionalString (d.network.type == "bridge") ''
           <interface type='bridge'>
             <source bridge='${d.network.bridge}'/>
             <model type='virtio'/>
           </interface>''
-        + optionalString (d.network.type == "network") ''
+        + lib.optionalString (d.network.type == "network") ''
           <interface type='network'>
             <source network='${d.network.name}'/>
             <model type='virtio'/>
@@ -117,18 +116,18 @@ let
         else
           "";
 
-      tpmXML = optionalString d.tpm ''
+      tpmXML = lib.optionalString d.tpm ''
         <tpm model='tpm-crb'>
           <backend type='emulator' version='2.0'/>
         </tpm>'';
 
       # Graphics: null = no QEMU display (e.g. GPU passthrough uses monitor directly)
-      graphicsXML = optionalString (
+      graphicsXML = lib.optionalString (
         d.graphics != null
       ) "<graphics type='${d.graphics}' port='-1' autoport='yes' listen='0.0.0.0'/>";
 
       # Video: only include if we have a graphics device
-      videoXML = optionalString (d.graphics != null) ''
+      videoXML = lib.optionalString (d.graphics != null) ''
         <video>
           <model type='qxl'/>
         </video>'';

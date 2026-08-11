@@ -1,23 +1,23 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.musicPlayerDaemon;
 in
 
 {
-  options.services.musicPlayerDaemon = with types; {
+  options.services.musicPlayerDaemon = with lib.types; {
     enable = mkBoolOpt false "Enable MPD";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home.packages = with pkgs; [
       mpd

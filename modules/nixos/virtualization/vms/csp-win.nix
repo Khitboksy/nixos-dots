@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   vmName = "csp-win";
@@ -32,7 +32,7 @@ let
 in
 
 {
-  options.virt.vms.${vmName} = with types; {
+  options.virt.vms.${vmName} = with lib.types; {
 
     enable = mkBoolOpt false "Enable the ${vmName} virtual machine (Clip Studio Paint on Windows).";
 
@@ -59,7 +59,7 @@ in
 
   };
 
-  config = mkIf (config.virt.vms.enable && cfg.enable) {
+  config = lib.mkIf (config.virt.vms.enable && cfg.enable) {
 
     # ------------------------------------------------------------------
     # Cockpit web UI — access via Tailscale Serve on terra
@@ -113,7 +113,7 @@ in
     # ------------------------------------------------------------------
     # Activation — creates disk image on every rebuild/boot
     # ------------------------------------------------------------------
-    system.activationScripts."disk-${vmName}" = stringAfter [ "var" ] ''
+    system.activationScripts."disk-${vmName}" = lib.stringAfter [ "var" ] ''
       mkdir -p /var/lib/libvirt/images
 
       if [ ! -f "/var/lib/libvirt/images/${vmName}.qcow2" ]; then

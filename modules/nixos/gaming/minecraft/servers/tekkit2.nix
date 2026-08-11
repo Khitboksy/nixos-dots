@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   srvName = "tekkit2";
@@ -140,7 +140,7 @@ let
 in
 
 {
-  options.gaming.minecraft.servers.${srvName} = with types; {
+  options.gaming.minecraft.servers.${srvName} = with lib.types; {
     enable = mkBoolOpt false "Enable the Tekkit 2 Minecraft server (MC 1.12.2 / Forge).";
 
     serverSource = mkStringOpt' "/home/helios/minecraft/servers/tekkit2";
@@ -176,9 +176,9 @@ in
     viewDistance = mkOpt' (ints.between 3 32) 10;
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
     users.users."minecraft-${srvName}" = {
       description = "Minecraft Server - Tekkit 2";

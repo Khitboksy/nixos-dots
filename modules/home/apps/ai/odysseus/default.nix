@@ -3,11 +3,11 @@
   pkgs,
   inputs,
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.apps.ai.odysseus;
@@ -67,11 +67,11 @@ let
   '';
 in
 {
-  options.apps.ai.odysseus = with types; {
+  options.apps.ai.odysseus = with lib.types; {
     enable = mkBoolOpt false "Enable Odysseus AI Workspace (port 7000)";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = [ odysseusPkg ];
 
     systemd.user.services = {

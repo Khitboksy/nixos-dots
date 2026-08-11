@@ -1,6 +1,5 @@
-{ lib }:
-with lib;
-with lib.custom;
+{ lib, zenith }:
+with zenith.lib';
 
 let
   inherit (builtins) toString;
@@ -67,7 +66,7 @@ in
 
 ''
   /* ── Helios GTK Theme ────────────────────────────────────────────
-   *   Generated from Nix at build time via lib.custom.colors.
+   *   Generated from Nix at build time via zenith.lib'.colors.
    *   Edit ~/builds/lib/theme/default.nix to change the palette,
    *   or gtk-theme.nix to change how colors map to widgets.
    * ────────────────────────────────────────────────────────────────── */

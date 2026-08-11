@@ -2,20 +2,20 @@
   config,
   pkgs,
   lib,
+  zenith,
   inputs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.term.tuis.yazi;
 in
 {
-  options.apps.term.tuis.yazi = with types; {
+  options.apps.term.tuis.yazi = with lib.types; {
     enable = mkBoolOpt false "Enable Yazi";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     apps.term.tuis.mpv.enable = true;
 

@@ -1,6 +1,5 @@
-{ lib }:
-with lib;
-with lib.custom;
+{ lib, zenith }:
+with zenith.lib';
 ''
   local M = {
   rosewater = "${colors.helios.rosewater.hex}",

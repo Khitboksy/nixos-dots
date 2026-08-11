@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   vmName = "vm-example"; # ← CHANGE THIS when copying (must match filename)
@@ -32,7 +32,7 @@ let
 in
 
 {
-  options.virt.vms.${vmName} = with types; {
+  options.virt.vms.${vmName} = with lib.types; {
 
     enable = mkBoolOpt false ''
       Enable the ${vmName} virtual machine.
@@ -56,8 +56,8 @@ in
       Virtual CPU count.
     '';
 
-    os = mkOption {
-      type = types.enum [
+    os = lib.mkOption {
+      type = lib.types.enum [
         "linux"
         "windows"
       ];
@@ -69,8 +69,8 @@ in
       '';
     };
 
-    firmware = mkOption {
-      type = types.enum [
+    firmware = lib.mkOption {
+      type = lib.types.enum [
         "uefi"
         "bios"
       ];
@@ -116,12 +116,12 @@ in
 
   };
 
-  config = mkIf (config.virt.vms.enable && cfg.enable) {
+  config = lib.mkIf (config.virt.vms.enable && cfg.enable) {
 
     # ------------------------------------------------------------------
     # Register GPU devices for the single-GPU passthrough hook
     # ------------------------------------------------------------------
-    virt.vms._gpuDomains = optional cfg.gpuPassthrough {
+    virt.vms._gpuDomains = lib.optional cfg.gpuPassthrough {
       name = vmName;
       pci = cfg.gpu.pci;
       audio = cfg.gpu.audio;
@@ -134,7 +134,7 @@ in
     # Activation — creates disk image on every rebuild/boot
     # (runs early, doesn't need libvirtd)
     # ------------------------------------------------------------------
-    system.activationScripts."disk-${vmName}" = stringAfter [ "var" ] ''
+    system.activationScripts."disk-${vmName}" = lib.stringAfter [ "var" ] ''
       mkdir -p /var/lib/libvirt/images
 
       if [ ! -f "/var/lib/libvirt/images/${vmName}.qcow2" ]; then

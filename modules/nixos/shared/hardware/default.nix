@@ -1,31 +1,31 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.shared.hardware;
 in
 {
-  options.shared.hardware = with types; {
+  options.shared.hardware = with lib.types; {
     enable = mkBoolOpt false "Enable Shared Hardware Modules";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.services = {
-      NetworkManager-wait-online.enable = mkForce false;
+      NetworkManager-wait-online.enable = lib.mkForce false;
     };
     networking = {
       firewall.allowedTCPPorts = [ 4096 ];
-      useDHCP = mkDefault true;
+      useDHCP = lib.mkDefault true;
       networkmanager.enable = true;
     };
     boot = {
-      # mkDefault so individual hosts can override (e.g. helios uses the CachyOS kernel)
-      kernelPackages = mkDefault pkgs.linuxPackages_latest;
+      # lib.mkDefault so individual hosts can override (e.g. helios uses the CachyOS kernel)
+      kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
     };

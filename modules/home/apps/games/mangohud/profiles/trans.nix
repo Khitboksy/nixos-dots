@@ -1,11 +1,11 @@
 # Default profile - full stats display
 {
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 ''
 

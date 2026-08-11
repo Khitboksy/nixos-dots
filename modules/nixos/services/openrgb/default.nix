@@ -1,25 +1,25 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.services.openrgb;
 in
 
 {
-  options.services.openrgb = with types; {
+  options.services.openrgb = with lib.types; {
     enable = mkBoolOpt false "Enable OpenRGB Server SDK";
     profileFile = mkPathOpt ./config/Helios.orp "Profile Used by openrgb.service";
     configFile = mkPathOpt ./config/OpenRGB.json "Config Used by OpenRGB Server SDK";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     environment = {
       systemPackages = [

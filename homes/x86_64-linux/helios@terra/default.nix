@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  zenith,
   ...
 }:
 
@@ -62,7 +63,7 @@
     };
   };
 
-  services.wallpaper.paper = lib.custom.wallpapers.tftf-11;
+  services.wallpaper.paper = zenith.lib'.wallpapers.tftf-11;
 
   home.packages = with pkgs; [
     wl-clipboard-rs

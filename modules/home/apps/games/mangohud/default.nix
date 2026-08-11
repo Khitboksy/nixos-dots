@@ -1,12 +1,12 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
 
@@ -20,7 +20,7 @@ in
     enable = mkBoolOpt false "Enable MangoHud";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home.packages = with pkgs; [
       mangohud

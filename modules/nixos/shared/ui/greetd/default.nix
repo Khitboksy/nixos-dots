@@ -1,13 +1,13 @@
 {
   config,
   lib,
+  zenith,
   pkgs,
   inputs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.ui.greetd;
@@ -33,11 +33,11 @@ let
 in
 
 {
-  options.shared.ui.greetd = with types; {
+  options.shared.ui.greetd = with lib.types; {
     enable = mkBoolOpt false "Enable greetd + tuigreet TUI login manager";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.displayManager.gdm.enable = lib.mkForce false;
 

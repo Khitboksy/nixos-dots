@@ -6,7 +6,7 @@
 # This is a rundown of my rough styleguide when creating modules.
 #
 # ALL `default.nix` files under modules/ are automatically discovered and
-# imported by `collectDefaults` in `lib/zenith/default.nix`:
+# imported by `collectDefaults` in `zenith/default.nix`:
 #
 #   - modules/nixos/**/default.nix for system modules.
 #   - modules/home/**/default.nix for home-manager modules.
@@ -19,6 +19,7 @@
   config,
   lib,
   pkgs,
+  zenith,
   # inputs,  only needed for flake related modules
   /*
     you can also omit `pkgs` and add individual pkgs like:
@@ -28,11 +29,10 @@
   ...
 }:
 
-# Bring lib.custom helpers into scope
-with lib;
-with lib.custom;
-# lib.custom is assembled in lib/zenith/default.nix by merging
-# lib/module/default.nix and lib/theme/default.nix with lib.recursiveUpdate,
+# Bring zenith.lib' helpers into scope
+with zenith.lib';
+# zenith.lib' is assembled in zenith/default.nix by merging
+# zenith/lib/module/default.nix and zenith/lib/theme/default.nix with lib.recursiveUpdate,
 
 # Define module level variables
 let
@@ -43,7 +43,7 @@ in
 {
 
   # Module options.
-  options.apps.term.cowsay = with types; {
+  options.apps.term.cowsay = with lib.types; {
     # Force the default boolean to be false.
     enable = mkBoolOpt false "Enable Cowsay";
     # Enable with <module>.enable=true; inside the respective
@@ -55,7 +55,7 @@ in
   };
 
   # Config options.
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # This section would be filled with the application specific
     # module options, like `package = `, `settings = `, or `extraConfig = ''...''`
     # or general nix things like `home.packages`, or `environment.variables``

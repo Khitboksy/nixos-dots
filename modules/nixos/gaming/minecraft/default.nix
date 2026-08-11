@@ -1,12 +1,12 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.gaming.minecraft;
@@ -19,11 +19,11 @@ in
     ./servers/tekkit2.nix
   ];
 
-  options.gaming.minecraft = with types; {
+  options.gaming.minecraft = with lib.types; {
     enable = mkBoolOpt false "Enable Vanilla and Modded Minecraft server infrastructure.";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # Server deps
     environment.systemPackages = with pkgs; [
       jdk8

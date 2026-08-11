@@ -1,6 +1,5 @@
-{ lib }:
-with lib;
-with lib.custom;
+{ lib, zenith }:
+with zenith.lib';
 rec {
 
   nixos_small = ''

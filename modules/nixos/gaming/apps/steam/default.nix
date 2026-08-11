@@ -1,12 +1,12 @@
 {
   pkgs,
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.gaming.apps.steam;
@@ -14,11 +14,11 @@ let
 in
 
 {
-  options.gaming.apps.steam = with types; {
+  options.gaming.apps.steam = with lib.types; {
     enable = mkBoolOpt false "Enable Steam";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.steam = {
 

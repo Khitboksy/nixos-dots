@@ -1,22 +1,22 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.services.tailscale;
 in
 
 {
-  options.shared.services.tailscale = with types; {
+  options.shared.services.tailscale = with lib.types; {
     enable = mkBoolOpt false "Enable Tailscale";
 
-    authKeyFile = mkOption {
-      type = types.nullOr types.path;
+    authKeyFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
       default = null;
       description = ''
         Path to a file containing a Tailscale auth key (or empty for
@@ -31,7 +31,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.tailscale = {
       enable = true;
       authKeyFile = cfg.authKeyFile;

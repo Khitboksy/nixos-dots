@@ -1,15 +1,15 @@
 {
   config,
   lib,
+  zenith,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.apps.tools.noctalia;
 in
 {
-  options.apps.tools.noctalia = with types; {
+  options.apps.tools.noctalia = with lib.types; {
     enable = mkBoolOpt false "Enable Noctalia Shell";
     bar = mkEnumOpt' [
       # Pick One
@@ -18,7 +18,7 @@ in
     ] "helios";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.noctalia = {
       enable = true;
       settings =

@@ -1,22 +1,22 @@
 {
   lib,
+  zenith,
   config,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.shared.services.ssh;
 in
 
 {
-  options.shared.services.ssh = with types; {
+  options.shared.services.ssh = with lib.types; {
     enable = mkBoolOpt false "Enable OpenSSH";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.openssh = {
       enable = true;

@@ -1,21 +1,21 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
-with lib;
-with lib.custom;
+with zenith.lib';
 let
   cfg = config.services.wallpaper;
 in
 {
-  options.services.wallpaper = with types; {
+  options.services.wallpaper = with lib.types; {
     enable = mkBoolOpt false "Enable Wallpaper via Niri";
     paper = mkPathOpt null "Set Default Wallpaper";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.user.services.swaybg = {
       Unit = {
         Description = "Wallpaper Daemon";

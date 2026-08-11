@@ -1,23 +1,23 @@
 {
   lib,
+  zenith,
   config,
   pkgs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   cfg = config.security.sops;
 in
 
 {
-  options.security.sops = with types; {
+  options.security.sops = with lib.types; {
     enable = mkBoolOpt false "Enable sops-nix secret provisioning";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     sops = {
       age.keyFile = "/etc/sops/keys.txt";
       secrets = {

@@ -1,7 +1,6 @@
-{ lib }:
+{ lib, zenith }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 ''
   <?xml version="1.0" encoding="UTF-8"?>

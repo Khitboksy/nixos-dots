@@ -1,13 +1,13 @@
 {
   lib,
+  zenith,
   pkgs,
   config,
   inputs,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 let
   system = pkgs.stdenv.hostPlatform.system;
@@ -24,8 +24,8 @@ in
 
 {
   options.apps.ai.mcps =
-    with types;
-    mkOption {
+    with lib.types;
+    lib.mkOption {
       type = attrsOf anything;
       default = { };
       description = "MCP server definitions shared across AI apps (opencode + odysseus formats)";

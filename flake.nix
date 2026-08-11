@@ -152,7 +152,7 @@
 
       ## Packages
       userPackages = final: prev: {
-        # add packages inside the `custom`. this is adding to `lib.custom`
+        # add packages inside `pkgs.custom`
         custom = (prev.custom or { }) // {
           enc = final.callPackage ./packages/enc { };
 

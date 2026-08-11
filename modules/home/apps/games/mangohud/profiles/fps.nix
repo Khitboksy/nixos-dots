@@ -1,11 +1,11 @@
 # FPS-only minimal profile
 {
   lib,
+  zenith,
   ...
 }:
 
-with lib;
-with lib.custom;
+with zenith.lib';
 
 ''
 
