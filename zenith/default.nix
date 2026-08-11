@@ -6,26 +6,15 @@
 let
   nixpkgs = inputs.nixpkgs;
 
-  # Assemble lib.custom: merge lib/module + lib/theme into one attrset.
-  custom = lib.recursiveUpdate (import ../module { inherit lib; }) (import ../theme { inherit lib; });
-
-  # Create the library injected into NixOS module evaluation.
-  systemLib = lib // {
-    inherit custom;
-  };
-
-  # Create the library injected into home-manager evaluation.
-  homeLib = systemLib.extend (
-    final: prev:
-    systemLib
-    // prev
-    // {
-      hm = inputs.home-manager.lib.hm;
-    }
+  # Assemble the custom helpers: merge module + theme
+  lib' = lib.recursiveUpdate (import ./lib/module { inherit lib; }) (
+    import ./lib/theme { inherit lib; }
   );
 
+  # home-manager lib: extends lib with hm, no custom injection
+  _homeLib = lib.extend (final: prev: prev // { hm = inputs.home-manager.lib.hm; });
+
   # Auto-import
-  # Collects every `default.nix` under a directory tree
   collectDefaults =
     dir:
     let
@@ -38,27 +27,27 @@ let
     in
     own ++ nested;
 
-  # Local NixOS and home modules
-  nixosModules' = map (m: import m) (collectDefaults ../../modules/nixos);
-  homeModules' = map (m: import m) (collectDefaults ../../modules/home);
+  _nixosModules = map (m: import m) (collectDefaults ../modules/nixos);
+  _homeModules = map (m: import m) (collectDefaults ../modules/home);
 
-  # System builder
   mkSystem =
     {
       host,
       homeConfig,
+      zenith,
       nixosModules ? [ ],
       homeModules ? [ ],
       overlays ? [ ],
     }:
     nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
       specialArgs = {
-        inherit inputs;
-        lib = systemLib;
+        inherit
+          inputs
+          zenith
+          ;
       };
       modules = [
-        ../../systems/x86_64-linux/${host}
+        ../systems/x86_64-linux/${host}
         {
           nixpkgs.config = {
             allowUnfree = true;
@@ -70,24 +59,25 @@ let
           home-manager = {
             useGlobalPkgs = true;
             extraSpecialArgs = {
-              inherit inputs;
-              lib = homeLib;
+              inherit inputs zenith;
+              lib = _homeLib;
             };
-            sharedModules = homeModules' ++ homeModules;
+            sharedModules = _homeModules ++ homeModules;
             users.helios = import homeConfig;
           };
         }
       ]
       ++ nixosModules
-      ++ nixosModules';
+      ++ _nixosModules;
     };
 
+  zenith = {
+    inherit
+      lib'
+      mkSystem
+      collectDefaults
+      ;
+  };
+
 in
-{
-  inherit
-    collectDefaults
-    systemLib
-    homeLib
-    mkSystem
-    ;
-}
+zenith

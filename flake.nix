@@ -111,7 +111,7 @@
     let
       lib = nixpkgs.lib;
 
-      zenith = import ./lib/zenith { inherit inputs lib; };
+      zenith = import ./zenith { inherit inputs lib; };
 
       # Shared modules
       nixosModules = with inputs; [
@@ -174,12 +174,22 @@
         helios = zenith.mkSystem {
           host = "helios";
           homeConfig = "${./.}/homes/x86_64-linux/helios@helios";
-          inherit overlays nixosModules homeModules;
+          inherit
+            overlays
+            nixosModules
+            homeModules
+            zenith
+            ;
         };
         terra = zenith.mkSystem {
           host = "terra";
           homeConfig = "${./.}/homes/x86_64-linux/helios@terra";
-          inherit overlays nixosModules homeModules;
+          inherit
+            overlays
+            nixosModules
+            homeModules
+            zenith
+            ;
         };
       };
 
