@@ -4,7 +4,7 @@ Ive been told to write a readme, but i have no idea what to put here, so... here
 Dont expect this to be a "how do i install ur config", or a walkthrough for setting it up for yourself.
 All this is gonna be, is me pointing you to the wiring, and my design philosophy in a way that helps you figure out how to rip out the parts you like for yourself.
 
-> yes, im aware this looks insane. i just ripped snowfall-lib out entirely, and i wanted to keep a lot of the conveniences it provided me, so i wrote my own translation layer, `zenith`.
+> yes, im aware this looks insane. i just ripped snowfall-lib out entirely, and i wanted to keep a lot of the conveniences it provided me, so i wrote my own replacement, `zenith`.
 
 ## Machines
 
@@ -33,7 +33,7 @@ then adapted to fit terra later
 Where everything lives, and why:
 
 - **`flake.nix`**:
-  - Standard `inputs` structure, using `lib/zenith` in `outputs` to construct systems and `lib.custom`, and automatically import home/system modules in `modules/`.
+  - Standard `inputs` structure, using `zenith` in `outputs` to construct systems and `zenith.lib'`, and automatically import home/system modules in `modules/`.
     - Shared modules, overlays, and custom flake packages live in the `let ... in` block before `mkFlake`.
     - DevShells, and Checks live as imports inside the `mkFlake` block.<br>
       path: `(shells|checks)/**/default.nix`
@@ -54,16 +54,16 @@ Where everything lives, and why:
 - **`modules/home/`**:
   - home modules grouped by purpose:
     - `apps`, `rice`, `services`, `shells`, `wms`.
-- **`lib/`**:
+- **`zenith/`**:
   - The custom library has two parts, and 3 modules
   - Part 1: The builder
-    - `lib/zenith` merges the two modules in part two
+    - `zenith/default.nix` merges the two modules in part two
   - Part 2: The library
-    - `lib/module` has module-writing helpers.
-    - `lib/theme` holds colours and wallpapers.
-    - Both are expressed as `lib.custom.<helper>`<br>
-      _i.e `lib.custom.colors.helios.mauve.hex`_
-- **`lib/theme/colors/*.json`**:
+    - `zenith/lib/module` has module-writing helpers.
+    - `zenith/lib/theme` holds colours and wallpapers.
+    - Both are expressed as `zenith.lib'.<helper>`<br>
+      _i.e `zenith.lib'.colors.helios.mauve.hex`_
+- **`zenith/lib/theme/colors/*.json`**:
   - A json mapping of names and hex values, where each mapping contains just a hex value.
   - see [Colours](#colours-one-expression-one-palette-whole-machine), and [Palette-Tui](#palette-tui) for more info on how this ties into my config
 
@@ -75,11 +75,11 @@ Where everything lives, and why:
 }
 ```
 
-- **`lib/theme/wallpapers/`**:
+- **`zenith/lib/theme/wallpapers/`**:
   - wallpaper images.
   - import all image files in this directory, and expose them as an
     attribute by the same name<br>
-    _ie `lib.custom.wallpapers.tftf-11` refers to `lib/theme/wallpapers/tftf-11.jpg`_
+    _ie `zenith.lib'.wallpapers.tftf-11` refers to `zenith/lib/theme/wallpapers/tftf-11.jpg`_
 - **`packages/`**:
   - custom packages defined in this repo.
 - **`overlays/`**:
@@ -101,7 +101,7 @@ Where everything lives, and why:
 
 - **flake-parts** assembles the flake.
   - **`zenith.mkSystem`** builds each machine. It pulls in the shared modules,
-    the per-host config, and injects `lib.custom` into every module evaluation.
+    the per-host config, and injects `zenith.lib'` into every module evaluation.
 - **Auto-discovery**:
   - every `default.nix` under `modules/nixos/` and
     `modules/home/` is imported automatically.
@@ -112,9 +112,9 @@ Where everything lives, and why:
 
 ## Colours: one expression, one palette, whole machine
 
-`lib/theme/default.nix` reads every JSON file in `lib/theme/colors/` and builds
-`lib.custom.colors`, shaped as `colors.<palette>.<color>.<type>`.
-ALL JSON files in `lib/theme/colors` are maps of `"name": {"hex": "value" }, ...`,
+`zenith/lib/theme/default.nix` reads every JSON file in `zenith/lib/theme/colors/` and builds
+`zenith.lib'.colors`, shaped as `colors.<palette>.<color>.<type>`.
+ALL JSON files in `zenith/lib/theme/colors` are maps of `"name": {"hex": "value" }, ...`,
 and we use `builtins` to convert the strings into their associated expressions.
 
 - `<palette>` is the name of the json, without extension
@@ -174,11 +174,11 @@ The config itself wires palette-tui straight to the repo:
     palette = {
       enable = true;
       default = {
-        dir = "/home/helios/builds/lib/theme/colors";
+        dir = "/home/helios/builds/zenith/lib/theme/colors";
         palette = "helios";
       };
       dirFormats = {
-        "/home/helios/builds/lib/theme/colors" = [ "hex" ];
+        "/home/helios/builds/zenith/lib/theme/colors" = [ "hex" ];
       };
     };
   };
@@ -196,7 +196,7 @@ The config itself wires palette-tui straight to the repo:
 - **niri**:
   - custom GLSL shaders for window animations (the tile-drop effect)
 - **Wallpaper**:
-  - selected by name from `lib.custom.wallpapers`;
+  - selected by name from `zenith.lib'.wallpapers`;
     change the reference and rebuild to swap it
     ![wallpaper](.assets/wallpaper.png)
 - Supporting cast: kitty, cava, btop, rmpc, rofi, tmux, yazi, and neovim, all reading the
