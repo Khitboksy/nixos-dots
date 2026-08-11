@@ -55,6 +55,9 @@
   boot = {
     resumeDevice = "/dev/disk/by-uuid/d8549c68-ef86-425f-8b9b-5125e8973b77"; # root partition (nvme0n1p2)
 
+    # CachyOS kernel (Zen 3 / x86_64-v3) — override from shared hardware module
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
+
     # Uncomment after running: sudo filefrag -v /swapfile
     # See above for instructions.
     # kernelParams = [ "resume_offset=XXX" ];
@@ -236,6 +239,15 @@
         "pipe-operators"
       ];
       secret-key-files = [ "/run/secrets/nixos-cache.sec" ];
+      # CachyOS kernel binary cache (xddxdd/nix-cachyos-kernel Hydra/Attic)
+      substituters = [
+        "https://cache.nixos.org"
+        "https://attic.xuyh0120.win/lantian"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      ];
     };
   };
 

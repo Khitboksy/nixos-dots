@@ -24,7 +24,8 @@ in
       networkmanager.enable = true;
     };
     boot = {
-      kernelPackages = pkgs.linuxPackages_latest;
+      # mkDefault so individual hosts can override (e.g. helios uses the CachyOS kernel)
+      kernelPackages = mkDefault pkgs.linuxPackages_latest;
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
     };
