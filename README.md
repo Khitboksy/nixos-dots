@@ -23,12 +23,10 @@ then adapted to fit terra later
   ![helios desktop](.assets/helios-rmpc.png)
 
 - My bar+shell
-
-![helios shell](.assets/shell.png)
+  ![helios shell](.assets/shell.png)
 
 - My terminal workflow/workspace with neovim, and yazi
-
-![helios terminal](.assets/kitty-neovim-yazi.png)
+  ![helios terminal](.assets/kitty-neovim-yazi.png)
 
 ## Repository layout
 
