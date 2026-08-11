@@ -1,5 +1,6 @@
 {
-  pkgs,
+  gamemode,
+  mangohud,
   ...
 }:
 
@@ -14,8 +15,8 @@
     };
 
     wrappers = [
-      pkgs.gamemode
-      pkgs.mangohud
+      gamemode
+      mangohud
       "gamescope -W 1366 -H 768 -w 1366 -h 768 -r 60 -f --rt --expose-wayland --adaptive-sync --force-grab-cursor --"
     ];
 

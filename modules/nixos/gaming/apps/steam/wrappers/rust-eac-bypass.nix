@@ -1,10 +1,10 @@
 {
-  pkgs,
+  writeShellScriptBin,
   ...
 }:
 
 {
-  rust-eac-bypass = pkgs.writeShellScriptBin "rust-eac-bypass" ''
+  rust-eac-bypass = writeShellScriptBin "rust-eac-bypass" ''
     declare -a args=()
     for arg in "$@"; do
       if [[ "$arg" =~ Rust\.exe$ ]] || [[ "$arg" =~ rust\.exe$ ]]; then

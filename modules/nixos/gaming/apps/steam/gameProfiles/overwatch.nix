@@ -1,5 +1,6 @@
 {
-  pkgs,
+  gamemode,
+  mangohud,
   ...
 }:
 
@@ -11,11 +12,12 @@
     env = {
       SDL_VIDEODRIVER = "x11";
       PROTON_USE_NTSYNC = true;
+      PROTON_DXVK_SAREK = "0";
     };
 
     wrappers = [
-      pkgs.gamemode
-      pkgs.mangohud
+      gamemode
+      mangohud
       "gamescope -r 165 -w 1366 -h 768 --force-grab-cursor --"
     ];
 

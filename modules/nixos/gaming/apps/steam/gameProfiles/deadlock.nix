@@ -1,6 +1,6 @@
 {
   mangohud,
-  gamemode,
+  #gamemode,
 
   ...
 }:
@@ -12,11 +12,12 @@
 
     env = {
       PROTON_USE_NTSYNC = true;
+      PROTON_LOCAL_SHADER_CACHE = "1";
       DXVK_STATE_CACHE = "1";
+      PROTON_DXVK_SAREK = "0";
     };
 
     wrappers = [
-      #"/home/helios/.local/bin/mangohud-def"
       mangohud
       #gamemode
     ];
@@ -27,6 +28,8 @@
       "-novsync"
       "+exec autoexec.cfg"
       "-no_prewarm_map"
+      "-vulkan"
+      "-high"
     ];
   };
 }
