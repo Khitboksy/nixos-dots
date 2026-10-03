@@ -3,15 +3,12 @@
   zenith,
   pkgs,
   config,
-  inputs,
   ...
 }:
 
 with zenith.lib';
 
 let
-  system = pkgs.stdenv.hostPlatform.system;
-
   mkStdio = name: command: args: env: {
     inherit name;
     transport = "stdio";
@@ -28,7 +25,7 @@ in
     lib.mkOption {
       type = attrsOf anything;
       default = { };
-      description = "MCP server definitions shared across AI apps (opencode + odysseus formats)";
+      description = "MCP server definitions shared across AI apps (opencode format)";
     };
 
   config = {
@@ -75,7 +72,7 @@ in
         web-search = {
           type = "local";
           command = [
-            "npx"
+            "${lib.getExe' pkgs.nodejs "npx"}"
             "-y"
             "@zhafron/mcp-web-search"
           ];
@@ -83,6 +80,7 @@ in
           environment = {
             DEFAULT_SEARCH_PROVIDER = "searxng";
             SEARXNG_URL = "https://search.tezzzzaa.com/search";
+            PATH = "${lib.makeBinPath [ pkgs.nodejs ]}:{env:PATH}";
           };
         };
 
@@ -93,6 +91,9 @@ in
             "-c"
             "cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp && node server.cjs"
           ];
+          environment = {
+            PATH = "${lib.makeBinPath [ pkgs.nodejs ]}:{env:PATH}";
+          };
         };
 
         bun = {
@@ -110,7 +111,7 @@ in
         firefox-devtools = {
           type = "local";
           command = [
-            "npx"
+            "${lib.getExe' pkgs.nodejs "npx"}"
             "-y"
             "@mozilla/firefox-devtools-mcp@latest"
             # Headless by default. Remove "--headless" to see the browser window.
@@ -120,41 +121,12 @@ in
             "--profile-path"
             "${config.home.homeDirectory}/.mozilla/firefox/mcp-agent"
           ];
+          environment = {
+            PATH = "${lib.makeBinPath [ pkgs.nodejs ]}:{env:PATH}";
+          };
         };
 
       };
-
-      odysseus = [
-        (mkStdio "nixos" "${lib.getExe pkgs.mcp-nixos}" [ ] { })
-
-        # context7 is remote (SSE/HTTP) — handled via odysseus UI
-
-        (mkStdio "filesystem" "${lib.getExe pkgs.mcp-server-filesystem}" [
-          "/home/helios/builds"
-          "/home/helios/shared"
-          "/home/helios/.config"
-          "/home/helios/repos"
-          "/var/opencode"
-        ] { })
-
-        (mkStdio "github" "${lib.getExe pkgs.github-mcp-server}" [ "stdio" "--read-only" ] { })
-
-        (mkStdio "sequential-thinking" "${lib.getExe pkgs.mcp-server-sequential-thinking}" [ ] { })
-
-        (mkStdio "web-search" "npx" [ "-y" "@zhafron/mcp-web-search" ] {
-          DEFAULT_SEARCH_PROVIDER = "searxng";
-          SEARXNG_URL = "https://search.tezzzzaa.com/search";
-        })
-
-        (mkStdio "memory-db" "bash" [
-          "-c"
-          "cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp && node server.cjs"
-        ] { })
-
-        (mkStdio "bun" "bunx" [ "--bun" "mcp-bun@latest" ] {
-          DISABLE_NOTIFICATIONS = "true";
-        })
-      ];
     };
 
     # Dedicated Firefox profile for the MCP agent.
