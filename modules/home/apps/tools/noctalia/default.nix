@@ -2,6 +2,7 @@
   config,
   lib,
   zenith,
+  pkgs,
   ...
 }:
 with zenith.lib';
@@ -26,7 +27,7 @@ in
         // (import ./config/bar.nix) {
           barName = cfg.bar;
         };
-      customPalettes = (import ./config/palette.nix) { inherit lib; };
+      customPalettes = (import ./config/palette.nix) { inherit zenith; };
     };
 
     # Launch Noctalia when niri starts
@@ -36,5 +37,9 @@ in
       ];
       binds = import ./config/binds.nix;
     };
+
+    home.packages = with pkgs; [
+      ddcutil
+    ];
   };
 }

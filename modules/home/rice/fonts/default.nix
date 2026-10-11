@@ -22,7 +22,7 @@ let
     if enabledFonts == [ ] then
       ""
     else
-      lib.strings.lib.concatStringsSep "\n\n" (
+      lib.strings.concatStringsSep "\n\n" (
         map (
           name:
           fontFacesToCSS {

@@ -1,7 +1,7 @@
 {
   pkgs,
-  lib,
   zenith,
+  config,
   ...
 }:
 
@@ -23,6 +23,19 @@
       tuis = {
         tmux.enable = true;
         yazi.enable = true;
+        palette = {
+          enable = true;
+          default = {
+            dir = "${config.home.homeDirectory}/gh/nd/zenith/lib/theme/colors";
+            palette = "helios";
+          };
+          extraDirs = [
+            # "${home}/repos/palette-tui/palettes"
+          ];
+          dirFormats = {
+            "${config.home.homeDirectory}/gh/nd/zenith/lib/theme/colors" = [ "hex" ];
+          };
+        };
       };
     };
 
@@ -79,7 +92,13 @@
     };
   };
 
-  services.wallpaper.paper = zenith.lib'.wallpapers.tftf-11;
+  services = {
+    wallpaper.paper = zenith.lib'.wallpapers.tftl-16;
+    musicPlayerDaemon = {
+      enable = true;
+      musicDir = "/srv/music";
+    };
+  };
 
   home.packages = with pkgs; [
     wl-clipboard-rs

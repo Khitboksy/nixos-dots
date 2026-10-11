@@ -1,4 +1,8 @@
-{ lib, theme }:
+{
+  lib,
+  theme,
+  zenith,
+}:
 let
   inherit (builtins) readDir attrNames filter;
 
@@ -10,7 +14,7 @@ let
   found = builtins.elem theme themeDirs;
   themeCss =
     if found then
-      (import ./${theme}/gtk-theme.nix) { inherit lib; }
+      (import ./${theme}/gtk-theme.nix) { inherit zenith; }
     else
       throw ''
         Theme "${theme}" not found in themes/.

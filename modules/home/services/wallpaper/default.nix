@@ -24,7 +24,7 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart = "${getExe pkgs.swaybg} -i ${cfg.paper}";
+        ExecStart = "${lib.getExe pkgs.swaybg} -i ${cfg.paper}";
         Restart = "on-failure";
         RestartSec = 1;
       };

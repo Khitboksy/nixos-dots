@@ -1,6 +1,6 @@
-{ lib, zenith }:
+{ zenith }:
 
-with zenith.lib';
+with zenith.lib'.colors;
 
 {
   Helios = {
@@ -10,10 +10,10 @@ with zenith.lib';
     spacing = 2;
     padding = 4;
 
-    separator_color = "${colors.helios.green.hex}";
+    separator_color = "${helios.green.hex}";
     separator = ">";
 
-    key_color = "${colors.helios.mauve.hex}";
+    key_color = "${helios.mauve.hex}";
 
     custom_ascii = {
       path = "~/.config/macchina/ascii/nixos_trans";

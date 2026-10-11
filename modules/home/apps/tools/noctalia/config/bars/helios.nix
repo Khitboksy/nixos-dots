@@ -36,12 +36,18 @@
   thickness = 34;
   widget_spacing = 6;
 
+  actions = {
+    middle = "settings-open-widget";
+  };
+
   dead_zone = {
-    command = "";
-    middle_command = "";
-    right_command = "";
-    scroll_down_command = "";
-    scroll_up_command = "";
+    actions = {
+      left = "none";
+      right = "none";
+      middle = "none";
+      scroll_up = "none";
+      scroll_down = "none";
+    };
   };
 
   capsule_group = [

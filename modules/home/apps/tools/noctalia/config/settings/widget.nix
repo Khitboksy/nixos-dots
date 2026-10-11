@@ -16,7 +16,7 @@
     };
 
     cpu = {
-      show_label = false;
+      show_value = false;
       stat = "cpu_usage";
       type = "sysmon";
     };
@@ -32,9 +32,11 @@
     };
 
     keyboard_layout = {
-      cycle_command = "";
       hide_when_single_layout = false;
       type = "keyboard_layout";
+      actions = {
+        left = "keyboard-layout-cycle";
+      };
     };
 
     lock_keys = {
@@ -82,7 +84,7 @@
     };
 
     ram = {
-      show_label = false;
+      show_value = false;
       stat = "ram_used";
       type = "sysmon";
     };
@@ -117,7 +119,8 @@
       capsule = true;
       capsule_opacity = 0.75;
       capsule_radius = 4;
-      display = "none";
+      label_source = "name";
+      show_labels = false;
       hide_when_empty = true;
       inactive_pill_size = 1.2;
       occupied_color = "tertiary";

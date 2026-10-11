@@ -22,7 +22,7 @@ in
       enable = true;
       package = pkgs.macchina;
 
-      themes = (import ./themes/macchina-heliosTheme.nix) { inherit lib; };
+      themes = (import ./themes/macchina-heliosTheme.nix) { inherit zenith; };
 
       settings = {
         theme = "Helios";

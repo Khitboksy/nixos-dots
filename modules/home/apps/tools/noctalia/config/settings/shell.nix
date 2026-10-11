@@ -13,7 +13,6 @@
     font_family = "Iosevka";
     launch_apps_as_systemd_services = false;
     launch_apps_custom_command = "";
-    middle_click_opens_widget_settings = true;
     niri_overview_type_to_launch_enabled = false;
     offline_mode = false;
     password_style = "default";
@@ -25,7 +24,6 @@
     show_location = true;
     telemetry_enabled = true;
     time_format = "{:%H:%M}";
-    ui_scale = 1.0;
 
     animation = {
       enabled = true;
@@ -40,10 +38,17 @@
       app_grid = false;
       categories = true;
       compact = false;
-      session_search = false;
       show_icons = true;
+      fetch_exchange_rates = false;
+      provider_prefix = "/";
+      auto_paste = "auto";
       sort_by_usage = true;
-
+      providers = {
+        session = {
+          prefix = "session";
+          global = false;
+        };
+      };
       dmenu = { };
     };
 
@@ -157,5 +162,11 @@
       alpha = 0.55;
       direction = "down";
     };
+
+  };
+
+  accessibility = {
+    ui_scale = 1.0;
+    high_contrast = false;
   };
 }

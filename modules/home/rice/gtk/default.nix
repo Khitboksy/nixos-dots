@@ -15,12 +15,12 @@ let
 
   # Theme CSS -- load only the single selected theme
   themeCss = (import ./themes/generate.nix) {
-    inherit lib;
+    inherit lib zenith;
     theme = cfg.theme;
   };
 
   # Combined CSS string injected into both GTK3 and GTK4
-  gtkCss = lib.strings.lib.concatStringsSep "\n\n" (
+  gtkCss = lib.concatStringsSep "\n\n" (
     builtins.filter (s: s != "") [
       fontCss
       themeCss
