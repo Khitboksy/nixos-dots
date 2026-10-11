@@ -26,9 +26,9 @@ let
   sanitizePluginName =
     input:
     let
-      name = strings.getName input;
-      intermediate = strings.removePrefix "vimplugin-" name;
-      result = strings.removePrefix "lua5.1-" intermediate;
+      name = lib.strings.getName input;
+      intermediate = lib.strings.removePrefix "vimplugin-" name;
+      result = lib.strings.removePrefix "lua5.1-" intermediate;
     in
     result;
 
@@ -39,7 +39,7 @@ let
 
   pluginList =
     plugins:
-    strings.concatMapStrings (
+    lib.strings.concatMapStrings (
       plugin: "  [\"${sanitizePluginName plugin.name}\"] = \"${plugin.outPath}\",\n"
     ) plugins;
 
@@ -120,7 +120,7 @@ in
         recursive = true;
       };
       "nvim/lua/themes/colors.lua" = {
-        text = (import ./colors.nix) { inherit lib; };
+        text = (import ./colors.nix) { inherit zenith; };
       };
     };
   };

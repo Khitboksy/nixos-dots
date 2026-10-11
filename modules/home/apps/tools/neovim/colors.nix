@@ -1,4 +1,4 @@
-{ lib, zenith }:
+{ zenith }:
 with zenith.lib';
 ''
   local M = {

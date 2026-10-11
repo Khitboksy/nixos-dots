@@ -1,0 +1,78 @@
+{
+  "Markdown/HTML Audio Tooltip": {
+    "prefix": "tta",
+    "body": [
+      "<span class=\"tooltip-media\" mediaType=\"audio\"",
+      "  data-src=\"${1:audioSource}\"",
+      "  data-cover=\"${2:coverSource}\"",
+      "  data-short-label=\"${3:audioLabel}\">",
+      "  $0",
+      "</span>"
+    ],
+    "description": "Audio tooltip for my blog"
+  },
+
+  "Markdown/HTML Image Tooltip": {
+    "prefix": "tti",
+    "body": [
+      "<span class=\"tooltip-media\" mediaType=\"image\"",
+      "  data-src=\"${1:imageSource}\">",
+      "  $0",
+      "</span>"
+    ],
+    "description": "Image tooltip for my blog"
+  },
+
+  "Markdown/HTML Video Tooltip": {
+    "prefix": "ttv",
+    "body": [
+      "<span class=\"tooltip-media\" mediaType=\"video\"",
+      "  data-src=\"${1:videoSource}\"",
+      "  data-cover=\"${2:posterSource}\"",
+      "  data-short-label=\"${3:videoLabel}\">",
+      "  $0",
+      "</span>"
+    ],
+    "description": "Video tooltip for my blog"
+  },
+
+  "Markdown/HTML Text Tooltip": {
+    "prefix": "ttt",
+    "body": [
+      "<span class=\"tooltip\" context=\"${1:tooltipContext}\">",
+      "  $0",
+      "</span>"
+    ],
+    "description": "Standard tooltip for my blog"
+  },
+
+  "New Blog Post": {
+    "prefix": "newpost",
+    "body": [
+      "---",
+      "title: ${1:Post Title}",
+      "date: ${2:YYYY-MM-DD}",
+      "pinned: false",
+      "description: ${3:Short description of the post}",
+      "category: ${4:rant}",
+      "tags:",
+      "  - ${5:meta}",
+      "---",
+      "$0"
+    ],
+    "description": "Frontmatter skeleton for a new blog post"
+  },
+
+  "Audio Player Block": {
+    "prefix": "audip",
+    "body": [
+      "<div class=\"audio-player\"",
+      "  data-src=\"${1:/blog/media/audio/albums/<album>/<track>.opus}\"",
+      "  data-cover=\"${2:/blog/media/audio/albums/covers/<album>-cover.jpg}\"",
+      "  data-label=\"${3:artist | album -- track}\">",
+      "</div>",
+      "$0"
+    ],
+    "description": "Audio player block for blog posts"
+  }
+}
