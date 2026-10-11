@@ -23,7 +23,7 @@ in
     programs.tmux = {
 
       enable = true;
-      shell = "${getExe pkgs.fish}";
+      shell = "${lib.getExe pkgs.fish}";
       historyLimit = 100000;
       plugins = with pkgs.tmuxPlugins; [
         sensible
@@ -125,8 +125,8 @@ in
 
       Service = {
         Type = "forking";
-        ExecStart = "${getExe pkgs.tmux} new-session -d";
-        ExecStop = "${getExe pkgs.tmux} kill-server";
+        ExecStart = "${lib.getExe pkgs.tmux} new-session -d";
+        ExecStop = "${lib.getExe pkgs.tmux} kill-server";
         KillMode = "none";
         RestartSec = "2";
       };

@@ -46,8 +46,8 @@ in
             }
         end, 500, Header.LEFT)
       '';
-      "yazi/theme.toml".text = (import ./config/themes/helios-yaziTheme.nix) { inherit lib; };
-      "yazi/helios.tmTheme".text = (import ./config/themes/helios-yaziTM.nix) { inherit lib; };
+      "yazi/theme.toml".text = (import ./config/themes/helios-yaziTheme.nix) { inherit zenith; };
+      "yazi/helios.tmTheme".text = (import ./config/themes/helios-yaziTM.nix) { inherit zenith; };
       "ytfzf/conf.sh".text = ''
         YTFZF_DOWNLOAD_DIR="/mnt/nix-data/media/ytfzf"
         YTFZF_CACHE_DIR="/mnt/nix-data/media/ytfzf/cache"

@@ -1,12 +1,9 @@
 { pkgs }:
 {
   bookmarks = pkgs.yaziPlugins.bookmarks;
-  drag = pkgs.yaziPlugins.drag.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      substituteInPlace main.lua \
-        --replace-fail 'tostring(u)' 'tostring(u.url)'
-    '';
-  });
+  # upstream now uses tostring(u.url) itself; the old postPatch override
+  # (tostring(u) -> tostring(u.url)) broke the build with --replace-fail
+  drag = pkgs.yaziPlugins.drag;
   smart-paste = pkgs.yaziPlugins.smart-paste;
   compress = pkgs.yaziPlugins.compress;
   mount = pkgs.yaziPlugins.mount;
