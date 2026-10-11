@@ -102,7 +102,9 @@
 
   home.packages = with pkgs; [
     wl-clipboard-rs
+    custom.enc
     git
+    signal-desktop
     bitwarden-cli
     firefox
     vesktop
