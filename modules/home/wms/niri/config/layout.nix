@@ -1,4 +1,4 @@
-{ lib, zenith }:
+{ zenith, ... }:
 
 with zenith.lib';
 
@@ -15,6 +15,9 @@ with zenith.lib';
     gaps = 8;
     background-color = "transparent";
     center-focused-column = "never";
+    default-column-width = {
+      proportion = 1.0;
+    };
     preset-column-widths._children = [
       { proportion = 0.33333; }
       { proportion = 0.5; }

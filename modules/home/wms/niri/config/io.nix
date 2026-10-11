@@ -3,7 +3,7 @@
   input = [
     {
       keyboard.xkb = {
-        layout = "en/us";
+        layout = "us";
       };
     }
   ];
@@ -20,7 +20,7 @@
     }
     {
       _args = [ "HDMI-A-1" ];
-      mode = "1366x768@60";
+      mode = "1280x720@60.000";
       position._props = {
         x = 0;
         y = 0;

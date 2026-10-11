@@ -13,12 +13,12 @@ with zenith.lib';
 
       package = lib.mkDefault pkgs.niri;
 
-      settings = importDir ./config { inherit lib; };
+      settings = importDir ./config { inherit zenith; };
 
     };
 
     services.wallpaper.enable = true;
 
-    home.packages = builtins.lib.attrValues (importDir ./scripts { inherit pkgs; });
+    home.packages = builtins.attrValues (importDir ./scripts { inherit pkgs lib; });
   };
 }

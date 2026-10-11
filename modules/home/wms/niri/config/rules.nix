@@ -38,7 +38,7 @@
       open-floating = true;
       default-floating-position._props = {
         relative-to = "bottom-right";
-        x = 12;
+        x = 6;
         y = 12;
       };
     }
@@ -47,7 +47,7 @@
       match._props.title = "^Steam$";
       open-on-workspace = "games";
       default-column-width = {
-        proportion = 0.8;
+        proportion = 1.0;
       };
     }
     {
@@ -64,16 +64,31 @@
       open-floating = true;
       open-on-workspace = "games";
     }
+    /*
+      {
+        # The only way i can figure out how to get just chats
+        match._props.app-id = "^steam$";
+        exclude._props.title = ''
+          ^(Sign in to Steam|Shutdown|Friends List|Steam|notificationtoasts_\d+_desktop|Special Offers|Steam)$
+        '';
+        open-on-workspace = "chat";
+        default-column-width = {
+          proportion = 0.5;
+        };
+      }
+    */
+
     {
-      # The only way i can figure out how to get just chats
-      match._props.app-id = "^steam$";
-      exclude._props.title = ''
-        ^(Sign in to Steam|Shutdown|Friends List|Steam|notificationtoasts_\d+_desktop|Special Offers)$
-      '';
-      open-on-workspace = "chat";
-      default-column-width = {
-        proportion = 0.5;
+      match._props.app-id = ''^steam_app_\d+'';
+      open-on-workspace = "games";
+    }
+
+    {
+      match._props.app-id = ''^(steam_app_\d+|firefox)'';
+      force-render = {
+        _args = [ 60 ];
       };
+
     }
 
     {
@@ -89,7 +104,7 @@
     }
     {
       match._props = {
-        app-id = "^zen(-beta)?$";
+        app-id = "^(zen(-beta)|firefox)?$";
         at-startup = true;
       };
       open-on-workspace = "browser";

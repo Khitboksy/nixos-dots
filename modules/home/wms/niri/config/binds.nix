@@ -127,6 +127,9 @@
     "Print" = {
       screenshot = [ ];
     };
+    "Mod+Print" = {
+      spawn = "niri-record-toggle";
+    };
     "Mod+Shift+E" = {
       quit = [ ];
     };

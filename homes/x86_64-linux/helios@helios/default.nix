@@ -168,6 +168,8 @@ in
 
   home.packages = with pkgs; [
     wl-clipboard-rs
+    wf-recorder
+    slurp
     custom.enc
     libimobiledevice
     ifuse
