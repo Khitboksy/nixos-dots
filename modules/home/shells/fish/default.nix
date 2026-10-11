@@ -20,7 +20,6 @@ in
       generateCompletions = false;
       interactiveShellInit = ''
         set -gx LC_ALL en_US.UTF-8
-        set -gx NH_FLAKE $HOME/builds/
         set -g FZF_PREVIEW_FILE_CMD "head -n 10"
         set -g FZF_PREVIEW_DIR_CMD "ls"
 
@@ -52,6 +51,7 @@ in
         import ../functions/functions.nix {
           inherit
             lib
+            zenith
 
             # pkgs
             ffmpeg

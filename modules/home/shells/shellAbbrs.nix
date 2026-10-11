@@ -8,6 +8,7 @@
     command = "git";
     regex = "(a|m|o|f{1,2}|c|i|s|d|D|r|b|B|n|p|an|t)";
     function = "__fish_git_abbr_expand";
+    setCursor = true;
   };
 
   gu = {

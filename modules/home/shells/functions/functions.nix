@@ -26,7 +26,7 @@
   '';
 
   ytmp3 = ''
-    ${getExe yt-dlp} \
+    ${lib.getExe yt-dlp} \
         -x \
         --audio-format mp3 \
         --embed-metadata \
@@ -39,7 +39,7 @@
   '';
 
   ytv = ''
-    ${getExe yt-dlp}
+    ${lib.getExe yt-dlp}
         -f "bv*+ba/b"
         --ignore-errors
         --no-overwrites
@@ -118,7 +118,7 @@
         end
 
         echo "helios -> terra: $abs_src -> $dst"
-        ${getExe rsync} $rsync_opts "$abs_src" "helios@terra:$dst"
+        ${lib.getExe rsync} $rsync_opts "$abs_src" "helios@terra:$dst"
 
         if test $status -eq 0
             echo "Transfer complete."
@@ -150,7 +150,7 @@
           case an
             echo --amend --no-edit
           case m
-            echo -m
+            echo '-m "%"'
           case '*'
             echo $argv[1]
         end
@@ -165,7 +165,7 @@
           case ff
             echo --force
           case t
-            echo --tags
+            echo '--tags "%"'
           case '*'
             echo $argv[1]
         end
@@ -196,14 +196,14 @@
       case switch
         switch $argv[1]
           case c
-            echo -c
+            echo '-c "%"'
           case '*'
             echo $argv[1]
         end
       case branch
         switch $argv[1]
           case d
-            echo --delete
+            echo '--delete "%"'
           case D
             echo --delete --force
           case m
@@ -219,6 +219,10 @@
             echo -b
           case B
             echo -B
+          case o
+            echo origin/%
+          case m
+            echo origin/main
           case '*'
             echo $argv[1]
         end
@@ -236,5 +240,12 @@
     command rmpc $argv
   '';
 }
-// custom.importDir ./music { inherit ffmpeg yt-dlp; }
-// custom.importDir ./mc-server { inherit openssh rsync lib; }
+// zenith.lib'.importDir ./music { inherit lib ffmpeg yt-dlp; }
+// zenith.lib'.importDir ./mc-server {
+  inherit
+    zenith
+    openssh
+    rsync
+    lib
+    ;
+}
