@@ -193,6 +193,7 @@
       ];
     };
     upower.enable = true;
+    thermald.enable = true;
     logind.settings.Login = {
       HandleLidSwitch = "ignore";
       HandleLidSwitchExternalPower = "ignore";
@@ -338,7 +339,14 @@
       settings = {
         global = {
           hide_env_diff = true;
+          # bg's .envrc deliberately blocks while the dev server boots
+          # (devctl start, 60s cap) — beyond direnv's 5s default
+          warn_timeout = "2m";
         };
+        whitelist.exact = [
+          "/home/helios/gh/kh/bg"
+          "/home/helios/repos/bg"
+        ];
       };
     };
 
