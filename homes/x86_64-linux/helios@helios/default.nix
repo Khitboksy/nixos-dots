@@ -17,7 +17,6 @@ in
     tools = {
       neovim.enable = true;
       macchina.enable = true;
-      dms.enable = false;
       noctalia = {
         enable = true;
         bar = "helios";

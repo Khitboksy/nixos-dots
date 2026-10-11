@@ -29,15 +29,15 @@ in
     xdg.configFile = {
 
       "MangoHud/MangoHud.conf" = {
-        text = (import ./profiles/trans.nix) { inherit lib config; };
+        text = (import ./profiles/trans.nix) { inherit lib config zenith; };
       };
 
       "MangoHud/fps.conf" = {
-        text = (import ./profiles/fps.nix) { inherit lib config; };
+        text = (import ./profiles/fps.nix) { inherit lib config zenith; };
       };
 
       "MangoHud/testing.conf" = {
-        text = (import ./profiles/testing.nix) { inherit lib config; };
+        text = (import ./profiles/testing.nix) { inherit lib config zenith; };
       };
     };
   };

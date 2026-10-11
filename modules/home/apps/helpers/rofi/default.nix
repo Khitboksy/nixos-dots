@@ -34,9 +34,9 @@ in
       enable = true;
       package = pkgs.rofi;
 
-      font = "Iosevka Bold 16";
+      settings = {
+        font = "Iosevka Bold 16";
 
-      extraConfig = {
         show-icons = true;
         drun-display-format = "{name}";
 
