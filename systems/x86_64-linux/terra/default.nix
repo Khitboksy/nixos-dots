@@ -74,7 +74,7 @@
         port = 18090;
         target = "https://terra.tail9a2d08.ts.net:9090";
       };
-      navidrome = {
+      music = {
         port = 18053;
         target = "https://terra.tail9a2d08.ts.net:4533";
       };
@@ -360,23 +360,28 @@
   };
 
   users = {
-    users.helios = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdvyTh8FxSq1/QXMDdHnWG19eueLX5ASr3+gjP0McwX"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1sFljQUl5+wVK6lw4c5aGdYTZLl5PY6kONeYgewG/v nix-index-deploy-key"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2+Nyt/zSiXDRo70/kJffhPWDPWqJdBp6y0oF70zMDE terra-access-key"
-      ];
-      extraGroups = [
-        "minecraft-homestead"
-        "minecraft-niri"
-        "minecraft-tekkit2"
-        "networkmanager"
-        "plugdev"
-        "uinput"
-        "wheel"
-      ];
-      shell = pkgs.fish;
+    users = {
+      navidrome.extraGroups = [ "nginx" ];
+
+      helios = {
+        isNormalUser = true;
+        homeMode = "711";
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdvyTh8FxSq1/QXMDdHnWG19eueLX5ASr3+gjP0McwX"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1sFljQUl5+wVK6lw4c5aGdYTZLl5PY6kONeYgewG/v nix-index-deploy-key"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2+Nyt/zSiXDRo70/kJffhPWDPWqJdBp6y0oF70zMDE terra-access-key"
+        ];
+        extraGroups = [
+          "minecraft-homestead"
+          "minecraft-niri"
+          "minecraft-tekkit2"
+          "networkmanager"
+          "plugdev"
+          "uinput"
+          "wheel"
+        ];
+        shell = pkgs.fish;
+      };
     };
   };
 
