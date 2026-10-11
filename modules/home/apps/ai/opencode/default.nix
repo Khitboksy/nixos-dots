@@ -111,7 +111,7 @@ in
 
       Service = {
 
-        ExecStart = "${pkgs.opencode}/bin/opencode serve";
+        ExecStart = "${lib.getExe pkgs.opencode} serve";
         Restart = "always";
 
         Environment = [
@@ -119,7 +119,7 @@ in
           "SQLITE_SYNCHRONOUS=NORMAL"
           # NFS Shares
           "XDG_DATA_HOME=/home/helios/shared"
-          "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode-stable.db"
+          "OPENCODE_DB_PATH=/home/helios/shared/opencode/opencode.db"
           # Enable experimental LSP tool for AI code intelligence
           "OPENCODE_EXPERIMENTAL_LSP_TOOL=true"
         ];
@@ -162,7 +162,7 @@ in
       };
 
       "opencode/themes/helios-opencodeTheme.json" = {
-        text = (import ./config/themes/helios-opencodeTheme.nix) { inherit lib; };
+        text = (import ./config/themes/helios-opencodeTheme.nix) { inherit zenith; };
       };
 
       "opencode/layouts/helios-opencodeLayout.json" = {
@@ -170,5 +170,10 @@ in
       };
 
     };
+
+    home.activation.installMemoryDbDeps = lib.mkAfter ''
+      cd ${config.home.homeDirectory}/.config/opencode/mcps/memory-db-mcp
+      ${lib.getExe' pkgs.nodejs "npm"} install --production
+    '';
   };
 }
