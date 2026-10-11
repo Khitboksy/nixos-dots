@@ -315,11 +315,23 @@
 
   nix.settings = {
     trusted-users = [ "helios" ];
+    # Trust this flake's nixConfig (yazi.cachix.org) without a per-run
+    # --accept-flake-config flag; helios is already a trusted user, so this
+    # adds no meaningful new trust.
+    accept-flake-config = true;
+    substituters = [
+      "https://cache.nixos.org"
+      # yazi flake CI pushes prebuilt artifacts here — matches our
+      # de-followed github:sxyazi/yazi input, so nsu never compiles yazi
+      "https://yazi.cachix.org"
+    ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       "nixos-cache:f5fzlUbraSMLYr+VMIqrvihrGxl3uerbkei7dzTAnD0="
     ];
     experimental-features = [
+      "pipe-operators"
       "nix-command"
       "flakes"
     ];

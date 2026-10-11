@@ -20,9 +20,8 @@ pkgs.mkShellNoCC {
     # Build / deploy
     nh
     git
+    jujutsu
   ];
-  NIX_FLAKE = "/home/helios/builds";
-  NH_FLAKE = "/home/helios/builds";
   shellHook = ''
     echo "builds dev environment"
     echo "  nix fmt: nixfmt"
