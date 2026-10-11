@@ -12,11 +12,11 @@ with zenith.lib';
 let
   cfg = config.shared.ui.greetd;
 
-  greeterBin = "${getExe pkgs.tuigreet}";
+  greeterBin = "${lib.getExe pkgs.tuigreet}";
 
   theme = "action=grey;border=magenta;button=yellow;input=white;prompt=green;text=cyan;time=yellow";
 
-  niriSession = "${getExe' pkgs.niri "niri-session"}";
+  niriSession = "${lib.getExe' pkgs.niri "niri-session"}";
 
   command = pkgs.writeShellScript "greetd-session" ''
     exec ${greeterBin} \

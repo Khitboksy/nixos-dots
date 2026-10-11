@@ -32,7 +32,7 @@ in
       exports = lib.concatStringsSep "\n" cfg.exports;
     };
 
-    networking.firewall.allowedTCPPorts = [
+    networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
       111
       2049
     ];

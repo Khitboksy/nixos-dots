@@ -91,7 +91,7 @@ let
               <hidden state='on'/>
             </kvm>'';
 
-      cpuCores = max 1 (d.vcpu / 2);
+      cpuCores = lib.max 1 (d.vcpu / 2);
       cpuThreads = 2;
       cpuSockets = 1;
 

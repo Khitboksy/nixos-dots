@@ -119,7 +119,7 @@ in
     };
 
     # Open DNS ports (53 UDP + TCP) so AdGuard Home can serve DNS
-    networking.firewall = {
+    networking.firewall.interfaces.tailscale0 = {
       allowedUDPPorts = [ 53 ];
       allowedTCPPorts = [ 53 ];
     };

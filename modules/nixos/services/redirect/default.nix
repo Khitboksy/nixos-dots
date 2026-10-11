@@ -64,6 +64,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services = listToAttrs (mapAttrsToList mkRedirectService cfg.rules);
+    systemd.services = lib.listToAttrs (lib.mapAttrsToList mkRedirectService cfg.rules);
   };
 }
