@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   modulesPath,
   ...
 }:
@@ -18,9 +19,22 @@
     systems.terra.enable = true;
   };
 
-  gaming.minecraft.servers = {
-    tekkit2 = {
-      enable = true;
+  gaming = {
+    enable = true;
+    minecraft.servers = {
+      homestead = {
+        enable = true;
+        voiceChat.host = "ramp-voodoo.tun.ply.gg:41493";
+      };
+      tekkit2 = {
+        enable = true;
+      };
+      niri = {
+        enable = true;
+        memory = "6G";
+        voiceChat.host = "reminded-subpanel.tun.ply.gg:41496";
+        bluemap.enable = true;
+      };
     };
   };
 
@@ -191,7 +205,43 @@
       };
       enable = false;
     };
+    playit = {
+      enable = true;
+      secretPath = "/run/secrets/playit";
+      logrotate = false; # terra doesn't enable services.logrotate
+    };
+    anki = {
+      enable = true;
+      syncServer = true;
+      openFirewall = true;
+      username = "helios";
+      password = "/run/secrets/anki";
+    };
+    torrents.enable = true;
   };
+
+  # Cloudflare Tunnel: routes niri-map.firehawk6.com → BlueMap (port 8100)
+  # Tunnel created by Terry in Cloudflare Zero Trust dashboard.
+  # Token stored in sops secret cloudflared-niri.
+  systemd.services.cloudflared-niri =
+    let
+      tokenScript = pkgs.writeShellScript "cloudflared-niri-start" ''
+        TOKEN="$(cat "$CREDENTIALS_DIRECTORY/token")"
+        exec ${lib.getExe pkgs.cloudflared} tunnel --no-autoupdate run --token "$TOKEN"
+      '';
+    in
+    {
+      description = "Cloudflare Tunnel for niri-map (BlueMap)";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        LoadCredential = "token:${config.sops.secrets.cloudflared-niri.path}";
+        ExecStart = tokenScript;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+    };
 
   # Lyrics mirror: NFS-shared with helios (mounted at /mnt/nix-data/media/lyrics)
   systemd.tmpfiles.settings."10-srv-lyrics"."/srv/lyrics".d = {
@@ -310,6 +360,9 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2+Nyt/zSiXDRo70/kJffhPWDPWqJdBp6y0oF70zMDE terra-access-key"
       ];
       extraGroups = [
+        "minecraft-homestead"
+        "minecraft-niri"
+        "minecraft-tekkit2"
         "networkmanager"
         "plugdev"
         "uinput"
@@ -320,8 +373,17 @@
   };
 
   environment = {
+
+    variables = {
+      NH_FLAKE = "/home/helios/gh/kh/nd";
+    };
+
     systemPackages = with pkgs; [
       xwayland-satellite
+      nh
+      prismlauncher
+      img2key
+
     ];
   };
 

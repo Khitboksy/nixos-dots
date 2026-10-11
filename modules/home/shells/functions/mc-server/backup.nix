@@ -26,9 +26,9 @@ with zenith.lib';
 
     switch "$flag"
       case list
-        ${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "ls -1 $remote_backup_dir" 2>/dev/null
+        ${lib.getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "ls -1 $remote_backup_dir" 2>/dev/null
         if test $status -ne 0
-          printf "${colors.helios.yellow.ansi}⚠${ansiReset} ${colors.helios.text.ansi}Could not reach $remote_host. Checking local backups...${ansiReset}\n"
+          printf "${colors.helios.yellow.ansi}⚠${ansiReset} ${colors.helios.text.ansi}Cannot reach $remote_host. Checking local backups...${ansiReset}\n"
           ls "$backup_dir" 2>/dev/null; or printf "${colors.helios.text.ansi}No backups found.${ansiReset}\n"
         end
 
@@ -70,13 +70,19 @@ with zenith.lib';
           echo "save-on" > "$fifo"
         end
 
-        # Push off-machine backup to helios
-        printf "${colors.helios.green.ansi}->${ansiReset} ${colors.helios.peach.ansi}Pushing backup to${ansiReset} ${colors.helios.blue.ansi}%s${ansiReset} ${colors.helios.text.ansi}...${ansiReset}\n" "$remote_host"
-        ${getExe rsync} -az -e "${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
-        if test $status -eq 0
-          printf "${colors.helios.green.ansi}✓${ansiReset} ${colors.helios.text.ansi}Off-machine backup complete.${ansiReset}\n"
+        # Push off-machine backup to helios (only if the remote drive is present)
+        set -l remote_drive "/mnt/nix-data"
+        ${lib.getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new "$remote_user@$remote_host" "test -d $remote_drive && mkdir -p $remote_backup_dir" 2>/dev/null
+        if test $status -ne 0
+          printf "${colors.helios.yellow.ansi}⚠ Warning:${ansiReset} ${colors.helios.text.ansi}Cannot reach $remote_host, check your connection. Local backup still exists.${ansiReset}\n"
         else
-          printf "${colors.helios.yellow.ansi}⚠ Warning:${ansiReset} ${colors.helios.text.ansi}Could not push backup to $remote_host. Local backup still exists.${ansiReset}\n"
+          printf "${colors.helios.green.ansi}->${ansiReset} ${colors.helios.peach.ansi}Pushing backup to${ansiReset} ${colors.helios.blue.ansi}%s${ansiReset} ${colors.helios.text.ansi}...${ansiReset}\n" "$remote_host"
+          ${lib.getExe rsync} -az -e "${lib.getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$archive" "$remote_user@$remote_host:$remote_backup_dir"
+          if test $status -eq 0
+            printf "${colors.helios.green.ansi}✓${ansiReset} ${colors.helios.text.ansi}Off-machine backup complete.${ansiReset}\n"
+          else
+            printf "${colors.helios.yellow.ansi}⚠ Warning:${ansiReset} ${colors.helios.text.ansi}Could not push backup to $remote_host. Local backup still exists.${ansiReset}\n"
+          end
         end
 
         set -l size (du -h "$archive" | cut -f1)
@@ -94,7 +100,7 @@ with zenith.lib';
 
         # Try to pull from helios first
         printf "${colors.helios.green.ansi}->${ansiReset} ${colors.helios.peach.ansi}Fetching backup from${ansiReset} ${colors.helios.blue.ansi}$remote_host${ansiReset} ${colors.helios.text.ansi}...${ansiReset}\n"
-        ${getExe rsync} -az -e "${getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$remote_user@$remote_host:$remote_backup_dir$restore_from" "$restore_path"
+        ${lib.getExe rsync} -az -e "${lib.getExe openssh} -i $ssh_key -o StrictHostKeyChecking=accept-new" "$remote_user@$remote_host:$remote_backup_dir$restore_from" "$restore_path"
         if test $status -eq 0
           set restored_remote 1
         else

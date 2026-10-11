@@ -66,7 +66,6 @@
   # Custom NixOS Modules located in ../../../modules/nixos/*
   gaming = {
     enable = true;
-    minecraft.enable = true;
   };
   security.sops.enable = true;
 
@@ -214,6 +213,8 @@
       python3Packages.youtube-transcript-api
       proton-vpn
       img2key
+      prismlauncher
+
     ];
   };
 

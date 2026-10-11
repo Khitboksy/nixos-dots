@@ -72,10 +72,11 @@ let
     FIFO="$WORK_DIR/.stdin-fifo"
 
     cd "$WORK_DIR"
+    chmod 755 "$WORK_DIR"
 
     rm -f "$FIFO"
     mkfifo "$FIFO"
-    chmod o+w "$FIFO"
+    chmod 666 "$FIFO"
 
     # Start the pipeline FIRST (cat blocks on open-for-read).
     # Then we open the FIFO for writing below, which unblocks cat.
@@ -135,6 +136,7 @@ let
     ${serverProperties}
     PROP
 
+    chmod 755 "$DEST"
         chown -R "minecraft-${srvName}:minecraft-${srvName}" "$DEST"
   '';
 in
