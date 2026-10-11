@@ -1,0 +1,219 @@
+diff -ruN a/assets/example_config.ron b/assets/example_config.ron
+--- a/assets/example_config.ron	2026-10-11 01:25:42.674679308 -0500
++++ b/assets/example_config.ron	2026-10-11 02:17:57.419097209 -0500
+@@ -18,6 +18,7 @@
+     enable_keepalive: true,
+     enable_lyrics_hot_reload: false,
+     status_update_interval_ms: 1000,
++    seek_step_ms: 5000,
+     rewind_to_start_sec: None,
+     keep_state_on_song_change: true,
+     reflect_changes_to_playlist: false,
+diff -ruN a/rmpc/src/config/mod.rs b/rmpc/src/config/mod.rs
+--- a/rmpc/src/config/mod.rs	2026-10-11 01:25:42.678841397 -0500
++++ b/rmpc/src/config/mod.rs	2026-10-11 02:14:42.170963862 -0500
+@@ -62,6 +62,7 @@
+     pub enable_config_hot_reload: bool,
+     pub enable_keepalive: bool,
+     pub status_update_interval_ms: Option<u64>,
++    pub seek_step_ms: u64,
+     pub select_current_song_on_change: bool,
+     pub center_current_song_on_change: bool,
+     pub reflect_changes_to_playlist: bool,
+@@ -127,6 +128,7 @@
+     scrolloff: usize,
+     wrap_navigation: bool,
+     status_update_interval_ms: Option<u64>,
++    seek_step_ms: u64,
+     select_current_song_on_change: bool,
+     center_current_song_on_change: bool,
+     reflect_changes_to_playlist: bool,
+@@ -195,6 +197,7 @@
+             volume_step: 5,
+             scrolloff: 0,
+             status_update_interval_ms: Some(1000),
++            seek_step_ms: 5000,
+             mpd_write_timeout_ms: 5_000,
+             mpd_read_timeout_ms: 10_000,
+             mpd_idle_read_timeout_ms: None,
+@@ -318,6 +321,7 @@
+             scrolloff: self.scrolloff,
+             wrap_navigation: self.wrap_navigation,
+             status_update_interval_ms: self.status_update_interval_ms.map(|v| v.max(100)),
++            seek_step_ms: self.seek_step_ms.max(10),
+             mpd_read_timeout: Duration::from_millis(self.mpd_read_timeout_ms),
+             mpd_write_timeout: Duration::from_millis(self.mpd_write_timeout_ms),
+             mpd_idle_read_timeout_ms: self.mpd_idle_read_timeout_ms.map(Duration::from_millis),
+diff -ruN a/rmpc/src/core/command.rs b/rmpc/src/core/command.rs
+--- a/rmpc/src/core/command.rs	2026-10-11 01:25:42.679543326 -0500
++++ b/rmpc/src/core/command.rs	2026-10-11 02:30:40.970833232 -0500
+@@ -164,7 +164,7 @@
+                 let status = client.get_status()?;
+                 match rewind_to_start {
+                     Some(value) if status.elapsed.as_secs() >= value => {
+-                        client.seek_current(ValueChange::Set(0))?;
++                        client.seek_current(ValueChange::Set(0.0))?;
+                     }
+                     Some(_value) => {
+                         client.prev_keep_state(keep_state, status.state)?;
+diff -ruN a/rmpc/src/ui/mod.rs b/rmpc/src/ui/mod.rs
+--- a/rmpc/src/ui/mod.rs	2026-10-11 01:25:42.682618350 -0500
++++ b/rmpc/src/ui/mod.rs	2026-10-11 02:30:40.971351010 -0500
+@@ -464,7 +464,7 @@
+                     ctx.command(move |_, client| {
+                         match rewind_to_start {
+                             Some(value) if elapsed_sec >= value => {
+-                                client.seek_current(ValueChange::Set(0))?;
++                                client.seek_current(ValueChange::Set(0.0))?;
+                             }
+                             Some(_value) => {
+                                 client.prev_keep_state(keep_state, state)?;
+@@ -598,16 +598,18 @@
+                 GlobalAction::SeekForward
+                     if matches!(ctx.status.state, State::Play | State::Pause) =>
+                 {
++                    let step = ctx.config.seek_step_ms as f32 / 1000.0;
+                     ctx.command(move |_, client| {
+-                        client.seek_current(ValueChange::Increase(5))?;
++                        client.seek_current(ValueChange::Increase(step))?;
+                         Ok(())
+                     });
+                 }
+                 GlobalAction::SeekBack
+                     if matches!(ctx.status.state, State::Play | State::Pause) =>
+                 {
++                    let step = ctx.config.seek_step_ms as f32 / 1000.0;
+                     ctx.command(move |_, client| {
+-                        client.seek_current(ValueChange::Decrease(5))?;
++                        client.seek_current(ValueChange::Decrease(step))?;
+                         Ok(())
+                     });
+                 }
+@@ -615,7 +617,7 @@
+                     if matches!(ctx.status.state, State::Play | State::Pause) =>
+                 {
+                     ctx.command(move |_, client| {
+-                        client.seek_current(ValueChange::Set(0))?;
++                        client.seek_current(ValueChange::Set(0.0))?;
+                         Ok(())
+                     });
+                 }
+diff -ruN a/rmpc/src/ui/panes/progress_bar.rs b/rmpc/src/ui/panes/progress_bar.rs
+--- a/rmpc/src/ui/panes/progress_bar.rs	2026-10-11 01:25:42.683477477 -0500
++++ b/rmpc/src/ui/panes/progress_bar.rs	2026-10-11 02:30:30.806525066 -0500
+@@ -26,6 +26,25 @@
+     pub fn new() -> Self {
+         Self { area: Rect::default() }
+     }
++
++    fn seek_to_x(&self, x: u16, ctx: &Ctx) -> Result<()> {
++        let x = x.clamp(
++            self.area.x,
++            self.area.x.saturating_add(self.area.width.saturating_sub(1)),
++        );
++        let seconds_to_seek_to = ctx
++            .status
++            .duration
++            .mul_f32(f32::from(x.saturating_sub(self.area.x)) / f32::from(self.area.width.max(1)))
++            .as_secs_f32();
++        ctx.command(move |_, client| {
++            client.seek_current(ValueChange::Set(seconds_to_seek_to))?;
++            Ok(())
++        });
++
++        ctx.render()?;
++        Ok(())
++    }
+ }
+ 
+ impl Pane for ProgressBarPane {
+@@ -71,27 +90,18 @@
+     }
+ 
+     fn handle_mouse_event(&mut self, event: MouseEvent, ctx: &Ctx) -> Result<()> {
+-        if !self.area.contains(event.into()) {
+-            return Ok(());
+-        }
+-
+         match event.kind {
+             MouseEventKind::LeftClick | MouseEventKind::DoubleClick
+-                if matches!(ctx.status.state, State::Play | State::Pause) =>
++                if self.area.contains(event.into())
++                    && matches!(ctx.status.state, State::Play | State::Pause) =>
+             {
+-                let second_to_seek_to = ctx
+-                    .status
+-                    .duration
+-                    .mul_f32(
+-                        f32::from(event.x.saturating_sub(self.area.x)) / f32::from(self.area.width),
+-                    )
+-                    .as_secs();
+-                ctx.command(move |_, client| {
+-                    client.seek_current(ValueChange::Set(u32::try_from(second_to_seek_to)?))?;
+-                    Ok(())
+-                });
+-
+-                ctx.render()?;
++                self.seek_to_x(event.x, ctx)?;
++            }
++            MouseEventKind::Drag { drag_start_position }
++                if self.area.contains(drag_start_position)
++                    && matches!(ctx.status.state, State::Play | State::Pause) =>
++            {
++                self.seek_to_x(event.x, ctx)?;
+             }
+             _ => {}
+         }
+diff -ruN a/rmpc/src/ui/panes/volume.rs b/rmpc/src/ui/panes/volume.rs
+--- a/rmpc/src/ui/panes/volume.rs	2026-10-11 01:25:42.684395748 -0500
++++ b/rmpc/src/ui/panes/volume.rs	2026-10-11 02:16:22.347592404 -0500
+@@ -142,7 +142,7 @@
+                 let new_volume = (volume_ratio * 100.0).clamp(0.0, 100.0).round() as u32;
+ 
+                 ctx.command(move |_, client| {
+-                    client.volume(ValueChange::Set(new_volume))?;
++                    client.volume(ValueChange::Set(new_volume as f32))?;
+                     Ok(())
+                 });
+ 
+@@ -194,7 +194,7 @@
+                 let new_volume = (volume_ratio * 100.0).clamp(0.0, 100.0).round() as u32;
+ 
+                 ctx.command(move |_, client| {
+-                    client.volume(ValueChange::Set(new_volume))?;
++                    client.volume(ValueChange::Set(new_volume as f32))?;
+                     Ok(())
+                 });
+ 
+diff -ruN a/rmpc-mpd/src/mpd_client.rs b/rmpc-mpd/src/mpd_client.rs
+--- a/rmpc-mpd/src/mpd_client.rs	2026-10-11 01:25:44.871683886 -0500
++++ b/rmpc-mpd/src/mpd_client.rs	2026-10-11 02:12:50.450767028 -0500
+@@ -48,9 +48,9 @@
+ }
+ 
+ pub enum ValueChange {
+-    Increase(u32),
+-    Decrease(u32),
+-    Set(u32),
++    Increase(f32),
++    Decrease(f32),
++    Set(f32),
+ }
+ 
+ #[derive(Debug, Default, Clone, Copy)]
+diff -ruN a/rmpc-mpd/src/tests/fixtures/mpd_client.rs b/rmpc-mpd/src/tests/fixtures/mpd_client.rs
+--- a/rmpc-mpd/src/tests/fixtures/mpd_client.rs	2026-10-11 01:25:42.678204703 -0500
++++ b/rmpc-mpd/src/tests/fixtures/mpd_client.rs	2026-10-11 02:17:16.408116572 -0500
+@@ -168,9 +168,9 @@
+ 
+     fn volume(&mut self, change: ValueChange) -> MpdResult<()> {
+         match change {
+-            ValueChange::Increase(val) => self.volume.inc_by(val),
+-            ValueChange::Decrease(val) => self.volume.dec_by(val),
+-            ValueChange::Set(val) => self.volume.set_value(val),
++            ValueChange::Increase(val) => self.volume.inc_by(val.round() as u32),
++            ValueChange::Decrease(val) => self.volume.dec_by(val.round() as u32),
++            ValueChange::Set(val) => self.volume.set_value(val.round() as u32),
+         };
+         Ok(())
+     }

@@ -6,7 +6,15 @@
 
 {
   retag = ''
-    set -l base /mnt/nix-data/media/music
+    # Determine music directory: env var > hostname > Helios default
+    set -l base
+    if set -q YTBLK_MUSIC_DIR
+        set base $YTBLK_MUSIC_DIR
+    else if test (hostname) = "terra"
+        set base /srv/music
+    else
+        set base /mnt/nix-data/media/music
+    end
     set -l dry_run 0
     set -l artist ""
     set -l album ""
@@ -236,7 +244,7 @@
     # ffmpeg remuxes to a temp file then replaces the original (in-place).
     for t in $targets
       set -l tmp "$t.retag_tmp"(path extension $t)
-      ${getExe ffmpeg} -v error -y -i "$t" -c copy $meta "$tmp"
+      ${lib.getExe ffmpeg} -v error -y -i "$t" -c copy $meta "$tmp"
       if test $status -eq 0
         mv -f "$tmp" "$t"
         echo "  ok: $t"

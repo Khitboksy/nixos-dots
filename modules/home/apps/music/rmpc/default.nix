@@ -16,21 +16,102 @@ let
     builtins.readFile ./config/utils/incrementPlayCount.sh
     |> pkgs.writeShellScript "rmpc-increment-playcount";
 
-  fetchLyrics =
-    builtins.readFile ./config/utils/fetch_album_lyrics.sh |> pkgs.writeShellScript "rmpc-fetch-lyrics";
+  fetchLyrics = pkgs.writeShellScript "rmpc-fetch-lyrics" ''
+    DANKLRC="${lib.getExe pkgs.custom.danklrc}"
+    RMPC="${lib.getExe' pkgs.rmpc "rmpc"}"
+    ${builtins.readFile ./config/utils/fetch_album_lyrics.sh}
+  '';
 
 in
 {
   options.apps.music.rmpc = with lib.types; {
     enable = mkBoolOpt false "Enable RMPC Rust Based CLI Music Player";
+    lyricsDir = mkStringOpt' null;
+    rmpcd = mkBoolOpt true "Enable rmpcd daemon (song_change trigger with full MPD metadata for lyric fetches)";
+    lyricAuthor = mkBoolOpt false "LRC authoring mode: centisecond timestamps, 100ms status polling and seek step";
   };
 
   config = lib.mkIf cfg.enable {
 
+    home.packages = lib.optionals cfg.rmpcd [ pkgs.rmpcd ];
+
+    systemd.user.services.rmpcd = lib.mkIf cfg.rmpcd {
+      Unit = {
+        Description = "rmpcd companion daemon for rmpc/MPD";
+        After = [ "mpd.service" ];
+        PartOf = [ "mpd.service" ];
+      };
+      Service = {
+        ExecStart = "${lib.getExe' pkgs.rmpcd "rmpcd"}";
+        Restart = "on-failure";
+        RestartSec = 2;
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
+
     xdg.configFile = {
 
       "rmpc/themes/helios.ron" = {
-        text = import ./config/themes/helios.nix { inherit lib config; };
+        text = import ./config/themes/helios.nix {
+          inherit zenith;
+          inherit (cfg) lyricAuthor;
+        };
+      };
+
+      "rmpcd/init.lua" = lib.mkIf cfg.rmpcd {
+        text = ''
+          -- Managed by home-manager (apps.music.rmpc).
+          ---@type Config
+          local config = {
+              address = "127.0.0.1:6600",
+          }
+
+          rmpcd.install("plugins.danklrc"):setup({
+              script = "${fetchLyrics}",
+          })
+
+          return config
+        '';
+      };
+
+      "rmpcd/plugins/danklrc.lua" = lib.mkIf cfg.rmpcd {
+        text = ''
+          -- Managed by home-manager (apps.music.rmpc).
+          ---@class DanklrcArgs
+          ---@field script string Path of the lyrics fetch script to spawn.
+          ---@class DanklrcPlugin:RmpcdPlugin<DanklrcArgs>
+          ---@field script string|nil
+          ---@type DanklrcPlugin
+          local M = {}
+
+          M.setup = function(self, args)
+              if args.script then
+                  self.script = args.script
+              end
+          end
+
+          M.song_change = function(self, _old_song, new_song)
+              if new_song == nil or self.script == nil then
+                  return
+              end
+              local title = (new_song.title and new_song.title:first()) or ""
+              local artist = (new_song.artist and new_song.artist:first()) or ""
+              local album = (new_song.album and new_song.album:first()) or ""
+              local duration = math.floor((new_song.duration or 0) / 1000)
+
+              process.spawn({
+                  self.script,
+                  "--rmpcd",
+                  new_song.file,
+                  title,
+                  artist,
+                  album,
+                  tostring(duration),
+              })
+          end
+
+          return M
+        '';
       };
     };
 
@@ -48,15 +129,11 @@ in
             address: "127.0.0.1:6600",
             password: None,
             theme: Some("~/.config/rmpc/themes/helios.ron"),
-            lyrics_dir: Some("/mnt/nix-data/media/lyrics"),
+            lyrics_dir: Some("${cfg.lyricsDir}"),
         	  enable_config_hot_reload: true,
             cache_dir: None,
 
 
-            // rmpc's on_song_change is a Vec<String>: first element is the
-            // binary, the rest are argv. So chain the hooks through bash -c;
-            // $FILE/$LRC_FILE/$TITLE/... env vars are inherited by the child.
-            // Use ';' not '&&' so lyrics still fetch if playcount hiccups.
             on_song_change: [
               "${lib.getExe pkgs.bash}", "-c",
               "${incrementPlayCount}; ${fetchLyrics}"
@@ -69,7 +146,8 @@ in
             scrolloff: 0,
             wrap_navigation: false,
             enable_mouse: true,
-            status_update_interval_ms: 1000,
+            status_update_interval_ms: ${if cfg.lyricAuthor then "100" else "1000"},
+            seek_step_ms: ${if cfg.lyricAuthor then "100" else "5000"},
             select_current_song_on_change: false,
 
 
@@ -213,25 +291,7 @@ in
             tabs: [
                 (
                     name: "Playing",
-                    pane: Split(
-                        direction: Vertical,
-                        panes: [
-                            (size: "70%", pane: Split(
-                                direction: Horizontal,
-                                panes: [
-                                    (size: "30%", pane: Split(
-                                        direction: Vertical,
-                                        panes: [
-                                            (size: "50%", pane: Pane(AlbumArt)),
-                                            (size: "50%", pane: Pane(Lyrics)),
-                                        ],
-                                    )),
-                                    (size: "40%", pane: Pane(Queue)),
-                                ],
-                            )),
-                            (size: "30%", pane: Pane(Cava)),
-                        ],
-                    ),
+                    pane: Component("playing_tab"),
                 ),
                 (
                     name: "Find",

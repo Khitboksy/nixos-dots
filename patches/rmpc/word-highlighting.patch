@@ -1,0 +1,727 @@
+diff -ruN orig/rmpc/src/config/theme/lyrics.rs work/rmpc/src/config/theme/lyrics.rs
+--- a/rmpc/src/config/theme/lyrics.rs	2026-10-01 01:48:35.129273167 -0500
++++ b/rmpc/src/config/theme/lyrics.rs	2026-10-01 02:04:26.707824019 -0500
+@@ -1,11 +1,13 @@
++use ratatui::style::Style;
+ use serde::{Deserialize, Serialize};
+ 
+-use crate::config::theme::properties::Alignment;
++use crate::config::theme::{properties::Alignment, style::StyleFile};
+ 
+ #[derive(Debug, Default, Clone)]
+ pub struct LyricsConfig {
+     pub timestamp: bool,
+     pub alignment: Alignment,
++    pub highlighted_word_style: Option<Style>,
+ }
+ 
+ #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+@@ -13,16 +15,11 @@
+ pub struct LyricsConfigFile {
+     pub(super) timestamp: bool,
+     pub(super) alignment: Alignment,
++    pub(super) highlighted_word_style: Option<StyleFile>,
+ }
+ 
+ impl Default for LyricsConfigFile {
+     fn default() -> Self {
+-        Self { timestamp: false, alignment: Alignment::Center }
+-    }
+-}
+-
+-impl From<LyricsConfigFile> for LyricsConfig {
+-    fn from(value: LyricsConfigFile) -> Self {
+-        LyricsConfig { timestamp: value.timestamp, alignment: value.alignment }
++        Self { timestamp: false, alignment: Alignment::Center, highlighted_word_style: None }
+     }
+ }
+diff -ruN orig/rmpc/src/config/theme/mod.rs work/rmpc/src/config/theme/mod.rs
+--- a/rmpc/src/config/theme/mod.rs	2026-10-01 01:48:35.129273167 -0500
++++ b/rmpc/src/config/theme/mod.rs	2026-10-01 02:04:27.527804740 -0500
+@@ -506,7 +506,16 @@
+                 .preview_metadata_group_style
+                 .to_config_or(None, None)?,
+             level_styles: value.level_styles.try_into()?,
+-            lyrics: value.lyrics.into(),
++            lyrics: LyricsConfig {
++                timestamp: value.lyrics.timestamp,
++                alignment: value.lyrics.alignment,
++                highlighted_word_style: value
++                    .lyrics
++                    .highlighted_word_style
++                    .as_ref()
++                    .map(|style| style.to_config_or(None, None))
++                    .transpose()?,
++            },
+             border_symbol_sets: border_set_lib,
+         })
+     }
+diff -ruN orig/rmpc/src/shared/lrc/lrc_parser.rs work/rmpc/src/shared/lrc/lrc_parser.rs
+--- a/rmpc/src/shared/lrc/lrc_parser.rs	2026-10-01 01:48:35.130205402 -0500
++++ b/rmpc/src/shared/lrc/lrc_parser.rs	2026-10-01 02:05:39.793972047 -0500
+@@ -270,7 +270,11 @@
+ 
+             for timestamp_content in timestamps {
+                 if let Some(time) = parse_timestamp(&timestamp_content, offset) {
+-                    result.lines.push(LrcLine { time, content: lyrics_text.to_owned() });
++                    result.lines.push(LrcLine {
++                        time,
++                        content: lyrics_text.to_owned(),
++                        words: Vec::new(),
++                    });
+                 }
+                 // if parsing fails, gracefully skip this timestamp
+             }
+@@ -288,6 +292,14 @@
+     use super::parse_metadata_only;
+     use crate::shared::lrc::{Lrc, lyrics::LrcLine};
+ 
++    fn line(time: u64, content: &str) -> LrcLine {
++        LrcLine {
++            time: Duration::from_millis(time),
++            content: content.to_string(),
++            words: Vec::new(),
++        }
++    }
++
+     #[test]
+     fn lrc() {
+         let input = r"[ti: asdf ]
+@@ -311,19 +323,10 @@
+             author: Some("444".to_string()),
+             length: Some(Duration::from_secs(143)),
+             lines: vec![
+-                LrcLine {
+-                    time: Duration::from_millis(1860),
+-                    content: "line with dot before hundredths".to_string()
+-                },
+-                LrcLine {
+-                    time: Duration::from_millis(4730),
+-                    content: "line with colon before hundredths".to_string()
+-                },
+-                LrcLine { time: Duration::from_millis(11240), content: String::new() },
+-                LrcLine {
+-                    time: Duration::from_millis(676_910),
+-                    content: "line with long time".to_string()
+-                },
++                line(1860, "line with dot before hundredths"),
++                line(4730, "line with colon before hundredths"),
++                line(11240, ""),
++                line(676_910, "line with long time"),
+             ],
+         });
+     }
+@@ -346,8 +349,8 @@
+             author: None,
+             length: None,
+             lines: vec![
+-                LrcLine { time: Duration::from_millis(860), content: "line1".to_string() },
+-                LrcLine { time: Duration::from_millis(3730), content: "line2".to_string() },
++                line(860, "line1"),
++                line(3730, "line2"),
+             ],
+         });
+     }
+@@ -370,8 +373,8 @@
+             author: None,
+             length: None,
+             lines: vec![
+-                LrcLine { time: Duration::from_millis(2860), content: "line1".to_string() },
+-                LrcLine { time: Duration::from_millis(5730), content: "line2".to_string() },
++                line(2860, "line1"),
++                line(5730, "line2"),
+             ],
+         });
+     }
+@@ -393,11 +396,11 @@
+             author: None,
+             length: None,
+             lines: vec![
+-                LrcLine { time: Duration::from_millis(1860), content: "line1".to_string() },
+-                LrcLine { time: Duration::from_millis(4730), content: "line2".to_string() },
+-                LrcLine { time: Duration::from_millis(5730), content: "line2".to_string() },
+-                LrcLine { time: Duration::from_millis(6730), content: "line2".to_string() },
+-                LrcLine { time: Duration::from_millis(7860), content: "line3".to_string() },
++                line(1860, "line1"),
++                line(4730, "line2"),
++                line(5730, "line2"),
++                line(6730, "line2"),
++                line(7860, "line3"),
+             ],
+         });
+     }
+@@ -420,10 +423,10 @@
+             author: None,
+             length: None,
+             lines: vec![
+-                LrcLine { time: Duration::from_millis(800), content: "line1".to_string() },
+-                LrcLine { time: Duration::from_millis(10730), content: "line2".to_string() },
+-                LrcLine { time: Duration::from_millis(20563), content: "line3".to_string() },
+-                LrcLine { time: Duration::from_millis(30285), content: "line4".to_string() },
++                line(800, "line1"),
++                line(10730, "line2"),
++                line(20563, "line3"),
++                line(30285, "line4"),
+             ]
+         });
+     }
+@@ -446,12 +449,9 @@
+             author: None,
+             length: None,
+             lines: vec![
+-                LrcLine { time: Duration::from_millis(9000), content: String::new() },
+-                LrcLine { time: Duration::from_millis(10000), content: "[Drum Solo]".to_string() },
+-                LrcLine {
+-                    time: Duration::from_millis(11000),
+-                    content: "Some text [with brackets] in lyrics".to_string()
+-                },
++                line(9000, ""),
++                line(10000, "[Drum Solo]"),
++                line(11000, "Some text [with brackets] in lyrics"),
+             ]
+         });
+     }
+diff -ruN orig/rmpc/src/shared/lrc/lyricsfile_parser.rs work/rmpc/src/shared/lrc/lyricsfile_parser.rs
+--- a/rmpc/src/shared/lrc/lyricsfile_parser.rs	2026-10-01 01:48:35.130205402 -0500
++++ b/rmpc/src/shared/lrc/lyricsfile_parser.rs	2026-10-01 02:04:44.142414134 -0500
+@@ -3,7 +3,7 @@
+ use anyhow::{Context, Result};
+ use serde::Deserialize;
+ 
+-use crate::shared::lrc::{Lrc, lyrics::LrcLine};
++use crate::shared::lrc::{Lrc, lyrics::{LrcLine, LrcWord}};
+ 
+ #[derive(Debug, Deserialize)]
+ #[allow(dead_code)]
+@@ -49,14 +49,18 @@
+ pub fn parse(path: &Path) -> Result<Lrc> {
+     let yaml_content = std::fs::read_to_string(path)
+         .with_context(|| format!("Failed to read lyricsfile at '{}'", path.display()))?;
+-    let yaml = serde_yaml_ng::from_str::<Lyricsfile>(&yaml_content).with_context(|| {
++    parse_str(&yaml_content).with_context(|| {
+         format!("Failed to deserialize lyricsfile '{}' at '{}'", yaml_content, path.display())
+-    })?;
++    })
++}
++
++fn parse_str(yaml_content: &str) -> Result<Lrc> {
++    let yaml = serde_yaml_ng::from_str::<Lyricsfile>(yaml_content)?;
+ 
+     // Offset handling is not currently specified by the spec, it exists, but
+     // has no defined meaning. We do not know whether negative offset means
+     // that lyrics should appear earlier or later so ignore it for now.
+-    let lrc = Lrc {
++    Ok(Lrc {
+         title: Some(yaml.metadata.title),
+         artist: Some(yaml.metadata.artist),
+         album: yaml.metadata.album,
+@@ -65,9 +69,76 @@
+         lines: yaml
+             .lines
+             .into_iter()
+-            .map(|line| LrcLine { time: Duration::from_millis(line.start_ms), content: line.text })
++            .map(|line| LrcLine {
++                time: Duration::from_millis(line.start_ms),
++                content: line.text,
++                words: line
++                    .words
++                    .into_iter()
++                    .map(|word| LrcWord {
++                        time: Duration::from_millis(word.start_ms),
++                        end: word.end_ms.map(Duration::from_millis),
++                        content: word.text,
++                    })
++                    .collect(),
++            })
+             .collect(),
+-    };
++    })
++}
+ 
+-    Ok(lrc)
++#[cfg(test)]
++#[allow(clippy::unwrap_used)]
++mod tests {
++    use std::time::Duration;
++
++    use super::parse_str;
++
++    #[test]
++    fn words_are_preserved() {
++        let input = r"version: 1
++metadata:
++  title: Test
++  artist: Artist
++lines:
++  - text: Hello world
++    start_ms: 1000
++    end_ms: 2500
++    words:
++      - text: Hello
++        start_ms: 1000
++        end_ms: 1700
++      - text: ' world'
++        start_ms: 1700
++        end_ms: 2500
++";
++        let lrc = parse_str(input).unwrap();
++
++        assert_eq!(lrc.title.as_deref(), Some("Test"));
++        assert_eq!(lrc.lines.len(), 1);
++        let line = &lrc.lines[0];
++        assert_eq!(line.content, "Hello world");
++        assert_eq!(line.words.len(), 2);
++        assert_eq!(line.words[0].content, "Hello");
++        assert_eq!(line.words[0].time, Duration::from_millis(1000));
++        assert_eq!(line.words[0].end, Some(Duration::from_millis(1700)));
++        assert_eq!(line.words[1].content, " world");
++        assert_eq!(line.words[1].time, Duration::from_millis(1700));
++        assert_eq!(line.words[1].end, Some(Duration::from_millis(2500)));
++    }
++
++    #[test]
++    fn missing_words_yield_empty_vec() {
++        let input = r"version: 1
++metadata:
++  title: Test
++  artist: Artist
++lines:
++  - text: Only line synced
++    start_ms: 500
++";
++        let lrc = parse_str(input).unwrap();
++
++        assert_eq!(lrc.lines.len(), 1);
++        assert!(lrc.lines[0].words.is_empty());
++    }
+ }
+diff -ruN orig/rmpc/src/shared/lrc/lyrics.rs work/rmpc/src/shared/lrc/lyrics.rs
+--- a/rmpc/src/shared/lrc/lyrics.rs	2026-10-01 01:48:35.130205402 -0500
++++ b/rmpc/src/shared/lrc/lyrics.rs	2026-10-01 02:04:23.989887921 -0500
+@@ -2,6 +2,19 @@
+ 
+ use serde::Serialize;
+ 
++use super::LrcOffset;
++
++/// A single word within a lyric line with its own timing.
++#[derive(Debug, Eq, PartialEq)]
++pub struct LrcWord {
++    /// The timestamp when this word becomes active
++    pub time: Duration,
++    /// The timestamp when this word ends, if known
++    pub end: Option<Duration>,
++    /// The word text
++    pub content: String,
++}
++
+ /// A single line of LRC lyrics with its timestamp.
+ #[derive(Debug, Eq, PartialEq)]
+ pub struct LrcLine {
+@@ -9,6 +22,18 @@
+     pub time: Duration,
+     /// The lyrics content for this line
+     pub content: String,
++    /// Per-word timings, empty for line-synced lyrics
++    pub words: Vec<LrcWord>,
++}
++
++impl LrcWord {
++    pub fn time(&self, offset: LrcOffset) -> Duration {
++        if offset.negative {
++            self.time.saturating_add(offset.value)
++        } else {
++            self.time.saturating_sub(offset.value)
++        }
++    }
+ }
+ 
+ /// Parsed LRC file containing metadata and timed lyrics lines.
+diff -ruN orig/rmpc/src/shared/lrc/mod.rs work/rmpc/src/shared/lrc/mod.rs
+--- a/rmpc/src/shared/lrc/mod.rs	2026-10-01 01:48:35.130205402 -0500
++++ b/rmpc/src/shared/lrc/mod.rs	2026-10-01 02:18:31.878214714 -0500
+@@ -7,7 +7,9 @@
+ 
+ use anyhow::{Context, Result, bail};
+ pub use index::LrcIndex;
+-pub use lyrics::{Lrc, LrcMetadata};
++// LrcWord is only referenced by cfg(test) code in other modules.
++#[allow(unused_imports)]
++pub use lyrics::{Lrc, LrcLine, LrcMetadata, LrcWord};
+ 
+ #[derive(Debug, Default, Clone, Copy)]
+ pub struct LrcOffset {
+diff -ruN orig/rmpc/src/ui/panes/lyrics.rs work/rmpc/src/ui/panes/lyrics.rs
+--- a/rmpc/src/ui/panes/lyrics.rs	2026-10-01 01:48:35.131333867 -0500
++++ b/rmpc/src/ui/panes/lyrics.rs	2026-10-01 05:54:37.814556486 -0500
+@@ -1,9 +1,13 @@
++use std::time::Duration;
++
+ use anyhow::Result;
+ use ratatui::{
+     Frame,
+     layout::{Constraint, Layout, Rect},
+-    text::Text,
++    style::Style,
++    text::{Line, Span, Text},
+ };
++use unicode_width::UnicodeWidthChar;
+ 
+ use super::Pane;
+ use crate::{
+@@ -12,7 +16,7 @@
+     shared::{
+         ext::duration::DurationExt,
+         keys::ActionEvent,
+-        lrc::Lrc,
++        lrc::{Lrc, LrcLine, LrcOffset},
+         macros::status_error,
+         mpd_query::run_status_update,
+     },
+@@ -24,11 +28,17 @@
+     current_lyrics: Option<Lrc>,
+     initialized: bool,
+     last_requested_line_idx: usize,
++    last_requested_word: Option<(usize, usize)>,
+ }
+ 
+ impl LyricsPane {
+     pub fn new(_ctx: &Ctx) -> Self {
+-        Self { current_lyrics: None, initialized: false, last_requested_line_idx: 0 }
++        Self {
++            current_lyrics: None,
++            initialized: false,
++            last_requested_line_idx: 0,
++            last_requested_word: None,
++        }
+     }
+ 
+     fn update_lyrics(&mut self, ctx: &Ctx) -> Result<()> {
+@@ -50,6 +60,112 @@
+     }
+ }
+ 
++/// Styles used when rendering a word-timed line.
++struct WordStyles {
++    /// Words that have already been sung take the highlighted style
++    sung: Style,
++    /// Words not yet reached, and the timestamp prefix, stay plain
++    unsung: Style,
++    /// Style override for the currently active word (defaults to `sung`)
++    active: Option<Style>,
++}
++
++/// Whether the line's words can be trusted to reconstruct its content.
++fn words_usable(line: &LrcLine) -> bool {
++    if line.words.is_empty() {
++        return false;
++    }
++    let reconstructed: String = line.words.iter().map(|word| word.content.as_str()).collect();
++    reconstructed == line.content
++}
++
++/// Index of the last word whose start time has been reached, if any.
++fn current_word_idx(line: &LrcLine, elapsed: Duration, offset: LrcOffset) -> Option<usize> {
++    line.words
++        .iter()
++        .enumerate()
++        .filter(|(_, word)| elapsed >= word.time(offset))
++        .map(|(idx, _)| idx)
++        .last()
++}
++
++/// Render the active line as styled rows, breaking on whitespace like
++/// `textwrap`. Returns None when the line has no usable word timings so
++/// the caller can fall back to plain line rendering.
++fn word_line_spans(
++    line: &LrcLine,
++    width: usize,
++    prefix: Option<&str>,
++    active_idx: Option<usize>,
++    styles: &WordStyles,
++) -> Option<Vec<Vec<Span<'static>>>> {
++    if width == 0 || !words_usable(line) {
++        return None;
++    }
++
++    // The active word joins the already-sung fill; a theme override wins.
++    let active_style = styles.active.unwrap_or(styles.sung);
++    let mut chars: Vec<(char, Style)> = Vec::new();
++    if let Some(prefix) = prefix {
++        chars.extend(prefix.chars().map(|ch| (ch, styles.unsung)));
++    }
++    for (idx, word) in line.words.iter().enumerate() {
++        let style = match active_idx {
++            Some(active) if idx == active => active_style,
++            Some(active) if idx < active => styles.sung,
++            _ => styles.unsung,
++        };
++        chars.extend(word.content.chars().map(|ch| (ch, style)));
++    }
++
++    let mut rows: Vec<Vec<(char, Style)>> = Vec::new();
++    let mut row: Vec<(char, Style)> = Vec::new();
++    let mut row_width = 0usize;
++    let mut last_whitespace: Option<usize> = None;
++
++    for (ch, style) in chars {
++        let ch_width = ch.width().unwrap_or(0);
++        if ch_width > 0 && row_width + ch_width > width && !row.is_empty() {
++            if let Some(break_at) = last_whitespace {
++                let tail = row.split_off(break_at + 1);
++                row.pop();
++                rows.push(std::mem::take(&mut row));
++                row = tail;
++                last_whitespace = row.iter().rposition(|(c, _)| c.is_whitespace());
++                row_width = row.iter().map(|(c, _)| c.width().unwrap_or(0)).sum();
++            } else {
++                rows.push(std::mem::take(&mut row));
++                last_whitespace = None;
++                row_width = 0;
++            }
++        }
++        if ch.is_whitespace() && row.is_empty() {
++            continue;
++        }
++        if ch.is_whitespace() {
++            last_whitespace = Some(row.len());
++        }
++        row.push((ch, style));
++        row_width += ch_width;
++    }
++    rows.push(row);
++
++    Some(
++        rows.into_iter()
++            .map(|row| {
++                let mut spans: Vec<Span<'static>> = Vec::new();
++                for (ch, style) in row {
++                    match spans.last_mut() {
++                        Some(last) if last.style == style => last.content.to_mut().push(ch),
++                        _ => spans.push(Span::styled(ch.to_string(), style)),
++                    }
++                }
++                spans
++            })
++            .collect(),
++    )
++}
++
+ impl Pane for LyricsPane {
+     fn render(&mut self, frame: &mut Frame, area: Rect, ctx: &Ctx) -> Result<()> {
+         let Some(lrc) = &self.current_lyrics else { return Ok(()) };
+@@ -83,27 +199,61 @@
+         let Some(current_line) = lrc.lines.get(current_line_idx) else {
+             return Ok(());
+         };
+-        let formatted_line = if timestamp && !current_line.content.is_empty() {
+-            &format!("[{}] {}", current_line.time(offset).to_string(), current_line.content)
++        let prefix = if timestamp && !current_line.content.is_empty() {
++            Some(format!("[{}] ", current_line.time(offset).to_string()))
+         } else {
+-            &current_line.content
++            None
+         };
+ 
+-        let wrapped_lines = textwrap::wrap(formatted_line, area.width as usize);
+-        let wrapped_lines_length = wrapped_lines.len();
++        let word_styles = WordStyles {
++            sung: middle_style,
++            unsung: default_style,
++            active: ctx.config.theme.lyrics.highlighted_word_style,
++        };
++        let active_word_idx = current_word_idx(current_line, elapsed, offset);
++        let word_wrapped = word_line_spans(
++            current_line,
++            area.width as usize,
++            prefix.as_deref(),
++            active_word_idx,
++            &word_styles,
++        );
++
++        let (wrapped_lines_length, current_area) = if let Some(word_rows) = word_wrapped {
++            let length = word_rows.len();
++            let mut cursor =
++                (middle_row as usize).saturating_sub(length.saturating_sub(1));
++            for spans in word_rows {
++                let Some(area) = areas.get(cursor) else {
++                    break;
++                };
++                let text = Text::from(Line::from(spans)).style(middle_style);
++                frame.render_widget(align_text(text, ctx.config.theme.lyrics.alignment), *area);
++                cursor += 1;
++            }
++            (length, cursor)
++        } else {
++            let formatted_line = match &prefix {
++                Some(prefix) => format!("{prefix}{}", current_line.content),
++                None => current_line.content.clone(),
++            };
++            let wrapped_lines = textwrap::wrap(&formatted_line, area.width as usize);
++            let length = wrapped_lines.len();
++            let mut cursor =
++                (middle_row as usize).saturating_sub(length.saturating_sub(1));
++            for l in wrapped_lines {
++                let Some(area) = areas.get(cursor) else {
++                    break;
++                };
++                let text = Text::from(l).style(middle_style);
++                frame.render_widget(align_text(text, ctx.config.theme.lyrics.alignment), *area);
++                cursor += 1;
++            }
++            (length, cursor)
++        };
+ 
+         let active_lyric_start_row =
+             (middle_row as usize).saturating_sub(wrapped_lines_length.saturating_sub(1));
+-        let mut current_area = active_lyric_start_row;
+-
+-        for l in wrapped_lines {
+-            let Some(area) = areas.get(current_area) else {
+-                break;
+-            };
+-            let text = Text::from(l).style(middle_style);
+-            frame.render_widget(align_text(text, ctx.config.theme.lyrics.alignment), *area);
+-            current_area += 1;
+-        }
+ 
+         let mut before_lyrics_cursor = current_line_idx;
+         let mut before_area_cursor = active_lyric_start_row as usize;
+@@ -165,6 +315,19 @@
+                 .schedule(line.time(offset).saturating_sub(ctx.status.elapsed), run_status_update);
+         }
+ 
++        // Try to schedule the next word to be highlighted on time
++        if words_usable(current_line) {
++            let next_word_idx = active_word_idx.map_or(0, |idx| idx + 1);
++            if let Some(next_word) = current_line.words.get(next_word_idx)
++                && next_word.time(offset) > elapsed
++                && self.last_requested_word != Some((current_line_idx, next_word_idx))
++            {
++                self.last_requested_word = Some((current_line_idx, next_word_idx));
++                ctx.scheduler
++                    .schedule(next_word.time(offset).saturating_sub(elapsed), run_status_update);
++            }
++        }
++
+         Ok(())
+     }
+ 
+@@ -174,6 +337,7 @@
+                 status_error!("Failed to load lyrics file: '{err}'");
+             }
+             self.last_requested_line_idx = 0;
++            self.last_requested_word = None;
+             self.initialized = true;
+         }
+ 
+@@ -188,6 +352,7 @@
+                 }
+                 ctx.render()?;
+                 self.last_requested_line_idx = 0;
++                self.last_requested_word = None;
+             }
+             _ => {}
+         }
+@@ -198,3 +363,101 @@
+         Ok(())
+     }
+ }
++
++#[cfg(test)]
++#[allow(clippy::unwrap_used)]
++mod tests {
++    use std::time::Duration;
++
++    use ratatui::style::{Modifier, Style};
++
++    use super::{WordStyles, current_word_idx, word_line_spans, words_usable};
++    use crate::shared::lrc::{LrcLine, LrcOffset, LrcWord};
++
++    fn word(content: &str, time: u64) -> LrcWord {
++        LrcWord {
++            time: Duration::from_millis(time),
++            end: None,
++            content: content.to_string(),
++        }
++    }
++
++    fn line(words: Vec<LrcWord>) -> LrcLine {
++        let content = words.iter().map(|word| word.content.as_str()).collect();
++        LrcLine { time: Duration::from_millis(0), content, words }
++    }
++
++    fn styles() -> WordStyles {
++        WordStyles {
++            sung: Style::default(),
++            unsung: Style::default(),
++            active: Some(Style::default().add_modifier(Modifier::BOLD)),
++        }
++    }
++
++    #[test]
++    fn words_usable_requires_matching_content() {
++        let line = line(vec![word("Hello", 0), word(" world", 100)]);
++        assert!(words_usable(&line));
++
++        let broken = LrcLine {
++            time: Duration::from_millis(0),
++            content: "Goodbye world".to_string(),
++            words: vec![word("Hello", 0), word(" world", 100)],
++        };
++        assert!(!words_usable(&broken));
++
++        let empty =
++            LrcLine { time: Duration::from_millis(0), content: "x".to_string(), words: vec![] };
++        assert!(!words_usable(&empty));
++    }
++
++    #[test]
++    fn current_word_idx_tracks_elapsed() {
++        let line = line(vec![word("one", 1000), word(" two", 2000), word(" three", 3000)]);
++        let offset = LrcOffset::from_millis(0);
++
++        assert_eq!(current_word_idx(&line, Duration::from_millis(500), offset), None);
++        assert_eq!(current_word_idx(&line, Duration::from_millis(2000), offset), Some(1));
++        assert_eq!(current_word_idx(&line, Duration::from_millis(9999), offset), Some(2));
++    }
++
++    #[test]
++    fn word_line_spans_styles_and_wraps() {
++        let line = line(vec![word("hello", 0), word(" world", 1000)]);
++        let styles = styles();
++
++        let rows = word_line_spans(&line, 80, Some("[00:01] "), Some(0), &styles).unwrap();
++        assert_eq!(rows.len(), 1);
++        assert_eq!(rows[0].len(), 3);
++        assert_eq!(rows[0][0].content, "[00:01] ");
++        assert_eq!(rows[0][0].style, styles.unsung);
++        assert_eq!(rows[0][1].content, "hello");
++        assert_eq!(rows[0][1].style, styles.active.unwrap());
++        assert_eq!(rows[0][2].content, " world");
++        assert_eq!(rows[0][2].style, styles.unsung);
++
++        let wrapped = word_line_spans(&line, 5, None, Some(1), &styles).unwrap();
++        assert_eq!(wrapped.len(), 2);
++        assert_eq!(wrapped[0][0].content, "hello");
++        assert_eq!(wrapped[0][0].style, styles.sung);
++        assert_eq!(wrapped[1][0].content, "world");
++        assert_eq!(wrapped[1][0].style, styles.active.unwrap());
++    }
++
++    #[test]
++    fn active_defaults_to_sung_style() {
++        let line = line(vec![word("one", 0), word(" two", 100)]);
++        let sung = Style::default().add_modifier(Modifier::BOLD);
++        let styles = WordStyles { sung, unsung: Style::default(), active: None };
++
++        let rows = word_line_spans(&line, 80, None, Some(0), &styles).unwrap();
++        // Without a theme override the active word renders exactly like a
++        // sung word - no underline, no extra modifier.
++        assert_eq!(rows[0][0].content, "one");
++        assert_eq!(rows[0][0].style, sung);
++        assert!(!rows[0][0].style.add_modifier.contains(Modifier::UNDERLINED));
++        assert_eq!(rows[0][1].content, " two");
++        assert_eq!(rows[0][1].style, styles.unsung);
++    }
++}

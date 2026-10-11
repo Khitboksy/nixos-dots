@@ -30,6 +30,22 @@
       rofi.enable = true;
     };
 
+    music = {
+      rmpc = {
+        enable = true;
+        lyricsDir = "/srv/lyrics";
+        lyricAuthor = true;
+      };
+      discord-rpc.enable = true;
+      picard.enable = true;
+    };
+
+    ai = {
+      modelMain = "opencode/mimo-v2.5-free";
+      modelSub = "opencode/muse-spark-1.3-contributor-free";
+      opencode.enable = true;
+    };
+
   };
 
   shells.fish.enable = true;

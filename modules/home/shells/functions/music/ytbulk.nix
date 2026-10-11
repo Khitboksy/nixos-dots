@@ -8,7 +8,14 @@
 {
   ytbulk = ''
 
-    set BASE_DIR /mnt/nix-data/media/music
+    # Determine music directory: env var > hostname > Helios default
+    if set -q YTBLK_MUSIC_DIR
+        set BASE_DIR $YTBLK_MUSIC_DIR
+    else if test (hostname) = "terra"
+        set BASE_DIR /srv/music
+    else
+        set BASE_DIR /mnt/nix-data/media/music
+    end
 
     # --- queue collection: one or more artist batches ---
     set artists
@@ -111,8 +118,9 @@
             echo "Downloading: $artist (single, into $tmp_dir)..."
         end
 
-        ${getExe yt-dlp} \
+        ${lib.getExe yt-dlp} \
             -q \
+            --cookies-from-browser firefox \
             --no-warnings \
             --no-progress \
             --print "before_dl:Downloading %(title)s..." \
@@ -148,7 +156,7 @@
             set base_name (basename "$f")
 
             # Real title comes from the embedded metadata
-            set title_raw (${getExe' ffmpeg "ffprobe"} -v quiet \
+            set title_raw (${lib.getExe' ffmpeg "ffprobe"} -v quiet \
                 -show_entries format_tags=title \
                 -of default=noprint_wrappers=1:nokey=1 "$f")
             if test -z "$title_raw"
@@ -181,7 +189,7 @@
             end
 
             if test $is_album -eq 1
-                ${getExe ffmpeg} -v error -y -i "$f" \
+                ${lib.getExe ffmpeg} -v error -y -i "$f" \
                     -c copy \
                     -metadata artist="$artist" \
                     -metadata album="$album" \
@@ -193,7 +201,7 @@
                     -metadata comment= \
                     "$out_file"
             else
-                ${getExe ffmpeg} -v error -y -i "$f" \
+                ${lib.getExe ffmpeg} -v error -y -i "$f" \
                     -c copy \
                     -metadata artist="$artist" \
                     -metadata title="$title_clean" \

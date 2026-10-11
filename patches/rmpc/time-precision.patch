@@ -1,0 +1,236 @@
+diff -ruN a/rmpc/src/config/theme/lyrics.rs b/rmpc/src/config/theme/lyrics.rs
+--- a/rmpc/src/config/theme/lyrics.rs	2026-10-11 02:00:50.624425069 -0500
++++ b/rmpc/src/config/theme/lyrics.rs	2026-10-11 02:01:46.758969382 -0500
+@@ -8,6 +8,7 @@
+     pub timestamp: bool,
+     pub alignment: Alignment,
+     pub highlighted_word_style: Option<Style>,
++    pub precise: bool,
+ }
+ 
+ #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+@@ -16,10 +17,16 @@
+     pub(super) timestamp: bool,
+     pub(super) alignment: Alignment,
+     pub(super) highlighted_word_style: Option<StyleFile>,
++    pub(super) precise: bool,
+ }
+ 
+ impl Default for LyricsConfigFile {
+     fn default() -> Self {
+-        Self { timestamp: false, alignment: Alignment::Center, highlighted_word_style: None }
++        Self {
++            timestamp: false,
++            alignment: Alignment::Center,
++            highlighted_word_style: None,
++            precise: false,
++        }
+     }
+ }
+diff -ruN a/rmpc/src/config/theme/mod.rs b/rmpc/src/config/theme/mod.rs
+--- a/rmpc/src/config/theme/mod.rs	2026-10-11 02:00:50.624567163 -0500
++++ b/rmpc/src/config/theme/mod.rs	2026-10-11 02:02:04.707484213 -0500
+@@ -515,6 +515,7 @@
+                     .as_ref()
+                     .map(|style| style.to_config_or(None, None))
+                     .transpose()?,
++                precise: value.lyrics.precise,
+             },
+             border_symbol_sets: border_set_lib,
+         })
+diff -ruN a/rmpc/src/shared/ext.rs b/rmpc/src/shared/ext.rs
+--- a/rmpc/src/shared/ext.rs	2026-10-11 01:25:42.680035571 -0500
++++ b/rmpc/src/shared/ext.rs	2026-10-11 02:01:20.410277173 -0500
+@@ -211,6 +211,7 @@
+ 
+     pub trait DurationExt {
+         fn to_string(&self) -> String;
++        fn to_precise_string(&self) -> String;
+         fn format_to_duration(&self, unit_separator: &str) -> String;
+     }
+ 
+@@ -236,6 +237,29 @@
+             }
+         }
+ 
++        fn to_precise_string(&self) -> String {
++            let secs = self.as_secs();
++
++            let min = secs / 60;
++            let frac_secs = secs - min * 60;
++
++            let hours = min / 60;
++            let frac_min = min - hours * 60;
++
++            let days = hours / 24;
++            let frac_hours = hours - days * 24;
++
++            let centis = self.subsec_millis() / 10;
++
++            if hours == 0 {
++                format!("{min}:{frac_secs:0>2}.{centis:0>2}")
++            } else if days == 0 {
++                format!("{hours}:{frac_min:0>2}:{frac_secs:0>2}.{centis:0>2}")
++            } else {
++                format!("{days}d {frac_hours:0>2}:{frac_min:0>2}:{frac_secs:0>2}.{centis:0>2}")
++            }
++        }
++
+         fn format_to_duration(&self, unit_separator: &str) -> String {
+             let mut total_seconds = self.as_secs();
+             if total_seconds == 0 {
+@@ -312,6 +336,17 @@
+             assert_eq!(input.to_string(), expected);
+         }
+ 
++        #[test_case(Duration::from_secs(0), "0:00.00")]
++        #[test_case(Duration::from_millis(42_375), "0:42.37")]
++        #[test_case(Duration::from_millis(95_123), "1:35.12")]
++        #[test_case(Duration::from_millis(95_129), "1:35.12")]
++        #[test_case(Duration::from_secs(3600), "1:00:00.00")]
++        #[test_case(Duration::from_millis(3_661_500), "1:01:01.50")]
++        #[test_case(Duration::from_secs(86400), "1d 00:00:00.00")]
++        fn duration_to_precise_string(input: Duration, expected: &str) {
++            assert_eq!(input.to_precise_string(), expected);
++        }
++
+         #[test_case(Duration::from_secs(0), "0s")]
+         #[test_case(Duration::from_secs(1), "1s")]
+         #[test_case(Duration::from_secs(60), "1m")]
+diff -ruN a/rmpc/src/ui/panes/lyrics.rs b/rmpc/src/ui/panes/lyrics.rs
+--- a/rmpc/src/ui/panes/lyrics.rs	2026-10-11 02:00:50.625497800 -0500
++++ b/rmpc/src/ui/panes/lyrics.rs	2026-10-11 02:03:21.073437187 -0500
+@@ -195,12 +195,20 @@
+         };
+ 
+         let timestamp = ctx.config.theme.lyrics.timestamp;
++        let precise = ctx.config.theme.lyrics.precise;
+ 
+         let Some(current_line) = lrc.lines.get(current_line_idx) else {
+             return Ok(());
+         };
+         let prefix = if timestamp && !current_line.content.is_empty() {
+-            Some(format!("[{}] ", current_line.time(offset).to_string()))
++            Some(format!(
++                "[{}] ",
++                if precise {
++                    current_line.time(offset).to_precise_string()
++                } else {
++                    current_line.time(offset).to_string()
++                }
++            ))
+         } else {
+             None
+         };
+@@ -263,7 +271,12 @@
+                 break;
+             };
+             let formatted_line = if timestamp && !line.content.is_empty() {
+-                &format!("[{}] {}", line.time(offset).to_string(), line.content)
++                let time = if precise {
++                    line.time(offset).to_precise_string()
++                } else {
++                    line.time(offset).to_string()
++                };
++                &format!("[{}] {}", time, line.content)
+             } else {
+                 &line.content
+             };
+@@ -292,7 +305,12 @@
+                 break;
+             };
+             let formatted_line = if timestamp && !line.content.is_empty() {
+-                &format!("[{}] {}", line.time(offset).to_string(), line.content)
++                let time = if precise {
++                    line.time(offset).to_precise_string()
++                } else {
++                    line.time(offset).to_string()
++                };
++                &format!("[{}] {}", time, line.content)
+             } else {
+                 &line.content
+             };
+diff -ruN a/rmpc/src/ui/panes/mod.rs b/rmpc/src/ui/panes/mod.rs
+--- a/rmpc/src/ui/panes/mod.rs	2026-10-11 01:25:42.683477477 -0500
++++ b/rmpc/src/ui/panes/mod.rs	2026-10-11 02:08:36.526210648 -0500
+@@ -594,9 +594,14 @@
+                 StatusProperty::Duration => {
+                     Some(Either::Left(Span::styled(status.duration.to_string(), style)))
+                 }
+-                StatusProperty::Elapsed => {
+-                    Some(Either::Left(Span::styled(status.elapsed.to_string(), style)))
+-                }
++                StatusProperty::Elapsed => Some(Either::Left(Span::styled(
++                    if ctx.config.theme.lyrics.precise {
++                        status.elapsed.to_precise_string()
++                    } else {
++                        status.elapsed.to_string()
++                    },
++                    style,
++                ))),
+                 StatusProperty::Partition => {
+                     Some(Either::Left(Span::styled(&status.partition, style)))
+                 }
+@@ -987,16 +992,19 @@
+     use rstest::rstest;
+ 
+     use crate::{
+-        config::theme::{
+-            StyleFile,
+-            TagResolutionStrategy,
+-            properties::{
+-                Property,
+-                PropertyKind,
+-                PropertyKindOrText,
+-                SongProperty,
+-                StatusProperty,
+-                StatusPropertyFile,
++        config::{
++            Config,
++            theme::{
++                StyleFile,
++                TagResolutionStrategy,
++                properties::{
++                    Property,
++                    PropertyKind,
++                    PropertyKindOrText,
++                    SongProperty,
++                    StatusProperty,
++                    StatusPropertyFile,
++                },
+             },
+         },
+         ctx::Ctx,
+@@ -1564,6 +1572,32 @@
+             );
+         }
+ 
++        #[rstest]
++        fn status_elapsed_resolves_precise_when_theme_enabled(mut ctx: Ctx) {
++            let mut config = Config::default();
++            config.theme.lyrics.precise = true;
++            ctx.config = std::sync::Arc::new(config);
++            ctx.status = Status {
++                elapsed: Duration::from_millis(123_000),
++                duration: Duration::from_secs(123),
++                state: State::Play,
++                ..Default::default()
++            };
++
++            let format = Property::<PropertyKind> {
++                kind: PropertyKindOrText::Property(PropertyKind::Status(StatusProperty::Elapsed)),
++                style: None,
++                default: None,
++            };
++
++            let result = format.as_span(None, &ctx, "", TagResolutionStrategy::All);
++
++            assert_eq!(
++                result,
++                Some(either::Either::<Span<'_>, Vec<Span<'_>>>::Left(Span::raw("2:03.00")))
++            );
++        }
++
+         fn output(name: &str, enabled: bool, kind: PartitionedOutputKind) -> PartitionedOutput {
+             PartitionedOutput {
+                 id: 0,

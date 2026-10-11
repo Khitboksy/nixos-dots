@@ -77,7 +77,7 @@
     after = [
       "tailscaled.service"
       "redirect-cockpit.service"
-      "redirect-navidrome.service"
+      "redirect-music.service"
       "redirect-vaultwarden.service"
     ];
     requires = [ "tailscaled.service" ];
@@ -91,10 +91,24 @@
         tailscaleDomains = "${lib.getExe pkgs.tailscale} serve --bg --set-path";
       in
       ''
-        ${lib.getExe pkgs.tailscale} serve reset || true
-        ${tailscaleDomains} /vault http://127.0.0.1:18222
-        ${tailscaleDomains} /cockpit http://127.0.0.1:18090
-        ${tailscaleDomains} /navidrome http://127.0.0.1:18053
+        # tailscaled only accepts serve config once it has a netMap from the
+        # control plane; at boot that races this unit ("netMap is nil" /
+        # "NoState"). Retry until ready instead of failing the unit.
+        attempt=1
+        while [ "$attempt" -le 30 ]; do
+          ${lib.getExe pkgs.tailscale} serve reset || true
+          if ${tailscaleDomains} /vault http://127.0.0.1:18222 \
+            && ${tailscaleDomains} /cockpit http://127.0.0.1:18090 \
+            && ${tailscaleDomains} /music http://127.0.0.1:18053 \
+            && ${tailscaleDomains} /slskd http://127.0.0.1:5030; then
+            exit 0
+          fi
+          echo "tailscale serve not ready (attempt $attempt/30), retrying in 2s"
+          sleep 2
+          attempt=$((attempt + 1))
+        done
+        echo "ERROR: could not configure tailscale serve routes"
+        exit 1
       '';
   };
 
@@ -228,10 +242,12 @@
     chown nginx:nginx /var/log/nginx/access.log 2>/dev/null || true
   '';
 
-  # Navidrome: enable TLS with Tailscale certs
+  # Navidrome: enable TLS with Tailscale certs.
+  # NOTE: Navidrome 0.63.2 only honors TLSCert/TLSKey — TLSCertFile/TLSKeyFile
+  # are silently ignored and it falls back to plain HTTP (tlsEnabled=false).
   services.navidrome.settings = {
-    TLSCertFile = "/etc/tailscale-certs/fullchain.pem";
-    TLSKeyFile = "/etc/tailscale-certs/privkey.pem";
+    TLSCert = "/etc/tailscale-certs/fullchain.pem";
+    TLSKey = "/etc/tailscale-certs/privkey.pem";
   };
 
   shared = {

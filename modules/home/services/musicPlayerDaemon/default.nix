@@ -15,6 +15,7 @@ in
 {
   options.services.musicPlayerDaemon = with lib.types; {
     enable = mkBoolOpt false "Enable MPD";
+    musicDir = mkStringOpt' null;
   };
 
   config = lib.mkIf cfg.enable {
@@ -31,7 +32,7 @@ in
         PartOf = [ "mpd.service" ];
       };
       Service = {
-        ExecStart = "${getExe pkgs.mpd-mpris} mpd";
+        ExecStart = "${lib.getExe pkgs.mpd-mpris} mpd";
         Restart = "on-failure";
       };
       Install.WantedBy = [ "default.target" ];
@@ -41,7 +42,7 @@ in
 
       mpd = {
         enable = true;
-        musicDirectory = "/mnt/nix-data/media/music/";
+        musicDirectory = cfg.musicDir;
         network.listenAddress = "127.0.0.1";
         network.port = 6600;
 
@@ -72,6 +73,15 @@ in
       };
 
     };
+
+    # mpdscribble's journal lives under xdg.dataHome (hardcoded into the
+    # generated conf), but systemd's StateDirectory only creates
+    # ~/.local/state/mpdscribble. Without this dir every journal save fails
+    # with "No such file or directory" and scrobbles buffered while Last.fm
+    # is unreachable are dropped.
+    systemd.user.tmpfiles.rules = [
+      "d ${config.xdg.dataHome}/mpdscribble 0700 - - -"
+    ];
 
   };
 }

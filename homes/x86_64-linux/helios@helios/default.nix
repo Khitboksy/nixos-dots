@@ -50,7 +50,12 @@ in
     };
 
     music = {
-      rmpc.enable = true;
+      rmpc = {
+        enable = true;
+        lyricsDir = "/mnt/nix-data/media/lyrics";
+      };
+      discord-rpc.enable = true;
+      picard.enable = true;
     };
 
     games = {
@@ -70,7 +75,10 @@ in
 
     wallpaper.paper = zenith.lib'.wallpapers.tftf-11;
 
-    musicPlayerDaemon.enable = true;
+    musicPlayerDaemon = {
+      enable = true;
+      musicDir = "/srv/music";
+    };
 
     gpg-agent = {
       enable = true;
@@ -161,7 +169,6 @@ in
   home.packages = with pkgs; [
     wl-clipboard-rs
     custom.enc
-    qbittorrent
     libimobiledevice
     ifuse
     signal-desktop

@@ -15,7 +15,14 @@ let
 in
 {
   img2key = img2key.packages.${system}.default;
-  rmpc = rmpc.packages.${system}.default;
+  rmpc = rmpc.packages.${system}.default.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [
+      ../../patches/rmpc/word-highlighting.patch
+      ../../patches/rmpc/time-precision.patch
+      ../../patches/rmpc/seek-precision.patch
+    ];
+  });
+  rmpcd = rmpc.packages.${system}.rmpcd;
   yazi = yazi.packages.${system}.default;
   zen = zen-browser.packages.${system}.default;
   niri = niri-src.packages.${system}.default;

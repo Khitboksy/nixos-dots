@@ -1,12 +1,12 @@
 {
-  lib,
   zenith,
-  config,
+  lyricAuthor ? false,
   ...
 }:
 with zenith.lib';
 let
   q = s: "\"${s}\"";
+  bool = b: if b then "true" else "false";
 in
 
 ''
@@ -158,35 +158,7 @@ in
         fg: ${q colors.helios.mauve.hex},
         bg: ${q colors.helios.mantle.hex}
       ),
-
-
-      text: Some(Group([
-      (
-        kind: Property(Artist), 
-          style:
-          (
-            fg: ${q colors.helios.rosewater.hex},
-            modifiers: "Bold")
-          ),
-
-          (
-            kind: Text(" - "), 
-              style:
-              (
-                fg: ${q colors.helios.rosewater.hex}
-              )
-          ),
-
-          (
-            kind: Property(Title),
-              style:
-              (
-                fg: ${q colors.helios.rosewater.hex},
-                modifiers: "Bold"
-              )
-          ),
-        ])),
-      ),
+    ),
 
     scrollbar: None,
 
@@ -209,14 +181,14 @@ in
         (
           prop: (
             kind: Property(Artist),
-            style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold"),
+            style: (fg: ${q colors.helios.lavender.hex}, modifiers: "Bold"),
             default: (
               kind: Text("Unknown"),
-              style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold")
+              style: (fg: ${q colors.helios.red.hex}, modifiers: "Bold")
             )
           ),
           width: "35%",
-          alignment: Right
+          alignment: Center
         ),
 
         (
@@ -246,7 +218,87 @@ in
           alignment: Left
         )
       ],
-        components: {},
+        components: {
+
+            "playing_tab": Split(
+                direction: Vertical,
+                panes: [
+                    (size: "70%", pane: Split(
+                        direction: Horizontal,
+                        panes: [
+                            (size: "22%", pane: Pane(Property(content: [], align: Center))),
+                            (size: "30%", pane: Split(
+                                direction: Vertical,
+                                panes: [
+                                    (size: "40%", pane: Pane(AlbumArt)),
+                                    (size: "3", pane: Split(
+                                        direction: Vertical,
+                                        panes: [
+                                            (size: "33%", pane: Pane(Property(
+                                                content: [
+                                                    (kind: Property(Song(Artist)), style: (fg: ${q colors.helios.mauve.hex}, modifiers: "Bold")),
+                                                    (kind: Text(" - ")),
+                                                    (kind: Property(Song(Title)), style: (fg: ${q colors.helios.blue.hex})),
+                                                ],
+                                                align: Center,
+                                                scroll_speed: 1,
+                                            ))),
+                                            (size: "34%", pane: Pane(Property(
+                                                content: [
+                                                    (kind: Property(Status(Elapsed)), style: (fg: ${q colors.helios.lavender.hex})),
+                                                    (kind: Text(" / ")),
+                                                    (kind: Property(Status(Duration)), style: (fg: ${q colors.helios.sapphire.hex})),
+                                                ],
+                                                align: Center,
+                                            ))),
+                                            (size: "33%", pane: Pane(Property(
+                                                content: [
+                                                    (kind: Property(Status(RepeatV2(
+                                                        on_label: "z",
+                                                        off_label: "z",
+                                                        on_style: (fg: ${q colors.helios.green.hex}, modifiers: "Bold"),
+                                                        off_style: (fg: ${q colors.helios.peach.hex}, modifiers: "Dim"),
+                                                    )))),
+                                                    (kind: Property(Status(RandomV2(
+                                                        on_label: "x",
+                                                        off_label: "x",
+                                                        on_style: (fg: ${q colors.helios.green.hex}, modifiers: "Bold"),
+                                                        off_style: (fg: ${q colors.helios.peach.hex}, modifiers: "Dim"),
+                                                    )))),
+                                                    (kind: Property(Status(ConsumeV2(
+                                                        on_label: "c",
+                                                        off_label: "c",
+                                                        oneshot_label: "c",
+                                                        on_style: (fg: ${q colors.helios.green.hex}, modifiers: "Bold"),
+                                                        off_style: (fg: ${q colors.helios.peach.hex}, modifiers: "Dim"),
+                                                        oneshot_style: (fg: ${q colors.helios.red.hex}, modifiers: "Dim"),
+                                                    )))),
+                                                    (kind: Property(Status(SingleV2(
+                                                        on_label: "v",
+                                                        off_label: "v",
+                                                        oneshot_label: "v",
+                                                        on_style: (fg: ${q colors.helios.green.hex}, modifiers: "Bold"),
+                                                        off_style: (fg: ${q colors.helios.peach.hex}, modifiers: "Dim"),
+                                                        oneshot_style: (fg: ${q colors.helios.red.hex}, modifiers: "Bold"),
+                                                    )))),
+                                                ],
+                                                align: Center,
+                                            ))),
+                                        ],
+                                    )),
+                                    (size: "1", pane: Pane(Property(content: [], align: Center))),
+                                    (size: "45%", pane: Pane(Lyrics)),
+                                ],
+                            )),
+                            (size: "30%", pane: Pane(Queue)),
+                            (size: "18%", pane: Pane(Property(content: [], align: Center))),
+                        ],
+                    )),
+                    (size: "30%", pane: Pane(Cava)),
+                ],
+            ),
+
+        },
 
         layout: Split(
             direction: Vertical,
@@ -317,7 +369,8 @@ in
 
       ),
         lyrics: (
-            timestamp: false
+            timestamp: ${bool lyricAuthor},
+            precise: ${bool lyricAuthor}
         )
       )
 ''

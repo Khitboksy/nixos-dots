@@ -1,48 +1,47 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-# Config roots
-MUSIC_ROOT="/mnt/nix-data/media/music"
-LYRICS_ROOT="/mnt/nix-data/media/lyrics"
-
-LRCLIB_API="https://lrclib.net/api/get"
+# Config roots: env var > hostname > Helios default
+if [ -n "${YTBLK_MUSIC_DIR:-}" ]; then
+  MUSIC_ROOT="$YTBLK_MUSIC_DIR"
+  LYRICS_ROOT="${YTBLK_LYRICS_DIR:-$(dirname "$MUSIC_ROOT")/lyrics}"
+elif [ "$(hostname)" = "terra" ]; then
+  MUSIC_ROOT="/srv/music"
+  LYRICS_ROOT="/srv/lyrics"
+else
+  MUSIC_ROOT="/mnt/nix-data/media/music"
+  LYRICS_ROOT="/mnt/nix-data/media/lyrics"
+fi
 
 usage() {
   echo "Usage:"
   echo "  $0 artist/album                   # fetch all songs in album"
   echo "  $0 --song /full/path/to/file.ext  # fetch lyrics for a single song"
+  echo "  $0 --rmpcd FILE TITLE ARTIST ALBUM DURATION  # rmpcd plugin mode"
   echo "  (no args, \$FILE set)             # rmpc on_song_change hook mode"
   exit 1
 }
+
+DANKLRC="${DANKLRC:-danklrc}"
 
 get_lyrics_for() {
   local artist="$1"
   local album="$2"
   local title_try="$3"
+  local out="$4"
 
-  local args=(
-    --data-urlencode "artist_name=${artist}"
-    --data-urlencode "track_name=${title_try}"
-  )
-  [ -n "$album" ] && args+=(--data-urlencode "album_name=${album}")
-
-  local resp
-  resp="$(curl -sG --max-time 15 "${args[@]}" "$LRCLIB_API")" || return 1
-
-  local synced plain
-  synced="$(echo "$resp" | jq -r '.syncedLyrics // empty' 2>/dev/null)"
-  if [ -n "$synced" ]; then
-    echo "$synced"
-    return 0
+  local args=(-title "$title_try" -artist "$artist" -out "$out")
+  [ -n "$album" ] && args+=(-album "$album")
+  case "${DURATION:-}" in
+  '' | *[!0-9]*) ;; # empty or non-numeric: unknown
+  0) ;;             # 0 = unknown
+  *) args+=(-duration "$DURATION") ;;
+  esac
+  if [ -n "${SONG_PATH:-}" ] && [ -f "${SONG_PATH:-}" ]; then
+    args+=(-file "$SONG_PATH")
   fi
 
-  plain="$(echo "$resp" | jq -r '.plainLyrics // empty' 2>/dev/null)"
-  if [ -n "$plain" ]; then
-    echo "$plain"
-    return 0
-  fi
-
-  return 1
+  "$DANKLRC" "${args[@]}"
 }
 
 # Clean YouTube-ism noise from a title
@@ -93,6 +92,32 @@ probe_meta() {
   echo "${artist}|${album}|${title}"
 }
 
+# Whole seconds of audio duration for a file; empty when unknown.
+probe_duration() {
+  local d=""
+  if command -v ffprobe >/dev/null 2>&1; then
+    d="$(ffprobe -v quiet -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$1" 2>/dev/null)"
+  fi
+  d="${d%%.*}"
+  case "$d" in
+  '' | *[!0-9]*) ;;
+  *) echo "$d" ;;
+  esac
+}
+
+# Normalize rmpc's $DURATION to whole seconds. Depending on rmpc's Song type
+# it may be a bare integer ("253"), a Rust Duration Display ("253.456789012s"),
+# or empty (streams). Anything unrecognized comes back empty = unknown.
+dur_secs() {
+  local d="${1:-}"
+  d="${d%s}"
+  d="${d%%.*}"
+  case "$d" in
+  '' | *[!0-9]*) ;;
+  *) echo "$d" ;;
+  esac
+}
+
 # Fetch lyrics for a single song, trying candidates in order until one hits.
 #   $1 artist (tree-derived, primary)
 #   $2 album  (tree-derived, primary; may be empty)
@@ -100,8 +125,10 @@ probe_meta() {
 #   $4 out_lrc (target .lrc path - MIRRORS the music file path so rmpc's
 #               filename-based lookup works)
 #   $5 alt_artist $6 alt_album $7 alt_title (ffprobe fallback set; may be empty)
+# Uses globals SONG_PATH (audio file) and DURATION (seconds, may be empty),
+# set per-file by the caller.
 # Order: tree+album -> tree w/o album -> tree+cleaned title -> probe set.
-# On success the [ar:]/[al:]/[ti:] headers use whichever candidate matched.
+# danklrc writes $4 itself (headers included) when a candidate matches.
 fetch_for_plain() {
   local artist="$1"
   local album="$2"
@@ -116,53 +143,36 @@ fetch_for_plain() {
     return 0
   fi
 
-  local lyrics=""
   local cleaned=""
 
   # 1. Primary contract: tree artist + album + track
-  lyrics="$(get_lyrics_for "$artist" "$album" "$title_try")"
+  get_lyrics_for "$artist" "$album" "$title_try" "$out_lrc"
 
-  # 2. LRCLIB's album param is flaky - retry without it
-  if [ -z "$lyrics" ]; then
-    lyrics="$(get_lyrics_for "$artist" "" "$title_try")"
+  # 2. The album param can be flaky - retry without it
+  if [ ! -f "$out_lrc" ]; then
+    get_lyrics_for "$artist" "" "$title_try" "$out_lrc"
   fi
 
   # 3. Cleaned title (strip (Official...), track prefixes, artist/album prefixes)
-  if [ -z "$lyrics" ]; then
+  if [ ! -f "$out_lrc" ]; then
     cleaned="$(clean_title "$title_try")"
     if [ -n "$cleaned" ] && [ "$cleaned" != "$title_try" ]; then
-      lyrics="$(get_lyrics_for "$artist" "$album" "$cleaned")"
-      [ -z "$lyrics" ] && lyrics="$(get_lyrics_for "$artist" "" "$cleaned")"
+      get_lyrics_for "$artist" "$album" "$cleaned" "$out_lrc"
+      [ ! -f "$out_lrc" ] && get_lyrics_for "$artist" "" "$cleaned" "$out_lrc"
     fi
   fi
 
   # 4. ffprobe fallback set (legacy dirs where tree name != canonical artist)
-  if [ -z "$lyrics" ] && [ -n "$alt_artist" ] && [ "$alt_artist" != "$artist" ]; then
-    artist="$alt_artist"
-    [ -n "$alt_album" ] && album="$alt_album"
-    [ -n "$alt_title" ] && title_try="$alt_title"
-    lyrics="$(get_lyrics_for "$artist" "$album" "$title_try")"
-    [ -z "$lyrics" ] && lyrics="$(get_lyrics_for "$artist" "" "$title_try")"
+  if [ ! -f "$out_lrc" ] && [ -n "$alt_artist" ] && [ "$alt_artist" != "$artist" ]; then
+    get_lyrics_for "$alt_artist" "$alt_album" "$alt_title" "$out_lrc"
+    [ ! -f "$out_lrc" ] && get_lyrics_for "$alt_artist" "" "$alt_title" "$out_lrc"
   fi
 
-  if [ -z "$lyrics" ]; then
+  if [ ! -f "$out_lrc" ]; then
     echo "x No lyrics for: \"$title_try\" (artist: $artist)"
     return 0
   fi
 
-  mkdir -p "$(dirname "$out_lrc")"
-
-  # Write our own [ti:]/[ar:]/[al:] headers - these power rmpc's tag-based
-  # lyric index (fallback to the filename-based lookup).
-  {
-    printf '[ti: %s]\n' "$title_try"
-    printf '[ar: %s]\n' "$artist"
-    if [ -n "$album" ] && [ "$album" != "$title_try" ]; then
-      printf '[al: %s]\n' "$album"
-    fi
-    echo ""
-    echo "$lyrics"
-  } >"$out_lrc"
   echo "v Saved lyrics: $(basename "$out_lrc")"
   link_navidrome_symlink "$out_lrc"
 }
@@ -190,8 +200,8 @@ link_navidrome_symlink() {
   [ -f "$lrc_path" ] || return 0
 
   local rel song_path link_path target
-  rel="${lrc_path#$LYRICS_ROOT/}"            # Artist/Album/Song.lrc
-  song_path="$MUSIC_ROOT/${rel%.*}"          # Artist/Album/Song (ext varies)
+  rel="${lrc_path#$LYRICS_ROOT/}"   # Artist/Album/Song.lrc
+  song_path="$MUSIC_ROOT/${rel%.*}" # Artist/Album/Song (ext varies)
   # Only link songs that exist in the library
   if [ ! -f "$song_path.mp3" ] && [ ! -f "$song_path.flac" ]; then
     return 0
@@ -203,30 +213,63 @@ link_navidrome_symlink() {
   ln -sfn "$target" "$link_path"
 }
 
-# ---------------------------------------------------------------- main
+# Tell every running rmpc to (re)index a lyrics file immediately. rmpc's
+# lyrics watcher only reacts to Close(Write), but danklrc atomic-renames
+# files into place, so without this nudge a late-written .lrc stays
+# invisible until the next track change. Broadcast (no --pid) reaches
+# every running rmpc - same call rmpcd's builtin lyrics plugin makes.
+announce_lyrics() {
+  [ -f "${1:-}" ] || return 0
+  "${RMPC:-rmpc}" remote indexlrc --path "$1" >/dev/null 2>&1 || true
+}
 
-# Mode 1: rmpc on_song_change hook - env vars only, no CLI args.
+# main ----------------------------------------------------------------
+
+# Mode 0: rmpcd plugin - MPD-relative path plus authoritative metadata.
+#   argv: --rmpcd FILE TITLE ARTIST ALBUM DURATION_SECS
+#   Rewrites into the same variables Mode 1 consumes, then falls through so
+#   both triggers (rmpc's on_song_change hook and rmpcd's song_change) share
+#   one code path. flock in the slow path keeps them from double-fetching.
+if [ $# -eq 6 ] && [ "$1" == "--rmpcd" ]; then
+  FILE="$2"
+  TITLE="${3:-}"
+  ARTIST="${4:-}"
+  ALBUM="${5:-}"
+  DURATION="${6:-}"
+  set --
+fi
+
+# Mode 1: rmpc on_song_change hook / rmpcd - env-style inputs, no CLI args.
 #   Fast path: if the playing song already has a .lrc, or the album was already
 #   scanned and found no lyrics (marked with a .nolyrics file), do nothing -
 #   this runs on EVERY track change, so it must be cheap (no network, no scan).
-#   Slow path: no .lrc for the playing song -> background a serialized,
-#   lock-guarded cascade over the whole album dir (flat, non-recursive) that
-#   fetches a .lrc for every song in the album missing one, named identically
-#   via mirror_lrc_path. rmpc's hot-reload picks them up as tracks play.
+#   Slow path: no .lrc for the playing song -> background a serialized attempt
+#   with MPD metadata (TITLE/ARTIST from rmpc's tag env or rmpcd's args),
+#   followed by the album cascade over every track still missing a .lrc,
+#   named identically via mirror_lrc_path. Late-written files are announced to
+#   rmpc via `rmpc remote indexlrc` (atomic renames bypass its FS watcher).
 if [ $# -eq 0 ] && [ -n "${FILE:-}" ]; then
+  # Network streams have no local file or mirror path - nothing to fetch.
+  case "$FILE" in
+  *://*) exit 0 ;;
+  esac
+
+  DURATION="$(dur_secs "${DURATION:-}")"
   # $FILE is relative to the music dir; $LRC_FILE is the exact path rmpc will
-  # look up (filename-based). Artist/album/title resolve TREE-FIRST (d1/d2 of
-  # the path), with ffprobe tags as the fallback for legacy abbreviated dirs.
+  # look up (filename-based).
   SONG_PATH="${MUSIC_ROOT}/${FILE}"
   LRC_FILE="${LRC_FILE:-$(mirror_lrc_path "$SONG_PATH")}"
+  # The cascade below overwrites LRC_FILE per file; keep the playing song's
+  # path so we can announce it to rmpc once the fetch finishes.
+  PLAYING_LRC="$LRC_FILE"
 
   # Fast path: already have lyrics, or already confirmed the album has none.
   if [ -f "$LRC_FILE" ] || [ -f "$(dirname "$LRC_FILE")/.nolyrics" ]; then
     exit 0
   fi
 
-  # Slow path: playing song lacks lyrics. Fire-and-forget the album cascade so
-  # the hook returns instantly (rmpc's UI never blocks). Serialized via flock -
+  # Slow path: playing song lacks lyrics. Fire-and-forget the work so the
+  # hook returns instantly (rmpc's UI never blocks). Serialized via flock -
   # a second trigger while a cascade runs waits for it, then skips re-fetching
   # anything already written.
   {
@@ -235,19 +278,40 @@ if [ $# -eq 0 ] && [ -n "${FILE:-}" ]; then
     # Mirror of the album dir under the lyrics root (may not exist yet)
     LYRIC_ALBUM_DIR="${LYRICS_ROOT}/${ALBUM_DIR#$MUSIC_ROOT/}"
 
-    echo "> Hook: no lyrics for $FILE - scanning album $ALBUM_DIR"
     wrote_any=0
+
+    # 1. Authoritative metadata first: rmpc exports MPD tags uppercased
+    #    ($TITLE/$ARTIST/$ALBUM) and rmpcd passes them via --rmpcd. One
+    #    danklrc attempt with real tags beats directory guessing.
+    if [ -n "${TITLE:-}" ] && [ -n "${ARTIST:-}" ]; then
+      echo "> Hook: explicit fetch for $FILE"
+      fetch_for_plain "$ARTIST" "${ALBUM:-}" "$TITLE" "$LRC_FILE"
+      [ -f "$LRC_FILE" ] && wrote_any=1
+      # The playing song is ready now - show it BEFORE the cascade runs,
+      # not after it finishes.
+      announce_lyrics "$PLAYING_LRC"
+    fi
+
+    # 2. Cascade: every track in the album dir (flat, non-recursive) still
+    #    missing a .lrc, tree/ffprobe metadata. Also re-tries the playing
+    #    song with tree metadata if the explicit attempt above missed.
+    echo "> Hook: scanning album $ALBUM_DIR"
     shopt -s nullglob
     for file in "$ALBUM_DIR"/*.mp3 "$ALBUM_DIR"/*.flac; do
       [ -f "$file" ] || continue # skip if nothing matches
-      IFS='|' read -r t_artist t_album t_title <<<"$(tree_meta "$file")"
-      IFS='|' read -r p_artist p_album p_title <<<"$(probe_meta "$file")"
+      # Skip BEFORE probing: ffprobe per track costs ~1.5s each, and this
+      # loop runs on every queued trigger even when nothing is missing.
       LRC_FILE="$(mirror_lrc_path "$file")"
       if [ -f "$LRC_FILE" ]; then
+        IFS='|' read -r _ _ t_title <<<"$(tree_meta "$file")"
         echo "- Skipping \"$t_title\" (already have .lrc)"
         wrote_any=1
         continue
       fi
+      IFS='|' read -r t_artist t_album t_title <<<"$(tree_meta "$file")"
+      IFS='|' read -r p_artist p_album p_title <<<"$(probe_meta "$file")"
+      SONG_PATH="$file"
+      DURATION="$(probe_duration "$file")"
       before="$(find "$LYRIC_ALBUM_DIR" -name '*.lrc' 2>/dev/null | wc -l)"
       fetch_for_plain "$t_artist" "$t_album" "$t_title" "$LRC_FILE" \
         "$p_artist" "$p_album" "$p_title"
@@ -263,6 +327,10 @@ if [ $# -eq 0 ] && [ -n "${FILE:-}" ]; then
       : >"$LYRIC_ALBUM_DIR/.nolyrics"
       echo "> Hook: no lyrics anywhere in album - marked .nolyrics"
     fi
+
+    # Fallback announce: the cascade may have written the playing song's
+    # .lrc when the explicit attempt above missed (tree metadata vs tags).
+    announce_lyrics "$PLAYING_LRC"
     echo "> Hook: album scan done"
   } 9>"${XDG_RUNTIME_DIR:-/tmp}/rmpc-fetch-lyrics.lock" \
     >>"${XDG_RUNTIME_DIR:-/tmp}/rmpc-fetch-lyrics.log" 2>&1 &
@@ -281,6 +349,7 @@ if [ $# -eq 2 ] && [ "$1" == "--song" ]; then
   IFS='|' read -r t_artist t_album t_title <<<"$(tree_meta "$SONG_PATH")"
   IFS='|' read -r p_artist p_album p_title <<<"$(probe_meta "$SONG_PATH")"
   LRC_FILE="$(mirror_lrc_path "$SONG_PATH")"
+  DURATION="$(probe_duration "$SONG_PATH")"
 
   fetch_for_plain "$t_artist" "$t_album" "$t_title" "$LRC_FILE" \
     "$p_artist" "$p_album" "$p_title"
@@ -307,9 +376,17 @@ if [ $# -eq 1 ]; then
   shopt -s nullglob
   for file in "$ALBUM_DIR"/*.mp3 "$ALBUM_DIR"/*.flac; do
     [ -f "$file" ] || continue # skip if nothing matches
+    # Skip before probing, same as the cascade loop above.
+    LRC_FILE="$(mirror_lrc_path "$file")"
+    if [ -f "$LRC_FILE" ]; then
+      IFS='|' read -r _ _ t_title <<<"$(tree_meta "$file")"
+      echo "- Skipping \"$t_title\" (already have .lrc)"
+      continue
+    fi
     IFS='|' read -r t_artist t_album t_title <<<"$(tree_meta "$file")"
     IFS='|' read -r p_artist p_album p_title <<<"$(probe_meta "$file")"
-    LRC_FILE="$(mirror_lrc_path "$file")"
+    SONG_PATH="$file"
+    DURATION="$(probe_duration "$file")"
     fetch_for_plain "$t_artist" "$t_album" "$t_title" "$LRC_FILE" \
       "$p_artist" "$p_album" "$p_title"
   done
