@@ -5,8 +5,8 @@
 }:
 
 {
-  kerbal = {
-    id = 220200;
+  "220200" = {
+    name = "kerbal";
     compatTool = "proton-cachyos-x86_64-v3";
 
     env = {

@@ -6,8 +6,8 @@
 }:
 
 {
-  deadlock = {
-    id = 1422450;
+  "1422450" = {
+    name = "deadlock";
     compatTool = "proton-cachyos-x86_64-v3";
 
     env = {

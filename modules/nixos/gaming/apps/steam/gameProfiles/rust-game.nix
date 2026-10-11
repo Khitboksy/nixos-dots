@@ -5,8 +5,8 @@
 }:
 
 {
-  rust-game = {
-    id = 252490;
+  "252490" = {
+    name = "rust-game";
     compatTool = "GE-Proton10-29";
 
     env = {

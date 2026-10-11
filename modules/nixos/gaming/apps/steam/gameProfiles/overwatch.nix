@@ -5,8 +5,8 @@
 }:
 
 {
-  overwatch = {
-    id = 2357570;
+  "2357570" = {
+    name = "overwatch";
     compatTool = "proton-cachyos-x86_64-v3";
 
     env = {

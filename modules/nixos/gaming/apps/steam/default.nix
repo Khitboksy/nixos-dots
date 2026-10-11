@@ -35,7 +35,7 @@ in
         onSteamRunning = "close";
         apps =
           let
-            wrappers = importDir ./wrappers { inherit writeShellScriptBin; };
+            wrappers = importDir ./wrappers { inherit pkgs; };
           in
           importDir ./gameProfiles {
             inherit wrappers;
