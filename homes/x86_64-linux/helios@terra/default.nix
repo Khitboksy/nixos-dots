@@ -47,7 +47,7 @@
       rmpc = {
         enable = true;
         lyricsDir = "/srv/lyrics";
-        lyricAuthor = true;
+        lyricAuthor = false;
       };
       discord-rpc.enable = true;
       picard.enable = true;
