@@ -59,6 +59,10 @@
       opencode.enable = true;
     };
 
+    games = {
+      burrow.enable = true;
+    };
+
   };
 
   shells.fish.enable = true;

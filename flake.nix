@@ -166,6 +166,7 @@
         custom = (prev.custom or { }) // {
           enc = final.callPackage ./packages/enc { };
           danklrc = final.callPackage ./packages/danklrc { };
+          burrow = final.callPackage ./packages/burrow { };
 
         };
       };
