@@ -54,8 +54,8 @@
     };
 
     ai = {
-      modelMain = "opencode/mimo-v2.5-free";
-      modelSub = "opencode/muse-spark-1.3-contributor-free";
+      modelMain = "opencode/mimo-v2.6-flash-free";
+      modelSub = "opencode/deepseek-v4.1-flash-free";
       opencode.enable = true;
     };
 
